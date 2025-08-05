@@ -8,7 +8,11 @@
       "Bash(npm run test:all:*)",
       "Bash(npm install)",
       "Bash(timeout 30s npx playwright test:*)",
-      "Bash(timeout 60s npx playwright test:*)"
+      "Bash(timeout 60s npx playwright test:*)",
+      "Bash(rmdir:*)",
+      "Bash(cp:*)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout 30s npm run test -- --config=playwright-svelte.config.js --reporter=list)"
     ],
     "deny": []
   }
