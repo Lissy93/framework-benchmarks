@@ -1,28 +1,161 @@
-# Node modules
+# Dependencies
 node_modules/
+*/node_modules/
 
-# Build outputs
+# Build outputs and generated files
 dist/
 build/
+*/dist/
+*/build/
+.next/
+out/
+
+# Framework-specific auto-generated directories
+.angular/
+.svelte-kit/
+.nuxt/
+.output/
+.vercel/
+.netlify/
+
+# Test outputs
+test-results/
+playwright-report/
+coverage/
+*.lcov
 
 # Environment files
 .env
 .env.local
+.env.development.local
+.env.test.local
+.env.production.local
 .env.production
 
-# IDE files
+# IDE and editor files
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+*.sublime-project
 
 # OS files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+desktop.ini
 
 # Logs
 *.log
 npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Cache directories
+.npm
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+.eslintcache
+.parcel-cache
+.turbo
+
+# Optional REPL history
+.node_repl_history
+
+# TypeScript
+*.tsbuildinfo
+.tscache/
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variables file
+.env
+.env.test
+.env.production
+
+# parcel-bundler cache (https://parceljs.org/)
+.cache
+.parcel-cache
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
 
 # Sync'd assets (managed by scripts/sync-assets.js)
 apps/*/public/assets/
+apps/*/static/assets/
+
+# Auto-generated files that shouldn't be committed
+*.js.map
+*.d.ts.map
+
+# Temporary files
+*.tmp
+*.temp
+.temp/
+.tmp/
+
+# System files
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
