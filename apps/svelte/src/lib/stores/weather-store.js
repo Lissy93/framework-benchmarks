@@ -18,9 +18,9 @@ export const weatherStore = {
       isLoading.set(true);
       error.set(null);
       
-      // Add delay in test environments to make loading state visible
+      // Add small delay in test environments to make loading state visible
       if (isTestEnvironment()) {
-        await new Promise(resolve => setTimeout(resolve, 200));
+        await new Promise(resolve => setTimeout(resolve, 100));
       }
       
       const data = await weatherService.getWeatherByCity(city);
@@ -56,19 +56,19 @@ export const weatherStore = {
     if (!browser) return;
     
     try {
-      // For mock mode, always load London directly
-      if (weatherService.useMockData) {
-        await this.loadWeather('London');
-        return;
-      }
-
       const savedLocation = getSavedLocation();
       if (savedLocation) {
         await this.loadWeather(savedLocation);
         return;
       }
 
-      // Try to get current location
+      // Try to get current location (unless in mock mode where we fallback to London)
+      if (weatherService.useMockData) {
+        // In mock mode, just load London as default without geolocation
+        await this.loadWeather('London');
+        return;
+      }
+
       try {
         await this.getCurrentLocationWeather();
       } catch (err) {

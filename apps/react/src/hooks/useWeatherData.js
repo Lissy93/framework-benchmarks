@@ -68,12 +68,6 @@ const useWeatherData = () => {
   }, [weatherService]);
 
   const loadSavedLocation = useCallback(async () => {
-    // For mock mode, always load London directly
-    if (weatherService.useMockData) {
-      await loadWeather('London');
-      return 'London';
-    }
-
     try {
       const savedLocation = localStorage.getItem('weather-app-location');
       if (savedLocation) {
@@ -84,7 +78,13 @@ const useWeatherData = () => {
       console.warn('Could not load saved location:', error);
     }
     
-    // Try to get current location
+    // Try to get current location (unless in mock mode where we fallback to London)
+    if (weatherService.useMockData) {
+      // In mock mode, just load London as default without geolocation
+      await loadWeather('London');
+      return 'London';
+    }
+
     try {
       await getCurrentLocationWeather();
       return 'Current Location';

@@ -63,19 +63,19 @@ export class WeatherStateService {
   }
 
   private initializeApp(): void {
-    // For mock mode, always load London directly
-    if (this.shouldUseMockData()) {
-      this.loadWeather('London');
-      return;
-    }
-
     const savedLocation = this.getSavedLocation();
     if (savedLocation) {
       this.loadWeather(savedLocation);
       return;
     }
 
-    // Try to get current location
+    // Try to get current location (unless in mock mode where we fallback to London)
+    if (this.shouldUseMockData()) {
+      // In mock mode, just load London as default without geolocation
+      this.loadWeather('London');
+      return;
+    }
+
     this.updateState({ isLoading: true, error: null });
     
     this.weatherService.getCurrentLocationWeather().pipe(

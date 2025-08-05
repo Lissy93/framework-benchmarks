@@ -8,8 +8,8 @@
   data-testid="error" 
   hidden={!isVisible}
 >
-  <h2 class="error__title">Unable to load weather data</h2>
+  <h2 class="error__title">Error</h2>
   <p class="error__message">
-    {message || 'Please check the city name and try again.'}
+    {message || 'Unable to load weather data. Please try again.'}
   </p>
 </div>
