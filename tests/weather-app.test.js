@@ -5,13 +5,59 @@
 
 const { test, expect } = require('@playwright/test');
 
-const MOCK_DATA_URL = '/assets/mocks/weather-data.json';
-
-test.describe('Weather App', () => {
+test.describe('Weather App - Core Functionality', () => {
   test.beforeEach(async ({ page }) => {
-    // Mock the weather API to return our test data
-    await page.route('**/api.open-meteo.com/**', async route => {
-      const mockData = require('../assets/mocks/weather-data.json');
+    // Mock the geocoding API
+    await page.route('**/api.open-meteo.com/v1/geocoding*', async route => {
+      const url = route.request().url();
+      const searchTerm = new URL(url).searchParams.get('name');
+      
+      if (searchTerm === 'InvalidCity123') {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({ results: [] })
+        });
+      } else {
+        await route.fulfill({
+          status: 200,
+          contentType: 'application/json',
+          body: JSON.stringify({
+            results: [{
+              name: searchTerm || "London",
+              country: "GB",
+              latitude: 51.5074,
+              longitude: -0.1278
+            }]
+          })
+        });
+      }
+    });
+
+    // Mock the weather forecast API
+    await page.route('**/api.open-meteo.com/v1/forecast*', async route => {
+      const mockData = {
+        current: {
+          temperature_2m: 22.5,
+          relative_humidity_2m: 65,
+          apparent_temperature: 24.2,
+          wind_speed_10m: 8.5,
+          wind_direction_10m: 245,
+          surface_pressure: 1013.2,
+          cloud_cover: 30,
+          weather_code: 2
+        },
+        daily: {
+          time: [
+            "2024-01-15", "2024-01-16", "2024-01-17", 
+            "2024-01-18", "2024-01-19", "2024-01-20", "2024-01-21"
+          ],
+          temperature_2m_max: [25.1, 23.8, 21.5, 19.2, 22.7, 24.3, 26.1],
+          temperature_2m_min: [18.2, 17.9, 16.8, 15.1, 17.3, 19.2, 20.5],
+          weather_code: [2, 3, 61, 80, 1, 2, 0]
+        }
+      };
+      
       await route.fulfill({
         status: 200,
         contentType: 'application/json',
@@ -28,13 +74,14 @@ test.describe('Weather App', () => {
   });
 
   test('should display weather data after loading', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/?mock=true');
     
     // Wait for weather data to load
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
     
     // Should display current temperature
-    await expect(page.locator('[data-testid="current-temperature"]')).toContainText('22');
+    // await expect(page.locator('[data-testid="current-temperature"]')).toContainText('22');
+    await expect(page.locator('[data-testid="current-temperature"]')).toContainText('23°C');
     
     // Should display location
     await expect(page.locator('[data-testid="current-location"]')).toBeVisible();
@@ -45,7 +92,7 @@ test.describe('Weather App', () => {
   });
 
   test('should allow city search', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/?mock=true');
     
     // Wait for initial load
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
@@ -66,7 +113,7 @@ test.describe('Weather App', () => {
   });
 
   test('should persist location in localStorage', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/?mock=true');
     
     // Search for a city
     await page.locator('[data-testid="search-input"]').fill('London');
@@ -93,15 +140,17 @@ test.describe('Weather App', () => {
       });
     });
     
-    await page.goto('/');
+    // Disable mock mode to allow actual API calls
+    await page.goto('/?mock=false');
     
     // Search for invalid location
     await page.locator('[data-testid="search-input"]').fill('InvalidCity123');
     await page.locator('[data-testid="search-button"]').click();
     
-    // Should show error message
+    // Should show error message (wait for fade-out animation to complete)
+    await page.waitForTimeout(300); // Wait for any fade-out animations to complete
     await expect(page.locator('[data-testid="error"]')).toBeVisible();
-    await expect(page.locator('[data-testid="error"]')).toContainText('not found');
+    await expect(page.locator('[data-testid="error"]')).toContainText('Unable to find location');
   });
 
   test('should handle network errors gracefully', async ({ page }) => {
@@ -110,14 +159,16 @@ test.describe('Weather App', () => {
       await route.abort('failed');
     });
     
-    await page.goto('/');
+    // Disable mock mode to allow actual API calls
+    await page.goto('/?mock=false');
     
-    // Should show error state
+    // Should show error state (wait for fade-out animation to complete)
+    await page.waitForTimeout(300); // Wait for any fade-out animations to complete
     await expect(page.locator('[data-testid="error"]')).toBeVisible();
   });
 
   test('should display all weather details', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/?mock=true');
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
     
     // Check current weather details
@@ -134,7 +185,7 @@ test.describe('Weather App', () => {
   test('should be responsive', async ({ page }) => {
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/');
+    await page.goto('/?mock=true');
     
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
     
@@ -144,7 +195,7 @@ test.describe('Weather App', () => {
   });
 
   test('should have proper accessibility', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/?mock=true');
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
     
     // Check for proper heading structure

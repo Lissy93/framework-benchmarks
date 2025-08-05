@@ -1,0 +1,40 @@
+{
+  "name": "weather-front",
+  "version": "1.0.0",
+  "description": "Cross-framework weather app comparison project",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "test:vanilla": "playwright test --grep=vanilla",
+    "test:unit": "node tests/unit/run-unit-tests.js",
+    "test:all": "npm run test:unit && npm run test",
+    "test:ci": "playwright test --reporter=github",
+    "dev:vanilla": "cd apps/vanilla && python3 -m http.server 3000 || python -m http.server 3000",
+    "install:playwright": "playwright install",
+    "sync-assets": "node scripts/sync-assets.js",
+    "generate-mocks": "node scripts/generate-mocks.js"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "jsdom": "^26.1.0"
+  },
+  "keywords": [
+    "weather",
+    "frontend",
+    "comparison",
+    "vanilla-js",
+    "react",
+    "vue",
+    "svelte",
+    "angular"
+  ],
+  "author": "Alicia Sykes",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Lissy93/weather-front"
+  }
+}
