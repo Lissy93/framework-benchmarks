@@ -36,6 +36,13 @@ function createConfig(framework) {
         command: 'npm run dev:preact',
         url: 'http://localhost:3000?mock=true',
       }
+    },
+    solid: {
+      baseURL: 'http://localhost:3000?mock=true',
+      webServer: {
+        command: 'npm run dev:solid',
+        url: 'http://localhost:3000?mock=true',
+      }
     }
   };
 
