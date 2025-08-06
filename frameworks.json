@@ -1,0 +1,70 @@
+{
+  "frameworks": [
+    {
+      "id": "vanilla",
+      "name": "Vanilla JS",
+      "displayName": "Vanilla JavaScript",
+      "icon": "🧪",
+      "dir": "vanilla",
+      "hasNodeModules": false,
+      "buildCommand": "echo 'No build step required'",
+      "devCommand": "python3 -m http.server 3000 || python -m http.server 3000",
+      "testCommand": "playwright test --config=tests/config/playwright-vanilla.config.js"
+    },
+    {
+      "id": "react",
+      "name": "React",
+      "displayName": "React",
+      "icon": "⚛️",
+      "dir": "react", 
+      "hasNodeModules": true,
+      "buildCommand": "vite build",
+      "devCommand": "vite",
+      "testCommand": "playwright test --config=tests/config/playwright-react.config.js"
+    },
+    {
+      "id": "angular",
+      "name": "Angular",
+      "displayName": "Angular",
+      "icon": "🅰️",
+      "dir": "angular",
+      "hasNodeModules": true,
+      "buildCommand": "ng build",
+      "devCommand": "ng serve --port 3000",
+      "testCommand": "playwright test --config=tests/config/playwright-angular.config.js"
+    },
+    {
+      "id": "svelte",
+      "name": "Svelte",
+      "displayName": "Svelte",
+      "icon": "🔥",
+      "dir": "svelte",
+      "hasNodeModules": true,
+      "buildCommand": "vite build",
+      "devCommand": "vite dev --port 3000",
+      "testCommand": "playwright test --config=tests/config/playwright-svelte.config.js"
+    },
+    {
+      "id": "preact",
+      "name": "Preact",
+      "displayName": "Preact",
+      "icon": "💜",
+      "dir": "preact",
+      "hasNodeModules": true,
+      "buildCommand": "vite build",
+      "devCommand": "vite",
+      "testCommand": "playwright test --config=tests/config/playwright-preact.config.js"
+    },
+    {
+      "id": "solid",
+      "name": "Solid.js",
+      "displayName": "Solid.js",
+      "icon": "🚀",
+      "dir": "solid",
+      "hasNodeModules": true,
+      "buildCommand": "vite build",
+      "devCommand": "vite",
+      "testCommand": "playwright test --config=tests/config/playwright-solid.config.js"
+    }
+  ]
+}

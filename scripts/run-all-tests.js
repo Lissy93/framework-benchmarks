@@ -17,12 +17,15 @@ async function runCommand(command, args = []) {
 }
 
 async function runAllTests() {
-  const frameworks = [
-    { name: 'Vanilla', command: 'npm', args: ['run', 'test:vanilla'] },
-    { name: 'React', command: 'npm', args: ['run', 'test:react'] },
-    { name: 'Angular', command: 'npm', args: ['run', 'test:angular'] },
-    { name: 'Svelte', command: 'npm', args: ['run', 'test:svelte'] }
-  ];
+  // Load frameworks from centralized config
+  const { listFrameworks } = require('./generate-scripts.js');
+  const frameworkConfigs = listFrameworks();
+
+  const frameworks = frameworkConfigs.map(framework => ({
+    name: framework.name,
+    command: 'npm',
+    args: ['run', `test:${framework.id}`]
+  }));
 
   const results = [];
   
