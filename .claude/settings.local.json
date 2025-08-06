@@ -36,7 +36,20 @@
       "Bash(npm run test:preact:*)",
       "Bash(npm run test:react:*)",
       "Bash(npm run test:solid:*)",
-      "Bash(timeout 60s npm run test:solid -- --grep=\"should display initial loading state\" --reporter=list)"
+      "Bash(timeout 60s npm run test:solid -- --grep=\"should display initial loading state\" --reporter=list)",
+      "Bash(npm run generate-scripts:*)",
+      "Bash(npm run sync-assets:*)",
+      "Bash(timeout 120s npm run test:qwik -- --reporter=list)",
+      "Bash(timeout 30s npm run test:qwik -- --grep=\"should display initial loading state\" --reporter=list)",
+      "Bash(timeout 30s npm run test:qwik -- --grep=\"should display weather data after loading\" --reporter=list)",
+      "Bash(find:*)",
+      "Bash(timeout 60s npm run test:qwik -- --grep=\"should display weather data after loading\" --reporter=list)",
+      "Bash(timeout 10s npx playwright test --config=tests/config/playwright-svelte.config.js --grep=\"should allow city search\" --reporter=list)",
+      "Bash(timeout 15s npx playwright test --config=tests/config/playwright-qwik.config.js --grep=\"should allow city search\" --reporter=list)",
+      "Bash(timeout 15s npx playwright test --config=tests/config/playwright-qwik.config.js --grep=\"should display error state for invalid location\" --reporter=list)",
+      "Bash(timeout 60s npm run test:qwik -- --grep=\"should allow city search\" --reporter=list)",
+      "Bash(timeout 30s npm run test:qwik -- --grep=\"should allow city search\" --reporter=list)",
+      "Bash(timeout 30s npm run test:vanilla -- --grep=\"should allow city search\" --reporter=list)"
     ],
     "deny": []
   }

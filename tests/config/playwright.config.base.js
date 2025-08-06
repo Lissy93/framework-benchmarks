@@ -43,6 +43,13 @@ function createConfig(framework) {
         command: 'npm run dev:solid',
         url: 'http://localhost:3000?mock=true',
       }
+    },
+    qwik: {
+      baseURL: 'http://localhost:3000?mock=true',
+      webServer: {
+        command: 'npm run dev:qwik',
+        url: 'http://localhost:3000?mock=true',
+      }
     }
   };
 

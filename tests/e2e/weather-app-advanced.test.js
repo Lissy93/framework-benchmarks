@@ -218,6 +218,7 @@ test.describe('Weather App - Advanced E2E Tests', () => {
     await page.goto('/?mock=true');
     
     // Tab to search input
+    await expect(page.locator('[data-testid="search-input"]')).toBeVisible();
     await page.keyboard.press('Tab');
     await expect(page.locator('[data-testid="search-input"]')).toBeFocused();
     
