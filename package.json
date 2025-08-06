@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Cross-framework weather app comparison project",
   "scripts": {
-    "test": "(npm run test:vanilla || echo 'Vanilla JS tests completed'); (npm run test:react || echo 'React tests completed'); (npm run test:angular || echo 'Angular tests completed'); (npm run test:svelte || echo 'Svelte tests completed'); (npm run test:preact || echo 'Preact tests completed'); (npm run test:solid || echo 'Solid.js tests completed'); (npm run test:qwik || echo 'Qwik tests completed'); echo 'All test suites completed'",
+    "test": "(npm run test:vanilla || echo 'Vanilla JS tests completed'); (npm run test:react || echo 'React tests completed'); (npm run test:angular || echo 'Angular tests completed'); (npm run test:svelte || echo 'Svelte tests completed'); (npm run test:preact || echo 'Preact tests completed'); (npm run test:solid || echo 'Solid.js tests completed'); (npm run test:qwik || echo 'Qwik tests completed'); (npm run test:vue || echo 'Vue tests completed'); echo 'All test suites completed'",
     "test:vanilla": "playwright test --config=tests/config/playwright-vanilla.config.js",
     "test:react": "playwright test --config=tests/config/playwright-react.config.js",
     "test:angular": "playwright test --config=tests/config/playwright-angular.config.js",
@@ -28,7 +28,9 @@
     "generate-mocks": "node scripts/generate-mocks.js",
     "generate-scripts": "node scripts/generate-scripts.js",
     "test:qwik": "playwright test --config=tests/config/playwright-qwik.config.js",
-    "dev:qwik": "cd apps/qwik && npm run dev"
+    "dev:qwik": "cd apps/qwik && npm run dev",
+    "test:vue": "playwright test --config=tests/config/playwright-vue.config.js",
+    "dev:vue": "cd apps/vue && npm run dev"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",

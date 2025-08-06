@@ -70,7 +70,7 @@ test.describe('Weather App - Core Functionality', () => {
     await page.goto('/');
     
     // Should show loading initially
-    await expect(page.locator('[data-testid="loading"]')).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('[data-testid="loading"]')).toBeVisible({ timeout: 5000 });
   });
 
   test('should display weather data after loading', async ({ page }) => {

@@ -220,6 +220,7 @@ test.describe('Weather App - Advanced E2E Tests', () => {
     // Tab to search input
     await expect(page.locator('[data-testid="search-input"]')).toBeVisible();
     await page.keyboard.press('Tab');
+    await page.waitForTimeout(200);
     await expect(page.locator('[data-testid="search-input"]')).toBeFocused();
     
     // Wait for initial load to complete first
