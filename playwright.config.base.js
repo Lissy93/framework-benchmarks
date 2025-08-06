@@ -29,6 +29,13 @@ function createConfig(framework) {
         command: 'npm run dev:svelte',
         url: 'http://localhost:3000?mock=true',
       }
+    },
+    preact: {
+      baseURL: 'http://localhost:3000?mock=true',
+      webServer: {
+        command: 'npm run dev:preact',
+        url: 'http://localhost:3000?mock=true',
+      }
     }
   };
 

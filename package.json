@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Cross-framework weather app comparison project",
   "scripts": {
-    "test": "(npm run test:vanilla || echo 'Vanilla tests completed'); (npm run test:react || echo 'React tests completed'); (npm run test:angular || echo 'Angular tests completed'); (npm run test:svelte || echo 'Svelte tests completed'); echo 'All test suites completed'",
+    "test": "(npm run test:vanilla || echo 'Vanilla tests completed'); (npm run test:react || echo 'React tests completed'); (npm run test:angular || echo 'Angular tests completed'); (npm run test:svelte || echo 'Svelte tests completed'); (npm run test:preact || echo 'Preact tests completed'); echo 'All test suites completed'",
     "test:vanilla": "playwright test --config=playwright-vanilla.config.js",
     "test:react": "playwright test --config=playwright-react.config.js",
     "test:angular": "playwright test --config=playwright-angular.config.js",
     "test:svelte": "playwright test --config=playwright-svelte.config.js",
+    "test:preact": "playwright test --config=playwright-preact.config.js",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
     "test:ui": "playwright test --ui",
@@ -19,6 +20,7 @@
     "dev:react": "cd apps/react && npm run dev",
     "dev:angular": "cd apps/angular && npm run dev",
     "dev:svelte": "cd apps/svelte && npm run dev",
+    "dev:preact": "cd apps/preact && npm run dev",
     "install:playwright": "playwright install",
     "sync-assets": "node scripts/sync-assets.js",
     "generate-mocks": "node scripts/generate-mocks.js"

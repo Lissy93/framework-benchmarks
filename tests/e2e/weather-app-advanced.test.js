@@ -279,7 +279,7 @@ test.describe('Weather App - Advanced E2E Tests', () => {
   });
 
   test('should persist and restore app state', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/?mock=true');
     
     // Wait for initial load
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
@@ -308,7 +308,7 @@ test.describe('Weather App - Advanced E2E Tests', () => {
   });
 
   test('should handle special characters in city names', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/?mock=true');
     
     // Wait for initial load to complete
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
