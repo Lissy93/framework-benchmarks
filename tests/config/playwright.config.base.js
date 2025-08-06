@@ -52,7 +52,7 @@ function createConfig(framework) {
   }
 
   return defineConfig({
-    testDir: './tests',
+    testDir: '../',
     testIgnore: ['**/unit/**', '**/test-helpers.js'],
     fullyParallel: true,
     forbidOnly: !!process.env.CI,

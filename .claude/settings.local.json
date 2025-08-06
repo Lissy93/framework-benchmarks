@@ -11,7 +11,7 @@
       "Bash(timeout 60s npx playwright test:*)",
       "Bash(cp:*)",
       "Bash(npm run dev:*)",
-      "Bash(timeout 30s npm run test -- --config=playwright-svelte.config.js --reporter=list)",
+      "Bash(timeout 30s npm run test -- --config=tests/config/playwright-svelte.config.js --reporter=list)",
       "Bash(timeout 30s npm run test:svelte -- --grep=\"should display error state for invalid location\")",
       "Bash(timeout 60s npm run test:svelte -- --grep=\"should display error state for invalid location\" --reporter=list)",
       "Bash(timeout 30s npm run test:vanilla)",
@@ -35,7 +35,8 @@
       "Bash(timeout 60s npm run test:svelte -- --grep=\"should handle network interruption gracefully\" --reporter=list)",
       "Bash(npm run test:preact:*)",
       "Bash(npm run test:react:*)",
-      "Bash(npm run test:solid:*)"
+      "Bash(npm run test:solid:*)",
+      "Bash(timeout 60s npm run test:solid -- --grep=\"should display initial loading state\" --reporter=list)"
     ],
     "deny": []
   }
