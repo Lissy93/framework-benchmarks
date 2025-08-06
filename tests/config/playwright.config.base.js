@@ -57,6 +57,13 @@ function createConfig(framework) {
         command: 'npm run dev:vue',
         url: 'http://localhost:3000?mock=true',
       }
+    },
+    jquery: {
+      baseURL: 'http://localhost:3000?mock=true',
+      webServer: {
+        command: 'npm run dev:jquery',
+        url: 'http://localhost:3000?mock=true',
+      }
     }
   };
 

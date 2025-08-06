@@ -7,13 +7,22 @@
 </p>
 
 ### Intro
-Let's see how every framework weathers the storm ⛈️<br>
-I've built the same weather app in 10 different frontend web frameworks, along with automated scripts to benchmark each of their performance, quality and 
-This is a project building the same tiny weather app, in ten different frontend frameworks, to benchmark performance and developer trade-offs. 
+I've built the same weather app in 10 different frontend web frameworks.
+Along with automated scripts to benchmark each of their performance, quality and capabilities.
+To finally answer the age-old question: "Which is the _best_* frontend framework?"<br>
+So, without further ado, let's see how every framework weathers the storm! ⛈️
 
 Why?
 1. To objectively compare frontend frameworks in an automated way
 2. Because I have no life, and like building the same thing 10 times
+
+What does _best_ mean?
+- Smallest bundle size
+- Fastest load time, and best performance metrics
+- Lowest CPU & memory usage and resource consumption
+- Least verbose, complex and repetitive code
+- Shortest compile time and HMR latency
+
 
 Contents
 - [Summary]()
@@ -35,24 +44,28 @@ Contents
 ---
 
 ### Frameworks Covered
-- Svelte
-- React
-- Vue
-- Qwik
+- ✅ Svelte
+- ✅ React
+- ✅ Vue
+- ✅ Qwik
 - Lit
 - Alpine.js
-- Solid
+- ✅ Solid
 - Astro
 - Van.js
-- Angular
+- ✅ Angular
 - Marko
 - Million.js
 - Nue
+- jQuery
+- ✅ Vanilla JS
 
 
 ---
 
 ## App Requirements
+
+Every app is built with identical requirements (as validated by the shared test suite), and uses the same assets, styles, and data. The only difference is the framework used to build each.
 
 ### Technical Requirements
 Why a weather app? Because it enables us to use all the critical features of any frontend framework, including:
