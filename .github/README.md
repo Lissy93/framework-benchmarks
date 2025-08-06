@@ -1,82 +1,246 @@
-# Weather Front - Framework Comparison
+<h1 align="center">⛈️ Weather Front</h1>
+<p align="center">
+	<i>The same weather app built in 10 different web frameworks</i><br>
+    For automated cross-framework performance benchmarking
+  <br>
+  <b>📊 <a href="https://frontend-framework-benchmarks.as93.net">Results</a></b>
+</p>
 
-A tiny weather app built in different frontend frameworks to measure and compare performance characteristics.
+### Intro
+Let's see how every framework weathers the storm ⛈️<br>
+I've built the same weather app in 10 different frontend web frameworks, along with automated scripts to benchmark each of their performance, quality and 
+This is a project building the same tiny weather app, in ten different frontend frameworks, to benchmark performance and developer trade-offs. 
 
-## Project Structure
+Why?
+1. To objectively compare frontend frameworks in an automated way
+2. Because I have no life, and like building the same thing 10 times
 
-```
-weather-front/
-├── scripts/          # Build and utility scripts
-├── assets/           # Shared assets across all apps
-│   ├── icons/       # Weather icons (SVG)
-│   ├── styles/      # Shared CSS variables and components
-│   └── mocks/       # Mock weather data for benchmarks
-├── tests/           # Shared test suite (Playwright)
-└── apps/            # Individual framework implementations
-    ├── react/
-    ├── svelte/
-    ├── angular/
-    └── vue/
-```
+Contents
+- [Summary]()
+- [Requirements Spec]()
+- [Usage and Commands]()
+- [Real-world Applications]()
+- [Attributions and License]()
 
-## Measurements
+---
 
-- Bundle size & output analysis
+### What we'll measure
+- Bundle size & output
 - Load metrics: FCP, LCP, CLS, TTI, interaction latency
-- Hydration/SSR cost, CPU & memory usage
-- Cold vs. warm cache behavior
+- Hydration/SSR cost, CPU & memory
+- Cold vs. warm cache behaviour
 - Memory usage: idle, post-flow, leak delta
 - Build time & dev server HMR latency
 
-## Features
+---
 
-- Current weather display with detailed metrics
-- 7-day weather forecast
-- City search with input validation
-- Location persistence in localStorage
-- Error handling for invalid locations
-- Responsive design
-- Accessibility compliance
+### Frameworks Covered
+- Svelte
+- React
+- Vue
+- Qwik
+- Lit
+- Alpine.js
+- Solid
+- Astro
+- Van.js
+- Angular
+- Marko
+- Million.js
+- Nue
 
-## Data Source
 
-Uses the [Open-Meteo API](https://open-meteo.com) for real weather data, with mock data for consistent benchmarking.
+---
 
-## Getting Started
+## App Requirements
 
-1. **Install dependencies** for a specific framework:
-   ```bash
-   cd apps/react
-   npm install
-   ```
+### Technical Requirements
+Why a weather app? Because it enables us to use all the critical features of any frontend framework, including:
+- Binding user input and validation
+- Fetching external data asynchronously
+- Basic state management of components
+- Handling fallback views (loading, errors)
+- Using browser features (location, storage, etc)
+- Logic blocks, for iterative content and conditionals
+- Lifecycle methods (mounting, updating, unmounting)
 
-2. **Run development server**:
-   ```bash
-   npm run dev
-   ```
+### Functional Requirements
+For our app to be somewhat complete and useful, it must do the following:
+- On initial load, the user should see weather for their current GPS location
+- The user should be able to search for a city, and view weather for that place
+- The user's city should be stored in localstorage, and loaded for next time
+- The app should show a detailed view of the current weather
+- And a summary forecast for the next 7 days
+- Clicking any day will show detailed weather for that day
 
-3. **Run tests**:
-   ```bash
-   npm test
-   ```
+### Quality Requirements
+There's certain standards every app should follow, and we want to use best practices, so:
+- Theming: The app should support both light and dark mode, based on the user's preferences
+- Internationalization: The copy should be extracted out of the code, so that it is translatable
+- Accessibility: The app should meet AA standard of accessibility
+- Mobile: The app should be fully responsive and optimized for mobile
+- Performance: The app should be efficiently coded as best as the framework allows
+- Testing: The app should meet 90% test coverage
+- Error Handling: Errors should be handled, correctly surfaced, and tracible
+- Quality: The code should be linted for consistent formatting
+- Security: Inputs must be validated, data via HTTPS, and no known vulnerabilities
+- SEO: Basic meta and og tags, SSR where possible, 
+- CI: Automated tests, lints and validation should ensure all changes are compliant
 
-4. **Build for production**:
-   ```bash
-   npm run build
-   ```
+### UI Requirements
+The interface is simple, but must be identical arcorss all apps, as seen in the screenshot below
 
-## Scripts
+<img src="https://i.ibb.co/ymGkLnMY/weather-front.png" width="400" />
 
-- `node scripts/generate-mocks.js` - Generate mock weather data
-- `node scripts/sync-assets.js` - Sync shared assets to all apps
+---
 
-## Technical Requirements
+## Usage
 
-Each app implementation includes:
-- Input binding and validation
-- Async data fetching
-- Component state management
-- Loading and error states
-- Browser APIs (localStorage)
-- Conditional rendering and loops
-- Component lifecycle management
+### Project Structure
+
+```
+weather-front
+├── scripts					# Scripts for managing the app (syncing assets, generating mocks, etc)
+├── assets					# These are shared across all apps for consistency
+│   ├── icons				# SVG icons, used by all apps
+│   ├── styles			# CSS classes and variables, used by all apps
+│   └── mocks				# Mocked data, used by apps when running benchmarks
+├── tests						# Test suit
+└── apps						# Directory for each app as a standalone project
+    ├── react/
+    ├── svelte/
+    ├── angular/
+    └── ...
+```
+
+### Shared Assets
+To keep things uniform, all apps will share certain assets
+
+- Tests
+	- The same test suit is used for all apps. Therefore, each app must conform to an identical spec
+- Data
+	- Each app supports using real weather data, from [open-meteo api](https://open-meteo.com)
+	- However to keep tests fair, we use mocked data when running benchmarks
+- Assets
+	- All apps use the same set of styles, with theming done via CSS variables
+	- Weather icons and other assets are identical and shared between apps
+	- None of the apps use any additional dependencies, libraries or third-party resources
+
+### Commands
+
+The unit and automated E2E tests are at the core of this project, as this is what determines that each app is functional, and that all apps are working in the same way.
+
+#### Setup
+- `npm run sync-assets` - Copies shared assets into each project
+
+#### Tests
+- `npm test` - Run all tests
+- `npm run test:[app-name]` - Run tests for a specific app
+
+#### Benchmarking
+
+#### Developing
+- `npm run dev:[app-name]`
+- Or, you can: `cd ./apps/[app-name]` then `npm i` and `npm run dev`
+
+#### Deploying
+- `npm run build:[app-name]`
+- Then upload `./apps/[app-name]/dist/` to any web server, CDN or static hosting provider
+
+---
+
+## Side note
+Different frameworks shine in different ways, and therefore have very different usecases.<br>
+So, in order to let each one shine, I have I have built real-world apps in each framework.
+
+
+| Project | Framework | GitHub | Website |
+|---|---|---|---|
+| [<img src="https://raw.githubusercontent.com/Lissy93/web-check/master/public/android-chrome-192x192.png" width="18" /> Web Check](https://github.com/Lissy93/web-check) - The ultimate all-in-one OSINT tool for analyzing any website | [![React](https://img.shields.io/static/v1?label=&message=React&color=61DAFB&logo=react&logoColor=FFFFFF)](https://react.dev/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/web-check)](https://github.com/Lissy93/web-check) | [🌐 web-check.xyz](https://web-check.xyz) |
+| [<img src="https://i.ibb.co/yhbt6CY/dashy.png" width="18" /> Dashy](https://github.com/Lissy93/dashy) - A highly configurable self-hostable server dashboard | [![Vue.js](https://img.shields.io/static/v1?label=&message=Vue.js&color=4FC08D&logo=vuedotjs&logoColor=FFFFFF)](https://vuejs.org/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/dashy)](https://github.com/Lissy93/dashy) | [🌐 dashy.to](https://dashy.to) |
+| [<img src="https://storage.googleapis.com/as93-screenshots/project-logos/digital-defense.png" width="18" /> Digital Defense](https://github.com/Lissy93/personal-security-checklist) - Interactive personal security checklist | [![Qwik](https://img.shields.io/static/v1?label=&message=Qwik&color=ac7ef4&logo=qwik&logoColor=FFFFFF)](https://qwik.builder.io/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/personal-security-checklist)](https://github.com/Lissy93/personal-security-checklist) | [🌐 digital-defense.io](https://digital-defense.io) |
+| [<img src="https://storage.googleapis.com/as93-screenshots/project-logos/portainer-templates.png" width="18" /> Portainer Templates](https://github.com/Lissy93/portainer-templates) - Automated templates for deploying Dockers | [![Svelte](https://img.shields.io/static/v1?label=&message=Svelte&color=ff3e00&logo=svelte&logoColor=FFFFFF)](https://svelte.dev/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/portainer-templates)](https://github.com/Lissy93/portainer-templates) | [🌐 portainer-templates](https://portainer-templates.as93.net/) |
+| [<img src="https://storage.googleapis.com/as93-screenshots/project-logos/domain-locker.png" width="18" /> Domain Locker](https://github.com/Lissy93/domain-locker) - Domain name portfolio for monitoring your domains | [![Angular](https://img.shields.io/static/v1?label=&message=Angular&color=DD0031&logo=angular&logoColor=FFFFFF)](https://angular.io/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/domain-locker)](https://github.com/Lissy93/domain-locker) | [🌐 domain-locker.com](https://domain-locker.com) |
+| [<img src="https://storage.googleapis.com/as93-screenshots/project-logos/email-comparison.png" width="18" /> Email Comparison](https://github.com/Lissy93/email-comparison) - Tool to compare features of different email providers | [![Lit](https://img.shields.io/static/v1?label=&message=Lit&color=00ffff&logo=lit&logoColor=FFFFFF)](https://lit.dev/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/email-comparison)](https://github.com/Lissy93/email-comparison) | [🌐 email-comparison](https://email-comparison.as93.net/) |
+| [<img src="https://storage.googleapis.com/as93-screenshots/project-logos/who-dat.png" width="18" /> Who Dat](https://github.com/Lissy93/who-dat) - A WHOIS/RDAP lookup app for fetching domain registration info  | [![Alpine.js](https://img.shields.io/static/v1?label=&message=Alpine.js&color=8BC0D0&logo=alpinedotjs&logoColor=FFFFFF)](https://alpinejs.dev/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/who-dat)](https://github.com/Lissy93/who-dat) | [🌐 who-dat.as93.net](https://who-dat.as93.net) |
+| [<img src="https://storage.googleapis.com/as93-screenshots/project-logos/cso.png" width="18" /> Chief Snack Officer](https://github.com/Lissy93/cso) - Social snack management app for offices | [![Solid](https://img.shields.io/static/v1?label=&message=Solid&color=2C4F7C&logo=solid&logoColor=FFFFFF)](https://www.solidjs.com/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/cso)](https://github.com/Lissy93/cso) | [🌐 N/A](https://lissy93.github.io/cso) |
+| [<img src="https://storage.googleapis.com/as93-screenshots/project-logos/awesome-privacy.png" width="18" /> Awesome Privacy](https://github.com/Lissy93/awesome-privacy) - Curated list of privacy-respecing apps and services | [![Astro](https://img.shields.io/static/v1?label=&message=Astro&color=E83CB9&logo=astro&logoColor=FFFFFF)](https://astro.build/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/awesome-privacy)](https://github.com/Lissy93/awesome-privacy) | [🌐 awesome-privacy.xyz](https://awesome-privacy.xyz/) |
+| [<img src="https://storage.googleapis.com/as93-screenshots/project-screenshots/raid-caclularor.png" width="18" /> RAID Calculator](https://github.com/Lissy93/raid-calculator) - Calculate RAID array capacity, fault tolerance, and more | [![Van.js](https://img.shields.io/static/v1?label=&message=Van.js&color=F44336&logo=vitess&logoColor=FFFFFF)](https://vanjs.org/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/raid-calculator)](https://github.com/Lissy93/raid-calculator) | [🌐 raid-calculator](https://raid-calculator.as93.net/) |
+| [<img src="https://github.com/Lissy93/permissionator/blob/main/public/logo.png?raw=true" width="18" /> Permissionator](https://github.com/Lissy93/permissionator) - Linux chmod calculator for generating file permissions | [![Marko](https://img.shields.io/static/v1?label=&message=Marko&color=2596BE&logo=marko&logoColor=FFFFFF)](https://markojs.com/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/permissionator)](https://github.com/Lissy93/permissionator) | [🌐 permissionator](https://permissionator.as93.net) |
+
+
+---
+
+## Attributions
+
+### Sponsors
+
+![Sponsors](https://readme-contribs.as93.net/sponsors/lissy93?avatarSize=80&perRow=10)
+
+### Contributors
+
+![Contributors](https://readme-contribs.as93.net/contributors/lissy93/weather-front?avatarSize=80&perRow=10)
+
+
+### Stargzers
+
+![Stargazers](https://readme-contribs.as93.net/stargazers/lissy93/weather-front?perRow=16&limit=64)
+
+---
+
+## License
+
+
+> _**[Lissy93/Weather-Front](https://github.com/Lissy93/weather-front)** is licensed under [MIT](https://github.com/Lissy93/weather-front/blob/HEAD/LICENSE) © [Alicia Sykes](https://aliciasykes.com) 2025._<br>
+> <sup align="right">For information, see <a href="https://tldrlegal.com/license/mit-license">TLDR Legal > MIT</a></sup>
+
+<details>
+<summary>Expand License</summary>
+
+```
+The MIT License (MIT)
+Copyright (c) Alicia Sykes <alicia@omg.com> 
+
+Permission is hereby granted, free of charge, to any person obtaining a copy 
+of this software and associated documentation files (the "Software"), to deal 
+in the Software without restriction, including without limitation the rights 
+to use, copy, modify, merge, publish, distribute, sub-license, and/or sell 
+copies of the Software, and to permit persons to whom the Software is furnished 
+to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included install 
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANT ABILITY, FITNESS FOR A
+PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+```
+
+</details>
+
+<!-- License + Copyright -->
+<p  align="center">
+  <i>© <a href="https://aliciasykes.com">Alicia Sykes</a> 2025</i><br>
+  <i>Licensed under <a href="https://gist.github.com/Lissy93/143d2ee01ccc5c052a17">MIT</a></i><br>
+  <a href="https://github.com/lissy93"><img src="https://i.ibb.co/4KtpYxb/octocat-clean-mini.png" /></a><br>
+  <sup>Thanks for visiting :)</sup>
+</p>
+
+<!-- Dinosaurs are Awesome -->
+<!-- 
+                        . - ~ ~ ~ - .
+      ..     _      .-~               ~-.
+     //|     \ `..~                      `.
+    || |      }  }              /       \  \
+(\   \\ \~^..'                 |         }  \
+ \`.-~  o      /       }       |        /    \
+ (__          |       /        |       /      `.
+  `- - ~ ~ -._|      /_ - ~ ~ ^|      /- _      `.
+              |     /          |     /     ~-.     ~- _
+              |_____|          |_____|         ~ - . _ _~_-_
+-->
+
+
