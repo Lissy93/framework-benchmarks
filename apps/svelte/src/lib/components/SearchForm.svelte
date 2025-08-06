@@ -3,6 +3,7 @@
   import { browser } from '$app/environment';
 
   export let isLoading = false;
+  export let currentLocation = null;
 
   const dispatch = createEventDispatcher();
   let inputElement;
@@ -14,11 +15,18 @@
       const savedLocation = getSavedLocation();
       if (savedLocation) {
         inputValue = savedLocation;
-      } else {
-        inputValue = 'London';
+        hasInitialized = true;
       }
+      // Don't set a default value if no saved location
     }
   });
+
+  let hasInitialized = false;
+
+  // Only update input value from currentLocation on initial load if no saved location exists
+  $: if (currentLocation && !inputValue && !hasInitialized) {
+    inputValue = currentLocation;
+  }
 
   function handleSubmit() {
     const city = inputValue?.trim();
@@ -29,6 +37,7 @@
     
     dispatch('search', city);
   }
+
 
   function getSavedLocation() {
     if (!browser) return null;

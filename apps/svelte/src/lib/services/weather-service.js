@@ -78,6 +78,12 @@ export class WeatherService {
         longitude: -74.0060,
         name: 'New York',
         country: 'United States'
+      },
+      'Zürich': {
+        latitude: 47.3769,
+        longitude: 8.5417,
+        name: 'Zürich',
+        country: 'Switzerland'
       }
     };
 
@@ -86,8 +92,15 @@ export class WeatherService {
       throw new Error('Unable to find location. Please check the city name and try again.');
     }
 
-    // Return mock data for known cities, or default to London for unknown cities
-    return mockCities[cityName] || mockCities['London'];
+    // Return mock data for the searched city, not London as default
+    const cityData = mockCities[cityName];
+    if (cityData) {
+      return cityData;
+    }
+    
+    // For unknown cities, still return London but log a warning
+    console.warn(`Unknown city: ${cityName}, falling back to London`);
+    return mockCities['London'];
   }
 
   async geocodeLocation(cityName) {

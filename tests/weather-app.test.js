@@ -110,6 +110,9 @@ test.describe('Weather App - Core Functionality', () => {
     
     // Should load new weather data
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
+    
+    // Should show Paris as the location
+    await expect(page.locator('[data-testid="current-location"]')).toContainText('Paris');
   });
 
   test('should persist location in localStorage', async ({ page }) => {

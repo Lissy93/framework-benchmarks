@@ -9,6 +9,9 @@
     const city = event.detail;
     await weatherStore.loadWeather(city);
   }
+
+  // Update search input when weather data changes
+  $: currentLocationName = $weatherData?.locationName;
 </script>
 
 <svelte:head>
@@ -25,6 +28,7 @@
   <div class="container">
     <SearchForm 
       isLoading={$isLoading}
+      currentLocation={currentLocationName}
       on:search={handleSearch}
     />
 

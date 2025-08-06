@@ -7,13 +7,18 @@ const weatherService = new WeatherService();
 
 // Create writable stores
 export const weatherData = writable(null);
-export const isLoading = writable(false);
+export const isLoading = writable(true);
 export const error = writable(null);
+
+// Track the latest request to avoid race conditions
+let latestRequestId = 0;
 
 // Store actions
 export const weatherStore = {
   // Load weather by city
   async loadWeather(city) {
+    const requestId = ++latestRequestId;
+    
     try {
       isLoading.set(true);
       error.set(null);
@@ -24,15 +29,25 @@ export const weatherStore = {
       }
       
       const data = await weatherService.getWeatherByCity(city);
-      weatherData.set(data);
       
-      // Save location to localStorage
-      saveLocation(city);
+      // Only update if this is still the latest request
+      if (requestId === latestRequestId) {
+        weatherData.set(data);
+        
+        // Save location to localStorage
+        saveLocation(city);
+      }
     } catch (err) {
-      error.set(err.message);
-      console.error('Weather store error:', err);
+      // Only set error if this is still the latest request
+      if (requestId === latestRequestId) {
+        error.set(err.message);
+        console.error('Weather store error:', err);
+      }
     } finally {
-      isLoading.set(false);
+      // Only update loading state if this is still the latest request
+      if (requestId === latestRequestId) {
+        isLoading.set(false);
+      }
     }
   },
 
@@ -56,6 +71,9 @@ export const weatherStore = {
     if (!browser) return;
     
     try {
+      // Clear any existing error (loading state is already true by default)
+      error.set(null);
+      
       const savedLocation = getSavedLocation();
       if (savedLocation) {
         await this.loadWeather(savedLocation);
@@ -79,6 +97,7 @@ export const weatherStore = {
     } catch (err) {
       console.error('Failed to initialize weather store:', err);
       error.set('Failed to load weather data');
+      isLoading.set(false);
     }
   },
 

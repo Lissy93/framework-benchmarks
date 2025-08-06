@@ -31,7 +31,7 @@
     <h2 class="section-title">7-Day Forecast</h2>
     <div class="forecast">
       <div class="forecast__list" data-testid="forecast-list">
-        {#each weatherData.daily.time as date, index}
+        {#each weatherData.daily.time.slice(0, 7) as date, index}
           <ForecastItem
             daily={weatherData.daily}
             {index}
