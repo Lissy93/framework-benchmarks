@@ -27,7 +27,7 @@ class WeatherService {
         await new Promise(resolve => setTimeout(resolve, 200));
       }
       
-      const response = await fetch('/assets/mocks/weather-data.json');
+      const response = await fetch('/mocks/weather-data.json');
       if (!response.ok) {
         throw new Error('Failed to load mock data');
       }

@@ -25,7 +25,7 @@ export class WeatherService {
   async getMockData() {
     return new Promise((resolve, reject) => {
       $.ajax({
-        url: '/assets/mocks/weather-data.json',
+        url: '/mocks/weather-data.json',
         method: 'GET',
         dataType: 'json',
         success: async (data) => {

@@ -76,16 +76,16 @@ function copyDirectoryWithStats(source, target) {
  * Sync assets for a specific app
  */
 function syncAppAssets(appName, appPath) {
-  const appAssetsDir = path.join(appPath, 'public', 'assets');
+  const appPublicDir = path.join(appPath, 'public');
   
-  // Ensure assets directory exists
-  fs.mkdirSync(appAssetsDir, { recursive: true });
+  // Ensure public directory exists
+  fs.mkdirSync(appPublicDir, { recursive: true });
   
   const syncResults = [];
   const assetTypes = [
-    { name: 'icons', source: path.join(ASSETS_DIR, 'icons'), target: path.join(appAssetsDir, 'icons') },
-    { name: 'styles', source: path.join(ASSETS_DIR, 'styles'), target: path.join(appAssetsDir, 'styles') },
-    { name: 'mocks', source: path.join(ASSETS_DIR, 'mocks'), target: path.join(appAssetsDir, 'mocks') }
+    { name: 'icons', source: path.join(ASSETS_DIR, 'icons'), target: path.join(appPublicDir, 'icons') },
+    { name: 'styles', source: path.join(ASSETS_DIR, 'styles'), target: path.join(appPublicDir, 'styles') },
+    { name: 'mocks', source: path.join(ASSETS_DIR, 'mocks'), target: path.join(appPublicDir, 'mocks') }
   ];
   
   for (const assetType of assetTypes) {

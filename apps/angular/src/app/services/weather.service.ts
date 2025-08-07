@@ -31,7 +31,7 @@ export class WeatherService {
   }
 
   private getMockData(): Observable<WeatherData> {
-    return this.http.get<WeatherData>('/assets/mocks/weather-data.json').pipe(
+    return this.http.get<WeatherData>('/mocks/weather-data.json').pipe(
       delay(this.isTestEnvironment() ? 200 : 0), // Add delay in test environments
       catchError(error => {
         console.error('Error loading mock data:', error);
