@@ -35,7 +35,7 @@ function loadPackageJson() {
 }
 
 /**
- * Generate dev and test scripts for each framework
+ * Generate dev, test, and lint scripts for each framework
  */
 function generateFrameworkScripts(frameworks) {
   const scripts = {};
@@ -48,6 +48,14 @@ function generateFrameworkScripts(frameworks) {
     scripts[`dev:${framework.id}`] = framework.dir === 'vanilla' 
       ? `cd apps/${framework.dir} && ${framework.devCommand}`
       : `cd apps/${framework.dir} && npm run dev`;
+    
+    // Lint script
+    if (framework.lintFiles && framework.lintFiles.length > 0) {
+      const fileExtensions = framework.lintFiles.length === 1 
+        ? framework.lintFiles[0]
+        : `{${framework.lintFiles.join(',')}}`;
+      scripts[`lint:${framework.id}`] = `eslint 'apps/${framework.dir}/**/*.${fileExtensions}'`;
+    }
   });
   
   return scripts;
@@ -62,6 +70,30 @@ function generateMainTestScript(frameworks) {
   ).join(' && ');
   
   return testCommands;
+}
+
+/**
+ * Generate main lint script that runs all frameworks
+ */
+function generateMainLintScript(frameworks) {
+  const lintCommands = frameworks
+    .filter(framework => framework.lintFiles && framework.lintFiles.length > 0)
+    .map(framework => `npm run lint:${framework.id}`)
+    .join(' && ');
+  
+  return lintCommands;
+}
+
+/**
+ * Generate lint:fix script that runs all frameworks with --fix flag
+ */
+function generateLintFixScript(frameworks) {
+  const lintFixCommands = frameworks
+    .filter(framework => framework.lintFiles && framework.lintFiles.length > 0)
+    .map(framework => `npm run lint:${framework.id} -- --fix`)
+    .join(' && ');
+  
+  return lintFixCommands;
 }
 
 /**
@@ -80,8 +112,14 @@ async function generateScripts() {
     const frameworkScripts = generateFrameworkScripts(frameworks);
     Object.assign(packageJson.scripts, frameworkScripts);
     
-    // Generate main test script
-    packageJson.scripts.test = generateMainTestScript(frameworks);
+    // Generate main test script (using verification runner)
+    packageJson.scripts.test = 'node scripts/verify/test.js';
+    
+    // Generate main lint script (using verification runner)
+    packageJson.scripts.lint = 'node scripts/verify/lint.js';
+    
+    // Generate lint:fix script
+    packageJson.scripts['lint:fix'] = generateLintFixScript(frameworks);
     
     // Write updated package.json
     fs.writeFileSync(PACKAGE_JSON, JSON.stringify(packageJson, null, 2) + '\n');
@@ -92,15 +130,20 @@ async function generateScripts() {
     console.log('\n✅ Script Generation Complete');
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
     console.log(`📋 Frameworks processed: ${frameworks.length}`);
-    console.log(`⚡ Scripts generated: ${Object.keys(frameworkScripts).length + 1}`);
+    console.log(`⚡ Scripts generated: ${Object.keys(frameworkScripts).length + 3}`);
     console.log(`⏱️  Completed in: ${duration}ms`);
     console.log('\n📦 Generated scripts:');
     
     frameworks.forEach(framework => {
       console.log(`   • dev:${framework.id.padEnd(8)} - ${framework.name} development server`);
       console.log(`   • test:${framework.id.padEnd(7)} - ${framework.name} test suite`);
+      if (framework.lintFiles && framework.lintFiles.length > 0) {
+        console.log(`   • lint:${framework.id.padEnd(7)} - ${framework.name} linting`);
+      }
     });
-    console.log(`   • test${' '.repeat(10)} - Run all framework tests\n`);
+    console.log(`   • test${' '.repeat(10)} - Run all framework tests`);
+    console.log(`   • lint${' '.repeat(10)} - Run all framework linting`);
+    console.log(`   • lint:fix${' '.repeat(6)} - Run all framework linting with auto-fix\n`);
     
   } catch (error) {
     console.error('❌ Error generating scripts:', error.message);
@@ -170,5 +213,7 @@ module.exports = {
   generateScripts,
   loadFrameworks,
   generateFrameworkScripts,
-  generateMainTestScript
+  generateMainTestScript,
+  generateMainLintScript,
+  generateLintFixScript
 };

@@ -47,8 +47,8 @@ export const SearchForm = component$<SearchFormProps>(({ onSearch, isLoading, cu
             disabled={isLoading}
             tabIndex={1}
           />
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             class="search-button"
             data-testid="search-button"
             disabled={isLoading}

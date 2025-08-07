@@ -29,7 +29,7 @@ export default component$(() => {
         <footer class="footer">
           <div class="container">
             <p class="footer__text">
-              Built with Qwik • MIT License • 
+              Built with Qwik • MIT License •
               <a href="https://github.com/Lissy93" class="footer__link" target="_blank" rel="noopener">Alicia Sykes</a>
             </p>
           </div>

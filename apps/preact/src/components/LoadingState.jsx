@@ -1,8 +1,8 @@
 const LoadingState = ({ isVisible = false }) => {
   return (
-    <div 
-      class="loading" 
-      data-testid="loading" 
+    <div
+      class="loading"
+      data-testid="loading"
       hidden={!isVisible}
     >
       <div class="loading__spinner"></div>

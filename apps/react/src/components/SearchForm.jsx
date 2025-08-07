@@ -16,11 +16,11 @@ const SearchForm = ({ onSearch, isLoading }) => {
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
     const city = inputRef.current?.value?.trim();
-    
+
     if (!city) {
       return;
     }
-    
+
     onSearch(city);
   }, [onSearch]);
 
@@ -29,18 +29,18 @@ const SearchForm = ({ onSearch, isLoading }) => {
       <form className="search-form" data-testid="search-form" onSubmit={handleSubmit}>
         <div className="search-form__group">
           <label htmlFor="location-input" className="sr-only">Enter city name</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
             id="location-input"
-            className="search-input" 
+            className="search-input"
             placeholder="Enter city name..."
             data-testid="search-input"
             autoComplete="off"
             ref={inputRef}
           />
-          <button 
-            type="submit" 
-            className="search-button" 
+          <button
+            type="submit"
+            className="search-button"
             data-testid="search-button"
             disabled={isLoading}
           >

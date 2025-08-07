@@ -8,24 +8,24 @@ const useWeatherData = () => {
   const [weatherService] = useState(() => new WeatherService());
   const latestRequestIdRef = useRef(0);
 
-  const loadWeather = useCallback(async (city) => {
+  const loadWeather = useCallback(async(city) => {
     const requestId = ++latestRequestIdRef.current;
-    
+
     try {
       setIsLoading(true);
       setError(null);
-      
+
       // Add small delay in test environments to make loading state visible
       if (isTestEnvironment()) {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
-      
+
       const data = await weatherService.getWeatherByCity(city);
-      
+
       // Only update if this is still the latest request
       if (requestId === latestRequestIdRef.current) {
         setWeatherData(data);
-        
+
         // Save location to localStorage
         try {
           localStorage.setItem('weather-app-location', city);
@@ -47,25 +47,26 @@ const useWeatherData = () => {
     }
   }, [weatherService]);
 
-  const getCurrentLocationWeather = useCallback(async () => {
+  const getCurrentLocationWeather = useCallback(async() => {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const data = await weatherService.getCurrentLocationWeather();
       setWeatherData(data);
     } catch (err) {
-      throw err;
+      setError(err.message);
+      console.error('Current location error:', err);
     } finally {
       setIsLoading(false);
     }
   }, [weatherService]);
 
-  const initialize = useCallback(async () => {
+  const initialize = useCallback(async() => {
     try {
       // Clear any existing error (loading state is already true by default)
       setError(null);
-            
+
       const savedLocation = getSavedLocation();
       if (savedLocation) {
         await loadWeather(savedLocation);
@@ -124,7 +125,7 @@ function getSavedLocation() {
 }
 
 function isTestEnvironment() {
-  return navigator.userAgent.includes('Playwright') || 
+  return navigator.userAgent.includes('Playwright') ||
          navigator.userAgent.includes('HeadlessChrome');
 }
 

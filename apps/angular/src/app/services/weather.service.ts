@@ -18,14 +18,14 @@ export class WeatherService {
 
   private shouldUseMockData(): boolean {
     // Check if we're in a testing environment (Playwright sets specific user agents)
-    const isTestEnvironment = navigator.userAgent.includes('Playwright') || 
+    const isTestEnvironment = navigator.userAgent.includes('Playwright') ||
                               navigator.userAgent.includes('HeadlessChrome');
-    
+
     // Don't use mock data if we're explicitly testing API errors
     if (window.location.search.includes('mock=false')) {
       return false;
     }
-    
+
     // Use mock data if explicitly requested or if we're in a test environment
     return window.location.search.includes('mock=true') || isTestEnvironment;
   }
@@ -41,7 +41,7 @@ export class WeatherService {
   }
 
   private isTestEnvironment(): boolean {
-    return navigator.userAgent.includes('Playwright') || 
+    return navigator.userAgent.includes('Playwright') ||
            navigator.userAgent.includes('HeadlessChrome');
   }
 
@@ -95,7 +95,7 @@ export class WeatherService {
     }
 
     const url = `${this.geocodingUrl}/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`;
-    
+
     return this.http.get<{ results: GeocodingResult[] }>(url).pipe(
       map(response => {
         if (!response.results || response.results.length === 0) {
@@ -124,7 +124,7 @@ export class WeatherService {
     });
 
     const url = `${this.baseUrl}/forecast?${params}`;
-    
+
     return this.http.get<WeatherData>(url).pipe(
       catchError(error => {
         console.error('Weather API error:', error);
@@ -135,7 +135,7 @@ export class WeatherService {
 
   getWeatherByCity(cityName: string): Observable<WeatherData> {
     return this.geocodeLocation(cityName).pipe(
-      switchMap(location => 
+      switchMap(location =>
         this.getWeatherData(location.latitude, location.longitude).pipe(
           map(weather => ({
             ...weather,

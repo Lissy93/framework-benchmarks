@@ -6,9 +6,9 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div 
-      class="loading" 
-      data-testid="loading" 
+    <div
+      class="loading"
+      data-testid="loading"
       [hidden]="!isVisible"
     >
       <div class="loading__spinner"></div>

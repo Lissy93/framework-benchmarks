@@ -9,9 +9,9 @@ import { ForecastComponent } from './forecast.component';
   standalone: true,
   imports: [CommonModule, CurrentWeatherComponent, ForecastComponent],
   template: `
-    <div 
-      class="weather-content" 
-      data-testid="weather-content" 
+    <div
+      class="weather-content"
+      data-testid="weather-content"
       [hidden]="!isVisible"
     >
       <div class="weather-layout">

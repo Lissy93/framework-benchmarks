@@ -9,7 +9,7 @@ function Forecast(props) {
       setActiveForecastIndex(null);
     } else {
       setActiveForecastIndex(index);
-      
+
       // Smooth scroll to the expanded item
       setTimeout(() => {
         const activeElement = document.querySelector('.forecast-item.active');

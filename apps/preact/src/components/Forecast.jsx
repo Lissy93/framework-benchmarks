@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState } from 'preact/hooks';
 import ForecastItem from './ForecastItem';
 
 const Forecast = ({ weatherData = null }) => {
@@ -9,7 +9,6 @@ const Forecast = ({ weatherData = null }) => {
       setActiveForecastIndex(null);
     } else {
       setActiveForecastIndex(index);
-      
       // Smooth scroll to the expanded item
       setTimeout(() => {
         const activeElement = document.querySelector('.forecast-item.active');
@@ -20,7 +19,9 @@ const Forecast = ({ weatherData = null }) => {
     }
   };
 
-  if (!weatherData) return null;
+  if (!weatherData) {
+    return null;
+  }
 
   return (
     <section class="forecast-section">

@@ -42,7 +42,7 @@ const ForecastItem = ({ daily, index, isActive = false, onToggle }) => {
           </span>
         </div>
       </div>
-      
+
       {isActive && (
         <div class="forecast-item__details">
           <div class="forecast-detail-item">

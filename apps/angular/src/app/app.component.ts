@@ -30,20 +30,20 @@ import { WeatherContentComponent } from './components/weather-content.component'
 
     <main class="main">
       <div class="container">
-        <app-search-form 
+        <app-search-form
           [isLoading]="state.isLoading"
           (search)="onSearch($event)"
         ></app-search-form>
 
         <div class="weather-container" data-testid="weather-container">
           <app-loading-state [isVisible]="state.isLoading"></app-loading-state>
-          
-          <app-error-state 
-            [isVisible]="!!state.error && !state.isLoading" 
+
+          <app-error-state
+            [isVisible]="!!state.error && !state.isLoading"
             [message]="state.error"
           ></app-error-state>
-          
-          <app-weather-content 
+
+          <app-weather-content
             [isVisible]="!!state.weatherData && !state.isLoading && !state.error"
             [weatherData]="state.weatherData"
           ></app-weather-content>
@@ -54,7 +54,7 @@ import { WeatherContentComponent } from './components/weather-content.component'
     <footer class="footer">
       <div class="container">
         <p class="footer__text">
-          Built with Angular • MIT License • 
+          Built with Angular • MIT License •
           <a href="https://github.com/Lissy93" class="footer__link" target="_blank" rel="noopener">
             Alicia Sykes
           </a>

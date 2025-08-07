@@ -11,20 +11,20 @@ export const App = component$(() => {
   const error = useSignal<string | null>(null);
   const searchValue = useSignal('London');
 
-  const searchWeather = $(async (city: string) => {
+  const searchWeather = $(async(city: string) => {
     isLoading.value = true;
     error.value = null;
-    
+
     try {
       const data = await getWeatherByCity(city);
       weatherData.value = data;
       searchValue.value = city;
-      
+
       // Save to localStorage
       if (typeof localStorage !== 'undefined') {
         try {
           localStorage.setItem('weather-app-location', city);
-        } catch (e) {
+        } catch {
           // Ignore localStorage errors
         }
       }
@@ -37,9 +37,9 @@ export const App = component$(() => {
   });
 
   // Load initial weather data
-  useVisibleTask$(async () => {
+  useVisibleTask$(async() => {
     let initialCity = 'London';
-    
+
     // Try to get saved location from localStorage
     if (typeof localStorage !== 'undefined') {
       try {
@@ -47,11 +47,11 @@ export const App = component$(() => {
         if (savedLocation) {
           initialCity = savedLocation;
         }
-      } catch (e) {
+      } catch {
         // Ignore localStorage errors
       }
     }
-    
+
     // Load initial data without setting loading state
     isLoading.value = true;
     error.value = null;
@@ -59,12 +59,12 @@ export const App = component$(() => {
       const data = await getWeatherByCity(initialCity);
       weatherData.value = data;
       searchValue.value = initialCity;
-      
+
       // Save to localStorage
       if (typeof localStorage !== 'undefined') {
         try {
           localStorage.setItem('weather-app-location', initialCity);
-        } catch (e) {
+        } catch {
           // Ignore localStorage errors
         }
       }
@@ -77,19 +77,19 @@ export const App = component$(() => {
 
   return (
     <>
-      <SearchForm 
-        onSearch={searchWeather} 
+      <SearchForm
+        onSearch={searchWeather}
         isLoading={isLoading.value}
         currentValue={searchValue.value}
       />
-      
+
       <div class="weather-container" data-testid="weather-container">
         {isLoading.value && <LoadingState />}
-        
+
         {error.value && !isLoading.value && (
           <ErrorState message={error.value} />
         )}
-        
+
         {weatherData.value && !isLoading.value && !error.value && (
           <WeatherContent weatherData={weatherData.value} />
         )}

@@ -1,4 +1,4 @@
-import { component$, useSignal, $ } from '@builder.io/qwik';
+import { component$, $ } from '@builder.io/qwik';
 import type { WeatherData } from '../services/WeatherService';
 import WeatherUtils from '../utils/WeatherUtils';
 
@@ -37,7 +37,7 @@ export const ForecastItem = component$<ForecastItemProps>(({ daily, index, isAct
   const precipitationProb = daily.precipitation_probability_max[index];
 
   return (
-    <div 
+    <div
       class={`forecast-item ${isActive ? 'active' : ''}`}
       data-testid="forecast-item"
       tabIndex={0}

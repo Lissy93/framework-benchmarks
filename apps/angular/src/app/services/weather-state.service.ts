@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, EMPTY, of } from 'rxjs';
+import { BehaviorSubject, EMPTY, of } from 'rxjs';
 import { catchError, finalize, delay, switchMap } from 'rxjs/operators';
 import { WeatherService } from './weather.service';
-import { AppState, WeatherData } from '../types/weather.types';
+import { AppState } from '../types/weather.types';
 
 @Injectable({
   providedIn: 'root'
@@ -27,12 +27,12 @@ export class WeatherStateService {
 
   loadWeather(city: string): void {
     this.updateState({ isLoading: true, error: null });
-    
+
     // Add a small delay in test environments to make loading state visible
-    const weatherRequest = this.isTestEnvironment() 
+    const weatherRequest = this.isTestEnvironment()
       ? of(null).pipe(delay(200), switchMap(() => this.weatherService.getWeatherByCity(city)))
       : this.weatherService.getWeatherByCity(city);
-    
+
     weatherRequest.pipe(
       catchError(error => {
         this.updateState({ error: error.message, isLoading: false });
@@ -77,7 +77,7 @@ export class WeatherStateService {
     }
 
     this.updateState({ isLoading: true, error: null });
-    
+
     this.weatherService.getCurrentLocationWeather().pipe(
       catchError(error => {
         console.warn('Could not get current location:', error);
@@ -96,20 +96,20 @@ export class WeatherStateService {
 
   private shouldUseMockData(): boolean {
     // Check if we're in a testing environment (Playwright sets specific user agents)
-    const isTestEnvironment = navigator.userAgent.includes('Playwright') || 
+    const isTestEnvironment = navigator.userAgent.includes('Playwright') ||
                               navigator.userAgent.includes('HeadlessChrome');
-    
+
     // Don't use mock data if we're explicitly testing API errors
     if (window.location.search.includes('mock=false')) {
       return false;
     }
-    
+
     // Use mock data if explicitly requested or if we're in a test environment
     return window.location.search.includes('mock=true') || isTestEnvironment;
   }
 
   private isTestEnvironment(): boolean {
-    return navigator.userAgent.includes('Playwright') || 
+    return navigator.userAgent.includes('Playwright') ||
            navigator.userAgent.includes('HeadlessChrome');
   }
 }

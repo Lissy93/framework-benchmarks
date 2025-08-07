@@ -34,7 +34,7 @@ export const CurrentWeather = component$<CurrentWeatherProps>(({ weatherData }) 
               </div>
             </div>
           </div>
-          
+
           <div class="current-weather__details">
             <div class="weather-detail">
               <div class="weather-detail__label">Feels like</div>
@@ -42,35 +42,35 @@ export const CurrentWeather = component$<CurrentWeatherProps>(({ weatherData }) 
                 {WeatherUtils.formatTemperature(current.apparent_temperature)}
               </div>
             </div>
-            
+
             <div class="weather-detail">
               <div class="weather-detail__label">Humidity</div>
               <div class="weather-detail__value" data-testid="humidity">
                 {WeatherUtils.formatPercentage(current.relative_humidity_2m)}
               </div>
             </div>
-            
+
             <div class="weather-detail">
               <div class="weather-detail__label">Wind Speed</div>
               <div class="weather-detail__value" data-testid="wind-speed">
                 {WeatherUtils.formatWindSpeed(current.wind_speed_10m)}
               </div>
             </div>
-            
+
             <div class="weather-detail">
               <div class="weather-detail__label">Pressure</div>
               <div class="weather-detail__value" data-testid="pressure">
                 {WeatherUtils.formatPressure(current.pressure_msl)}
               </div>
             </div>
-            
+
             <div class="weather-detail">
               <div class="weather-detail__label">Cloud Cover</div>
               <div class="weather-detail__value" data-testid="cloud-cover">
                 {WeatherUtils.formatPercentage(current.cloud_cover)}
               </div>
             </div>
-            
+
             <div class="weather-detail">
               <div class="weather-detail__label">Wind Direction</div>
               <div class="weather-detail__value" data-testid="wind-direction">

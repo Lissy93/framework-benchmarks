@@ -30,7 +30,7 @@ export class WeatherUtils {
       96: 'Thunderstorm with slight hail',
       99: 'Thunderstorm with heavy hail'
     };
-    
+
     return weatherCodes[weatherCode] || 'Unknown';
   }
 
@@ -65,17 +65,17 @@ export class WeatherUtils {
       96: '⛈️',
       99: '⛈️'
     };
-    
+
     return iconMap[weatherCode] || '🌤️';
   }
 
   static getConditionClass(weatherCode) {
-    if ([0, 1].includes(weatherCode)) return 'clear';
-    if ([2, 3].includes(weatherCode)) return 'cloudy';
-    if ([45, 48].includes(weatherCode)) return 'foggy';
-    if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(weatherCode)) return 'rainy';
-    if ([71, 73, 75, 77, 85, 86].includes(weatherCode)) return 'snowy';
-    if ([95, 96, 99].includes(weatherCode)) return 'stormy';
+    if ([0, 1].includes(weatherCode)) {return 'clear';}
+    if ([2, 3].includes(weatherCode)) {return 'cloudy';}
+    if ([45, 48].includes(weatherCode)) {return 'foggy';}
+    if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(weatherCode)) {return 'rainy';}
+    if ([71, 73, 75, 77, 85, 86].includes(weatherCode)) {return 'snowy';}
+    if ([95, 96, 99].includes(weatherCode)) {return 'stormy';}
     return 'clear';
   }
 
@@ -103,19 +103,19 @@ export class WeatherUtils {
 
   static formatDate(dateString) {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'short', 
-      month: 'short', 
-      day: 'numeric' 
+    return date.toLocaleDateString('en-US', {
+      weekday: 'short',
+      month: 'short',
+      day: 'numeric'
     });
   }
 
   static formatTime(timeString) {
     const date = new Date(timeString);
-    return date.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: false 
+      hour12: false
     });
   }
 }

@@ -11,7 +11,7 @@ function App() {
     weatherStore.initialize();
   });
 
-  const handleSearch = async (city) => {
+  const handleSearch = async(city) => {
     await weatherStore.loadWeather(city);
   };
 
@@ -25,7 +25,7 @@ function App() {
 
       <main class="main">
         <div class="container">
-          <SearchForm 
+          <SearchForm
             isLoading={weatherStore.isLoadingSignal()}
             currentLocation={weatherStore.weatherDataSignal()?.locationName}
             onSearch={handleSearch}
@@ -33,13 +33,13 @@ function App() {
 
           <div class="weather-container" data-testid="weather-container">
             <LoadingState isVisible={weatherStore.isLoadingSignal()} />
-            
-            <ErrorState 
+
+            <ErrorState
               isVisible={!!weatherStore.errorSignal() && !weatherStore.isLoadingSignal()}
               message={weatherStore.errorSignal()}
             />
-            
-            <WeatherContent 
+
+            <WeatherContent
               isVisible={!!weatherStore.weatherDataSignal() && !weatherStore.isLoadingSignal() && !weatherStore.errorSignal()}
               weatherData={weatherStore.weatherDataSignal()}
             />
@@ -50,7 +50,7 @@ function App() {
       <footer class="footer">
         <div class="container">
           <p class="footer__text">
-            Built with Solid.js • MIT License • 
+            Built with Solid.js • MIT License •
             <a href="https://github.com/Lissy93" class="footer__link" target="_blank" rel="noopener">
               Alicia Sykes
             </a>

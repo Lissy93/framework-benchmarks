@@ -35,7 +35,7 @@ async function runCommand(command, args = [], options = {}) {
  */
 function loadFrameworks() {
   try {
-    const { loadFrameworks } = require('./generate-scripts.js');
+    const { loadFrameworks } = require('../setup/generate-scripts.js');
     return loadFrameworks();
   } catch (error) {
     // Fallback to reading frameworks.json directly

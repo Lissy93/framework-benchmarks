@@ -18,22 +18,22 @@ export const weatherStore = {
   // Load weather by city
   async loadWeather(city) {
     const requestId = ++latestRequestId;
-    
+
     try {
       isLoading.set(true);
       error.set(null);
-      
+
       // Add small delay in test environments to make loading state visible
       if (isTestEnvironment()) {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
-      
+
       const data = await weatherService.getWeatherByCity(city);
-      
+
       // Only update if this is still the latest request
       if (requestId === latestRequestId) {
         weatherData.set(data);
-        
+
         // Save location to localStorage
         saveLocation(city);
       }
@@ -56,11 +56,12 @@ export const weatherStore = {
     try {
       isLoading.set(true);
       error.set(null);
-      
+
       const data = await weatherService.getCurrentLocationWeather();
       weatherData.set(data);
     } catch (err) {
-      throw err;
+      error.set(err.message);
+      console.error('Current location error:', err);
     } finally {
       isLoading.set(false);
     }
@@ -68,12 +69,12 @@ export const weatherStore = {
 
   // Initialize the app
   async initialize() {
-    if (!browser) return;
-    
+    if (!browser) {return;}
+
     try {
       // Clear any existing error (loading state is already true by default)
       error.set(null);
-      
+
       const savedLocation = getSavedLocation();
       if (savedLocation) {
         await this.loadWeather(savedLocation);
@@ -109,8 +110,8 @@ export const weatherStore = {
 
 // Helper functions
 function saveLocation(city) {
-  if (!browser) return;
-  
+  if (!browser) {return;}
+
   try {
     localStorage.setItem('weather-app-location', city);
   } catch (error) {
@@ -119,8 +120,8 @@ function saveLocation(city) {
 }
 
 function getSavedLocation() {
-  if (!browser) return null;
-  
+  if (!browser) {return null;}
+
   try {
     return localStorage.getItem('weather-app-location');
   } catch (error) {
@@ -130,8 +131,8 @@ function getSavedLocation() {
 }
 
 function isTestEnvironment() {
-  if (!browser) return false;
-  
-  return navigator.userAgent.includes('Playwright') || 
+  if (!browser) {return false;}
+
+  return navigator.userAgent.includes('Playwright') ||
          navigator.userAgent.includes('HeadlessChrome');
 }

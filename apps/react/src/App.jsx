@@ -9,7 +9,7 @@ import useWeatherData from './hooks/useWeatherData';
 function App() {
   const { weatherData, isLoading, error, loadWeather } = useWeatherData();
 
-  const handleSearch = async (city) => {
+  const handleSearch = async(city) => {
     await loadWeather(city);
   };
 
@@ -23,8 +23,8 @@ function App() {
 
       <main className="main">
         <div className="container">
-          <SearchForm 
-            onSearch={handleSearch} 
+          <SearchForm
+            onSearch={handleSearch}
             isLoading={isLoading}
           />
 
@@ -39,7 +39,7 @@ function App() {
       <footer className="footer">
         <div className="container">
           <p className="footer__text">
-            Built with React • MIT License • 
+            Built with React • MIT License •
             <a href="https://github.com/Lissy93" className="footer__link" target="_blank" rel="noopener">
               Alicia Sykes
             </a>

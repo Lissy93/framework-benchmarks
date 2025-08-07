@@ -1,53 +1,53 @@
-import $ from 'jquery'
+import $ from 'jquery';
 
 export class WeatherService {
   constructor() {
-    this.baseUrl = 'https://api.open-meteo.com/v1'
-    this.geocodingUrl = 'https://geocoding-api.open-meteo.com/v1'
-    this.useMockData = this.shouldUseMockData()
-    this.currentRequest = null
+    this.baseUrl = 'https://api.open-meteo.com/v1';
+    this.geocodingUrl = 'https://geocoding-api.open-meteo.com/v1';
+    this.useMockData = this.shouldUseMockData();
+    this.currentRequest = null;
   }
-  
+
   shouldUseMockData() {
     // Check if we're in a testing environment (Playwright sets specific user agents)
-    const isTestEnvironment = navigator.userAgent.includes('Playwright') || 
-                              navigator.userAgent.includes('HeadlessChrome')
-    
+    const isTestEnvironment = navigator.userAgent.includes('Playwright') ||
+                              navigator.userAgent.includes('HeadlessChrome');
+
     // Don't use mock data if we're explicitly testing API errors
     if (window.location.search.includes('mock=false')) {
-      return false
+      return false;
     }
-    
+
     // Use mock data if explicitly requested or if we're in a test environment
-    return window.location.search.includes('mock=true') || isTestEnvironment
+    return window.location.search.includes('mock=true') || isTestEnvironment;
   }
-  
-  async getMockData() {
+
+  getMockData() {
     return new Promise((resolve, reject) => {
       $.ajax({
         url: '/mocks/weather-data.json',
         method: 'GET',
         dataType: 'json',
-        success: async (data) => {
+        success: async(data) => {
           // Add delay in test environments to make loading state visible
           if (this.isTestEnvironment()) {
-            await new Promise(res => setTimeout(res, 200))
+            await new Promise(res => setTimeout(res, 200));
           }
-          resolve(data)
+          resolve(data);
         },
         error: (xhr, status, error) => {
-          console.error('Error loading mock data:', error)
-          reject(new Error('Failed to load mock data'))
+          console.error('Error loading mock data:', error);
+          reject(new Error('Failed to load mock data'));
         }
-      })
-    })
+      });
+    });
   }
-  
+
   isTestEnvironment() {
-    return navigator.userAgent.includes('Playwright') || 
-           navigator.userAgent.includes('HeadlessChrome')
+    return navigator.userAgent.includes('Playwright') ||
+           navigator.userAgent.includes('HeadlessChrome');
   }
-  
+
   getMockGeocodingData(cityName) {
     // Mock geocoding data for different cities to enable proper testing
     const mockCities = {
@@ -81,20 +81,20 @@ export class WeatherService {
         name: 'New York',
         country: 'United States'
       }
-    }
+    };
 
     // Handle invalid cities
     if (cityName.includes('Invalid') || cityName.includes('123') || !cityName.trim()) {
-      throw new Error('Unable to find location. Please check the city name and try again.')
+      throw new Error('Unable to find location. Please check the city name and try again.');
     }
 
     // Return mock data for known cities, or default to London for unknown cities
-    return mockCities[cityName] || mockCities['London']
+    return mockCities[cityName] || mockCities['London'];
   }
-  
-  async geocodeLocation(cityName) {
+
+  geocodeLocation(cityName) {
     if (this.useMockData) {
-      return this.getMockGeocodingData(cityName)
+      return this.getMockGeocodingData(cityName);
     }
 
     return new Promise((resolve, reject) => {
@@ -109,29 +109,29 @@ export class WeatherService {
         },
         success: (data) => {
           if (!data.results || data.results.length === 0) {
-            reject(new Error('Unable to find location. Please check the city name and try again.'))
-            return
+            reject(new Error('Unable to find location. Please check the city name and try again.'));
+            return;
           }
 
-          const location = data.results[0]
+          const location = data.results[0];
           resolve({
             latitude: location.latitude,
             longitude: location.longitude,
             name: location.name,
             country: location.country || location.admin1
-          })
+          });
         },
         error: (xhr, status, error) => {
-          console.error('Geocoding error:', error)
-          reject(new Error('Unable to find location. Please check the city name and try again.'))
+          console.error('Geocoding error:', error);
+          reject(new Error('Unable to find location. Please check the city name and try again.'));
         }
-      })
-    })
+      });
+    });
   }
-  
+
   async getWeatherData(location) {
     if (this.useMockData) {
-      return await this.getMockData()
+      return await this.getMockData();
     }
 
     return new Promise((resolve, reject) => {
@@ -159,46 +159,42 @@ export class WeatherService {
           timezone: 'auto'
         },
         success: (data) => {
-          resolve(data)
+          resolve(data);
         },
         error: (xhr, status, error) => {
-          console.error('Weather API error:', error)
-          reject(new Error('Unable to fetch weather data. Please try again later.'))
+          console.error('Weather API error:', error);
+          reject(new Error('Unable to fetch weather data. Please try again later.'));
         }
-      })
-    })
+      });
+    });
   }
-  
+
   async getCurrentWeather(cityName) {
     // Abort any existing request
     if (this.currentRequest) {
-      this.currentRequest.abort()
-      this.currentRequest = null
+      this.currentRequest.abort();
+      this.currentRequest = null;
     }
-    
-    try {
-      if (this.useMockData) {
-        const mockData = await this.getMockData()
-        // Add location info to mock data
-        const mockLocation = this.getMockGeocodingData(cityName)
-        return {
-          ...mockData,
-          location: mockLocation
-        }
-      }
-      
-      const location = await this.geocodeLocation(cityName)
-      const weatherData = await this.getWeatherData(location)
-      
+
+    if (this.useMockData) {
+      const mockData = await this.getMockData();
+      // Add location info to mock data
+      const mockLocation = this.getMockGeocodingData(cityName);
       return {
-        ...weatherData,
-        location: location
-      }
-    } catch (error) {
-      throw error
+        ...mockData,
+        location: mockLocation
+      };
     }
+
+    const location = await this.geocodeLocation(cityName);
+    const weatherData = await this.getWeatherData(location);
+
+    return {
+      ...weatherData,
+      location: location
+    };
   }
-  
+
   getWeatherIcon(code) {
     const weatherCodes = {
       0: { icon: '☀️', description: 'Clear sky' },
@@ -229,14 +225,14 @@ export class WeatherService {
       95: { icon: '⛈️', description: 'Thunderstorm' },
       96: { icon: '⛈️', description: 'Thunderstorm with slight hail' },
       99: { icon: '⛈️', description: 'Thunderstorm with heavy hail' }
-    }
-    
-    return weatherCodes[code] || { icon: '🌤️', description: 'Unknown' }
+    };
+
+    return weatherCodes[code] || { icon: '🌤️', description: 'Unknown' };
   }
-  
+
   getWindDirection(degrees) {
-    const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
-    const index = Math.round(degrees / 45) % 8
-    return directions[index]
+    const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+    const index = Math.round(degrees / 45) % 8;
+    return directions[index];
   }
 }

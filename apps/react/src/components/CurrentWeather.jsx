@@ -2,7 +2,7 @@ import React from 'react';
 import WeatherUtils from '../utils/WeatherUtils';
 
 const CurrentWeather = ({ weatherData }) => {
-  if (!weatherData) return null;
+  if (!weatherData) {return null;}
 
   const { current, locationName, country } = weatherData;
 
@@ -22,7 +22,7 @@ const CurrentWeather = ({ weatherData }) => {
               <div className="current-weather__temp" data-testid="current-temperature">
                 {WeatherUtils.formatTemperature(current.temperature_2m)}
               </div>
-              <div 
+              <div
                 className={`current-weather__condition ${WeatherUtils.getConditionClass(current.weather_code)}`}
                 data-testid="current-condition"
               >
@@ -30,7 +30,7 @@ const CurrentWeather = ({ weatherData }) => {
               </div>
             </div>
           </div>
-          
+
           <div className="current-weather__details">
             <div className="weather-detail">
               <div className="weather-detail__label">Feels like</div>

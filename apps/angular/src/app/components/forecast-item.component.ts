@@ -31,7 +31,7 @@ import { WeatherUtils } from '../utils/weather.utils';
           </span>
         </div>
       </div>
-      
+
       <div class="forecast-item__details" *ngIf="isActive">
         <div class="forecast-detail-item">
           <div class="forecast-detail-item__label">Sunrise</div>

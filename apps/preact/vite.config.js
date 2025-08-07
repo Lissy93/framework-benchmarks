@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vite';
 
 export default defineConfig({
   esbuild: {
@@ -7,12 +7,12 @@ export default defineConfig({
     exclude: [],
     jsxFactory: 'h',
     jsxFragment: 'Fragment',
-    jsxInject: `import { h, Fragment } from 'preact'`,
+    jsxInject: `import { h, Fragment } from 'preact'`
   },
   optimizeDeps: {
-    include: ['preact/hooks'],
+    include: ['preact/hooks']
   },
   server: {
     port: 3000
   }
-})
+});

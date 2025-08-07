@@ -7,14 +7,14 @@ class WeatherService {
 
   shouldUseMockData() {
     // Check if we're in a testing environment (Playwright sets specific user agents)
-    const isTestEnvironment = navigator.userAgent.includes('Playwright') || 
+    const isTestEnvironment = navigator.userAgent.includes('Playwright') ||
                               navigator.userAgent.includes('HeadlessChrome');
-    
+
     // Don't use mock data if we're explicitly testing API errors
     if (window.location.search.includes('mock=false')) {
       return false;
     }
-    
+
     // Use mock data if explicitly requested or if we're in a test environment
     return window.location.search.includes('mock=true') || isTestEnvironment;
   }
@@ -25,7 +25,7 @@ class WeatherService {
       if (this.isTestEnvironment()) {
         await new Promise(resolve => setTimeout(resolve, 200));
       }
-      
+
       const response = await fetch('./public/mocks/weather-data.json');
       if (!response.ok) {
         throw new Error('Failed to load mock data');
@@ -38,7 +38,7 @@ class WeatherService {
   }
 
   isTestEnvironment() {
-    return navigator.userAgent.includes('Playwright') || 
+    return navigator.userAgent.includes('Playwright') ||
            navigator.userAgent.includes('HeadlessChrome');
   }
 
@@ -95,17 +95,17 @@ class WeatherService {
       const response = await fetch(
         `${this.geocodingUrl}/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`
       );
-      
+
       if (!response.ok) {
         throw new Error('Geocoding failed');
       }
-      
+
       const data = await response.json();
-      
+
       if (!data.results || data.results.length === 0) {
         throw new Error('Location not found');
       }
-      
+
       const location = data.results[0];
       return {
         latitude: location.latitude,
@@ -134,11 +134,11 @@ class WeatherService {
       });
 
       const response = await fetch(`${this.baseUrl}/forecast?${params}`);
-      
+
       if (!response.ok) {
         throw new Error(`Weather API error: ${response.status}`);
       }
-      
+
       const data = await response.json();
       return data;
     } catch (error) {
@@ -151,7 +151,7 @@ class WeatherService {
     try {
       const location = await this.geocodeLocation(cityName);
       const weather = await this.getWeatherData(location.latitude, location.longitude);
-      
+
       return {
         ...weather,
         locationName: location.name,

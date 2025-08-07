@@ -6,9 +6,9 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div 
-      class="error" 
-      data-testid="error" 
+    <div
+      class="error"
+      data-testid="error"
       [hidden]="!isVisible"
     >
       <h2 class="error__title">Unable to load weather data</h2>

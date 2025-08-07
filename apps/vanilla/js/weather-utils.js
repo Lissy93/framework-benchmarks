@@ -30,7 +30,7 @@ class WeatherUtils {
       96: 'Thunderstorm with slight hail',
       99: 'Thunderstorm with heavy hail'
     };
-    
+
     return weatherCodes[weatherCode] || 'Unknown';
   }
 
@@ -94,10 +94,10 @@ class WeatherUtils {
 
   static formatTime(timeString) {
     const date = new Date(timeString);
-    return date.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: false 
+      hour12: false
     });
   }
 
@@ -132,7 +132,7 @@ class WeatherUtils {
       clearTimeout(element._hideTimeout);
       element._hideTimeout = null;
     }
-    
+
     element.hidden = false;
     element.classList.add('fade-in');
     element.classList.remove('fade-out');
@@ -143,10 +143,10 @@ class WeatherUtils {
     if (element._hideTimeout) {
       clearTimeout(element._hideTimeout);
     }
-    
+
     element.classList.add('fade-out');
     element.classList.remove('fade-in');
-    
+
     element._hideTimeout = setTimeout(() => {
       element.hidden = true;
       element.classList.remove('fade-out');

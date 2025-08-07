@@ -12,11 +12,11 @@ class WeatherApp {
     this.searchForm = document.querySelector('[data-testid="search-form"]');
     this.searchInput = document.querySelector('[data-testid="search-input"]');
     this.searchButton = document.querySelector('[data-testid="search-button"]');
-    
+
     this.loadingElement = document.querySelector('[data-testid="loading"]');
     this.errorElement = document.querySelector('[data-testid="error"]');
     this.weatherContent = document.querySelector('[data-testid="weather-content"]');
-    
+
     this.currentLocation = document.querySelector('[data-testid="current-location"]');
     this.currentTemp = document.querySelector('[data-testid="current-temperature"]');
     this.currentCondition = document.querySelector('[data-testid="current-condition"]');
@@ -27,7 +27,7 @@ class WeatherApp {
     this.pressure = document.querySelector('[data-testid="pressure"]');
     this.cloudCover = document.querySelector('[data-testid="cloud-cover"]');
     this.windDirection = document.querySelector('[data-testid="wind-direction"]');
-    
+
     this.forecastList = document.querySelector('[data-testid="forecast-list"]');
   }
 
@@ -38,12 +38,12 @@ class WeatherApp {
   async handleSearch(e) {
     e.preventDefault();
     const city = this.searchInput.value.trim();
-    
+
     if (!city) {
       this.showError('Please enter a city name');
       return;
     }
-    
+
     await this.loadWeather(city);
   }
 
@@ -59,15 +59,15 @@ class WeatherApp {
   }
 
   displayWeather() {
-    const { current, daily, locationName, country } = this.currentWeatherData;
-    
+    const { current, locationName, country } = this.currentWeatherData;
+
     // Display current weather
     this.currentLocation.textContent = locationName + (country ? `, ${country}` : '');
     this.currentTemp.textContent = WeatherUtils.formatTemperature(current.temperature_2m);
     this.currentCondition.textContent = WeatherUtils.getWeatherDescription(current.weather_code);
     this.currentCondition.className = `current-weather__condition ${WeatherUtils.getConditionClass(current.weather_code)}`;
     this.currentIcon.textContent = WeatherUtils.getWeatherIcon(current.weather_code, current.is_day);
-    
+
     // Display current weather details
     this.feelsLike.textContent = WeatherUtils.formatTemperature(current.apparent_temperature);
     this.humidity.textContent = WeatherUtils.formatPercentage(current.relative_humidity_2m);
@@ -75,10 +75,10 @@ class WeatherApp {
     this.pressure.textContent = WeatherUtils.formatPressure(current.pressure_msl);
     this.cloudCover.textContent = WeatherUtils.formatPercentage(current.cloud_cover);
     this.windDirection.textContent = WeatherUtils.getWindDirection(current.wind_direction_10m);
-    
+
     // Display forecast
     this.displayForecast();
-    
+
     this.showWeatherContent();
   }
 
@@ -86,7 +86,7 @@ class WeatherApp {
     const { daily } = this.currentWeatherData;
     this.forecastList.innerHTML = '';
     this.activeforecastIndex = null;
-    
+
     daily.time.forEach((date, index) => {
       const forecastItem = this.createForecastItem(daily, index);
       this.forecastList.appendChild(forecastItem);
@@ -100,14 +100,14 @@ class WeatherApp {
     item.setAttribute('tabindex', '0');
     item.setAttribute('role', 'button');
     item.setAttribute('aria-label', `View detailed forecast for ${WeatherUtils.formatDate(daily.time[index])}`);
-    
+
     const dayName = WeatherUtils.formatDate(daily.time[index]);
     const weatherCode = daily.weather_code[index];
     const high = daily.temperature_2m_max[index];
     const low = daily.temperature_2m_min[index];
     const condition = WeatherUtils.getWeatherDescription(weatherCode);
     const icon = WeatherUtils.getWeatherIcon(weatherCode);
-    
+
     item.innerHTML = `
       <div class="forecast-item__day">${dayName}</div>
       <div class="forecast-item__icon">${icon}</div>
@@ -119,7 +119,7 @@ class WeatherApp {
         </div>
       </div>
     `;
-    
+
     item.addEventListener('click', () => this.toggleForecastDetails(item, daily, index));
     item.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
@@ -127,7 +127,7 @@ class WeatherApp {
         this.toggleForecastDetails(item, daily, index);
       }
     });
-    
+
     return item;
   }
 
@@ -137,14 +137,14 @@ class WeatherApp {
       this.collapseForecastDetails();
       return;
     }
-    
+
     // Collapse any currently active item
     this.collapseForecastDetails();
-    
+
     // Expand the clicked item
     this.expandForecastDetails(item, daily, index);
   }
-  
+
   expandForecastDetails(item, daily, index) {
     const sunrise = daily.sunrise[index];
     const sunset = daily.sunset[index];
@@ -184,17 +184,17 @@ class WeatherApp {
       </div>
       </div>
     `;
-    
+
     item.insertAdjacentHTML('beforeend', detailsHtml);
     item.classList.add('active');
     this.activeforecastIndex = index;
-    
+
     // Smooth scroll to the expanded item
     setTimeout(() => {
       item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }, 100);
   }
-  
+
   collapseForecastDetails() {
     if (this.activeforecastIndex !== null) {
       const activeItem = this.forecastList.children[this.activeforecastIndex];
@@ -215,7 +215,7 @@ class WeatherApp {
     WeatherUtils.hideElement(this.weatherContent);
     WeatherUtils.showElement(this.loadingElement);
     this.searchButton.disabled = true;
-    
+
     const buttonText = this.searchButton.querySelector('.search-button__text');
     if (buttonText) {
       buttonText.textContent = 'Loading...';
@@ -225,15 +225,15 @@ class WeatherApp {
   showError(message) {
     WeatherUtils.hideElement(this.loadingElement);
     WeatherUtils.hideElement(this.weatherContent);
-    
+
     const errorMessage = this.errorElement.querySelector('.error__message');
     if (errorMessage) {
       errorMessage.textContent = message;
     }
-    
+
     WeatherUtils.showElement(this.errorElement);
     this.searchButton.disabled = false;
-    
+
     const buttonText = this.searchButton.querySelector('.search-button__text');
     if (buttonText) {
       buttonText.textContent = 'Get Weather';
@@ -245,7 +245,7 @@ class WeatherApp {
     WeatherUtils.hideElement(this.errorElement);
     WeatherUtils.showElement(this.weatherContent);
     this.searchButton.disabled = false;
-    
+
     const buttonText = this.searchButton.querySelector('.search-button__text');
     if (buttonText) {
       buttonText.textContent = 'Get Weather';
@@ -271,7 +271,7 @@ class WeatherApp {
     } catch (error) {
       console.warn('Could not load saved location:', error);
     }
-    
+
     // Try to get current location
     try {
       await this.getCurrentLocationWeather();
@@ -283,15 +283,15 @@ class WeatherApp {
     }
   }
 
-  async getCurrentLocationWeather() {
+  getCurrentLocationWeather() {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
         reject(new Error('Geolocation not supported'));
         return;
       }
-      
+
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
+        async(position) => {
           try {
             const { latitude, longitude } = position.coords;
             this.currentWeatherData = await this.weatherService.getWeatherData(latitude, longitude);

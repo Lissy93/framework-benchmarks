@@ -2,9 +2,9 @@ import React from 'react';
 
 const ErrorState = ({ isVisible, message }) => {
   return (
-    <div 
-      className="error" 
-      data-testid="error" 
+    <div
+      className="error"
+      data-testid="error"
       hidden={!isVisible}
     >
       <h2 className="error__title">Unable to load weather data</h2>

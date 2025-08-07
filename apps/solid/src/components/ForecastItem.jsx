@@ -43,7 +43,7 @@ function ForecastItem(props) {
           </span>
         </div>
       </div>
-      
+
       <Show when={props.isActive}>
         <div class="forecast-item__details">
           <div class="forecast-detail-item">

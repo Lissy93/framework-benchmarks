@@ -7,14 +7,14 @@ class WeatherService {
 
   shouldUseMockData() {
     // Check if we're in a testing environment (Playwright sets specific user agents)
-    const isTestEnvironment = navigator.userAgent.includes('Playwright') || 
+    const isTestEnvironment = navigator.userAgent.includes('Playwright') ||
                               navigator.userAgent.includes('HeadlessChrome');
-    
+
     // Don't use mock data if we're explicitly testing API errors
     if (window.location.search.includes('mock=false')) {
       return false;
     }
-    
+
     // Use mock data if explicitly requested or if we're in a test environment
     return window.location.search.includes('mock=true') || isTestEnvironment;
   }
@@ -25,7 +25,7 @@ class WeatherService {
       if (this.isTestEnvironment()) {
         await new Promise(resolve => setTimeout(resolve, 200));
       }
-      
+
       const response = await fetch('/mocks/weather-data.json');
       if (!response.ok) {
         throw new Error('Failed to load mock data');
@@ -38,7 +38,7 @@ class WeatherService {
   }
 
   isTestEnvironment() {
-    return navigator.userAgent.includes('Playwright') || 
+    return navigator.userAgent.includes('Playwright') ||
            navigator.userAgent.includes('HeadlessChrome');
   }
 
@@ -101,17 +101,17 @@ class WeatherService {
       const response = await fetch(
         `${this.geocodingUrl}/search?name=${encodeURIComponent(cityName)}&count=1&language=en&format=json`
       );
-      
+
       if (!response.ok) {
         throw new Error('Failed to geocode location');
       }
-      
+
       const data = await response.json();
-      
+
       if (!data.results || data.results.length === 0) {
         throw new Error(`Location "${cityName}" not found. Please check the spelling and try again.`);
       }
-      
+
       return data.results[0];
     } catch (error) {
       console.error('Geocoding error:', error);
@@ -132,11 +132,11 @@ class WeatherService {
         `daily=temperature_2m_max,temperature_2m_min,weather_code,sunrise,sunset,precipitation_probability_max,rain_sum,uv_index_max&` +
         `timezone=auto`
       );
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch weather data');
       }
-      
+
       return await response.json();
     } catch (error) {
       console.error('Weather API error:', error);
@@ -148,7 +148,7 @@ class WeatherService {
     try {
       const location = await this.geocodeLocation(cityName);
       const weather = await this.getWeatherData(location.latitude, location.longitude);
-      
+
       return {
         ...weather,
         locationName: location.name,
@@ -160,14 +160,14 @@ class WeatherService {
     }
   }
 
-  async getCurrentLocationWeather() {
+  getCurrentLocationWeather() {
     if (!navigator.geolocation) {
       throw new Error('Geolocation not supported');
     }
 
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
+        async(position) => {
           try {
             const { latitude, longitude } = position.coords;
             const weather = await this.getWeatherData(latitude, longitude);

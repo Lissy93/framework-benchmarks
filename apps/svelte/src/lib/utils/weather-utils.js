@@ -30,7 +30,7 @@ export class WeatherUtils {
       96: 'Thunderstorm with slight hail',
       99: 'Thunderstorm with heavy hail'
     };
-    
+
     return weatherCodes[weatherCode] || 'Unknown';
   }
 
@@ -94,10 +94,10 @@ export class WeatherUtils {
 
   static formatTime(timeString) {
     const date = new Date(timeString);
-    return date.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: false 
+      hour12: false
     });
   }
 

@@ -1,5 +1,5 @@
 class WeatherUtils {
-  static getWeatherIcon(weatherCode: number, isDayTime: boolean = true): string {
+  static getWeatherIcon(weatherCode: number, isDayTime = true): string {
     const icons: { [key: number]: { day: string; night: string } } = {
       0: { day: '☀️', night: '🌙' },        // Clear sky
       1: { day: '🌤️', night: '🌙' },        // Mainly clear
@@ -28,7 +28,7 @@ class WeatherUtils {
       86: { day: '❄️', night: '❄️' },       // Snow showers heavy
       95: { day: '⛈️', night: '⛈️' },       // Thunderstorm: Slight or moderate
       96: { day: '⛈️', night: '⛈️' },       // Thunderstorm with slight hail
-      99: { day: '⛈️', night: '⛈️' },       // Thunderstorm with heavy hail
+      99: { day: '⛈️', night: '⛈️' }       // Thunderstorm with heavy hail
     };
 
     const iconSet = icons[weatherCode];
@@ -68,7 +68,7 @@ class WeatherUtils {
       86: 'Heavy snow showers',
       95: 'Thunderstorm',
       96: 'Thunderstorm with slight hail',
-      99: 'Thunderstorm with heavy hail',
+      99: 'Thunderstorm with heavy hail'
     };
 
     return descriptions[weatherCode] || 'Unknown weather condition';
@@ -82,7 +82,7 @@ class WeatherUtils {
     if ([51, 53, 55, 56, 57, 61, 63, 65, 66, 67, 80, 81, 82].includes(weatherCode)) return 'rain';
     if ([71, 73, 75, 77, 85, 86].includes(weatherCode)) return 'snow';
     if ([95, 96, 99].includes(weatherCode)) return 'thunderstorm';
-    
+
     return 'default';
   }
 
@@ -125,10 +125,10 @@ class WeatherUtils {
 
   static formatTime(dateTimeString: string): string {
     const date = new Date(dateTimeString);
-    return date.toLocaleTimeString('en-US', { 
-      hour: '2-digit', 
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
       minute: '2-digit',
-      hour12: false 
+      hour12: false
     });
   }
 

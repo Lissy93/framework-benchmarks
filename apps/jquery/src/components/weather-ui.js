@@ -1,112 +1,112 @@
-import $ from 'jquery'
+import $ from 'jquery';
 
 export class WeatherUI {
   constructor() {
-    this.initializeElements()
+    this.initializeElements();
   }
-  
+
   initializeElements() {
     // Cache jQuery elements for better performance - matching vanilla structure
-    this.$loading = $('[data-testid="loading"]')
-    this.$error = $('[data-testid="error"]')
-    this.$errorMessage = $('.error__message')
-    this.$weatherContent = $('[data-testid="weather-content"]')
-    this.$currentWeather = $('[data-testid="current-weather"]')
-    this.$forecastList = $('[data-testid="forecast-list"]')
-    
+    this.$loading = $('[data-testid="loading"]');
+    this.$error = $('[data-testid="error"]');
+    this.$errorMessage = $('.error__message');
+    this.$weatherContent = $('[data-testid="weather-content"]');
+    this.$currentWeather = $('[data-testid="current-weather"]');
+    this.$forecastList = $('[data-testid="forecast-list"]');
+
     // Current weather elements - matching vanilla structure
-    this.$currentLocation = $('[data-testid="current-location"]')
-    this.$currentIcon = $('[data-testid="current-icon"]')
-    this.$currentTemperature = $('[data-testid="current-temperature"]')
-    this.$currentCondition = $('[data-testid="current-condition"]')
-    this.$feelsLike = $('[data-testid="feels-like"]')
-    this.$humidity = $('[data-testid="humidity"]')
-    this.$windSpeed = $('[data-testid="wind-speed"]')
-    this.$pressure = $('[data-testid="pressure"]')
-    this.$cloudCover = $('[data-testid="cloud-cover"]')
-    this.$windDirection = $('[data-testid="wind-direction"]')
+    this.$currentLocation = $('[data-testid="current-location"]');
+    this.$currentIcon = $('[data-testid="current-icon"]');
+    this.$currentTemperature = $('[data-testid="current-temperature"]');
+    this.$currentCondition = $('[data-testid="current-condition"]');
+    this.$feelsLike = $('[data-testid="feels-like"]');
+    this.$humidity = $('[data-testid="humidity"]');
+    this.$windSpeed = $('[data-testid="wind-speed"]');
+    this.$pressure = $('[data-testid="pressure"]');
+    this.$cloudCover = $('[data-testid="cloud-cover"]');
+    this.$windDirection = $('[data-testid="wind-direction"]');
   }
-  
+
   // jQuery-focused state management methods
   showLoading() {
-    this.$loading.removeAttr('hidden').fadeIn(300)
-    this.hideError()
-    this.hideWeatherContent()
+    this.$loading.removeAttr('hidden').fadeIn(300);
+    this.hideError();
+    this.hideWeatherContent();
   }
-  
+
   hideLoading() {
     this.$loading.fadeOut(300, () => {
-      this.$loading.attr('hidden', true)
-    })
+      this.$loading.attr('hidden', true);
+    });
   }
-  
+
   showError(message) {
-    this.$errorMessage.text(message)
-    this.hideLoading()
-    this.hideWeatherContent()
-    this.$error.removeAttr('hidden').fadeIn(300)
+    this.$errorMessage.text(message);
+    this.hideLoading();
+    this.hideWeatherContent();
+    this.$error.removeAttr('hidden').fadeIn(300);
   }
-  
+
   hideError() {
     this.$error.fadeOut(300, () => {
-      this.$error.attr('hidden', true)
-    })
+      this.$error.attr('hidden', true);
+    });
   }
-  
+
   hideWeatherContent() {
     this.$weatherContent.fadeOut(300, () => {
-      this.$weatherContent.attr('hidden', true)
-    })
+      this.$weatherContent.attr('hidden', true);
+    });
   }
-  
+
   showWeatherContent(weatherData) {
     // Update current weather using jQuery
-    this.updateCurrentWeather(weatherData)
-    
+    this.updateCurrentWeather(weatherData);
+
     // Update forecast using jQuery
-    this.updateForecast(weatherData)
-    
+    this.updateForecast(weatherData);
+
     // Show weather content with fade effect
-    this.hideLoading()
-    this.hideError()
-    this.$weatherContent.removeAttr('hidden').fadeIn(300)
+    this.hideLoading();
+    this.hideError();
+    this.$weatherContent.removeAttr('hidden').fadeIn(300);
   }
-  
+
   updateCurrentWeather(data) {
-    const location = data.location
-    const current = data.current
-    
+    const location = data.location;
+    const current = data.current;
+
     // Using jQuery text/html methods to update content
-    this.$currentLocation.text(`${location.name}${location.country ? `, ${location.country}` : ''}`)
-    
-    const weatherInfo = this.getWeatherInfo(current.weather_code)
-    this.$currentIcon.text(weatherInfo.icon)
-    this.$currentTemperature.text(`${Math.round(current.temperature_2m)}°C`)
-    this.$currentCondition.text(weatherInfo.description)
-    
+    this.$currentLocation.text(`${location.name}${location.country ? `, ${location.country}` : ''}`);
+
+    const weatherInfo = this.getWeatherInfo(current.weather_code);
+    this.$currentIcon.text(weatherInfo.icon);
+    this.$currentTemperature.text(`${Math.round(current.temperature_2m)}°C`);
+    this.$currentCondition.text(weatherInfo.description);
+
     // Update weather details using jQuery
-    this.$feelsLike.text(`${Math.round(current.apparent_temperature)}°C`)
-    this.$humidity.text(`${current.relative_humidity_2m}%`)
-    this.$windSpeed.text(`${Math.round(current.wind_speed_10m)} km/h`)
-    this.$pressure.text(`${Math.round(current.surface_pressure)} hPa`)
-    this.$cloudCover.text(`${current.cloud_cover}%`)
-    this.$windDirection.text(this.getWindDirection(current.wind_direction_10m))
+    this.$feelsLike.text(`${Math.round(current.apparent_temperature)}°C`);
+    this.$humidity.text(`${current.relative_humidity_2m}%`);
+    this.$windSpeed.text(`${Math.round(current.wind_speed_10m)} km/h`);
+    this.$pressure.text(`${Math.round(current.surface_pressure)} hPa`);
+    this.$cloudCover.text(`${current.cloud_cover}%`);
+    this.$windDirection.text(this.getWindDirection(current.wind_direction_10m));
   }
-  
+
   updateForecast(data) {
-    const dailyData = data.daily
-    
+    const dailyData = data.daily;
+
     // Clear existing forecast items using jQuery
-    this.$forecastList.empty()
-    
+    this.$forecastList.empty();
+
     // Create forecast items using jQuery DOM manipulation
     for (let i = 0; i < Math.min(dailyData.time.length, 7); i++) {
-      const date = new Date(dailyData.time[i])
-      const dayName = this.getDayName(date, i)
-      const weatherInfo = this.getWeatherInfo(dailyData.weather_code[i])
-      const high = Math.round(dailyData.temperature_2m_max[i])
-      const low = Math.round(dailyData.temperature_2m_min[i])
-      
+      const date = new Date(dailyData.time[i]);
+      const dayName = this.getDayName(date, i);
+      const weatherInfo = this.getWeatherInfo(dailyData.weather_code[i]);
+      const high = Math.round(dailyData.temperature_2m_max[i]);
+      const low = Math.round(dailyData.temperature_2m_min[i]);
+
       // Create forecast item using jQuery
       const $forecastItem = $(`
         <div class="forecast__item forecast-item" data-testid="forecast-item" tabindex="0">
@@ -120,12 +120,12 @@ export class WeatherUI {
           </div>
           <div class="forecast__details forecast-item__details">
             <div class="forecast__date">
-              ${date.toLocaleDateString('en-US', { 
-                weekday: 'long',
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-              })}
+              ${date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  })}
             </div>
             <div class="forecast__condition">${weatherInfo.description}</div>
             <div class="forecast__detail-grid">
@@ -138,42 +138,42 @@ export class WeatherUI {
             </div>
           </div>
         </div>
-      `)
-      
+      `);
+
       // Add click handler using jQuery event binding - use self reference
-      const self = this
+      const self = this;
       $forecastItem.on('click keydown', function(e) {
         if (e.type === 'click' || e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault()
-          self.toggleForecastItem($(this))
+          e.preventDefault();
+          self.toggleForecastItem($(this));
         }
-      })
-      
+      });
+
       // Append to forecast list
-      this.$forecastList.append($forecastItem)
+      this.$forecastList.append($forecastItem);
     }
   }
-  
+
   toggleForecastItem($item) {
     // jQuery way of toggling forecast items - only one active at a time
-    const $allItems = $('.forecast__item, .forecast-item')
-    
+    const $allItems = $('.forecast__item, .forecast-item');
+
     if ($item.hasClass('active')) {
       // Collapse current item
-      $item.removeClass('active')
+      $item.removeClass('active');
     } else {
       // Collapse all other items and expand current item
-      $allItems.removeClass('active')
-      $item.addClass('active')
+      $allItems.removeClass('active');
+      $item.addClass('active');
     }
   }
-  
+
   getDayName(date, index) {
-    if (index === 0) return 'Today'
-    if (index === 1) return 'Tomorrow'
-    return date.toLocaleDateString('en-US', { weekday: 'short' })
+    if (index === 0) {return 'Today';}
+    if (index === 1) {return 'Tomorrow';}
+    return date.toLocaleDateString('en-US', { weekday: 'short' });
   }
-  
+
   getWeatherInfo(code) {
     const weatherCodes = {
       0: { icon: '☀️', description: 'Clear sky' },
@@ -204,14 +204,14 @@ export class WeatherUI {
       95: { icon: '⛈️', description: 'Thunderstorm' },
       96: { icon: '⛈️', description: 'Thunderstorm with slight hail' },
       99: { icon: '⛈️', description: 'Thunderstorm with heavy hail' }
-    }
-    
-    return weatherCodes[code] || { icon: '🌤️', description: 'Unknown' }
+    };
+
+    return weatherCodes[code] || { icon: '🌤️', description: 'Unknown' };
   }
-  
+
   getWindDirection(degrees) {
-    const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW']
-    const index = Math.round(degrees / 45) % 8
-    return directions[index]
+    const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+    const index = Math.round(degrees / 45) % 8;
+    return directions[index];
   }
 }

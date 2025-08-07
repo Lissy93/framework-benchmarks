@@ -6,17 +6,17 @@ const ForecastItem = ({ daily, index, isActive, onToggle }) => {
     dayName: WeatherUtils.formatDate(daily.time[index]),
     weatherCode: daily.weather_code[index],
     high: daily.temperature_2m_max[index],
-    low: daily.temperature_2m_min[index],
+    low: daily.temperature_2m_min[index]
   }), [daily, index]);
 
-  const condition = useMemo(() => 
-    WeatherUtils.getWeatherDescription(forecastData.weatherCode), 
-    [forecastData.weatherCode]
+  const condition = useMemo(() =>
+    WeatherUtils.getWeatherDescription(forecastData.weatherCode),
+  [forecastData.weatherCode]
   );
-  
-  const icon = useMemo(() => 
-    WeatherUtils.getWeatherIcon(forecastData.weatherCode), 
-    [forecastData.weatherCode]
+
+  const icon = useMemo(() =>
+    WeatherUtils.getWeatherIcon(forecastData.weatherCode),
+  [forecastData.weatherCode]
   );
 
   const handleClick = useCallback(() => {
@@ -53,7 +53,7 @@ const ForecastItem = ({ daily, index, isActive, onToggle }) => {
           </span>
         </div>
       </div>
-      
+
       {isActive && (
         <div className="forecast-item__details">
           <div className="forecast-detail-item">

@@ -3,9 +3,9 @@ import Forecast from './Forecast';
 
 const WeatherContent = ({ isVisible = false, weatherData = null }) => {
   return (
-    <div 
-      class="weather-content" 
-      data-testid="weather-content" 
+    <div
+      class="weather-content"
+      data-testid="weather-content"
       hidden={!isVisible}
     >
       <div class="weather-layout">

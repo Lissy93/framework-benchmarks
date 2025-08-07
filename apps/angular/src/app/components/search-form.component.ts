@@ -11,18 +11,18 @@ import { FormsModule } from '@angular/forms';
       <form class="search-form" data-testid="search-form" (ngSubmit)="onSubmit()">
         <div class="search-form__group">
           <label for="location-input" class="sr-only">Enter city name</label>
-          <input 
+          <input
             #locationInput
-            type="text" 
+            type="text"
             id="location-input"
-            class="search-input" 
+            class="search-input"
             placeholder="Enter city name..."
             data-testid="search-input"
             autocomplete="off"
           />
-          <button 
-            type="submit" 
-            class="search-button" 
+          <button
+            type="submit"
+            class="search-button"
             data-testid="search-button"
             [disabled]="isLoading"
           >
@@ -53,11 +53,11 @@ export class SearchFormComponent implements AfterViewInit {
 
   onSubmit(): void {
     const city = this.locationInput.nativeElement.value?.trim();
-    
+
     if (!city) {
       return;
     }
-    
+
     this.search.emit(city);
   }
 

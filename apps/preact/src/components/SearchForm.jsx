@@ -24,11 +24,11 @@ const SearchForm = ({ isLoading = false, currentLocation = null, onSearch }) => 
   const handleSubmit = (e) => {
     e.preventDefault();
     const city = inputValue?.trim();
-    
+
     if (!city) {
       return;
     }
-    
+
     onSearch?.(city);
   };
 
@@ -37,19 +37,19 @@ const SearchForm = ({ isLoading = false, currentLocation = null, onSearch }) => 
       <form class="search-form" data-testid="search-form" onSubmit={handleSubmit}>
         <div class="search-form__group">
           <label for="location-input" class="sr-only">Enter city name</label>
-          <input 
+          <input
             value={inputValue}
             onInput={(e) => setInputValue(e.target.value)}
-            type="text" 
+            type="text"
             id="location-input"
-            class="search-input" 
+            class="search-input"
             placeholder="Enter city name..."
             data-testid="search-input"
             autocomplete="off"
           />
-          <button 
-            type="submit" 
-            class="search-button" 
+          <button
+            type="submit"
+            class="search-button"
             data-testid="search-button"
             disabled={isLoading}
           >

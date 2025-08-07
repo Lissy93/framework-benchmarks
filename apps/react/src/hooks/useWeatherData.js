@@ -7,21 +7,21 @@ const useWeatherData = () => {
   const [error, setError] = useState(null);
   const [weatherService] = useState(() => new WeatherService());
 
-  const loadWeather = useCallback(async (city) => {
+  const loadWeather = useCallback(async(city) => {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const data = await weatherService.getWeatherByCity(city);
       setWeatherData(data);
-      
+
       // Save location to localStorage
       try {
         localStorage.setItem('weather-app-location', city);
       } catch (error) {
         console.warn('Could not save location to localStorage:', error);
       }
-      
+
     } catch (error) {
       setError(error.message);
     } finally {
@@ -29,23 +29,23 @@ const useWeatherData = () => {
     }
   }, [weatherService]);
 
-  const getCurrentLocationWeather = useCallback(async () => {
+  const getCurrentLocationWeather = useCallback(() => {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) {
         reject(new Error('Geolocation not supported'));
         return;
       }
-      
+
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
+        async(position) => {
           try {
             setIsLoading(true);
             setError(null);
-            
+
             const { latitude, longitude } = position.coords;
             const data = await weatherService.getWeatherData(latitude, longitude);
             data.locationName = 'Current Location';
-            
+
             setWeatherData(data);
             resolve();
           } catch (error) {
@@ -67,7 +67,7 @@ const useWeatherData = () => {
     });
   }, [weatherService]);
 
-  const loadSavedLocation = useCallback(async () => {
+  const loadSavedLocation = useCallback(async() => {
     try {
       const savedLocation = localStorage.getItem('weather-app-location');
       if (savedLocation) {
@@ -77,7 +77,7 @@ const useWeatherData = () => {
     } catch (error) {
       console.warn('Could not load saved location:', error);
     }
-    
+
     // Try to get current location (unless in mock mode where we fallback to London)
     if (weatherService.useMockData) {
       // In mock mode, just load London as default without geolocation
@@ -98,14 +98,14 @@ const useWeatherData = () => {
 
   // Auto-load on mount
   useEffect(() => {
-    const autoLoad = async () => {
+    const autoLoad = async() => {
       try {
         await loadSavedLocation();
       } catch (error) {
         console.error('Failed to auto-load weather:', error);
       }
     };
-    
+
     autoLoad();
   }, [loadSavedLocation]);
 

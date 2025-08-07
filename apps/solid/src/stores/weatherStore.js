@@ -17,7 +17,7 @@ export const weatherStore = {
   get weatherData() { return weatherData(); },
   get isLoading() { return isLoading(); },
   get error() { return error(); },
-  
+
   // Signal accessors for reactive subscriptions
   weatherDataSignal: weatherData,
   isLoadingSignal: isLoading,
@@ -26,22 +26,22 @@ export const weatherStore = {
   // Load weather by city
   async loadWeather(city) {
     const requestId = ++latestRequestId;
-    
+
     try {
       setIsLoading(true);
       setError(null);
-      
+
       // Add small delay in test environments to make loading state visible
       if (isTestEnvironment()) {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
-      
+
       const data = await weatherService.getWeatherByCity(city);
-      
+
       // Only update if this is still the latest request
       if (requestId === latestRequestId) {
         setWeatherData(data);
-        
+
         // Save location to localStorage
         saveLocation(city);
       }
@@ -64,11 +64,12 @@ export const weatherStore = {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       const data = await weatherService.getCurrentLocationWeather();
       setWeatherData(data);
     } catch (err) {
-      throw err;
+      setError(err.message);
+      console.error('Current location error:', err);
     } finally {
       setIsLoading(false);
     }
@@ -79,7 +80,7 @@ export const weatherStore = {
     try {
       // Clear any existing error (loading state is already true by default)
       setError(null);
-      
+
       const savedLocation = getSavedLocation();
       if (savedLocation) {
         await this.loadWeather(savedLocation);
@@ -132,6 +133,6 @@ function getSavedLocation() {
 }
 
 function isTestEnvironment() {
-  return navigator.userAgent.includes('Playwright') || 
+  return navigator.userAgent.includes('Playwright') ||
          navigator.userAgent.includes('HeadlessChrome');
 }

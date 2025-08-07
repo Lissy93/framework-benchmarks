@@ -23,7 +23,7 @@ import { WeatherUtils } from '../utils/weather.utils';
               <div class="current-weather__temp" data-testid="current-temperature">
                 {{ formatTemperature(weatherData.current.temperature_2m) }}
               </div>
-              <div 
+              <div
                 class="current-weather__condition {{ getConditionClass(weatherData.current.weather_code) }}"
                 data-testid="current-condition"
               >
@@ -31,7 +31,7 @@ import { WeatherUtils } from '../utils/weather.utils';
               </div>
             </div>
           </div>
-          
+
           <div class="current-weather__details">
             <div class="weather-detail">
               <div class="weather-detail__label">Feels like</div>

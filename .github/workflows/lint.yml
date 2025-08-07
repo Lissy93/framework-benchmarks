@@ -1,0 +1,145 @@
+name: Lint
+
+on:
+  pull_request:
+    branches: [ main, master ]
+    paths:
+      - 'apps/**'
+      - '.eslintrc.js'
+      - 'package.json'
+      - '.github/workflows/lint.yml'
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  lint:
+    name: Lint - ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        app: [vanilla, react, angular, svelte, preact, solid, qwik, vue, jquery]
+      fail-fast: false # Continue linting other apps even if one fails
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run ESLint for ${{ matrix.app }}
+        run: npm run lint:${{ matrix.app }}
+        continue-on-error: false
+        
+      - name: Generate lint report for ${{ matrix.app }}
+        if: always() # Run even if linting fails
+        run: |
+          mkdir -p lint-reports
+          npm run lint:${{ matrix.app }} -- --format=json --output-file=lint-reports/${{ matrix.app }}-lint-report.json || true
+          
+      - name: Upload lint report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report-${{ matrix.app }}
+          path: lint-reports/${{ matrix.app }}-lint-report.json
+          retention-days: 30
+
+  lint-summary:
+    name: Lint Summary
+    runs-on: ubuntu-latest
+    needs: lint
+    if: always()
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Download all lint reports
+        uses: actions/download-artifact@v4
+        with:
+          path: lint-reports
+          merge-multiple: true
+          
+      - name: Generate lint summary
+        run: |
+          echo "# 🔍 Lint Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          total_apps=0
+          passed_apps=0
+          
+          for app in vanilla react angular svelte preact solid qwik vue jquery; do
+            total_apps=$((total_apps + 1))
+            report_file="lint-reports/${app}-lint-report.json"
+            
+            if [ -f "$report_file" ]; then
+              error_count=$(jq '[.[] | select(.errorCount > 0)] | length' "$report_file" 2>/dev/null || echo "0")
+              warning_count=$(jq '[.[] | select(.warningCount > 0)] | length' "$report_file" 2>/dev/null || echo "0")
+              
+              if [ "$error_count" = "0" ]; then
+                echo "✅ **$app**: No errors" >> $GITHUB_STEP_SUMMARY
+                passed_apps=$((passed_apps + 1))
+              else
+                echo "❌ **$app**: $error_count errors, $warning_count warnings" >> $GITHUB_STEP_SUMMARY
+              fi
+            else
+              echo "❓ **$app**: Report not found" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Overall: $passed_apps/$total_apps apps passed linting**" >> $GITHUB_STEP_SUMMARY
+          
+          if [ "$passed_apps" = "$total_apps" ]; then
+            echo "🎉 All apps passed linting!" >> $GITHUB_STEP_SUMMARY
+          else
+            failed_apps=$((total_apps - passed_apps))
+            echo "⚠️ $failed_apps apps have linting issues that need to be fixed." >> $GITHUB_STEP_SUMMARY
+          fi
+
+  # Optional: Auto-fix minor issues on PRs (commented out by default)
+  # auto-fix:
+  #   name: Auto-fix Lint Issues
+  #   runs-on: ubuntu-latest
+  #   if: github.event_name == 'pull_request'
+  #   needs: lint
+  #   
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
+  #       with:
+  #         token: ${{ secrets.GITHUB_TOKEN }}
+  #         
+  #     - name: Setup Node.js
+  #       uses: actions/setup-node@v4
+  #       with:
+  #         node-version: '18'
+  #         cache: 'npm'
+  #         
+  #     - name: Install dependencies
+  #       run: npm ci
+  #       
+  #     - name: Run lint with auto-fix
+  #       run: npm run lint:fix
+  #       
+  #     - name: Commit fixes
+  #       uses: stefanzweifel/git-auto-commit-action@v5
+  #       with:
+  #         commit_message: 'style: auto-fix lint issues'
+  #         branch: ${{ github.head_ref }}

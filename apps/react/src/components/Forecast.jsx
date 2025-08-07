@@ -5,7 +5,7 @@ const Forecast = ({ weatherData }) => {
   const [activeForecastIndex, setActiveForecastIndex] = useState(null);
 
   const handleToggleForecast = useCallback((index) => {
-    setActiveForecastIndex(currentIndex => 
+    setActiveForecastIndex(currentIndex =>
       currentIndex === index ? null : index
     );
   }, []);
@@ -22,7 +22,7 @@ const Forecast = ({ weatherData }) => {
     }
   }, [activeForecastIndex]);
 
-  if (!weatherData) return null;
+  if (!weatherData) {return null;}
 
   const { daily } = weatherData;
 
