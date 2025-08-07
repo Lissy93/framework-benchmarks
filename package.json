@@ -7,7 +7,6 @@
     "check": "node scripts/verify/check.js",
     "test": "node scripts/verify/test.js",
     "lint": "node scripts/verify/lint.js",
-
     "// RUN TESTS": "---------------------------------------------------------",
     "test:vanilla": "playwright test --config=tests/config/playwright-vanilla.config.js",
     "test:react": "playwright test --config=tests/config/playwright-react.config.js",
@@ -18,9 +17,8 @@
     "test:qwik": "playwright test --config=tests/config/playwright-qwik.config.js",
     "test:vue": "playwright test --config=tests/config/playwright-vue.config.js",
     "test:jquery": "playwright test --config=tests/config/playwright-jquery.config.js",
-
     "// START DEV SERVER": "---------------------------------------------------",
-    "dev:vanilla": "cd apps/vanilla && npm run dev",
+    "dev:vanilla": "cd apps/vanilla && python3 -m http.server 3000 || python -m http.server 3000",
     "dev:react": "cd apps/react && npm run dev",
     "dev:angular": "cd apps/angular && npm run dev",
     "dev:svelte": "cd apps/svelte && npm run dev",
@@ -29,7 +27,6 @@
     "dev:qwik": "cd apps/qwik && npm run dev",
     "dev:vue": "cd apps/vue && npm run dev",
     "dev:jquery": "cd apps/jquery && npm run dev",
-
     "// LINT APPLICATIONS": "-------------------------------------------------",
     "lint:vanilla": "eslint 'apps/vanilla/**/*.js'",
     "lint:react": "eslint 'apps/react/**/*.{js,jsx}'",
@@ -40,13 +37,17 @@
     "lint:qwik": "eslint 'apps/qwik/**/*.{ts,tsx}'",
     "lint:vue": "eslint 'apps/vue/**/*.{js,vue}'",
     "lint:jquery": "eslint 'apps/jquery/**/*.js'",
-
     "// MISCELLANEOUS SETUP SCRIPTS": "---------------------------------------",
     "setup": "node scripts/setup",
     "install:playwright": "playwright install",
     "sync-assets": "node scripts/setup/sync-assets.js",
     "generate-mocks": "node scripts/setup/generate-mocks.js",
-    "generate-scripts": "node scripts/setup/generate-scripts.js"
+    "generate-scripts": "node scripts/setup/generate-scripts.js",
+    "test:alpine": "playwright test --config=tests/config/playwright-alpine.config.js",
+    "dev:alpine": "cd apps/alpine && npm run dev",
+    "lint:alpine": "eslint 'apps/alpine/**/*.js'",
+    "verify": "node scripts/verify/index.js",
+    "lint:fix": "npm run lint:vanilla -- --fix && npm run lint:react -- --fix && npm run lint:angular -- --fix && npm run lint:svelte -- --fix && npm run lint:preact -- --fix && npm run lint:solid -- --fix && npm run lint:qwik -- --fix && npm run lint:vue -- --fix && npm run lint:jquery -- --fix && npm run lint:alpine -- --fix"
   },
   "devDependencies": {
     "@angular-eslint/eslint-plugin": "^20.1.1",

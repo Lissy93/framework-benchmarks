@@ -64,6 +64,13 @@ function createConfig(framework) {
         command: 'npm run dev:jquery',
         url: 'http://localhost:3000?mock=true',
       }
+    },
+    alpine: {
+      baseURL: 'http://localhost:3000/apps/alpine?mock=true',
+      webServer: {
+        command: 'npm run dev:alpine',
+        url: 'http://localhost:3000?mock=true',
+      }
     }
   };
 

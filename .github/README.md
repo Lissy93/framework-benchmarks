@@ -51,7 +51,6 @@ Contents
 - Lit
 - Alpine.js
 - ✅ Solid
-- Astro
 - Van.js
 - ✅ Angular
 - Marko
@@ -134,11 +133,13 @@ everything for managing the project (setup, testing, benchmarking, reporting, et
 ### Shared Assets
 To keep things uniform, all apps will share certain assets
 
-- Tests: The same test suit is used for all apps, to ensure each one conforms the spec and is fully functional. Tests are (in [`tests/`](https://github.com/Lissy93/weather-front/tree/main/tests).
-- Data: Apps support using real weather data, from [open-meteo api](https://open-meteo.com). However, to keep tests fair, we use mocked data when running benchmarks.
-- Assets: All apps use the same static assets
-- Styles: The same CSS is used across all apps, and theming is done with CSS variables
-- Dependencies: Beyond their framework code, none of the apps use any additional dependencies, libraries or third-party resources
+- **[`tests/`](https://github.com/Lissy93/weather-front/tree/main/tests)** - Same test suit used for all apps. To ensure each app conforms to the spec and is fully functional
+- **[`assets/`](https://github.com/Lissy93/weather-front/tree/main/assets)** - Same static assets (icons, fonts, styles, meta, etc)
+- **[`assets/styles/`](https://github.com/Lissy93/weather-front/tree/main/assets/styles)** - Same styles for all apps, and theming is done with CSS variables
+
+And
+- **Dependencies**: Beyond their framework code, none of the apps use any additional dependencies, libraries or third-party "stuff"
+- **Data**: Apps support using real weather data, from [open-meteo api](https://open-meteo.com). However, to keep tests fair, we use mocked data when running benchmarks.
 
 
 ### Commands
