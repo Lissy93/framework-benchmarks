@@ -126,18 +126,20 @@ weather-front
     └── ...
 ```
 
+### Scripts
+The [`scripts/`](https://github.com/Lissy93/weather-front/tree/main/scripts) directory contains
+everything for managing the project (setup, testing, benchmarking, reporting, etc).
+
+
 ### Shared Assets
 To keep things uniform, all apps will share certain assets
 
-- Tests
-	- The same test suit is used for all apps. Therefore, each app must conform to an identical spec
-- Data
-	- Each app supports using real weather data, from [open-meteo api](https://open-meteo.com)
-	- However to keep tests fair, we use mocked data when running benchmarks
-- Assets
-	- All apps use the same set of styles, with theming done via CSS variables
-	- Weather icons and other assets are identical and shared between apps
-	- None of the apps use any additional dependencies, libraries or third-party resources
+- Tests: The same test suit is used for all apps, to ensure each one conforms the spec and is fully functional. Tests are (in [`tests/`](https://github.com/Lissy93/weather-front/tree/main/tests).
+- Data: Apps support using real weather data, from [open-meteo api](https://open-meteo.com). However, to keep tests fair, we use mocked data when running benchmarks.
+- Assets: All apps use the same static assets
+- Styles: The same CSS is used across all apps, and theming is done with CSS variables
+- Dependencies: Beyond their framework code, none of the apps use any additional dependencies, libraries or third-party resources
+
 
 ### Commands
 

@@ -1,4 +1,4 @@
-name: Test All Frameworks
+name: 🧪 Test
 
 on:
   workflow_dispatch:
@@ -9,7 +9,7 @@ on:
         default: 'all'
         type: string
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, dev ]
     types: [ opened, synchronize, reopened ]
 
 concurrency:
@@ -72,17 +72,22 @@ jobs:
             frameworks="${{ github.event.inputs.frameworks }}"
           else
             # Get framework list from centralized config
-            frameworks=$(node scripts/generate-scripts.js github)
+            frameworks=$(node scripts/setup/generate-scripts.js github)
           fi
-          echo "frameworks=$(echo "[$frameworks]" | sed 's/,/", "/g' | sed 's/\[/["/ ; s/\]/"]/')" >> $GITHUB_OUTPUT
+          echo "frameworks=$(echo "[$frameworks]" | sed 's/,/", "/g' | sed 's/\[/[\"/ ; s/\]/\"]/')" >> $GITHUB_OUTPUT
           echo "Testing frameworks: $frameworks"
 
-  test-vanilla:
-    name: Test Vanilla JS
+  test:
+    name: Test ${{ matrix.framework }}
     needs: setup
-    if: contains(needs.setup.outputs.frameworks, 'vanilla')
+    if: fromJSON(needs.setup.outputs.frameworks)[0] != ''
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: ${{ fromJSON(needs.setup.outputs.frameworks) }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -101,241 +106,21 @@ jobs:
             apps/*/node_modules
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           
-      - name: Run Vanilla JS tests
+      - name: Run tests for ${{ matrix.framework }}
         uses: nick-fields/retry@v2
         with:
           timeout_minutes: 10
           max_attempts: 4
           retry_wait_seconds: 30
           command: |
-            echo "🧪 Running Vanilla JS tests (attempt ${{ github.run_attempt }})"
-            npm run test:vanilla -- --reporter=github
+            echo "🧪 Running ${{ matrix.framework }} tests (attempt ${{ github.run_attempt }})"
+            npm run test:${{ matrix.framework }} -- --reporter=github
             
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: vanilla-test-results
-          path: |
-            playwright-report/
-            test-results/
-          retention-days: 30
-
-  test-react:
-    name: Test React
-    needs: setup
-    if: contains(needs.setup.outputs.frameworks, 'react')
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-          
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            apps/*/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          
-      - name: Run React tests
-        uses: nick-fields/retry@v2
-        with:
-          timeout_minutes: 10
-          max_attempts: 4
-          retry_wait_seconds: 30
-          command: |
-            echo "⚛️ Running React tests (attempt ${{ github.run_attempt }})"
-            npm run test:react -- --reporter=github
-            
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: react-test-results
-          path: |
-            playwright-report/
-            test-results/
-          retention-days: 30
-
-  test-angular:
-    name: Test Angular
-    needs: setup
-    if: contains(needs.setup.outputs.frameworks, 'angular')
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-          
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            apps/*/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          
-      - name: Run Angular tests
-        uses: nick-fields/retry@v2
-        with:
-          timeout_minutes: 10
-          max_attempts: 4
-          retry_wait_seconds: 30
-          command: |
-            echo "🅰️ Running Angular tests (attempt ${{ github.run_attempt }})"
-            npm run test:angular -- --reporter=github
-            
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: angular-test-results
-          path: |
-            playwright-report/
-            test-results/
-          retention-days: 30
-
-  test-svelte:
-    name: Test Svelte
-    needs: setup
-    if: contains(needs.setup.outputs.frameworks, 'svelte')
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-          
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            apps/*/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          
-      - name: Run Svelte tests
-        uses: nick-fields/retry@v2
-        with:
-          timeout_minutes: 10
-          max_attempts: 4
-          retry_wait_seconds: 30
-          command: |
-            echo "🔥 Running Svelte tests (attempt ${{ github.run_attempt }})"
-            npm run test:svelte -- --reporter=github
-            
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: svelte-test-results
-          path: |
-            playwright-report/
-            test-results/
-          retention-days: 30
-
-  test-preact:
-    name: Test Preact
-    needs: setup
-    if: contains(needs.setup.outputs.frameworks, 'preact')
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-          
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            apps/*/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          
-      - name: Run Preact tests
-        uses: nick-fields/retry@v2
-        with:
-          timeout_minutes: 10
-          max_attempts: 4
-          retry_wait_seconds: 30
-          command: |
-            echo "💜 Running Preact tests (attempt ${{ github.run_attempt }})"
-            npm run test:preact -- --reporter=github
-            
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: preact-test-results
-          path: |
-            playwright-report/
-            test-results/
-          retention-days: 30
-
-  test-solid:
-    name: Test Solid.js
-    needs: setup
-    if: contains(needs.setup.outputs.frameworks, 'solid')
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-          
-      - name: Restore dependencies cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            apps/*/node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
-          
-      - name: Run Solid.js tests
-        uses: nick-fields/retry@v2
-        with:
-          timeout_minutes: 10
-          max_attempts: 4
-          retry_wait_seconds: 30
-          command: |
-            echo "🚀 Running Solid.js tests (attempt ${{ github.run_attempt }})"
-            npm run test:solid -- --reporter=github
-            
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: solid-test-results
+          name: ${{ matrix.framework }}-test-results
           path: |
             playwright-report/
             test-results/
@@ -343,7 +128,7 @@ jobs:
 
   summary:
     name: Test Summary
-    needs: [setup, test-vanilla, test-react, test-angular, test-svelte, test-preact, test-solid]
+    needs: [setup, test]
     if: always()
     runs-on: ubuntu-latest
     steps:
@@ -353,68 +138,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Framework | Status |" >> $GITHUB_STEP_SUMMARY
           echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
-          
-          # Check each framework's status
-          if [[ "${{ contains(needs.setup.outputs.frameworks, 'vanilla') }}" == "true" ]]; then
-            if [[ "${{ needs.test-vanilla.result }}" == "success" ]]; then
-              echo "| Vanilla JS | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
-            elif [[ "${{ needs.test-vanilla.result }}" == "skipped" ]]; then
-              echo "| Vanilla JS | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "| Vanilla JS | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
-            fi
-          fi
-          
-          if [[ "${{ contains(needs.setup.outputs.frameworks, 'react') }}" == "true" ]]; then
-            if [[ "${{ needs.test-react.result }}" == "success" ]]; then
-              echo "| React | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
-            elif [[ "${{ needs.test-react.result }}" == "skipped" ]]; then
-              echo "| React | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "| React | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
-            fi
-          fi
-          
-          if [[ "${{ contains(needs.setup.outputs.frameworks, 'angular') }}" == "true" ]]; then
-            if [[ "${{ needs.test-angular.result }}" == "success" ]]; then
-              echo "| Angular | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
-            elif [[ "${{ needs.test-angular.result }}" == "skipped" ]]; then
-              echo "| Angular | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "| Angular | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
-            fi
-          fi
-          
-          if [[ "${{ contains(needs.setup.outputs.frameworks, 'svelte') }}" == "true" ]]; then
-            if [[ "${{ needs.test-svelte.result }}" == "success" ]]; then
-              echo "| Svelte | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
-            elif [[ "${{ needs.test-svelte.result }}" == "skipped" ]]; then
-              echo "| Svelte | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "| Svelte | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
-            fi
-          fi
-          
-          if [[ "${{ contains(needs.setup.outputs.frameworks, 'preact') }}" == "true" ]]; then
-            if [[ "${{ needs.test-preact.result }}" == "success" ]]; then
-              echo "| Preact | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
-            elif [[ "${{ needs.test-preact.result }}" == "skipped" ]]; then
-              echo "| Preact | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "| Preact | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
-            fi
-          fi
-          
-          if [[ "${{ contains(needs.setup.outputs.frameworks, 'solid') }}" == "true" ]]; then
-            if [[ "${{ needs.test-solid.result }}" == "success" ]]; then
-              echo "| Solid.js | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
-            elif [[ "${{ needs.test-solid.result }}" == "skipped" ]]; then
-              echo "| Solid.js | ⏭️ Skipped |" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "| Solid.js | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
-            fi
-          fi
-          
+          echo "| All Frameworks | ${{ needs.test.result == 'success' && '✅ Passed' || '❌ Failed' }} |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### 📊 Workflow Details" >> $GITHUB_STEP_SUMMARY
           echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
@@ -424,31 +148,9 @@ jobs:
           
       - name: Check overall status
         run: |
-          # Determine if any tests failed
-          failed_tests=""
-          
-          if [[ "${{ contains(needs.setup.outputs.frameworks, 'vanilla') }}" == "true" && "${{ needs.test-vanilla.result }}" != "success" && "${{ needs.test-vanilla.result }}" != "skipped" ]]; then
-            failed_tests="$failed_tests vanilla"
-          fi
-          if [[ "${{ contains(needs.setup.outputs.frameworks, 'react') }}" == "true" && "${{ needs.test-react.result }}" != "success" && "${{ needs.test-react.result }}" != "skipped" ]]; then
-            failed_tests="$failed_tests react"
-          fi
-          if [[ "${{ contains(needs.setup.outputs.frameworks, 'angular') }}" == "true" && "${{ needs.test-angular.result }}" != "success" && "${{ needs.test-angular.result }}" != "skipped" ]]; then
-            failed_tests="$failed_tests angular"
-          fi
-          if [[ "${{ contains(needs.setup.outputs.frameworks, 'svelte') }}" == "true" && "${{ needs.test-svelte.result }}" != "success" && "${{ needs.test-svelte.result }}" != "skipped" ]]; then
-            failed_tests="$failed_tests svelte"
-          fi
-          if [[ "${{ contains(needs.setup.outputs.frameworks, 'preact') }}" == "true" && "${{ needs.test-preact.result }}" != "success" && "${{ needs.test-preact.result }}" != "skipped" ]]; then
-            failed_tests="$failed_tests preact"
-          fi
-          if [[ "${{ contains(needs.setup.outputs.frameworks, 'solid') }}" == "true" && "${{ needs.test-solid.result }}" != "success" && "${{ needs.test-solid.result }}" != "skipped" ]]; then
-            failed_tests="$failed_tests solid"
-          fi
-          
-          if [[ -n "$failed_tests" ]]; then
-            echo "❌ Some tests failed: $failed_tests"
+          if [[ "${{ needs.test.result }}" != "success" ]]; then
+            echo "❌ Some tests failed. That sucks."
             exit 1
           else
-            echo "✅ All tests passed successfully!"
+            echo "✅ All tests passed successfully. Party time!"
           fi

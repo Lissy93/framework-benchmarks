@@ -131,6 +131,7 @@ const main = async () => {
       break;
       
     case 'ids':
+    case 'github':
       try {
         const frameworks = loadFrameworks();
         console.log(frameworks.map(f => f.id).join(','));
