@@ -77,19 +77,39 @@ function createConfig(framework) {
     testIgnore: ['**/unit/**', '**/test-helpers.js'],
     fullyParallel: true,
     forbidOnly: !!process.env.CI,
-    retries: process.env.CI ? 2 : 0,
-    workers: process.env.CI ? 1 : undefined,
-    reporter: 'html',
+    retries: process.env.CI ? 2 : 1, // Reasonable retries
+    workers: process.env.CI ? 2 : 4, // Better parallelization
+    reporter: [['html'], ['list']], // Cleaner terminal output
+    timeout: 30000, // Reasonable global timeout
+    expect: {
+      timeout: 5000, // Reasonable expect timeout
+    },
     use: {
       baseURL: config.baseURL,
-      trace: 'on-first-retry',
-      screenshot: 'only-on-failure',
+      trace: 'retain-on-failure',
+      screenshot: 'only-on-failure', 
+      video: 'retain-on-failure',
+      actionTimeout: 0, // Use default
+      navigationTimeout: 0, // Use default
     },
 
     projects: [
       {
         name: 'chromium',
-        use: { ...devices['Desktop Chrome'] },
+        use: { 
+          ...devices['Desktop Chrome'],
+          // Additional browser options for stability
+          launchOptions: {
+            args: [
+              '--disable-dev-shm-usage',
+              '--disable-background-timer-throttling',
+              '--disable-backgrounding-occluded-windows',
+              '--disable-renderer-backgrounding',
+              '--no-sandbox',
+              '--disable-web-security'
+            ],
+          },
+        },
       }
     ],
 

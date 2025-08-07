@@ -31,14 +31,19 @@ function syncAssets() {
     // Copy icons and styles
     const sourceIcons = path.join(ASSETS_DIR, 'icons');
     const sourceStyles = path.join(ASSETS_DIR, 'styles');
+    const sourceMocks = path.join(ASSETS_DIR, 'mocks');
     const targetIcons = path.join(appAssetsDir, 'icons');
     const targetStyles = path.join(appAssetsDir, 'styles');
+    const targetMocks = path.join(appAssetsDir, 'mocks');
 
     if (fs.existsSync(sourceIcons)) {
       fs.cpSync(sourceIcons, targetIcons, { recursive: true });
     }
     if (fs.existsSync(sourceStyles)) {
       fs.cpSync(sourceStyles, targetStyles, { recursive: true });
+    }
+    if (fs.existsSync(sourceMocks)) {
+      fs.cpSync(sourceMocks, targetMocks, { recursive: true });
     }
 
     console.log(`✓ Synced assets for ${app}`);
