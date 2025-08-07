@@ -119,6 +119,18 @@
       "devCommand": "python3 -m http.server 3000 || python -m http.server 3000",
       "testCommand": "playwright test --config=tests/config/playwright-alpine.config.js",
       "lintFiles": ["js"]
+    },
+    {
+      "id": "lit",
+      "name": "Lit",
+      "displayName": "Lit",
+      "icon": "🔥",
+      "dir": "lit",
+      "hasNodeModules": true,
+      "buildCommand": "vite build",
+      "devCommand": "vite --port 3000",
+      "testCommand": "playwright test --config=tests/config/playwright-lit.config.js",
+      "lintFiles": ["js"]
     }
   ]
 }

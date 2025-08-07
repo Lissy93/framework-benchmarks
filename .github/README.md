@@ -26,30 +26,24 @@ What does _best_ mean?
 
 Contents
 - [Summary]()
-- [Requirements Spec]()
-- [Usage and Commands]()
+- [Requirement Spec]()
+- [Usage Guide]()
+- [Project Outline]()
+- [Benchmarking]()
 - [Real-world Applications]()
 - [Attributions and License]()
 
 ---
 
-### What we'll measure
-- Bundle size & output
-- Load metrics: FCP, LCP, CLS, TTI, interaction latency
-- Hydration/SSR cost, CPU & memory
-- Cold vs. warm cache behaviour
-- Memory usage: idle, post-flow, leak delta
-- Build time & dev server HMR latency
-
----
+## Summary
 
 ### Frameworks Covered
 - ✅ Svelte
 - ✅ React
 - ✅ Vue
 - ✅ Qwik
-- Lit
-- Alpine.js
+- ✅ Lit
+- ✅ Alpine.js
 - ✅ Solid
 - Van.js
 - ✅ Angular
@@ -62,7 +56,7 @@ Contents
 
 ---
 
-## App Requirements
+## Requirement Spec
 
 Every app is built with identical requirements (as validated by the shared test suite), and uses the same assets, styles, and data. The only difference is the framework used to build each.
 
@@ -79,11 +73,10 @@ Why a weather app? Because it enables us to use all the critical features of any
 ### Functional Requirements
 For our app to be somewhat complete and useful, it must do the following:
 - On initial load, the user should see weather for their current GPS location
-- The user should be able to search for a city, and view weather for that place
-- The user's city should be stored in localstorage, and loaded for next time
+- The user should be able to search for a city, and view it's weather
+- And the user's city should be stored in localstorage for next time
 - The app should show a detailed view of the current weather
-- And a summary forecast for the next 7 days
-- Clicking any day will show detailed weather for that day
+- And a summary 7-day forecast, where days can be expanded for more details
 
 ### Quality Requirements
 There's certain standards every app should follow, and we want to use best practices, so:
@@ -99,8 +92,18 @@ There's certain standards every app should follow, and we want to use best pract
 - SEO: Basic meta and og tags, SSR where possible, 
 - CI: Automated tests, lints and validation should ensure all changes are compliant
 
+### Benchmarking Requirements
+To compare the frameworks, we need to measure:
+- Bundle size & output
+- Load metrics: FCP, LCP, CLS, TTI, interaction latency
+- Hydration/SSR cost, CPU & memory
+- Cold vs. warm cache behaviour
+- Memory usage: idle, post-flow, leak delta
+- Build time & dev server HMR latency
+
 ### UI Requirements
-The interface is simple, but must be identical arcorss all apps, as seen in the screenshot below
+The interface is simple, but must be identical arcorss all apps. As validated by the snapshots in the tests.<br>
+The screenshots will all look like this:
 
 <img src="https://i.ibb.co/ymGkLnMY/weather-front.png" width="400" />
 
@@ -108,7 +111,35 @@ The interface is simple, but must be identical arcorss all apps, as seen in the 
 
 ## Usage
 
-### Project Structure
+### Setup
+
+```bash
+git clone git@github.com:Lissy93/weather-front.git
+cd weather-front
+npm install
+npm run setup
+```
+
+### Developing
+Run `npm run dev:[app-name]`<br>
+Or, you can: `cd ./apps/[app-name]` then `npm i` and `npm run dev`
+
+### Testing
+All apps are tested with the same shared test suite, to ensure they all conform to the same requirements, and are fully functional.
+Tests are dome with [Playwright](https://playwright.dev/docs/intro) and can be found in the [`tests/`](https://github.com/Lissy93/weather-front/tree/main/tests) directory.
+
+Either execute tests for all implementations with `npm test`, or just for a specific app with `npm run test:[app]` (e.g. `npm run test:react`).<br>
+You should also verify the lint checks pass, with `npm run lint` or `npm run lint:[app]`.
+
+### Deploying
+Build the app for production, with `npm run build:[app-name]`<br>
+Then upload `./apps/[app-name]/dist/` to any web server, CDN or static hosting provider
+
+---
+
+## Project Outline
+
+### Directory Structure
 
 ```
 weather-front
@@ -126,8 +157,9 @@ weather-front
 ```
 
 ### Scripts
-The [`scripts/`](https://github.com/Lissy93/weather-front/tree/main/scripts) directory contains
+The **[`scripts/`](https://github.com/Lissy93/weather-front/tree/main/scripts)** directory contains
 everything for managing the project (setup, testing, benchmarking, reporting, etc).
+You can view a list of scripts by running `npm run help`.
 
 
 ### Shared Assets
@@ -137,31 +169,30 @@ To keep things uniform, all apps will share certain assets
 - **[`assets/`](https://github.com/Lissy93/weather-front/tree/main/assets)** - Same static assets (icons, fonts, styles, meta, etc)
 - **[`assets/styles/`](https://github.com/Lissy93/weather-front/tree/main/assets/styles)** - Same styles for all apps, and theming is done with CSS variables
 
-And
+### Third Parties
 - **Dependencies**: Beyond their framework code, none of the apps use any additional dependencies, libraries or third-party "stuff"
 - **Data**: Apps support using real weather data, from [open-meteo api](https://open-meteo.com). However, to keep tests fair, we use mocked data when running benchmarks.
 
 
 ### Commands
 
-The unit and automated E2E tests are at the core of this project, as this is what determines that each app is functional, and that all apps are working in the same way.
+See the [`package.json`](https://github.com/Lissy93/weather-front/blob/main/package.json) for all commands.
 
-#### Setup
-- `npm run sync-assets` - Copies shared assets into each project
+<details>
+<summary>The TL;DR</summary>
 
-#### Tests
-- `npm test` - Run all tests
-- `npm run test:[app-name]` - Run tests for a specific app
+> - **First run**<br>`npm run setup` to prepare everything, then `npm run check` to validate the setup
+> - **Tests**<br>`npm run test` or `npm run test:[app]` - Run tests for all apps, or a specific app
+> - **Lint**<br>`npm run line` or `npm run lint:[app]` - Runs the linter for all apps, or a specific app
+> - **Dev**<br>`npm run dev:[app]` - Start the dev server with HMR for a specific app
+> - **Build**<br>`npm run build` or `npm run build:[app]` - Build for prod to `./apps/[app]/dist/`
+> - **Scripts**<br>`npm run help` to see a list of all scripts
 
-#### Benchmarking
+</details>
 
-#### Developing
-- `npm run dev:[app-name]`
-- Or, you can: `cd ./apps/[app-name]` then `npm i` and `npm run dev`
+---
 
-#### Deploying
-- `npm run build:[app-name]`
-- Then upload `./apps/[app-name]/dist/` to any web server, CDN or static hosting provider
+## Benchmarking
 
 ---
 

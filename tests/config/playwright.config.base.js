@@ -71,6 +71,13 @@ function createConfig(framework) {
         command: 'npm run dev:alpine',
         url: 'http://localhost:3000?mock=true',
       }
+    },
+    lit: {
+      baseURL: 'http://localhost:3000?mock=true',
+      webServer: {
+        command: 'npm run dev:lit',
+        url: 'http://localhost:3000?mock=true',
+      }
     }
   };
 
