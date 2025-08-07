@@ -65,7 +65,7 @@ const useWeatherData = () => {
     try {
       // Clear any existing error (loading state is already true by default)
       setError(null);
-      
+            
       const savedLocation = getSavedLocation();
       if (savedLocation) {
         await loadWeather(savedLocation);

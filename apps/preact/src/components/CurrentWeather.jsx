@@ -71,7 +71,7 @@ const CurrentWeather = ({ weatherData }) => {
           <div class="weather-detail">
             <span class="weather-detail__label">Precipitation</span>
             <span class="weather-detail__value" data-testid="precipitation">
-              {current.precipitation.toFixed(1)} mm
+              {current.precipitation?.toFixed(1)} mm
             </span>
           </div>
         </div>

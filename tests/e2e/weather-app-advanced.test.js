@@ -4,6 +4,18 @@
  */
 
 const { test, expect } = require('@playwright/test');
+const fs = require('fs');
+const path = require('path');
+
+// Load expected mock data for test validation
+const mockDataPath = path.join(__dirname, '..', '..', 'assets', 'mocks', 'weather-data.json');
+let expectedMockData = null;
+
+try {
+  expectedMockData = JSON.parse(fs.readFileSync(mockDataPath, 'utf8'));
+} catch (error) {
+  console.warn('Warning: Could not load mock data for advanced test validation:', error.message);
+}
 
 test.describe('Weather App - Advanced E2E Tests', () => {
   

@@ -60,13 +60,13 @@ const ForecastItem = ({ daily, index, isActive = false, onToggle }) => {
           <div class="forecast-detail-item">
             <div class="forecast-detail-item__label">Rain</div>
             <div class="forecast-detail-item__value">
-              {daily.rain_sum[index].toFixed(1)} mm
+              {daily.rain_sum[index]?.toFixed(1)} mm
             </div>
           </div>
           <div class="forecast-detail-item">
             <div class="forecast-detail-item__label">UV Index</div>
             <div class="forecast-detail-item__value">
-              {daily.uv_index_max[index].toFixed(1)}
+              {daily.uv_index_max[index]?.toFixed(1)}
             </div>
           </div>
           <div class="forecast-detail-item">
