@@ -1,63 +1,7 @@
 #!/usr/bin/env node
 
-/**
- * Run All Tests
- * Execute test suites across all configured frameworks with detailed reporting
- */
+const { color, formatDuration, runCommand, loadFrameworks } = require('../utils');
 
-const { spawn } = require('child_process');
-const path = require('path');
-
-/**
- * Execute a command and return success status
- */
-async function runCommand(command, args = [], options = {}) {
-  return new Promise((resolve) => {
-    const child = spawn(command, args, { 
-      stdio: options.quiet ? 'pipe' : 'inherit',
-      shell: true,
-      cwd: options.cwd || process.cwd()
-    });
-    
-    child.on('close', (code) => {
-      resolve(code === 0);
-    });
-    
-    child.on('error', (error) => {
-      console.error(`❌ Command failed: ${error.message}`);
-      resolve(false);
-    });
-  });
-}
-
-/**
- * Load frameworks configuration
- */
-function loadFrameworks() {
-  try {
-    const { loadFrameworks } = require('../setup/generate-scripts.js');
-    return loadFrameworks();
-  } catch (error) {
-    // Fallback to reading frameworks.json directly
-    const fs = require('fs');
-    const configPath = path.join(__dirname, '..', '..', 'frameworks.json');
-    const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
-    return config.frameworks || [];
-  }
-}
-
-/**
- * Format duration in human-readable format
- */
-function formatDuration(ms) {
-  if (ms < 1000) return `${ms}ms`;
-  if (ms < 60000) return `${(ms / 1000).toFixed(1)}s`;
-  return `${Math.floor(ms / 60000)}m ${Math.floor((ms % 60000) / 1000)}s`;
-}
-
-/**
- * Main test execution function
- */
 async function runAllTests() {
   const startTime = Date.now();
   
@@ -65,82 +9,73 @@ async function runAllTests() {
     console.log('🚀 Starting framework test suite execution...\n');
     
     const frameworks = loadFrameworks();
-    const results = [];
+    if (frameworks.length === 0) throw new Error('No frameworks found in configuration');
     
-    if (frameworks.length === 0) {
-      throw new Error('No frameworks found in configuration');
-    }
+    const results = [];
     
     // Run tests for each framework
     for (const framework of frameworks) {
       const frameworkStartTime = Date.now();
       
-      console.log(`\n${framework.icon || '🧪'} Testing ${framework.name}...`);
+      console.log(`\n${framework.icon} Testing ${framework.name}...`);
       console.log('─'.repeat(50));
       
-      const success = await runCommand('npm', ['run', `test:${framework.id}`], {
-        quiet: false
-      });
-      
+      const result = await runCommand('npm', ['run', `test:${framework.id}`], { captureOutput: false });
       const duration = Date.now() - frameworkStartTime;
+      
+      const status = result.success ? color('✅ PASSED', 'green') : color('❌ FAILED', 'red');
+      console.log(`${framework.name}: ${status} (${formatDuration(duration)})`);
       
       results.push({
         name: framework.name,
-        id: framework.id,
-        icon: framework.icon || '📦',
-        success,
+        icon: framework.icon,
+        success: result.success,
         duration
       });
-      
-      const status = success ? '✅ PASSED' : '❌ FAILED';
-      console.log(`${framework.name}: ${status} (${formatDuration(duration)})`);
     }
     
+    // Generate summary
     const totalDuration = Date.now() - startTime;
-    
-    // Generate summary report
-    console.log('\n' + '═'.repeat(60));
-    console.log('📊 TEST EXECUTION SUMMARY');
-    console.log('═'.repeat(60));
-    
     const passed = results.filter(r => r.success);
     const failed = results.filter(r => !r.success);
-    
-    console.log(`\n⏱️  Total execution time: ${formatDuration(totalDuration)}`);
-    console.log(`📋 Frameworks tested: ${results.length}`);
-    console.log(`✅ Passed: ${passed.length}`);
-    console.log(`❌ Failed: ${failed.length}`);
-    
-    if (passed.length > 0) {
-      console.log('\n🎉 PASSING FRAMEWORKS:');
-      passed.forEach(result => {
-        console.log(`   ${result.icon} ${result.name} (${formatDuration(result.duration)})`);
-      });
-    }
-    
-    if (failed.length > 0) {
-      console.log('\n💥 FAILING FRAMEWORKS:');
-      failed.forEach(result => {
-        console.log(`   ${result.icon} ${result.name} (${formatDuration(result.duration)})`);
-      });
-    }
-    
-    // Overall result
     const successRate = (passed.length / results.length * 100).toFixed(1);
-    console.log(`\n🎯 Success Rate: ${successRate}% (${passed.length}/${results.length})`);
+    
+    const passedList = passed.map(r => `   ${r.icon} ${r.name} (${formatDuration(r.duration)})`).join('\n');
+    const failedList = failed.map(r => `   ${r.icon} ${r.name} (${formatDuration(r.duration)})`).join('\n');
+    
+    let summary = `
+═══════════════════════════════════════════════════════════
+📊 TEST EXECUTION SUMMARY
+═══════════════════════════════════════════════════════════
+
+⏱️  Total execution time: ${formatDuration(totalDuration)}
+📋 Frameworks tested: ${results.length}
+✅ Passed: ${passed.length}
+❌ Failed: ${failed.length}
+🎯 Success Rate: ${successRate}% (${passed.length}/${results.length})
+`;
+
+    if (passed.length > 0) {
+      summary += `\n🎉 PASSING FRAMEWORKS:\n${passedList}\n`;
+    }
+    if (failed.length > 0) {
+      summary += `\n💥 FAILING FRAMEWORKS:\n${failedList}\n`;
+    }
+    console.log(summary);
     
     if (failed.length === results.length) {
-      console.log('\n❌ All tests failed - this may indicate a configuration issue');
+      console.log(color('\n❌ All tests failed - this may indicate a configuration issue', 'red'));
       process.exit(1);
     } else if (failed.length > 0) {
-      console.log('\n⚠️  Some tests failed - check output above for details');
+      console.log(color('\n⚠️  Some tests failed - check output above for details', 'yellow'));
       process.exit(1);
     } else {
-      console.log('\n🎊 All tests passed! Great work!');
+      console.log(color('\n✅ All tests passed', 'green'));
+      console.log(color('\nToday is a wonderful day to be alive 😊', 'magenta'));
     }
     
   } catch (error) {
-    console.error('❌ Error running tests:', error.message);
+    console.error(color('❌ Error running tests:', 'red'), error.message);
     process.exit(1);
   }
 }

@@ -43,7 +43,10 @@
     "lint:solid": "eslint 'apps/solid/**/*.{js,jsx}'",
     "lint:qwik": "eslint 'apps/qwik/**/*.{ts,tsx}'",
     "lint:vue": "eslint 'apps/vue/**/*.{js,vue}'",
-    "lint:jquery": "eslint 'apps/jquery/**/*.js'"
+    "lint:jquery": "eslint 'apps/jquery/**/*.js'",
+    "lint:fix": "npm run lint:vanilla -- --fix && npm run lint:react -- --fix && npm run lint:angular -- --fix && npm run lint:svelte -- --fix && npm run lint:preact -- --fix && npm run lint:solid -- --fix && npm run lint:qwik -- --fix && npm run lint:vue -- --fix && npm run lint:jquery -- --fix",
+    "verify": "node scripts/verify/index.js",
+    "check": "node scripts/verify/check.js"
   },
   "devDependencies": {
     "@angular-eslint/eslint-plugin": "^20.1.1",
