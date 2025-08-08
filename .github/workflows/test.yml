@@ -50,7 +50,7 @@ jobs:
             if [ -f "$app/package.json" ]; then
               echo "Installing dependencies for $(basename "$app")"
               cd "$app"
-              npm ci || { echo "Failed to install dependencies for $(basename "$app")"; exit 1; }
+              npm i || { echo "Failed to install dependencies for $(basename "$app")"; exit 1; }
               cd - > /dev/null
             fi
           done
