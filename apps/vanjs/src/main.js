@@ -8,7 +8,7 @@ const { div, header, main, footer, h1, h2, h3, p, section, form, input, button, 
 class WeatherApp {
   constructor() {
     this.weatherService = new WeatherService();
-    
+
     // Reactive state
     this.searchQuery = van.state('');
     this.isLoading = van.state(false);
@@ -16,7 +16,7 @@ class WeatherApp {
     this.errorMessage = van.state('');
     this.weatherData = van.state(null);
     this.activeForecastIndex = van.state(null);
-    
+
     this.init();
   }
 
@@ -30,10 +30,10 @@ class WeatherApp {
       this.searchQuery.val = e.target.value;
     };
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async(e) => {
       e.preventDefault();
       const city = this.searchQuery.val.trim();
-      
+
       if (!city) {
         this.showError('Please enter a city name');
         return;
@@ -214,7 +214,7 @@ class WeatherApp {
   createForecastComponent() {
     return () => {
       const data = this.weatherData.val;
-      if (!data?.daily?.time) return '';
+      if (!data?.daily?.time) {return '';}
 
       const { daily } = data;
 
@@ -236,7 +236,7 @@ class WeatherApp {
   createCurrentWeatherComponent() {
     return () => {
       const data = this.weatherData.val;
-      if (!data) return '';
+      if (!data) {return '';}
 
       const { current, locationName, country } = data;
 
@@ -414,7 +414,7 @@ class WeatherApp {
     try {
       this.setLoading(true);
       this.clearError();
-      
+
       this.weatherData.val = await this.weatherService.getWeatherByCity(city);
       this.saveLocation(city);
       this.showWeatherContent();
@@ -456,16 +456,16 @@ class WeatherApp {
       }
 
       navigator.geolocation.getCurrentPosition(
-        async (position) => {
+        async(position) => {
           try {
             this.setLoading(true);
             this.clearError();
-            
+
             const { latitude, longitude } = position.coords;
             this.weatherData.val = await this.weatherService.getWeatherData(latitude, longitude);
             this.weatherData.val.locationName = 'Current Location';
             this.searchQuery.val = 'Current Location';
-            
+
             this.showWeatherContent();
             resolve();
           } catch (error) {
