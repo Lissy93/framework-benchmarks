@@ -28,12 +28,7 @@ const generateFrameworkScripts = (frameworks) => {
   const scripts = {};
   
   frameworks.forEach(framework => {
-    // Use npx for playwright commands to ensure they work in CI/CD
-    const testCommand = framework.testCommand.startsWith('playwright ') 
-      ? `npx ${framework.testCommand}`
-      : framework.testCommand;
-    scripts[`test:${framework.id}`] = testCommand;
-    
+    scripts[`test:${framework.id}`] = framework.testCommand;
     scripts[`dev:${framework.id}`] = framework.dir === 'vanilla' 
       ? `cd apps/${framework.dir} && ${framework.devCommand}`
       : `cd apps/${framework.dir} && npm run dev`;

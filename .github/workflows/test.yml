@@ -109,11 +109,14 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-node-modules-playwright-${{ hashFiles('**/package-lock.json') }}
           
+      - name: Add node_modules/.bin to PATH
+        run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
+          
       - name: Install Playwright browsers (if cache miss)
         run: |
           if [ ! -d ~/.cache/ms-playwright ]; then
             echo "Playwright cache miss - installing browsers"
-            npx playwright install --with-deps
+            playwright install --with-deps
           else
             echo "Playwright cache hit - skipping browser installation"
           fi
