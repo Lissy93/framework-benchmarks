@@ -47,10 +47,13 @@
     "dev:alpine": "cd apps/alpine && npm run dev",
     "lint:alpine": "eslint 'apps/alpine/**/*.js'",
     "verify": "node scripts/verify/index.js",
-    "lint:fix": "npm run lint:vanilla -- --fix && npm run lint:react -- --fix && npm run lint:angular -- --fix && npm run lint:svelte -- --fix && npm run lint:preact -- --fix && npm run lint:solid -- --fix && npm run lint:qwik -- --fix && npm run lint:vue -- --fix && npm run lint:jquery -- --fix && npm run lint:alpine -- --fix && npm run lint:lit -- --fix",
+    "lint:fix": "npm run lint:vanilla -- --fix && npm run lint:react -- --fix && npm run lint:angular -- --fix && npm run lint:svelte -- --fix && npm run lint:preact -- --fix && npm run lint:solid -- --fix && npm run lint:qwik -- --fix && npm run lint:vue -- --fix && npm run lint:jquery -- --fix && npm run lint:alpine -- --fix && npm run lint:lit -- --fix && npm run lint:vanjs -- --fix",
     "test:lit": "playwright test --config=tests/config/playwright-lit.config.js",
     "dev:lit": "cd apps/lit && npm run dev",
-    "lint:lit": "eslint 'apps/lit/**/*.js'"
+    "lint:lit": "eslint 'apps/lit/**/*.js'",
+    "test:vanjs": "playwright test --config=tests/config/playwright-vanjs.config.js",
+    "dev:vanjs": "cd apps/vanjs && npm run dev",
+    "lint:vanjs": "eslint 'apps/vanjs/**/*.js'"
   },
   "devDependencies": {
     "@angular-eslint/eslint-plugin": "^20.1.1",

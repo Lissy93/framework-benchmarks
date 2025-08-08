@@ -25,13 +25,13 @@ What does _best_ mean?
 
 
 Contents
-- [Summary]()
-- [Requirement Spec]()
-- [Usage Guide]()
-- [Project Outline]()
-- [Benchmarking]()
-- [Real-world Applications]()
-- [Attributions and License]()
+- [Summary](#summary)
+- [Requirement Spec](#requirement-spec)
+- [Usage Guide](#usage)
+- [Project Outline](#project-outline)
+- [Benchmarking](#bnchmarking)
+- [Real-world Applications](#side-note)
+- [Attributions and License](#attributions)
 
 ---
 
@@ -45,11 +45,15 @@ Contents
 - ✅ Lit
 - ✅ Alpine.js
 - ✅ Solid
-- Van.js
+- ✅ Van.js
 - ✅ Angular
+- Aurelia
 - Marko
-- Million.js
 - Nue
+- Rax
+- Riot.js
+- Ember
+- Backbone
 - ✅ jQuery
 - ✅ Vanilla JS
 
@@ -134,6 +138,14 @@ You should also verify the lint checks pass, with `npm run lint` or `npm run lin
 ### Deploying
 Build the app for production, with `npm run build:[app-name]`<br>
 Then upload `./apps/[app-name]/dist/` to any web server, CDN or static hosting provider
+
+### Adding a Framework
+1. Create app directory: `apps/your-framework/` with `package.json`, `vite.config.js`, and a `src/` dir
+2. Build your app (ensuring it meets the [requirements spec](#requirement-spec) above)
+3. Update [`frameworks.json`](https://github.com/Lissy93/weather-front/blob/main/frameworks.json)
+4. Add a test config file in `tests/config/`
+6. Them run `node scripts/setup/generate-scripts.js` and `node scripts/setup/sync-assets.js`
+
 
 ---
 

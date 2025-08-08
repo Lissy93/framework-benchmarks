@@ -78,6 +78,13 @@ function createConfig(framework) {
         command: 'npm run dev:lit',
         url: 'http://localhost:3000?mock=true',
       }
+    },
+    vanjs: {
+      baseURL: 'http://localhost:3000?mock=true',
+      webServer: {
+        command: 'npm run dev:vanjs',
+        url: 'http://localhost:3000?mock=true',
+      }
     }
   };
 
