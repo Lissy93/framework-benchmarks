@@ -37,7 +37,7 @@ jobs:
       - name: Install root dependencies
         run: |
           npm ci
-          npm run install:playwright
+          npx playwright install --with-deps
           
       - name: Sync shared assets
         run: npm run sync-assets
@@ -113,7 +113,7 @@ jobs:
         run: |
           if [ ! -d ~/.cache/ms-playwright ]; then
             echo "Playwright cache miss - installing browsers"
-            npm run install:playwright
+            npx playwright install --with-deps
           else
             echo "Playwright cache hit - skipping browser installation"
           fi
