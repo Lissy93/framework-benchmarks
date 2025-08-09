@@ -11,6 +11,7 @@ from common import show_header, show_success
 from setup.sync_assets import sync_assets
 from setup.generate_mocks import generate_mocks  
 from setup.generate_scripts import generate_scripts
+from setup.install_deps import install_deps
 
 console = Console()
 
@@ -19,7 +20,8 @@ console = Console()
 @click.option("--skip-assets", is_flag=True, help="Skip asset synchronization")
 @click.option("--skip-mocks", is_flag=True, help="Skip mock data generation")
 @click.option("--skip-scripts", is_flag=True, help="Skip script generation")
-def setup_all(skip_assets: bool, skip_mocks: bool, skip_scripts: bool):
+@click.option("--skip-deps", is_flag=True, help="Skip dependency installation")
+def setup_all(skip_assets: bool, skip_mocks: bool, skip_scripts: bool, skip_deps: bool):
     """Run all setup tasks for the Weather Front project."""
     show_header("Weather Front Setup", "Running all project setup and management tasks")
     
@@ -34,6 +36,9 @@ def setup_all(skip_assets: bool, skip_mocks: bool, skip_scripts: bool):
     if not skip_assets:
         tasks.append(("Syncing assets", sync_assets))
     
+    if not skip_deps:
+        tasks.append(("Installing framework dependencies", install_deps))
+    
     for task_name, task_func in tasks:
         console.print(f"\n🔧 {task_name}...")
         try:
@@ -45,8 +50,8 @@ def setup_all(skip_assets: bool, skip_mocks: bool, skip_scripts: bool):
     
     show_success("All setup tasks completed!")
     console.print("\n💡 Next steps:", style="bold cyan")
+    console.print("  • Run `npm run verify` to check everything is working")
     console.print("  • Run `npm run build:all` to build all frameworks")
-    console.print("  • Run `npm run test:all` to test all frameworks")  
     console.print("  • Run `npm run serve:production` to serve production builds")
 
 

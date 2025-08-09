@@ -1,4 +1,10 @@
-"""Sync assets across all framework apps."""
+"""
+Sync assets across all framework apps.
+All shared assets (styles, images, fonts, etc) are stored in ./assets
+This script then copies them to each framework's source.
+This is usually within ./apps/[app-name]/public
+but can be customized with the `assetsDir` config option in frameworks.json
+"""
 
 import shutil
 from pathlib import Path
@@ -9,6 +15,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 import sys
 from pathlib import Path
+import time
 sys.path.append(str(Path(__file__).parent.parent))
 
 from common import (
@@ -66,20 +73,24 @@ def sync_assets():
         TextColumn("[progress.description]{task.description}"),
         console=console,
     ) as progress:
+        tasks = {}
         for framework in frameworks:
-            task = progress.add_task(f"Syncing {framework}...", total=1)
-            
+            task = progress.add_task(f"🔄️ Syncing {framework}...", total=1)
+            tasks[framework] = task
+            time.sleep(0.25)
             app_path = apps_dir / framework
             if not app_path.exists():
                 show_error(f"App directory not found: {app_path}")
                 failed_apps.append(framework)
+                progress.update(task, description=f"❌ {framework} (failed)", completed=1)
                 continue
-            
+
             success = sync_app_assets(framework, app_path, assets_dir, frameworks_config)
             if not success:
                 failed_apps.append(framework)
-            
-            progress.update(task, completed=1)
+                progress.update(task, description=f"❌ {framework} (failed)", completed=1)
+            else:
+                progress.update(task, description=f"✔️ Synced {framework}", completed=1)
     
     # Summary
     success_count = len(frameworks) - len(failed_apps)

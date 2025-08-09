@@ -35,15 +35,23 @@ class ScriptGenerator:
                 
             # Development scripts
             if "devCommand" in framework:
-                scripts[f"dev:{framework_id}"] = f"cd apps/{framework_id} && {framework['devCommand']}"
+                dev_command = framework['devCommand']
+                # Use npx for common tools that might not be globally available
+                if dev_command.startswith(('vite', 'ng serve')):
+                    dev_command = f"npx {dev_command}"
+                scripts[f"dev:{framework_id}"] = f"cd apps/{framework_id} && {dev_command}"
             
             # Build scripts
             if "buildCommand" in framework:
-                scripts[f"build:{framework_id}"] = f"cd apps/{framework_id} && {framework['buildCommand']}"
+                build_command = framework['buildCommand']
+                # Use npx for common build tools
+                if build_command.startswith(('vite', 'ng')):
+                    build_command = f"npx {build_command}"
+                scripts[f"build:{framework_id}"] = f"cd apps/{framework_id} && {build_command}"
             
             # Test scripts
             if "testCommand" in framework:
-                scripts[f"test:{framework_id}"] = f"timeout 120s npx playwright test --config=tests/config/playwright-{framework_id}.config.js --reporter=list"
+                scripts[f"test:{framework_id}"] = f"npx playwright test --config=tests/config/playwright-{framework_id}.config.js --reporter=list"
             
             # Lint scripts
             if "lintCommand" in framework:
@@ -98,8 +106,11 @@ class ScriptGenerator:
         patterns = [
             "dev:", "build:", "test:", "lint:",
             ":all", "serve:production", "sync-assets", 
-            "generate-scripts", "generate-mocks"
+            "generate-scripts", "generate-mocks", "check", "verify"
         ]
+        # Exact matches for verify scripts
+        if script_name in ["check", "test", "lint", "verify"]:
+            return True
         return any(pattern in script_name for pattern in patterns)
 
 
@@ -120,8 +131,15 @@ def generate_scripts():
         "sync-assets": "cd scripts && python setup/sync_assets.py",
         "generate-mocks": "cd scripts && python setup/generate_mocks.py", 
         "generate-scripts": "cd scripts && python setup/generate_scripts.py",
+        "install-deps": "cd scripts && python setup/install_deps.py",
         "setup:all": "cd scripts && python setup/main.py",
-        "serve:production": "node scripts/performance/production-server.js"
+        "serve:production": "node scripts/performance/production-server.js",
+        
+        # Verification scripts
+        "check": "cd scripts && python verify/check.py",
+        "test": "cd scripts && python verify/test.py", 
+        "lint": "cd scripts && python verify/lint.py",
+        "verify": "cd scripts && python verify/main.py"
     })
     
     # Update package.json
