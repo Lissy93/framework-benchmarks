@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Weather App Server</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .error-icon {
+            font-size: 4em;
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: #e74c3c;
+            margin-bottom: 20px;
+            font-size: 2.2em;
+        }
+        .error-message {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .error-type {
+            font-weight: bold;
+            color: #c53030;
+            margin-bottom: 8px;
+        }
+        .error-details {
+            color: #2d3748;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .error-path {
+            background: #f7fafc;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            color: #4a5568;
+            border-left: 4px solid #e74c3c;
+        }
+        .solution-box {
+            background: #f0f8f8;
+            border: 1px solid #bee3f8;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+        .solution-title {
+            font-weight: bold;
+            color: #2b6cb0;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .solution-title::before {
+            content: '💡';
+            margin-right: 8px;
+        }
+        .solution-steps {
+            list-style: none;
+            padding: 0;
+        }
+        .solution-steps li {
+            background: white;
+            margin: 8px 0;
+            padding: 12px 16px;
+            border-radius: 6px;
+            border-left: 4px solid #3182ce;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+        .actions {
+            margin-top: 30px;
+        }
+        .btn {
+            display: inline-block;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 500;
+            margin: 0 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background: #3498db;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #2980b9;
+        }
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+        .available-apps {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .app-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+        .app-tag {
+            background: #e9ecef;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #495057;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="error-icon">🚫</div>
+        <h1>Framework Error</h1>
+        
+        <div class="error-message">
+            <div class="error-type"><!-- ERROR_TYPE_PLACEHOLDER --></div>
+            <div class="error-details"><!-- ERROR_MESSAGE_PLACEHOLDER --></div>
+            <!-- ERROR_PATH_PLACEHOLDER -->
+        </div>
+        
+        <!-- SOLUTION_PLACEHOLDER -->
+        
+        <div class="available-apps">
+            <h3>Available Frameworks:</h3>
+            <div class="app-list">
+                <!-- AVAILABLE_APPS_PLACEHOLDER -->
+            </div>
+        </div>
+        
+        <div class="actions">
+            <a href="/" class="btn btn-primary">← Back to Framework List</a>
+            <a href="/health" class="btn btn-secondary">View Health Status</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -46,12 +46,12 @@ class ScriptOrganizer:
         # Scripts configuration
         scripts_config = cfg.get("scripts", {})
         self.essential_commands = OrderedDict(scripts_config.get("essentialCommands", {
-            "help": "node scripts",
-            "setup": "cd scripts && python setup/main.py",
-            "test": "cd scripts && python verify/test.py",
-            "lint": "cd scripts && python verify/lint.py", 
-            "build": "npm run build:all",
-            "start": "npm run dev:all"
+            "setup": "python scripts/setup/main.py",
+            "test": "python scripts/verify/test.py",
+            "lint": "python scripts/verify/lint.py", 
+            "build": "python scripts/run/build.py",
+            "start": "python scripts/run/serve.py",
+            "help": "node scripts"
         }))
         
         section_headers = scripts_config.get("sectionHeaders", {})
