@@ -141,7 +141,7 @@ test.describe('Weather App - Core Functionality', () => {
     try {
       await expect(page.locator('[data-testid="loading"]')).toBeVisible();
     } catch (e) {
-      console.warn('App loaded to quick for loading screen to show', e.message);
+      // console.warn('App loaded to quick for loading screen to show', e.message);
     }
     
     // Should load new weather data

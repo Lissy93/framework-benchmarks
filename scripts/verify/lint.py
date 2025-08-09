@@ -226,7 +226,7 @@ def lint():
                 if not has_lint_command:
                     console.print(f"\n{fw_icon} Linting {fw_name}...")
                     console.print("─" * 50)
-                    console.print(f"{fw_name}: [bold yellow]⚠️  NO LINT COMMAND[/]")
+                    console.print(f"[bold yellow]⚠️  No lint command[/]")
                     console.print(f"   [dim]Missing 'lint:{fw_id}' script in package.json[/]")
                     console.print(f"   [dim]Add script: \"lint:{fw_id}\": \"eslint 'apps/{fw_id}/**/*.js'\"[/]")
                     
@@ -250,18 +250,18 @@ def lint():
                     
                     # **Determine and display status**
                     if success and errors == 0 and warnings == 0:
-                        status_text = "✅ CLEAN"
+                        status_text = "✅ Clean"
                         status_style = "bold green"
                     elif errors > 0:
-                        status_text = f"❌ {errors} ERROR{'S' if errors != 1 else ''}"
+                        status_text = f"❌ {errors} Error{'s' if errors != 1 else ''}"
                         status_style = "bold red"
                         if warnings > 0:
-                            status_text += f", {warnings} WARNING{'S' if warnings != 1 else ''}"
+                            status_text += f", {warnings} Warning{'s' if warnings != 1 else ''}"
                     else:
-                        status_text = f"⚠️  {warnings} WARNING{'S' if warnings != 1 else ''}"
+                        status_text = f"⚠️  {warnings} Warning{'s' if warnings != 1 else ''}"
                         status_style = "bold yellow"
                     
-                    console.print(f"{fw_name}: [{status_style}]{status_text}[/] ({format_duration(duration_ms)})")
+                    console.print(f"[{status_style}]{status_text}[/] ({format_duration(duration_ms)})")
                     
                     # **Show all messages** if there are issues
                     if key_messages and (errors > 0 or warnings > 0):
@@ -338,13 +338,13 @@ def lint():
             for result in results:
                 # **Determine status display**
                 if not result.has_lint_command:
-                    status_display = "[yellow]🚫 Missing config[/]"
+                    status_display = "[yellow]🚫 Not Configured[/]"
                 elif result.errors == 0 and result.warnings == 0:
-                    status_display = "[green]✅ Clean[/]"
+                    status_display = "[green]✅ Passing[/]"
                 elif result.errors > 0:
-                    status_display = "[red]❌ Has errors[/]"
+                    status_display = "[red]❌ Failing[/]"
                 else:
-                    status_display = "[yellow]⚠️ Has warnings[/]"
+                    status_display = "[yellow]⚠️ Issues[/]"
                 
                 # **Format counts with colors**
                 errors_display = f"[red]{result.errors}[/]" if result.errors > 0 else "0"

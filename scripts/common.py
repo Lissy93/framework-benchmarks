@@ -68,6 +68,59 @@ def get_bold_text(text: str) -> str:
     return f"[bold]{text}[/]"
 
 
+def get_pass_rate_color(passed: int, total: int) -> str:
+    """
+    Get color code for pass rate display.
+    
+    Returns:
+        green: 100% pass rate
+        yellow: 50-99% pass rate  
+        red: <50% pass rate
+    """
+    if total == 0:
+        return "dim"
+    
+    pass_rate = (passed / total) * 100
+    if pass_rate == 100:
+        return "green"
+    elif pass_rate >= 50:
+        return "yellow"
+    else:
+        return "red"
+
+
+def format_test_counts(passed: int, failed: int, timeout: int = 0) -> str:
+    """Format test counts with appropriate colors."""
+    parts = []
+    
+    if passed > 0:
+        parts.append(f"[green]{passed} passed[/]")
+    if failed > 0:
+        parts.append(f"[red]{failed} failed[/]")
+    if timeout > 0:
+        parts.append(f"[yellow]{timeout} timeout[/]")
+    
+    return ", ".join(parts) if parts else "[dim]No tests[/]"
+
+
+def format_test_result_simple(passed: int, failed: int, timeout: int = 0) -> str:
+    """Format test results in simple, concise form."""
+    total = passed + failed + timeout
+    
+    if total == 0:
+        return "[dim]No tests[/]"
+    elif failed == 0 and timeout == 0:
+        return "[green]All tests passed[/]"
+    elif failed == total:
+        return "[red]All failed[/]"
+    elif failed > 0:
+        return f"[red]{failed} failed[/]"
+    elif timeout > 0:
+        return f"[yellow]{timeout} timeout[/]"
+    else:
+        return "[green]All tests passed[/]"
+
+
 def run_command(command: List[str], cwd: Path = None) -> tuple[bool, str]:
     """Run a shell command and return success status and output."""
     try:

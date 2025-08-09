@@ -1,7 +1,7 @@
 
-╭────────────────────────────────┬────────────────────────────────────────────╮
-│ Directory Tree                 │ Description                                │
-├────────────────────────────────┼────────────────────────────────────────────┤
+╭───────────────────────────────┬─────────────────────────────────────────────╮
+│ Directory Tree                │ Description                                 │
+├───────────────────────────────┼─────────────────────────────────────────────┤
 │ ├── setup                     │ Project setup / initialization scripts      │
 │ │   ├── main.py               │ Complete project setup - run all tasks      │
 │ │   ├── generate_scripts.py   │ Generate npm scripts from frameworks.json   │
@@ -9,7 +9,7 @@
 │ │   ╰── sync_assets.py        │ Copy shared assets to all framework apps    │
 │ ├── common.py                 │ Shared utilities and configuration helpers  │
 │ ├── verify                    │ Scripts to ensure everything is working     │
-│ │   ├── main.py               │ Run all verification tasks                   │
+│ │   ├── main.py               │ Run all verification tasks                  │
 │ │   ├── check.py              │ Verify project setup and dependencies       │
 │ │   ├── test.py               │ Execute all e2e + unit tests for all apps   │
 │ │   ╰── lint.py               │ Lint all apps with reporting                │

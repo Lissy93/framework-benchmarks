@@ -9,7 +9,7 @@ from rich.console import Console
 
 # Add parent directory to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
-from common import show_header, show_success
+from common import show_success
 
 # Import verification functions
 from verify.check import check
@@ -18,15 +18,12 @@ from verify.lint import lint
 
 console = Console()
 
-
 @click.command()
 @click.option("--skip-check", is_flag=True, help="Skip project setup verification")
 @click.option("--skip-test", is_flag=True, help="Skip test execution") 
 @click.option("--skip-lint", is_flag=True, help="Skip linting checks")
 def verify_all(skip_check: bool, skip_test: bool, skip_lint: bool):
-    """Run all verification tasks for the Weather Front project."""
-    show_header("Weather Front Verification", "Running all project verification and testing tasks")
-    
+    """Run all verification tasks for the Weather Front project."""    
     tasks = []
     
     if not skip_check:
@@ -39,7 +36,6 @@ def verify_all(skip_check: bool, skip_test: bool, skip_lint: bool):
         tasks.append(("Linting checks", lint))
     
     for task_name, task_func in tasks:
-        console.print(f"\n🔧 {task_name}...")
         try:
             # Call the click command without arguments
             task_func.callback()

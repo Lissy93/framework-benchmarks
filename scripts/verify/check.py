@@ -187,7 +187,7 @@ def check():
     
     for check_item in checks:
         passed, fix_suggestion = check_item.run()
-        status_icon = "✅" if passed else "❌"
+        status_icon = "✔️" if passed else "❌"
         fix_text = "" if passed else f"💡 {fix_suggestion}"
         
         table.add_row(status_icon, check_item.name, fix_text)
