@@ -181,6 +181,11 @@ export class WeatherService {
   }
 
   getCurrentLocationWeather() {
+    // In mock mode, return mock data instead of using geolocation
+    if (this.useMockData) {
+      return this.getWeatherByCity('London');
+    }
+
     if (!browser || !navigator.geolocation) {
       throw new Error('Geolocation not supported');
     }

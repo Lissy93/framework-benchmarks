@@ -20,7 +20,7 @@ const FRAMEWORK_PATHS = {
   svelte: 'apps/svelte/build', // Svelte uses 'build' directory
   solid: 'apps/solid/dist',
   preact: 'apps/preact/dist',
-  qwik: 'apps/qwik', // Qwik keeps HTML in root, JS in dist/build/
+  qwik: 'apps/qwik/dist', // Qwik builds to dist/ with index.html
   jquery: 'apps/jquery/dist',
   lit: 'apps/lit/dist',
   vanjs: 'apps/vanjs/dist',

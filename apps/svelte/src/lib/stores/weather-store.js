@@ -60,8 +60,9 @@ export const weatherStore = {
       const data = await weatherService.getCurrentLocationWeather();
       weatherData.set(data);
     } catch (err) {
-      error.set(err.message);
+      // Don't set error for geolocation failures - let the caller handle fallback
       console.error('Current location error:', err);
+      throw err; // Re-throw so the initialize method can handle fallback
     } finally {
       isLoading.set(false);
     }
@@ -89,10 +90,13 @@ export const weatherStore = {
       }
 
       try {
+        // Clear any previous errors before attempting geolocation
+        error.set(null);
         await this.getCurrentLocationWeather();
       } catch (err) {
         console.warn('Could not get current location:', err);
-        // Fallback to default location
+        // Clear the geolocation error and fallback to default location
+        error.set(null);
         await this.loadWeather('London');
       }
     } catch (err) {

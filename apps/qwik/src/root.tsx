@@ -8,10 +8,10 @@ export default component$(() => {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Weather App - Qwik</title>
-        <link rel="stylesheet" href="/styles/design-system.css" />
-        <link rel="stylesheet" href="/styles/variables.css" />
-        <link rel="stylesheet" href="/styles/base.css" />
-        <link rel="stylesheet" href="/styles/components.css" />
+        <link rel="stylesheet" href="styles/design-system.css" />
+        <link rel="stylesheet" href="styles/variables.css" />
+        <link rel="stylesheet" href="styles/base.css" />
+        <link rel="stylesheet" href="styles/components.css" />
       </head>
       <body>
         <header class="header">
