@@ -1,155 +1,203 @@
-"""Generate package.json scripts from frameworks configuration."""
+#!/usr/bin/env python3
+"""Generate organized package.json scripts from frameworks configuration."""
 
 import json
+import sys
+import time
+from collections import OrderedDict
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 import click
+from rich.console import Console
+from rich.table import Table
 
-import sys
-from pathlib import Path
+# Add parent directory to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
-
 from common import (
     get_project_root, get_frameworks_config,
     show_header, show_success, show_error, show_info
 )
 
+console = Console()
 
-class ScriptGenerator:
-    """Generate npm scripts for framework apps."""
+ESSENTIAL_COMMANDS = OrderedDict([
+    ("help", "node scripts"),
+    ("setup", "cd scripts && python setup/main.py"),
+    ("test", "cd scripts && python verify/test.py"),
+    ("lint", "cd scripts && python verify/lint.py"), 
+    ("build", "npm run build:all"),
+    ("start", "npm run dev:all")
+])
+
+SECTION_HEADERS = [
+    ("// DEV COMMANDS", "-------------------------------------------------------"),
+    ("// BUILD COMMANDS", "-----------------------------------------------------"),
+    ("// TEST COMMANDS", "------------------------------------------------------"),
+    ("// LINT COMMANDS", "------------------------------------------------------"),
+    ("// MISC SCRIPTS", "--------------------------------------------------------")
+]
+
+class ScriptOrganizer:
+    def __init__(self, config: Dict[str, Any]):
+        self.frameworks = config.get("frameworks", [])
+        self.framework_ids = sorted([fw["id"] for fw in self.frameworks if "id" in fw])
+        cfg = config.get("config", {})
+        self.app_dir = cfg.get("appDir", "apps")
+        self.test_config_dir = cfg.get("testConfigDir", "tests/config")
+        self.test_reporter = cfg.get("testReporter", "list")
+        self.misc_scripts = cfg.get("miscScripts", [])
     
-    def __init__(self, frameworks_config: Dict[str, Any]):
-        """Initialize with frameworks configuration."""
-        self.frameworks_config = frameworks_config
+    def _build_command(self, fw_id: str, base_cmd: str, use_npx: bool = True) -> str:
+        """Build command with proper directory and npx prefix."""
+        prefix = f"cd {self.app_dir}/{fw_id} && "
+        if use_npx and base_cmd.startswith(('vite', 'ng')):
+            return f"{prefix}npx {base_cmd}"
+        return f"{prefix}{base_cmd}"
+    
+    def _get_lint_pattern(self, lint_files: List[str]) -> str:
+        """Generate eslint file pattern from lint file extensions."""
+        return f"**/*.{{{','.join(lint_files)}}}" if len(lint_files) > 1 else f"**/*.{lint_files[0]}"
+    
+    def generate_framework_commands(self, command_type: str) -> OrderedDict[str, str]:
+        """Generate commands for all frameworks of a specific type."""
+        commands = OrderedDict()
+        valid_frameworks = [fw for fw in self.frameworks if fw.get("id")]
         
-    def generate_framework_scripts(self) -> Dict[str, str]:
-        """Generate scripts for all frameworks."""
-        scripts = {}
-        frameworks = self.frameworks_config.get("frameworks", [])
+        # Add :all command first
+        if command_type == "lint":
+            frameworks_with_lint = [fw["id"] for fw in valid_frameworks if fw.get("lintFiles")]
+            commands["lint:all"] = " && ".join([f"npm run lint:{fw_id}" for fw_id in sorted(frameworks_with_lint)])
+        else:
+            commands[f"{command_type}:all"] = " && ".join([f"npm run {command_type}:{fw_id}" for fw_id in self.framework_ids])
         
-        for framework in frameworks:
-            framework_id = framework.get("id")
-            if not framework_id:
-                continue
-                
-            # Development scripts
-            if "devCommand" in framework:
-                dev_command = framework['devCommand']
-                # Use npx for common tools that might not be globally available
-                if dev_command.startswith(('vite', 'ng serve')):
-                    dev_command = f"npx {dev_command}"
-                scripts[f"dev:{framework_id}"] = f"cd apps/{framework_id} && {dev_command}"
+        # Add individual framework commands
+        for framework in sorted(valid_frameworks, key=lambda x: x["id"]):
+            fw_id = framework["id"]
             
-            # Build scripts
-            if "buildCommand" in framework:
-                build_command = framework['buildCommand']
-                # Use npx for common build tools
-                if build_command.startswith(('vite', 'ng')):
-                    build_command = f"npx {build_command}"
-                scripts[f"build:{framework_id}"] = f"cd apps/{framework_id} && {build_command}"
-            
-            # Test scripts
-            if "testCommand" in framework:
-                scripts[f"test:{framework_id}"] = f"npx playwright test --config=tests/config/playwright-{framework_id}.config.js --reporter=list"
-            
-            # Lint scripts
-            if "lintCommand" in framework:
-                scripts[f"lint:{framework_id}"] = f"cd apps/{framework_id} && {framework['lintCommand']}"
+            if command_type == "dev" and framework.get("devCommand"):
+                commands[f"dev:{fw_id}"] = self._build_command(fw_id, framework["devCommand"], "python" not in framework["devCommand"])
+            elif command_type == "build" and framework.get("buildCommand"):
+                commands[f"build:{fw_id}"] = self._build_command(fw_id, framework["buildCommand"])
+            elif command_type == "test":
+                commands[f"test:{fw_id}"] = f"npx playwright test --config={self.test_config_dir}/playwright-{fw_id}.config.js --reporter={self.test_reporter}"
+            elif command_type == "lint" and framework.get("lintFiles"):
+                pattern = self._get_lint_pattern(framework["lintFiles"])
+                commands[f"lint:{fw_id}"] = f"eslint '{self.app_dir}/{fw_id}/{pattern}'"
         
-        # Meta scripts
-        framework_ids = [fw["id"] for fw in frameworks if "id" in fw]
-        scripts.update({
-            "dev:all": " && ".join([f"npm run dev:{name}" for name in framework_ids]),
-            "build:all": " && ".join([f"npm run build:{name}" for name in framework_ids]),
-            "test:all": " && ".join([f"npm run test:{name}" for name in framework_ids]),
-            "lint:all": " && ".join([f"npm run lint:{name}" for name in framework_ids if f"lint:{name}" in scripts])
-        })
+        return commands
+    
+    def build_all_scripts(self) -> OrderedDict[str, str]:
+        """Build complete organized scripts section."""
+        scripts = OrderedDict(ESSENTIAL_COMMANDS)
+        
+        command_sections = [
+            self.generate_framework_commands("dev"),
+            self.generate_framework_commands("build"),
+            self.generate_framework_commands("test"),
+            self.generate_framework_commands("lint"),
+            OrderedDict((script["name"], script["command"]) for script in self.misc_scripts)
+        ]
+        
+        for i, commands in enumerate(command_sections):
+            scripts[SECTION_HEADERS[i][0]] = SECTION_HEADERS[i][1]
+            scripts.update(commands)
         
         return scripts
     
-    def update_package_json(self, new_scripts: Dict[str, str]) -> bool:
-        """Update the root package.json with generated scripts."""
-        project_root = get_project_root()
-        package_json_path = project_root / "package.json"
+    def calculate_counts(self, scripts: OrderedDict[str, str]) -> List[int]:
+        """Calculate actual counts for each script category."""
+        counts = [len(ESSENTIAL_COMMANDS)]
+        current_count = 0
+        in_section = False
         
+        for key in scripts.keys():
+            if key.startswith("//"):
+                if in_section:
+                    counts.append(current_count)
+                current_count = 0
+                in_section = True
+            elif in_section:
+                current_count += 1
+        
+        if in_section:
+            counts.append(current_count)
+        
+        return counts
+    
+    def update_package_json(self, scripts: OrderedDict[str, str]) -> bool:
+        """Update package.json with organized scripts."""
         try:
-            # Read existing package.json
-            with open(package_json_path, "r") as f:
-                package_data = json.load(f)
+            package_path = get_project_root() / "package.json"
+            with open(package_path, "r") as f:
+                data = json.load(f)
             
-            # Update scripts section
-            existing_scripts = package_data.get("scripts", {})
+            data["scripts"] = scripts
             
-            # Keep non-generated scripts (those not matching our patterns)
-            preserved_scripts = {
-                key: value for key, value in existing_scripts.items()
-                if not self._is_generated_script(key)
-            }
-            
-            # Merge with new scripts
-            package_data["scripts"] = {**preserved_scripts, **new_scripts}
-            
-            # Write back to file
-            with open(package_json_path, "w") as f:
-                json.dump(package_data, f, indent=2)
-                f.write("\n")  # Add trailing newline
-            
+            with open(package_path, "w") as f:
+                json.dump(data, f, indent=2)
+                f.write("\n")
             return True
-            
         except Exception as e:
             show_error(f"Failed to update package.json: {e}")
             return False
-    
-    def _is_generated_script(self, script_name: str) -> bool:
-        """Check if a script name appears to be auto-generated."""
-        patterns = [
-            "dev:", "build:", "test:", "lint:",
-            ":all", "serve:production", "sync-assets", 
-            "generate-scripts", "generate-mocks", "check", "verify"
-        ]
-        # Exact matches for verify scripts
-        if script_name in ["check", "test", "lint", "verify"]:
-            return True
-        return any(pattern in script_name for pattern in patterns)
 
 
 @click.command()
-def generate_scripts():
-    """Generate npm scripts based on frameworks configuration."""
-    show_header("Script Generator", "Creating npm scripts from frameworks.json")
+@click.option("--dry-run", is_flag=True, help="Show what would be generated without writing")
+@click.option("--verbose", is_flag=True, help="Show detailed progress")
+def generate_scripts(dry_run: bool, verbose: bool):
+    """Generate organized package.json scripts from frameworks configuration."""
+    show_header("Package.json Script Generator", "Creating organized scripts from frameworks.json")
     
-    frameworks_config = get_frameworks_config()
-    generator = ScriptGenerator(frameworks_config)
+    start_time = time.time()
     
-    # Generate new scripts
-    show_info("Generating scripts for all frameworks...")
-    new_scripts = generator.generate_framework_scripts()
-    
-    # Add setup and utility scripts
-    new_scripts.update({
-        "sync-assets": "cd scripts && python setup/sync_assets.py",
-        "generate-mocks": "cd scripts && python setup/generate_mocks.py", 
-        "generate-scripts": "cd scripts && python setup/generate_scripts.py",
-        "install-deps": "cd scripts && python setup/install_deps.py",
-        "setup:all": "cd scripts && python setup/main.py",
-        "serve:production": "node scripts/performance/production-server.js",
+    try:
+        show_info("Loading frameworks configuration...")
+        config = get_frameworks_config()
+        framework_count = len(config.get("frameworks", []))
         
-        # Verification scripts
-        "check": "cd scripts && python verify/check.py",
-        "test": "cd scripts && python verify/test.py", 
-        "lint": "cd scripts && python verify/lint.py",
-        "verify": "cd scripts && python verify/main.py"
-    })
-    
-    # Update package.json
-    show_info("Updating package.json...")
-    success = generator.update_package_json(new_scripts)
-    
-    if success:
-        show_success(f"Generated {len(new_scripts)} scripts in package.json")
-    else:
-        show_error("Failed to update package.json")
+        if verbose:
+            console.print(f"   [dim]Found {framework_count} frameworks[/]")
+        
+        organizer = ScriptOrganizer(config)
+        show_info("Generating scripts...")
+        scripts = organizer.build_all_scripts()
+        
+        # Show summary
+        script_count = len([k for k in scripts.keys() if not k.startswith('//')])
+        console.print()
+        
+        table = Table(show_header=True, header_style="bold cyan")
+        table.add_column("Category", style="bold")
+        table.add_column("Count", justify="center")
+        
+        categories = ["Essential", "Dev", "Build", "Test", "Lint", "Misc"]
+        counts = organizer.calculate_counts(scripts)
+        
+        for cat, count in zip(categories, counts):
+            table.add_row(f"{cat} Commands", str(count))
+        
+        console.print(table)
+        
+        if dry_run:
+            console.print(f"\n[yellow]DRY RUN[/] - Generated {script_count} scripts (not saved)")
+        else:
+            show_info("Updating package.json...")
+            success = organizer.update_package_json(scripts)
+            
+            if success:
+                duration = time.time() - start_time
+                show_success(f"Organized {script_count} scripts in package.json ({duration:.1f}s)")
+            else:
+                show_error("Failed to update package.json")
+                
+    except KeyboardInterrupt:
+        console.print("\n[yellow]Interrupted[/]")
+        sys.exit(1)
+    except Exception as e:
+        show_error(f"Error: {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":
