@@ -72,7 +72,7 @@ function CurrentWeather(props) {
                   <div class="weather-detail">
                     <div class="weather-detail__label">Precipitation</div>
                     <div class="weather-detail__value" data-testid="precipitation">
-                      {current.precipitation.toFixed(1)} mm
+                      {current.precipitation?.toFixed(1)} mm
                     </div>
                   </div>
                 </div>
