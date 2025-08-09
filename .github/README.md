@@ -1,7 +1,7 @@
-<h1 align="center">⛈️ Weather Front</h1>
+<h1 align="center">🌈 Framework Benchmarks</h1>
 <p align="center">
-	<i>The same weather app built in 10 different web frameworks</i><br>
-    For automated cross-framework performance benchmarking
+	<i>The same weather app built in 10 different frontend frameworks</i><br>
+    For automated cross-framework web performance benchmarking
   <br>
   <b>📊 <a href="https://frontend-framework-benchmarks.as93.net">Results</a></b>
 </p>
@@ -12,24 +12,23 @@ Along with automated scripts to benchmark each of their performance, quality and
 To finally answer the age-old question: "Which is the _best_* frontend framework?"<br>
 So, without further ado, let's see how every framework weathers the storm! ⛈️
 
-Why?
+#### Why?
 1. To objectively compare frontend frameworks in an automated way
 2. Because I have no life, and like building the same thing 10 times
 
-What does _best_ mean?
+#### What does _best_ mean?
 - Smallest bundle size
 - Fastest load time, and best performance metrics
 - Lowest CPU & memory usage and resource consumption
 - Least verbose, complex and repetitive code
 - Shortest compile time and HMR latency
 
-
-Contents
+#### Contents
 - [Summary](#summary)
 - [Requirement Spec](#requirement-spec)
 - [Usage Guide](#usage)
 - [Project Outline](#project-outline)
-- [Benchmarking](#bnchmarking)
+- [Benchmarking](#benchmarking)
 - [Results](#results)
 - [Real-world Applications](#side-note)
 - [Attributions and License](#attributions)
