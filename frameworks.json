@@ -1,25 +1,4 @@
 {
-  "config": {
-    "appDir": "apps",
-    "testConfigDir": "tests/config",
-    "testReporter": "list",
-    "miscScripts": [
-      {"name": "install:playwright", "command": "playwright install"},
-      {"name": "generate-mocks", "command": "cd scripts && python setup/generate_mocks.py"},
-      {"name": "generate-scripts", "command": "cd scripts && python setup/generate_scripts.py"},
-      {"name": "sync-assets", "command": "cd scripts && python setup/sync_assets.py"},
-      {"name": "perf", "command": "node scripts/performance/index.js"},
-      {"name": "perf:bundle", "command": "node scripts/performance/index.js --only bundle"},
-      {"name": "perf:html", "command": "node scripts/performance/index.js --html"},
-      {"name": "perf:lighthouse", "command": "node scripts/performance/index.js --only lighthouse"},
-      {"name": "perf:runtime", "command": "node scripts/performance/index.js --only runtime"},
-      {"name": "perf:vanjs", "command": "node scripts/performance/index.js --frameworks vanjs"},
-      {"name": "serve:production", "command": "node scripts/performance/production-server.js"},
-      {"name": "serve:single", "command": "node scripts/performance/serve-single.js"},
-      {"name": "check", "command": "cd scripts && python verify/check.py"},
-      {"name": "verify", "command": "cd scripts && python verify/main.py"}
-    ]
-  },
   "frameworks": [
     {
       "id": "vanilla",
@@ -167,5 +146,26 @@
       "testCommand": "playwright test --config=tests/config/playwright-vanjs.config.js",
       "lintFiles": ["js"]
     }
-  ]
+  ],
+    "config": {
+    "appDir": "apps",
+    "testConfigDir": "tests/config",
+    "testReporter": "list",
+    "miscScripts": [
+      {"name": "install:playwright", "command": "playwright install"},
+      {"name": "generate-mocks", "command": "cd scripts && python setup/generate_mocks.py"},
+      {"name": "generate-scripts", "command": "cd scripts && python setup/generate_scripts.py"},
+      {"name": "sync-assets", "command": "cd scripts && python setup/sync_assets.py"},
+      {"name": "perf", "command": "node scripts/performance/index.js"},
+      {"name": "perf:bundle", "command": "node scripts/performance/index.js --only bundle"},
+      {"name": "perf:html", "command": "node scripts/performance/index.js --html"},
+      {"name": "perf:lighthouse", "command": "node scripts/performance/index.js --only lighthouse"},
+      {"name": "perf:runtime", "command": "node scripts/performance/index.js --only runtime"},
+      {"name": "perf:vanjs", "command": "node scripts/performance/index.js --frameworks vanjs"},
+      {"name": "serve:production", "command": "node scripts/performance/production-server.js"},
+      {"name": "serve:single", "command": "node scripts/performance/serve-single.js"},
+      {"name": "check", "command": "cd scripts && python verify/check.py"},
+      {"name": "verify", "command": "cd scripts && python verify/main.py"}
+    ]
+  }
 }
