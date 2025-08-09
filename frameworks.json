@@ -10,7 +10,8 @@
       "buildCommand": "echo 'No build step required'",
       "devCommand": "python3 -m http.server 3000 || python -m http.server 3000",
       "testCommand": "playwright test --config=tests/config/playwright-vanilla.config.js",
-      "lintFiles": ["js"]
+      "lintFiles": ["js"],
+      "assetsDir": "public"
     },
     {
       "id": "react",
@@ -46,7 +47,8 @@
       "buildCommand": "vite build",
       "devCommand": "vite dev --port 3000",
       "testCommand": "playwright test --config=tests/config/playwright-svelte.config.js",
-      "lintFiles": ["js", "svelte"]
+      "lintFiles": ["js", "svelte"],
+      "assetsDir": "static"
     },
     {
       "id": "preact",

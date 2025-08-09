@@ -10,6 +10,7 @@ const path = require('path');
 
 const ASSETS_DIR = path.join(__dirname, '..', '..', 'assets');
 const APPS_DIR = path.join(__dirname, '..', '..', 'apps');
+const FRAMEWORKS_CONFIG = path.join(__dirname, '..', '..', 'frameworks.json');
 
 /**
  * Get file/directory size recursively
@@ -73,36 +74,37 @@ function copyDirectoryWithStats(source, target) {
 }
 
 /**
+ * Get framework configuration
+ */
+function getFrameworkConfig(appName) {
+  try {
+    const config = JSON.parse(fs.readFileSync(FRAMEWORKS_CONFIG, 'utf8'));
+    const framework = config.frameworks.find(f => f.id === appName || f.dir === appName);
+    return framework || { assetsDir: 'public' }; // Default to 'public' if not found
+  } catch (error) {
+    console.warn(`Warning: Could not load frameworks.json, using defaults for ${appName}`);
+    return { assetsDir: 'public' };
+  }
+}
+
+/**
  * Sync assets for a specific app
  */
 function syncAppAssets(appName, appPath) {
-  // Svelte uses 'static/assets/' structure, others use 'public/'
-  const isSvelte = appName === 'svelte';
-  const assetsBaseDir = isSvelte ? path.join(appPath, 'static') : path.join(appPath, 'public');
-  const assetsDir = isSvelte ? path.join(assetsBaseDir, 'assets') : assetsBaseDir;
+  const frameworkConfig = getFrameworkConfig(appName);
+  const assetsDir = path.join(appPath, frameworkConfig.assetsDir || 'public');
   
   // Ensure assets directory exists
   fs.mkdirSync(assetsDir, { recursive: true });
   
-  const syncResults = [];
-  const assetTypes = [
-    { name: 'icons', source: path.join(ASSETS_DIR, 'icons'), target: path.join(assetsDir, 'icons') },
-    { name: 'styles', source: path.join(ASSETS_DIR, 'styles'), target: path.join(assetsDir, 'styles') },
-    { name: 'mocks', source: path.join(ASSETS_DIR, 'mocks'), target: path.join(assetsDir, 'mocks') }
-  ];
+  // Copy entire assets directory
+  const stats = copyDirectoryWithStats(ASSETS_DIR, assetsDir);
   
-  for (const assetType of assetTypes) {
-    if (fs.existsSync(assetType.source)) {
-      const stats = copyDirectoryWithStats(assetType.source, assetType.target);
-      syncResults.push({
-        type: assetType.name,
-        files: stats.files,
-        size: stats.size
-      });
-    }
-  }
-  
-  return syncResults;
+  return [{
+    type: 'all assets',
+    files: stats.files,
+    size: stats.size
+  }];
 }
 
 /**

@@ -13,8 +13,8 @@
 </main>
 
 <style>
-  @import '../../static/assets/styles/design-system.css';
-  @import '../../static/assets/styles/variables.css';
-  @import '../../static/assets/styles/base.css';
-  @import '../../static/assets/styles/components.css';
+  @import '../../static/styles/design-system.css';
+  @import '../../static/styles/variables.css';
+  @import '../../static/styles/base.css';
+  @import '../../static/styles/components.css';
 </style>

@@ -98,6 +98,8 @@ function serveFramework(framework, req, res, next) {
   }
   
   const fullPath = path.join(__dirname, '../..', frameworkPath);
+
+  console.log(fullPath)
   
   if (!fs.existsSync(fullPath)) {
     return res.status(404).json({ 
