@@ -76,16 +76,19 @@ function copyDirectoryWithStats(source, target) {
  * Sync assets for a specific app
  */
 function syncAppAssets(appName, appPath) {
-  const appPublicDir = path.join(appPath, 'public');
+  // Svelte uses 'static/assets/' structure, others use 'public/'
+  const isSvelte = appName === 'svelte';
+  const assetsBaseDir = isSvelte ? path.join(appPath, 'static') : path.join(appPath, 'public');
+  const assetsDir = isSvelte ? path.join(assetsBaseDir, 'assets') : assetsBaseDir;
   
-  // Ensure public directory exists
-  fs.mkdirSync(appPublicDir, { recursive: true });
+  // Ensure assets directory exists
+  fs.mkdirSync(assetsDir, { recursive: true });
   
   const syncResults = [];
   const assetTypes = [
-    { name: 'icons', source: path.join(ASSETS_DIR, 'icons'), target: path.join(appPublicDir, 'icons') },
-    { name: 'styles', source: path.join(ASSETS_DIR, 'styles'), target: path.join(appPublicDir, 'styles') },
-    { name: 'mocks', source: path.join(ASSETS_DIR, 'mocks'), target: path.join(appPublicDir, 'mocks') }
+    { name: 'icons', source: path.join(ASSETS_DIR, 'icons'), target: path.join(assetsDir, 'icons') },
+    { name: 'styles', source: path.join(ASSETS_DIR, 'styles'), target: path.join(assetsDir, 'styles') },
+    { name: 'mocks', source: path.join(ASSETS_DIR, 'mocks'), target: path.join(assetsDir, 'mocks') }
   ];
   
   for (const assetType of assetTypes) {
