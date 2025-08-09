@@ -30,6 +30,7 @@ Contents
 - [Usage Guide](#usage)
 - [Project Outline](#project-outline)
 - [Benchmarking](#bnchmarking)
+- [Results](#results)
 - [Real-world Applications](#side-note)
 - [Attributions and License](#attributions)
 
@@ -114,6 +115,11 @@ The screenshots will all look like this:
 ---
 
 ## Usage
+
+### Prerequisites
+
+You'll need to ensure you've got
+Git, Node (LTS or v22+), Python (3.10) and uv installed
 
 ### Setup
 
@@ -205,6 +211,10 @@ See the [`package.json`](https://github.com/Lissy93/weather-front/blob/main/pack
 ---
 
 ## Benchmarking
+
+---
+
+## Results
 
 ---
 

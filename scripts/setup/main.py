@@ -1,0 +1,54 @@
+"""Main entry point for setup scripts - runs all setup tasks."""
+
+import click
+from rich.console import Console
+
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent))
+
+from common import show_header, show_success
+from setup.sync_assets import sync_assets
+from setup.generate_mocks import generate_mocks  
+from setup.generate_scripts import generate_scripts
+
+console = Console()
+
+
+@click.command()
+@click.option("--skip-assets", is_flag=True, help="Skip asset synchronization")
+@click.option("--skip-mocks", is_flag=True, help="Skip mock data generation")
+@click.option("--skip-scripts", is_flag=True, help="Skip script generation")
+def setup_all(skip_assets: bool, skip_mocks: bool, skip_scripts: bool):
+    """Run all setup tasks for the Weather Front project."""
+    show_header("Weather Front Setup", "Running all project setup and management tasks")
+    
+    tasks = []
+    
+    if not skip_scripts:
+        tasks.append(("Generating npm scripts", generate_scripts))
+    
+    if not skip_mocks:
+        tasks.append(("Generating mock data", generate_mocks))
+    
+    if not skip_assets:
+        tasks.append(("Syncing assets", sync_assets))
+    
+    for task_name, task_func in tasks:
+        console.print(f"\n🔧 {task_name}...")
+        try:
+            # Call the click command without arguments
+            task_func.callback()
+        except Exception as e:
+            console.print(f"❌ Failed: {e}", style="red")
+            continue
+    
+    show_success("All setup tasks completed!")
+    console.print("\n💡 Next steps:", style="bold cyan")
+    console.print("  • Run `npm run build:all` to build all frameworks")
+    console.print("  • Run `npm run test:all` to test all frameworks")  
+    console.print("  • Run `npm run serve:production` to serve production builds")
+
+
+if __name__ == "__main__":
+    setup_all()
