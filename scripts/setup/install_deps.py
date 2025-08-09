@@ -27,6 +27,11 @@ def install_deps(force: bool):
     config = get_frameworks_config()
     frameworks = [fw for fw in config.get("frameworks", [])]
     
+    # Get directory configuration
+    directories = config.get("config", {}).get("directories", {})
+    app_dir = directories.get("appDir", "apps")
+    node_modules_dir = directories.get("nodeModulesDir", "node_modules")
+    
     if not frameworks:
         show_info("No frameworks require node dependencies")
         return
@@ -46,7 +51,7 @@ def install_deps(force: bool):
             if not fw_id:
                 continue
             
-            app_path = project_root / "apps" / fw_id
+            app_path = project_root / app_dir / fw_id
             task = progress.add_task(f"Installing {fw_name} dependencies...", total=1)
             tasks[fw_name] = task
 
@@ -61,7 +66,7 @@ def install_deps(force: bool):
                 progress.update(task, description=f"❌ {fw_name} (app not found)", completed=1)
                 continue
             
-            node_modules = app_path / "node_modules"
+            node_modules = app_path / node_modules_dir
             package_json = app_path / "package.json"
             
             if not package_json.exists():

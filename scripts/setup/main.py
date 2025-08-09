@@ -42,8 +42,13 @@ def setup_all(skip_assets: bool, skip_mocks: bool, skip_scripts: bool, skip_deps
     for task_name, task_func in tasks:
         console.print(f"\n🔧 {task_name}...")
         try:
-            # Call the click command without arguments
-            task_func.callback()
+            # Call the click command with appropriate arguments
+            if task_func == install_deps:
+                task_func.callback(force=False)
+            elif task_func == generate_scripts:
+                task_func.callback(dry_run=False, verbose=False)
+            else:
+                task_func.callback()
         except Exception as e:
             console.print(f"❌ Failed: {e}", style="red")
             continue

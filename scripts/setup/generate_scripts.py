@@ -21,38 +21,65 @@ from common import (
 
 console = Console()
 
-ESSENTIAL_COMMANDS = OrderedDict([
-    ("help", "node scripts"),
-    ("setup", "cd scripts && python setup/main.py"),
-    ("test", "cd scripts && python verify/test.py"),
-    ("lint", "cd scripts && python verify/lint.py"), 
-    ("build", "npm run build:all"),
-    ("start", "npm run dev:all")
-])
-
-SECTION_HEADERS = [
-    ("// DEV COMMANDS", "-------------------------------------------------------"),
-    ("// BUILD COMMANDS", "-----------------------------------------------------"),
-    ("// TEST COMMANDS", "------------------------------------------------------"),
-    ("// LINT COMMANDS", "------------------------------------------------------"),
-    ("// MISC SCRIPTS", "--------------------------------------------------------")
-]
-
 class ScriptOrganizer:
     def __init__(self, config: Dict[str, Any]):
         self.frameworks = config.get("frameworks", [])
         self.framework_ids = sorted([fw["id"] for fw in self.frameworks if "id" in fw])
         cfg = config.get("config", {})
-        self.app_dir = cfg.get("appDir", "apps")
-        self.test_config_dir = cfg.get("testConfigDir", "tests/config")
-        self.test_reporter = cfg.get("testReporter", "list")
+        
+        # Directory configuration
+        directories = cfg.get("directories", {})
+        self.app_dir = directories.get("appDir", "apps")
+        self.test_config_dir = directories.get("testConfigDir", "tests/config")
+        
+        # Testing configuration
+        testing = cfg.get("testing", {})
+        self.test_reporter = testing.get("testReporter", "list")
+        self.test_command = testing.get("testCommand", "npx playwright test")
+        self.config_path_template = testing.get("configPathTemplate", "tests/config/playwright-{framework}.config.js")
+        
+        # Build tools configuration
+        build_tools = cfg.get("buildTools", {})
+        self.requires_npx = build_tools.get("requiresNpx", ["vite", "ng", "playwright"])
+        self.python_commands = build_tools.get("pythonCommands", ["python3 -m http.server", "python -m http.server"])
+        
+        # Scripts configuration
+        scripts_config = cfg.get("scripts", {})
+        self.essential_commands = OrderedDict(scripts_config.get("essentialCommands", {
+            "help": "node scripts",
+            "setup": "cd scripts && python setup/main.py",
+            "test": "cd scripts && python verify/test.py",
+            "lint": "cd scripts && python verify/lint.py", 
+            "build": "npm run build:all",
+            "start": "npm run dev:all"
+        }))
+        
+        section_headers = scripts_config.get("sectionHeaders", {})
+        section_separators = scripts_config.get("sectionSeparators", {})
+        self.section_headers = [
+            (section_headers.get("dev", "// DEV COMMANDS"), section_separators.get("dev", "-------------------------------------------------------")),
+            (section_headers.get("build", "// BUILD COMMANDS"), section_separators.get("build", "-----------------------------------------------------")),
+            (section_headers.get("test", "// TEST COMMANDS"), section_separators.get("test", "------------------------------------------------------")),
+            (section_headers.get("lint", "// LINT COMMANDS"), section_separators.get("lint", "------------------------------------------------------")),
+            (section_headers.get("misc", "// MISC SCRIPTS"), section_separators.get("misc", "--------------------------------------------------------"))
+        ]
+        
         self.misc_scripts = cfg.get("miscScripts", [])
     
     def _build_command(self, fw_id: str, base_cmd: str, use_npx: bool = True) -> str:
         """Build command with proper directory and npx prefix."""
         prefix = f"cd {self.app_dir}/{fw_id} && "
-        if use_npx and base_cmd.startswith(('vite', 'ng')):
+        
+        # Check if command is a Python command
+        is_python_cmd = any(python_cmd in base_cmd for python_cmd in self.python_commands)
+        if is_python_cmd:
+            return f"{prefix}{base_cmd}"
+        
+        # Check if command requires npx prefix
+        requires_npx = use_npx and any(tool in base_cmd for tool in self.requires_npx)
+        if requires_npx and not base_cmd.startswith('npx'):
             return f"{prefix}npx {base_cmd}"
+        
         return f"{prefix}{base_cmd}"
     
     def _get_lint_pattern(self, lint_files: List[str]) -> str:
@@ -74,16 +101,16 @@ class ScriptOrganizer:
         # Add individual framework commands
         for framework in sorted(valid_frameworks, key=lambda x: x["id"]):
             fw_id = framework["id"]
-            
             build_config = framework.get("build", {})
             
             if command_type == "dev" and build_config.get("devCommand"):
                 dev_cmd = build_config["devCommand"]
-                commands[f"dev:{fw_id}"] = self._build_command(fw_id, dev_cmd, "python" not in dev_cmd)
+                commands[f"dev:{fw_id}"] = self._build_command(fw_id, dev_cmd)
             elif command_type == "build" and build_config.get("buildCommand"):
                 commands[f"build:{fw_id}"] = self._build_command(fw_id, build_config["buildCommand"])
             elif command_type == "test":
-                commands[f"test:{fw_id}"] = f"npx playwright test --config={self.test_config_dir}/playwright-{fw_id}.config.js --reporter={self.test_reporter}"
+                config_path = self.config_path_template.replace("{framework}", fw_id)
+                commands[f"test:{fw_id}"] = f"{self.test_command} --config={config_path} --reporter={self.test_reporter}"
             elif command_type == "lint" and build_config.get("lintFiles"):
                 pattern = self._get_lint_pattern(build_config["lintFiles"])
                 commands[f"lint:{fw_id}"] = f"eslint '{self.app_dir}/{fw_id}/{pattern}'"
@@ -92,7 +119,7 @@ class ScriptOrganizer:
     
     def build_all_scripts(self) -> OrderedDict[str, str]:
         """Build complete organized scripts section."""
-        scripts = OrderedDict(ESSENTIAL_COMMANDS)
+        scripts = OrderedDict(self.essential_commands)
         
         command_sections = [
             self.generate_framework_commands("dev"),
@@ -103,14 +130,15 @@ class ScriptOrganizer:
         ]
         
         for i, commands in enumerate(command_sections):
-            scripts[SECTION_HEADERS[i][0]] = SECTION_HEADERS[i][1]
+            if i < len(self.section_headers):
+                scripts[self.section_headers[i][0]] = self.section_headers[i][1]
             scripts.update(commands)
         
         return scripts
     
     def calculate_counts(self, scripts: OrderedDict[str, str]) -> List[int]:
         """Calculate actual counts for each script category."""
-        counts = [len(ESSENTIAL_COMMANDS)]
+        counts = [len(self.essential_commands)]
         current_count = 0
         in_section = False
         

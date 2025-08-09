@@ -210,6 +210,11 @@ def test():
         config = get_frameworks_config()
         frameworks = config.get("frameworks", [])
         
+        # **Get testing configuration**
+        testing_config = config.get("config", {}).get("testing", {})
+        default_timeout = testing_config.get("defaultTimeout", 300)
+        max_retries = testing_config.get("maxRetries", 3)
+        
         if not frameworks:
             show_error("No frameworks found in configuration")
             sys.exit(1)
@@ -247,9 +252,9 @@ def test():
                 framework_start = time.time()
                 
                 try:
-                    # **Run tests with longer timeout to preserve Playwright's retry mechanisms**
+                    # **Run tests with configurable timeout to preserve Playwright's retry mechanisms**
                     success, passed, failed, timeout, output = run_test_with_timeout_and_parsing(
-                        ['npm', 'run', f'test:{fw_id}'], timeout=300  # **5 minutes per framework**
+                        ['npm', 'run', f'test:{fw_id}'], timeout=default_timeout
                     )
                     duration_ms = int((time.time() - framework_start) * 1000)
                     

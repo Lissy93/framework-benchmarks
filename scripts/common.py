@@ -68,22 +68,31 @@ def get_bold_text(text: str) -> str:
     return f"[bold]{text}[/]"
 
 
-def get_pass_rate_color(passed: int, total: int) -> str:
+def get_pass_rate_color(passed: int, total: int, config: Dict[str, Any] = None) -> str:
     """
-    Get color code for pass rate display.
+    Get color code for pass rate display using configurable thresholds.
     
     Returns:
-        green: 100% pass rate
-        yellow: 50-99% pass rate  
-        red: <50% pass rate
+        green: excellent pass rate
+        yellow: good pass rate  
+        red: warning pass rate
     """
     if total == 0:
         return "dim"
     
+    if config is None:
+        config = get_frameworks_config()
+    
+    thresholds = config.get("config", {}).get("ui", {}).get("passRateThresholds", {
+        "excellent": 100,
+        "good": 75,
+        "warning": 50
+    })
+    
     pass_rate = (passed / total) * 100
-    if pass_rate == 100:
+    if pass_rate >= thresholds.get("excellent", 100):
         return "green"
-    elif pass_rate >= 50:
+    elif pass_rate >= thresholds.get("good", 75):
         return "yellow"
     else:
         return "red"

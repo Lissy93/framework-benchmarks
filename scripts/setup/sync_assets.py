@@ -57,9 +57,19 @@ def sync_assets():
     show_header("Asset Sync", "Copying shared assets to all framework applications")
     
     project_root = get_project_root()
-    assets_dir = project_root / "assets"
-    apps_dir = project_root / "apps"
     frameworks_config = get_frameworks_config()
+    
+    # Get directory configuration
+    directories = frameworks_config.get("config", {}).get("directories", {})
+    assets_dir_name = directories.get("assetsDir", "assets")
+    apps_dir_name = directories.get("appDir", "apps")
+    
+    assets_dir = project_root / assets_dir_name
+    apps_dir = project_root / apps_dir_name
+    
+    # Get UI configuration
+    ui_config = frameworks_config.get("config", {}).get("ui", {})
+    progress_delay = ui_config.get("progressDelay", 0.25)
     
     if not assets_dir.exists():
         show_error(f"Assets directory not found: {assets_dir}")
@@ -77,7 +87,7 @@ def sync_assets():
         for framework in frameworks:
             task = progress.add_task(f"🔄️ Syncing {framework}...", total=1)
             tasks[framework] = task
-            time.sleep(0.25)
+            time.sleep(progress_delay)
             app_path = apps_dir / framework
             if not app_path.exists():
                 show_error(f"App directory not found: {app_path}")

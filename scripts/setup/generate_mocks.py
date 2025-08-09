@@ -20,15 +20,34 @@ from common import (
 class MockWeatherGenerator:
     """Generate mock weather data matching required structure."""
 
-    def __init__(self) -> None:
-        random.seed(42)
+    def __init__(self, config: Dict[str, Any] = None) -> None:
+        if config is None:
+            config = get_frameworks_config()
+        
+        # Get mock data configuration
+        mock_config = config.get("config", {}).get("mockData", {}).get("weatherApi", {})
+        self.location = mock_config.get("defaultLocation", {
+            "latitude": 51.5074,
+            "longitude": -0.1278,
+            "timezone": "GMT",
+            "name": "London",
+            "country": "UK"
+        })
+        self.seed = mock_config.get("seed", 42)
+        self.variation_range = mock_config.get("variationRange", {
+            "temperature": 5,
+            "humidity": 15,
+            "pressure": 20
+        })
+        
+        random.seed(self.seed)
 
     def generate_mock_data(self) -> Dict[str, Any]:
-        # Hardcoded values for latitude, longitude, timezone, etc.
-        latitude = 51.5074
-        longitude = -0.1278
-        timezone = "GMT"
-        timezone_abbreviation = "GMT"
+        # Use configurable location data
+        latitude = self.location.get("latitude", 51.5074)
+        longitude = self.location.get("longitude", -0.1278)
+        timezone = self.location.get("timezone", "GMT")
+        timezone_abbreviation = timezone
         elevation = 38
         generationtime_ms = round(random.uniform(0.2, 0.3), 2)
         utc_offset_seconds = 0
@@ -45,9 +64,14 @@ class MockWeatherGenerator:
             "wind_speed_10m": "km/h"
         }
 
+        # Generate varied values based on configuration
+        base_temp = 20.5
+        temp_variation = self.variation_range.get("temperature", 5)
+        temperature = round(base_temp + random.uniform(-temp_variation, temp_variation), 1)
+        
         current = {
             "time": "2025-08-07T04:39",
-            "temperature_2m": 20.5,
+            "temperature_2m": temperature,
             "relative_humidity_2m": 68,
             "apparent_temperature": 21.8,
             "weather_code": 1,
@@ -174,15 +198,22 @@ def generate_mocks() -> None:
     show_header("Mock Data Generator", "Creating realistic weather data for testing")
 
     project_root = get_project_root()
-    apps_dir = project_root / "apps"
     frameworks_config = get_frameworks_config()
+    
+    # Get directory and mock data configuration
+    directories = frameworks_config.get("config", {}).get("directories", {})
+    apps_dir = project_root / directories.get("appDir", "apps")
+    assets_dir_name = directories.get("assetsDir", "assets")
+    
+    mock_config = frameworks_config.get("config", {}).get("mockData", {}).get("weatherApi", {})
+    output_path = mock_config.get("outputPath", "mocks/weather-data.json")
 
-    # Task 1: Generate mock data
-    generator = MockWeatherGenerator()
+    # Task 1: Generate mock data with configuration
+    generator = MockWeatherGenerator(frameworks_config)
     mock_data = generator.generate_mock_data()
 
-    # Task 2: Write to assets/mocks/weather-data.json
-    assets_mocks_dir = project_root / "assets" / "mocks"
+    # Task 2: Write to configurable assets directory
+    assets_mocks_dir = project_root / assets_dir_name / "mocks"
     assets_mocks_dir.mkdir(parents=True, exist_ok=True)
     assets_mock_file = assets_mocks_dir / "weather-data.json"
     with open(assets_mock_file, "w") as f:

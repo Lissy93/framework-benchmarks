@@ -61,7 +61,8 @@ def check_lint_command_exists(framework_id: str) -> bool:
         return True
 
 
-def parse_lint_output(output: str) -> Tuple[int, int, List[str]]:
+def parse_lint_output(output: str, max_length: int = 200, exclude_prefixes: List[str] = None, 
+                      error_patterns: List[str] = None, warning_patterns: List[str] = None) -> Tuple[int, int, List[str]]:
     """
     **Parse linting output to extract error and warning counts and messages.**
     
@@ -78,25 +79,30 @@ def parse_lint_output(output: str) -> Tuple[int, int, List[str]]:
     warnings = 0
     key_messages = []
     
-    # **Enhanced patterns** for better ESLint output parsing
-    error_patterns = [
-        r'(\d+)\s+errors?\b',
-        r'✖\s+(\d+)\s+problems?.*?(\d+)\s+errors?',
-        r'❌\s*(\d+)\s*errors?'
-    ]
+    # **Use provided patterns with fallbacks**
+    if error_patterns is None:
+        error_patterns = [
+            r'(\d+)\s+errors?\b',
+            r'✖\s+(\d+)\s+problems?.*?(\d+)\s+errors?',
+            r'❌\s*(\d+)\s*errors?'
+        ]
     
-    warning_patterns = [
-        r'(\d+)\s+warnings?\b',
-        r'⚠️?\s*(\d+)\s*warnings?',
-        r'\b(\d+)\s+warnings?\s+'
-    ]
+    if warning_patterns is None:
+        warning_patterns = [
+            r'(\d+)\s+warnings?\b',
+            r'⚠️?\s*(\d+)\s*warnings?',
+            r'\b(\d+)\s+warnings?\s+'
+        ]
+    
+    if exclude_prefixes is None:
+        exclude_prefixes = ["npm", "warning", "\n", "\t"]
     
     # **Extract all error and warning lines** for comprehensive reporting
     lines = output.split('\n')
     for line in lines:
         line = line.strip()
         if any(indicator in line.lower() for indicator in ['error', 'warning', '✖', '⚠']):
-            if len(line) < 200 and line and not line.startswith('npm'):  # **Filter out npm noise**
+            if len(line) < max_length and line and not any(line.startswith(prefix) for prefix in exclude_prefixes):  # **Filter out noise**
                 # **Clean up ESLint formatting** for better readability
                 cleaned_line = re.sub(r'\s{2,}', ' ', line)  # Remove excessive whitespace
                 if cleaned_line not in key_messages:  # **Avoid duplicates**
@@ -183,6 +189,21 @@ def lint():
         config = get_frameworks_config()
         all_frameworks = config.get("frameworks", [])
         
+        # **Get linting configuration**
+        linting_config = config.get("config", {}).get("linting", {})
+        max_message_length = linting_config.get("maxMessageLength", 200)
+        exclude_prefixes = linting_config.get("excludePrefixes", ["npm", "warning", "\n", "\t"])
+        error_patterns = linting_config.get("errorPatterns", [
+            r'(\d+)\s+errors?\b',
+            r'✖\s+(\d+)\s+problems?.*?(\d+)\s+errors?',
+            r'❌\s*(\d+)\s*errors?'
+        ])
+        warning_patterns = linting_config.get("warningPatterns", [
+            r'(\d+)\s+warnings?\b',
+            r'⚠️?\s*(\d+)\s*warnings?',
+            r'\b(\d+)\s+warnings?\s+'
+        ])
+        
         if not all_frameworks:
             show_error("No frameworks found in configuration")
             sys.exit(1)
@@ -246,7 +267,9 @@ def lint():
                     success, output = run_command(['npm', 'run', f'lint:{fw_id}'])
                     duration_ms = int((time.time() - framework_start) * 1000)
                     
-                    errors, warnings, key_messages = parse_lint_output(output)
+                    errors, warnings, key_messages = parse_lint_output(
+                        output, max_message_length, exclude_prefixes, error_patterns, warning_patterns
+                    )
                     
                     # **Determine and display status**
                     if success and errors == 0 and warnings == 0:

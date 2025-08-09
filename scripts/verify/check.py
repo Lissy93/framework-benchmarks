@@ -34,14 +34,21 @@ class Check:
             return False, self.fix_suggestion
 
 
-def check_node_version() -> bool:
-    """Check if Node.js version is 16+."""
+def check_node_version(config: Dict[str, Any] = None) -> bool:
+    """Check if Node.js version meets requirements."""
     try:
-        result = subprocess.run(['node', '--version'], capture_output=True, text=True)
+        if config is None:
+            config = get_frameworks_config()
+        
+        requirements = config.get("config", {}).get("requirements", {})
+        min_node_version = requirements.get("nodeVersion", 16)
+        node_cmd = requirements.get("tools", {}).get("node", "node --version")
+        
+        result = subprocess.run(node_cmd.split(), capture_output=True, text=True)
         if result.returncode == 0:
             version_str = result.stdout.strip().lstrip('v')
             major = int(version_str.split('.')[0])
-            return major >= 16
+            return major >= min_node_version
     except (subprocess.SubprocessError, ValueError):
         pass
     return False
@@ -77,15 +84,16 @@ def check_framework_apps_synced() -> bool:
     try:
         config = get_frameworks_config()
         project_root = get_project_root()
+        directories = config.get("config", {}).get("directories", {})
+        app_dir = directories.get("appDir", "apps")
         
         for framework in config.get("frameworks", []):
             fw_id = framework.get("id")
             if not fw_id:
                 continue
                 
-            app_path = project_root / "apps" / fw_id
-            build_config = framework.get("build", {})
-            asset_dir = build_config.get("assetsDir", "public")
+            app_path = project_root / app_dir / fw_id
+            asset_dir = framework.get("assetsDir", "public")
             
             # Check for mock data in the appropriate location
             mock_path = app_path / asset_dir / "mocks" / "weather-data.json"
@@ -101,22 +109,31 @@ def check_framework_dependencies() -> bool:
     try:
         config = get_frameworks_config()
         project_root = get_project_root()
+        directories = config.get("config", {}).get("directories", {})
+        app_dir = directories.get("appDir", "apps")
+        node_modules_dir = directories.get("nodeModulesDir", "node_modules")
         
         for framework in config.get("frameworks", []):
             build_config = framework.get("build", {})
             if build_config.get("hasNodeModules", False):
                 fw_id = framework.get("id")
-                if fw_id and not (project_root / "apps" / fw_id / "node_modules").exists():
+                if fw_id and not (project_root / app_dir / fw_id / node_modules_dir).exists():
                     return False
         return True
     except Exception:
         return False
 
 
-def check_playwright_installed() -> bool:
+def check_playwright_installed(config: Dict[str, Any] = None) -> bool:
     """Check if Playwright is available."""
     try:
-        subprocess.run(['npx', 'playwright', '--version'], capture_output=True, check=True)
+        if config is None:
+            config = get_frameworks_config()
+        
+        requirements = config.get("config", {}).get("requirements", {})
+        playwright_cmd = requirements.get("tools", {}).get("playwright", "npx playwright --version")
+        
+        subprocess.run(playwright_cmd.split(), capture_output=True, check=True)
         return True
     except (subprocess.SubprocessError, FileNotFoundError):
         return False
@@ -173,15 +190,19 @@ def check_package_json_scripts() -> bool:
 
 def get_all_checks() -> List[Check]:
     """Get all verification checks."""
+    config = get_frameworks_config()
+    requirements = config.get("config", {}).get("requirements", {})
+    min_node_version = requirements.get("nodeVersion", 16)
+    
     return [
-        Check("Node.js version (16+)", check_node_version, "Update to Node.js 16+"),
+        Check(f"Node.js version ({min_node_version}+)", lambda: check_node_version(config), f"Update to Node.js {min_node_version}+"),
         Check("Root node_modules", check_root_node_modules, "npm install"),
         Check("Framework configuration", check_frameworks_config, "Check frameworks.json exists and has valid structure"),
         Check("ESLint configuration", check_eslint_config, "Check eslint.config.js exists"),
         Check("Mock data present", check_mock_data, "npm run generate-mocks"),
         Check("Framework apps synced", check_framework_apps_synced, "npm run sync-assets"),
         Check("Framework dependencies", check_framework_dependencies, "npm run setup:all"),
-        Check("Playwright installed", check_playwright_installed, "npm run install:playwright"),
+        Check("Playwright installed", lambda: check_playwright_installed(config), "npm run install:playwright"),
         Check("Test configurations", check_test_configurations, "Test configuration files missing"),
         Check("Assets directory structure", check_assets_structure, "npm run sync-assets"),
         Check("Package.json scripts", check_package_json_scripts, "npm run generate-scripts")

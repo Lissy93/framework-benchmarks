@@ -1,8 +1,96 @@
 {
   "config": {
-    "appDir": "apps",
-    "testConfigDir": "tests/config",
-    "testReporter": "list",
+    "directories": {
+      "appDir": "apps",
+      "testConfigDir": "tests/config",
+      "scriptsDir": "scripts",
+      "assetsDir": "assets",
+      "nodeModulesDir": "node_modules"
+    },
+    "buildTools": {
+      "requiresNpx": ["vite", "ng", "playwright"],
+      "pythonCommands": ["python3 -m http.server", "python -m http.server"]
+    },
+    "testing": {
+      "defaultTimeout": 300,
+      "maxRetries": 3,
+      "testReporter": "list",
+      "testCommand": "npx playwright test",
+      "configPathTemplate": "tests/config/playwright-{framework}.config.js"
+    },
+    "linting": {
+      "tool": "eslint",
+      "maxMessageLength": 200,
+      "excludePrefixes": ["npm", "warning", "\n", "\t"],
+      "errorPatterns": [
+        "(\\d+)\\s+errors?\\b",
+        "✖\\s+(\\d+)\\s+problems?.*?(\\d+)\\s+errors?",
+        "❌\\s*(\\d+)\\s*errors?"
+      ],
+      "warningPatterns": [
+        "(\\d+)\\s+warnings?\\b",
+        "⚠️?\\s*(\\d+)\\s*warnings?",
+        "\\b(\\d+)\\s+warnings?\\s+"
+      ]
+    },
+    "requirements": {
+      "nodeVersion": 16,
+      "tools": {
+        "node": "node --version",
+        "playwright": "npx playwright --version",
+        "eslint": "npx eslint --version"
+      }
+    },
+    "ui": {
+      "progressDelay": 0.25,
+      "passRateThresholds": {
+        "excellent": 100,
+        "good": 75,
+        "warning": 50
+      }
+    },
+    "scripts": {
+      "essentialCommands": {
+        "help": "node scripts",
+        "setup": "cd scripts && python setup/main.py",
+        "test": "cd scripts && python verify/test.py",
+        "lint": "cd scripts && python verify/lint.py",
+        "build": "npm run build:all",
+        "start": "npm run dev:all"
+      },
+      "sectionHeaders": {
+        "dev": "// DEV COMMANDS",
+        "build": "// BUILD COMMANDS",
+        "test": "// TEST COMMANDS",
+        "lint": "// LINT COMMANDS",
+        "misc": "// MISC SCRIPTS"
+      },
+      "sectionSeparators": {
+        "dev": "-------------------------------------------------------",
+        "build": "-----------------------------------------------------",
+        "test": "------------------------------------------------------",
+        "lint": "------------------------------------------------------",
+        "misc": "--------------------------------------------------------"
+      }
+    },
+    "mockData": {
+      "weatherApi": {
+        "defaultLocation": {
+          "latitude": 51.5074,
+          "longitude": -0.1278,
+          "timezone": "GMT",
+          "name": "London",
+          "country": "UK"
+        },
+        "seed": 42,
+        "outputPath": "mocks/weather-data.json",
+        "variationRange": {
+          "temperature": 5,
+          "humidity": 15,
+          "pressure": 20
+        }
+      }
+    },
     "miscScripts": [
       {"name": "install:playwright", "command": "playwright install"},
       {"name": "generate-mocks", "command": "cd scripts && python setup/generate_mocks.py"},
@@ -26,6 +114,7 @@
       "name": "Vanilla JS",
       "displayName": "Vanilla JavaScript",
       "dir": "vanilla",
+      "assetsDir": "public",
       "build": {
         "buildCommand": "echo 'No build step required'",
         "hasNodeModules": false,
@@ -54,6 +143,7 @@
       "id": "react",
       "name": "React",
       "dir": "react",
+      "assetsDir": "public",
       "build": {
         "buildCommand": "vite build",
         "hasNodeModules": true,
@@ -82,6 +172,7 @@
       "id": "angular",
       "name": "Angular",
       "dir": "angular",
+      "assetsDir": "public",
       "build": {
         "buildCommand": "ng build",
         "hasNodeModules": true,
@@ -110,6 +201,7 @@
       "id": "svelte",
       "name": "Svelte",
       "dir": "svelte",
+      "assetsDir": "static",
       "build": {
         "buildCommand": "vite build",
         "hasNodeModules": true,
@@ -138,6 +230,7 @@
       "id": "preact",
       "name": "Preact",
       "dir": "preact",
+      "assetsDir": "public",
       "build": {
         "buildCommand": "vite build",
         "hasNodeModules": true,
@@ -167,6 +260,7 @@
       "name": "Solid.js",
       "displayName": "Solid.js",
       "dir": "solid",
+      "assetsDir": "public",
       "build": {
         "buildCommand": "vite build",
         "hasNodeModules": true,
@@ -195,6 +289,7 @@
       "id": "qwik",
       "name": "Qwik",
       "dir": "qwik",
+      "assetsDir": "public",
       "build": {
         "buildCommand": "vite build",
         "hasNodeModules": true,
@@ -224,6 +319,7 @@
       "name": "Vue",
       "displayName": "Vue 3",
       "dir": "vue",
+      "assetsDir": "public",
       "build": {
         "buildCommand": "vite build",
         "hasNodeModules": true,
@@ -252,6 +348,7 @@
       "id": "jquery",
       "name": "jQuery",
       "dir": "jquery",
+      "assetsDir": "public",
       "build": {
         "buildCommand": "vite build",
         "hasNodeModules": true,
@@ -280,6 +377,7 @@
       "id": "alpine",
       "name": "Alpine.js",
       "dir": "alpine",
+      "assetsDir": "public",
       "build": {
         "buildCommand": "echo 'No build step required'",
         "hasNodeModules": false,
@@ -308,6 +406,7 @@
       "id": "lit",
       "name": "Lit",
       "dir": "lit",
+      "assetsDir": "public",
       "build": {
         "buildCommand": "vite build",
         "hasNodeModules": true,
@@ -336,6 +435,7 @@
       "id": "vanjs",
       "name": "VanJS",
       "dir": "vanjs",
+      "assetsDir": "public",
       "build": {
         "buildCommand": "vite build",
         "hasNodeModules": true,
