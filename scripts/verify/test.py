@@ -232,7 +232,7 @@ def test():
             
             for framework in frameworks:
                 fw_name = framework.get("name", framework.get("id", "Unknown"))
-                fw_icon = framework.get("icon", "📦")
+                fw_icon = framework.get("meta", {}).get("emoji", "📦")
                 fw_id = framework.get("id")
                 
                 if not fw_id:

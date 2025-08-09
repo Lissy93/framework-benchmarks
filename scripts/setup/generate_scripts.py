@@ -66,7 +66,7 @@ class ScriptOrganizer:
         
         # Add :all command first
         if command_type == "lint":
-            frameworks_with_lint = [fw["id"] for fw in valid_frameworks if fw.get("lintFiles")]
+            frameworks_with_lint = [fw["id"] for fw in valid_frameworks if fw.get("build", {}).get("lintFiles")]
             commands["lint:all"] = " && ".join([f"npm run lint:{fw_id}" for fw_id in sorted(frameworks_with_lint)])
         else:
             commands[f"{command_type}:all"] = " && ".join([f"npm run {command_type}:{fw_id}" for fw_id in self.framework_ids])
@@ -75,14 +75,17 @@ class ScriptOrganizer:
         for framework in sorted(valid_frameworks, key=lambda x: x["id"]):
             fw_id = framework["id"]
             
-            if command_type == "dev" and framework.get("devCommand"):
-                commands[f"dev:{fw_id}"] = self._build_command(fw_id, framework["devCommand"], "python" not in framework["devCommand"])
-            elif command_type == "build" and framework.get("buildCommand"):
-                commands[f"build:{fw_id}"] = self._build_command(fw_id, framework["buildCommand"])
+            build_config = framework.get("build", {})
+            
+            if command_type == "dev" and build_config.get("devCommand"):
+                dev_cmd = build_config["devCommand"]
+                commands[f"dev:{fw_id}"] = self._build_command(fw_id, dev_cmd, "python" not in dev_cmd)
+            elif command_type == "build" and build_config.get("buildCommand"):
+                commands[f"build:{fw_id}"] = self._build_command(fw_id, build_config["buildCommand"])
             elif command_type == "test":
                 commands[f"test:{fw_id}"] = f"npx playwright test --config={self.test_config_dir}/playwright-{fw_id}.config.js --reporter={self.test_reporter}"
-            elif command_type == "lint" and framework.get("lintFiles"):
-                pattern = self._get_lint_pattern(framework["lintFiles"])
+            elif command_type == "lint" and build_config.get("lintFiles"):
+                pattern = self._get_lint_pattern(build_config["lintFiles"])
                 commands[f"lint:{fw_id}"] = f"eslint '{self.app_dir}/{fw_id}/{pattern}'"
         
         return commands

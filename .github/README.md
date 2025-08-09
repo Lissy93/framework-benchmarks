@@ -38,15 +38,18 @@ So, without further ado, let's see how every framework weathers the storm! ⛈�
 ## Summary
 
 ### Frameworks Covered
-- ✅ Svelte
-- ✅ React
-- ✅ Vue
-- ✅ Qwik
-- ✅ Lit
 - ✅ Alpine.js
-- ✅ Solid
-- ✅ Van.js
 - ✅ Angular
+- ✅ jQuery
+- ✅ Lit
+- ✅ Preact
+- ✅ Qwik
+- ✅ React
+- ✅ Solid
+- ✅ Svelte
+- ✅ Van.js
+- ✅ Vanilla JS
+- ✅ Vue
 - Aurelia
 - Marko
 - Nue
@@ -54,9 +57,6 @@ So, without further ado, let's see how every framework weathers the storm! ⛈�
 - Riot.js
 - Ember
 - Backbone
-- ✅ jQuery
-- ✅ Vanilla JS
-
 
 ---
 

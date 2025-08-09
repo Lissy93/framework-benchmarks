@@ -188,7 +188,7 @@ def lint():
             sys.exit(1)
         
         # **Filter frameworks** that are configured for linting
-        frameworks = [fw for fw in all_frameworks if fw.get("lintFiles")]
+        frameworks = [fw for fw in all_frameworks if fw.get("build", {}).get("lintFiles")]
         
         if not frameworks:
             show_info("No frameworks are configured with 'lintFiles' property")
@@ -212,7 +212,7 @@ def lint():
             
             for framework in frameworks:
                 fw_name = framework.get("name", framework.get("id", "Unknown"))
-                fw_icon = framework.get("icon", "📦")
+                fw_icon = framework.get("meta", {}).get("emoji", "📦")
                 fw_id = framework.get("id")
                 
                 if not fw_id:

@@ -50,7 +50,8 @@ def install_deps(force: bool):
             task = progress.add_task(f"Installing {fw_name} dependencies...", total=1)
             tasks[fw_name] = task
 
-            if not framework.get("hasNodeModules", False):
+            build_config = framework.get("build", {})
+            if not build_config.get("hasNodeModules", False):
                 progress.update(task, description=f"⏭️ {fw_name} (skipping, no dependencies)", completed=1)
                 continue
 

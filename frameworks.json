@@ -1,153 +1,5 @@
 {
-  "frameworks": [
-    {
-      "id": "vanilla",
-      "name": "Vanilla JS",
-      "displayName": "Vanilla JavaScript",
-      "icon": "🧪",
-      "dir": "vanilla",
-      "hasNodeModules": false,
-      "buildCommand": "echo 'No build step required'",
-      "devCommand": "python3 -m http.server 3000 || python -m http.server 3000",
-      "testCommand": "playwright test --config=tests/config/playwright-vanilla.config.js",
-      "lintFiles": ["js"],
-      "assetsDir": "public"
-    },
-    {
-      "id": "react",
-      "name": "React",
-      "displayName": "React",
-      "icon": "⚛️",
-      "dir": "react", 
-      "hasNodeModules": true,
-      "buildCommand": "vite build",
-      "devCommand": "vite",
-      "testCommand": "playwright test --config=tests/config/playwright-react.config.js",
-      "lintFiles": ["js", "jsx"]
-    },
-    {
-      "id": "angular",
-      "name": "Angular",
-      "displayName": "Angular",
-      "icon": "🅰️",
-      "dir": "angular",
-      "hasNodeModules": true,
-      "buildCommand": "ng build",
-      "devCommand": "ng serve --port 3000",
-      "testCommand": "playwright test --config=tests/config/playwright-angular.config.js",
-      "lintFiles": ["ts", "html"]
-    },
-    {
-      "id": "svelte",
-      "name": "Svelte",
-      "displayName": "Svelte",
-      "icon": "🔥",
-      "dir": "svelte",
-      "hasNodeModules": true,
-      "buildCommand": "vite build",
-      "devCommand": "vite dev --port 3000",
-      "testCommand": "playwright test --config=tests/config/playwright-svelte.config.js",
-      "lintFiles": ["js", "svelte"],
-      "assetsDir": "static"
-    },
-    {
-      "id": "preact",
-      "name": "Preact",
-      "displayName": "Preact",
-      "icon": "💜",
-      "dir": "preact",
-      "hasNodeModules": true,
-      "buildCommand": "vite build",
-      "devCommand": "vite",
-      "testCommand": "playwright test --config=tests/config/playwright-preact.config.js",
-      "lintFiles": ["js", "jsx"]
-    },
-    {
-      "id": "solid",
-      "name": "Solid.js",
-      "displayName": "Solid.js",
-      "icon": "🚀",
-      "dir": "solid",
-      "hasNodeModules": true,
-      "buildCommand": "vite build",
-      "devCommand": "vite",
-      "testCommand": "playwright test --config=tests/config/playwright-solid.config.js",
-      "lintFiles": ["js", "jsx"]
-    },
-    {
-      "id": "qwik",
-      "name": "Qwik",
-      "displayName": "Qwik",
-      "icon": "⚡",
-      "dir": "qwik",
-      "hasNodeModules": true,
-      "buildCommand": "vite build",
-      "devCommand": "vite --port 3000",
-      "testCommand": "playwright test --config=tests/config/playwright-qwik.config.js",
-      "lintFiles": ["ts", "tsx"]
-    },
-    {
-      "id": "vue",
-      "name": "Vue",
-      "displayName": "Vue 3",
-      "icon": "💚",
-      "dir": "vue",
-      "hasNodeModules": true,
-      "buildCommand": "vite build",
-      "devCommand": "vite --port 3000",
-      "testCommand": "playwright test --config=tests/config/playwright-vue.config.js",
-      "lintFiles": ["js", "vue"]
-    },
-    {
-      "id": "jquery",
-      "name": "jQuery",
-      "displayName": "jQuery",
-      "icon": "💙",
-      "dir": "jquery",
-      "hasNodeModules": true,
-      "buildCommand": "vite build",
-      "devCommand": "vite --port 3000",
-      "testCommand": "playwright test --config=tests/config/playwright-jquery.config.js",
-      "lintFiles": ["js"]
-    },
-    {
-      "id": "alpine",
-      "name": "Alpine.js",
-      "displayName": "Alpine.js",
-      "icon": "🏔️",
-      "dir": "alpine",
-      "hasNodeModules": false,
-      "buildCommand": "echo 'No build step required'",
-      "devCommand": "python3 -m http.server 3000 || python -m http.server 3000",
-      "testCommand": "playwright test --config=tests/config/playwright-alpine.config.js",
-      "lintFiles": ["js"]
-    },
-    {
-      "id": "lit",
-      "name": "Lit",
-      "displayName": "Lit",
-      "icon": "🔥",
-      "dir": "lit",
-      "hasNodeModules": true,
-      "buildCommand": "vite build",
-      "devCommand": "vite --port 3000",
-      "testCommand": "playwright test --config=tests/config/playwright-lit.config.js",
-      "lintFiles": ["js"]
-    },
-    {
-      "id": "vanjs",
-      "name": "VanJS",
-      "displayName": "VanJS",
-      "icon": "🚐",
-      "dir": "vanjs",
-      "hasNodeModules": true,
-      "buildCommand": "vite build",
-      "devCommand": "vite --port 3000",
-      "testCommand": "playwright test --config=tests/config/playwright-vanjs.config.js",
-      "lintFiles": ["js"]
-    }
-  ],
-    "config": {
+  "config": {
     "appDir": "apps",
     "testConfigDir": "tests/config",
     "testReporter": "list",
@@ -167,5 +19,346 @@
       {"name": "check", "command": "cd scripts && python verify/check.py"},
       {"name": "verify", "command": "cd scripts && python verify/main.py"}
     ]
-  }
+  },
+  "frameworks": [
+    {
+      "id": "vanilla",
+      "name": "Vanilla JS",
+      "displayName": "Vanilla JavaScript",
+      "dir": "vanilla",
+      "build": {
+        "buildCommand": "echo 'No build step required'",
+        "hasNodeModules": false,
+        "devCommand": "python3 -m http.server 3000 || python -m http.server 3000",
+        "testCommand": "playwright test --config=tests/config/playwright-vanilla.config.js",
+        "lintFiles": ["js"]
+      },
+      "meta": {
+        "emoji": "🧪",
+        "iconName": "javascript",
+        "website": "https://developer.mozilla.org/en-US/docs/Web/JavaScript",
+        "github": "",
+        "color": "#F7DF1E",
+        "accentColor": "#F7DF1E",
+        "logo": ""
+      },
+      "exampleRealApp": {
+        "title": "",
+        "description": "",
+        "repo": "",
+        "website": "",
+        "logo": ""
+      }
+    },
+    {
+      "id": "react",
+      "name": "React",
+      "dir": "react",
+      "build": {
+        "buildCommand": "vite build",
+        "hasNodeModules": true,
+        "devCommand": "vite",
+        "testCommand": "playwright test --config=tests/config/playwright-react.config.js",
+        "lintFiles": ["js", "jsx"]
+      },
+      "meta": {
+        "emoji": "⚛️",
+        "iconName": "react",
+        "website": "https://react.dev/",
+        "github": "https://github.com/facebook/react",
+        "color": "#61DAFB",
+        "accentColor": "#61DAFB",
+        "logo": "https://react.dev/android-chrome-192x192.png"
+      },
+      "exampleRealApp": {
+        "title": "Web Check",
+        "description": "All-in-one OSINT tool for analyzing any site",
+        "repo": "https://github.com/Lissy93/web-check",
+        "website": "https://web-check.xyz/",
+        "logo": "https://raw.githubusercontent.com/Lissy93/web-check/master/public/android-chrome-192x192.png"
+      }
+    },
+    {
+      "id": "angular",
+      "name": "Angular",
+      "dir": "angular",
+      "build": {
+        "buildCommand": "ng build",
+        "hasNodeModules": true,
+        "devCommand": "ng serve --port 3000",
+        "testCommand": "playwright test --config=tests/config/playwright-angular.config.js",
+        "lintFiles": ["ts", "html"]
+      },
+      "meta": {
+        "emoji": "🅰️",
+        "iconName": "angular",
+        "website": "https://angular.io/",
+        "github": "https://github.com/angular/angular",
+        "color": "#DD0031",
+        "accentColor": "#DD0031",
+        "logo": ""
+      },
+      "exampleRealApp": {
+        "title": "Domain Locker",
+        "description": "Domain name portfolio manager",
+        "repo": "https://github.com/Lissy93/domain-locker",
+        "website": "https://domain-locker.com",
+        "logo": "https://storage.googleapis.com/as93-screenshots/project-logos/domain-locker.png"
+      }
+    },
+    {
+      "id": "svelte",
+      "name": "Svelte",
+      "dir": "svelte",
+      "build": {
+        "buildCommand": "vite build",
+        "hasNodeModules": true,
+        "devCommand": "vite dev --port 3000",
+        "testCommand": "playwright test --config=tests/config/playwright-svelte.config.js",
+        "lintFiles": ["js", "svelte"]
+      },
+      "meta": {
+        "emoji": "🔥",
+        "iconName": "svelte",
+        "website": "https://svelte.dev/",
+        "github": "https://github.com/sveltejs/svelte",
+        "color": "#ff3e00",
+        "accentColor": "#ff3e00",
+        "logo": ""
+      },
+      "exampleRealApp": {
+        "title": "Portainer Templates",
+        "description": "Automated Docker deployment specs",
+        "repo": "https://github.com/Lissy93/portainer-templates",
+        "website": "https://portainer-templates.as93.net/",
+        "logo": "https://storage.googleapis.com/as93-screenshots/project-logos/portainer-templates.png"
+      }
+    },
+    {
+      "id": "preact",
+      "name": "Preact",
+      "dir": "preact",
+      "build": {
+        "buildCommand": "vite build",
+        "hasNodeModules": true,
+        "devCommand": "vite",
+        "testCommand": "playwright test --config=tests/config/playwright-preact.config.js",
+        "lintFiles": ["js", "jsx"]
+      },
+      "meta": {
+        "emoji": "💜",
+        "iconName": "preact",
+        "website": "https://preactjs.com/",
+        "github": "https://github.com/preactjs/preact",
+        "color": "#673AB8",
+        "accentColor": "#673AB8",
+        "logo": ""
+      },
+      "exampleRealApp": {
+        "title": "",
+        "description": "",
+        "repo": "",
+        "website": "",
+        "logo": ""
+      }
+    },
+    {
+      "id": "solid",
+      "name": "Solid.js",
+      "displayName": "Solid.js",
+      "dir": "solid",
+      "build": {
+        "buildCommand": "vite build",
+        "hasNodeModules": true,
+        "devCommand": "vite",
+        "testCommand": "playwright test --config=tests/config/playwright-solid.config.js",
+        "lintFiles": ["js", "jsx"]
+      },
+      "meta": {
+        "emoji": "🚀",
+        "iconName": "solid",
+        "website": "https://www.solidjs.com/",
+        "github": "https://github.com/solidjs/solid",
+        "color": "#2C4F7C",
+        "accentColor": "#2C4F7C",
+        "logo": ""
+      },
+      "exampleRealApp": {
+        "title": "Chief Snack Officer",
+        "description": "Office snack management app",
+        "repo": "https://github.com/Lissy93/cso",
+        "website": "https://lissy93.github.io/cso",
+        "logo": "https://storage.googleapis.com/as93-screenshots/project-logos/cso.png"
+      }
+    },
+    {
+      "id": "qwik",
+      "name": "Qwik",
+      "dir": "qwik",
+      "build": {
+        "buildCommand": "vite build",
+        "hasNodeModules": true,
+        "devCommand": "vite --port 3000",
+        "testCommand": "playwright test --config=tests/config/playwright-qwik.config.js",
+        "lintFiles": ["ts", "tsx"]
+      },
+      "meta": {
+        "emoji": "⚡",
+        "iconName": "qwik",
+        "website": "https://qwik.builder.io/",
+        "github": "https://github.com/BuilderIO/qwik",
+        "color": "#ac7ef4",
+        "accentColor": "#ac7ef4",
+        "logo": ""
+      },
+      "exampleRealApp": {
+        "title": "Digital Defense",
+        "description": "Interactive personal security checklist",
+        "repo": "https://github.com/Lissy93/personal-security-checklist",
+        "website": "https://digital-defense.io",
+        "logo": "https://storage.googleapis.com/as93-screenshots/project-logos/digital-defense.png"
+      }
+    },
+    {
+      "id": "vue",
+      "name": "Vue",
+      "displayName": "Vue 3",
+      "dir": "vue",
+      "build": {
+        "buildCommand": "vite build",
+        "hasNodeModules": true,
+        "devCommand": "vite --port 3000",
+        "testCommand": "playwright test --config=tests/config/playwright-vue.config.js",
+        "lintFiles": ["js", "vue"]
+      },
+      "meta": {
+        "emoji": "💚",
+        "iconName": "vuedotjs",
+        "website": "https://vuejs.org/",
+        "github": "https://github.com/vuejs/core",
+        "color": "#4FC08D",
+        "accentColor": "#4FC08D",
+        "logo": ""
+      },
+      "exampleRealApp": {
+        "title": "Dashy",
+        "description": "Highly configurable self-hostable server dashboard",
+        "repo": "https://github.com/Lissy93/dashy",
+        "website": "https://dashy.to",
+        "logo": "https://i.ibb.co/yhbt6CY/dashy.png"
+      }
+    },
+    {
+      "id": "jquery",
+      "name": "jQuery",
+      "dir": "jquery",
+      "build": {
+        "buildCommand": "vite build",
+        "hasNodeModules": true,
+        "devCommand": "vite --port 3000",
+        "testCommand": "playwright test --config=tests/config/playwright-jquery.config.js",
+        "lintFiles": ["js"]
+      },
+      "meta": {
+        "emoji": "💙",
+        "iconName": "jquery",
+        "website": "https://jquery.com/",
+        "github": "https://github.com/jquery/jquery",
+        "color": "#0769AD",
+        "accentColor": "#0769AD",
+        "logo": ""
+      },
+      "exampleRealApp": {
+        "title": "",
+        "description": "",
+        "repo": "",
+        "website": "",
+        "logo": ""
+      }
+    },
+    {
+      "id": "alpine",
+      "name": "Alpine.js",
+      "dir": "alpine",
+      "build": {
+        "buildCommand": "echo 'No build step required'",
+        "hasNodeModules": false,
+        "devCommand": "python3 -m http.server 3000 || python -m http.server 3000",
+        "testCommand": "playwright test --config=tests/config/playwright-alpine.config.js",
+        "lintFiles": ["js"]
+      },
+      "meta": {
+        "emoji": "🏔️",
+        "iconName": "alpinedotjs",
+        "website": "https://alpinejs.dev/",
+        "github": "https://github.com/alpinejs/alpine",
+        "color": "#8BC0D0",
+        "accentColor": "#8BC0D0",
+        "logo": ""
+      },
+      "exampleRealApp": {
+        "title": "Who Dat",
+        "description": "WHOIS lookup for domain registration info",
+        "repo": "https://github.com/Lissy93/who-dat",
+        "website": "https://who-dat.as93.net",
+        "logo": "https://storage.googleapis.com/as93-screenshots/project-logos/who-dat.png"
+      }
+    },
+    {
+      "id": "lit",
+      "name": "Lit",
+      "dir": "lit",
+      "build": {
+        "buildCommand": "vite build",
+        "hasNodeModules": true,
+        "devCommand": "vite --port 3000",
+        "testCommand": "playwright test --config=tests/config/playwright-lit.config.js",
+        "lintFiles": ["js"]
+      },
+      "meta": {
+        "emoji": "🔥",
+        "iconName": "lit",
+        "website": "https://lit.dev/",
+        "github": "https://github.com/lit/lit",
+        "color": "#00ffff",
+        "accentColor": "#00ffff",
+        "logo": ""
+      },
+      "exampleRealApp": {
+        "title": "Email Comparison",
+        "description": "Objective testing of mail providers",
+        "repo": "https://github.com/Lissy93/email-comparison",
+        "website": "https://email-comparison.as93.net/",
+        "logo": "https://storage.googleapis.com/as93-screenshots/project-logos/email-comparison.png"
+      }
+    },
+    {
+      "id": "vanjs",
+      "name": "VanJS",
+      "dir": "vanjs",
+      "build": {
+        "buildCommand": "vite build",
+        "hasNodeModules": true,
+        "devCommand": "vite --port 3000",
+        "testCommand": "playwright test --config=tests/config/playwright-vanjs.config.js",
+        "lintFiles": ["js"]
+      },
+      "meta": {
+        "emoji": "🚐",
+        "iconName": "vitess",
+        "website": "https://vanjs.org/",
+        "github": "https://github.com/vanjs-org/van",
+        "color": "#F44336",
+        "accentColor": "#F44336",
+        "logo": ""
+      },
+      "exampleRealApp": {
+        "title": "RAID Calculator",
+        "description": "RAID array capacity and fault tolerance",
+        "repo": "https://github.com/Lissy93/raid-calculator",
+        "website": "https://raid-calculator.as93.net/",
+        "logo": "https://storage.googleapis.com/as93-screenshots/project-screenshots/raid-caclularor.png"
+      }
+    }
+  ]
 }
