@@ -1,0 +1,300 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Configuration Schema",
+  "description": "Schema for config.json - defines project configuration settings",
+  "type": "object",
+  "required": ["directories", "buildTools", "testing", "linting", "requirements", "ui", "scripts", "mockData", "miscScripts"],
+  "properties": {
+    "directories": {
+      "type": "object",
+      "required": ["appDir", "testConfigDir", "scriptsDir", "assetsDir", "nodeModulesDir"],
+      "properties": {
+        "appDir": {
+          "type": "string",
+          "pattern": "^[a-zA-Z_][a-zA-Z0-9_]*$",
+          "description": "Directory containing framework apps"
+        },
+        "testConfigDir": {
+          "type": "string",
+          "description": "Directory for test configurations"
+        },
+        "scriptsDir": {
+          "type": "string",
+          "description": "Directory for project scripts"
+        },
+        "assetsDir": {
+          "type": "string",
+          "description": "Directory for shared assets"
+        },
+        "nodeModulesDir": {
+          "type": "string",
+          "description": "Node modules directory name"
+        }
+      },
+      "additionalProperties": false
+    },
+    "buildTools": {
+      "type": "object",
+      "required": ["requiresNpx", "pythonCommands"],
+      "properties": {
+        "requiresNpx": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tools that require npx prefix"
+        },
+        "pythonCommands": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^python.*"
+          },
+          "description": "Python server commands to try"
+        }
+      },
+      "additionalProperties": false
+    },
+    "testing": {
+      "type": "object",
+      "required": ["defaultTimeout", "maxRetries", "testReporter", "testCommand", "configPathTemplate"],
+      "properties": {
+        "defaultTimeout": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Default test timeout in seconds"
+        },
+        "maxRetries": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Maximum test retries"
+        },
+        "testReporter": {
+          "type": "string",
+          "enum": ["list", "json", "html"],
+          "description": "Test reporter format"
+        },
+        "testCommand": {
+          "type": "string",
+          "pattern": "^npx playwright test",
+          "description": "Base test command"
+        },
+        "configPathTemplate": {
+          "type": "string",
+          "pattern": ".*\\{framework\\}.*",
+          "description": "Template for test config paths"
+        }
+      },
+      "additionalProperties": false
+    },
+    "linting": {
+      "type": "object",
+      "required": ["tool", "maxMessageLength", "excludePrefixes", "errorPatterns", "warningPatterns"],
+      "properties": {
+        "tool": {
+          "type": "string",
+          "enum": ["eslint"],
+          "description": "Linting tool to use"
+        },
+        "maxMessageLength": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Maximum length for lint messages"
+        },
+        "excludePrefixes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Prefixes to exclude from lint output"
+        },
+        "errorPatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Regex patterns to match lint errors"
+        },
+        "warningPatterns": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Regex patterns to match lint warnings"
+        }
+      },
+      "additionalProperties": false
+    },
+    "requirements": {
+      "type": "object",
+      "required": ["nodeVersion", "tools"],
+      "properties": {
+        "nodeVersion": {
+          "type": "integer",
+          "minimum": 12,
+          "description": "Minimum required Node.js version"
+        },
+        "tools": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z_][a-zA-Z0-9_]*$": {
+              "type": "string",
+              "description": "Command to check tool version"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "ui": {
+      "type": "object",
+      "required": ["progressDelay", "passRateThresholds"],
+      "properties": {
+        "progressDelay": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Delay between progress updates in seconds"
+        },
+        "passRateThresholds": {
+          "type": "object",
+          "required": ["excellent", "good", "warning"],
+          "properties": {
+            "excellent": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "good": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "warning": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 100
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "scripts": {
+      "type": "object",
+      "required": ["essentialCommands", "sectionHeaders", "sectionSeparators"],
+      "properties": {
+        "essentialCommands": {
+          "type": "object",
+          "patternProperties": {
+            "^[a-zA-Z_][a-zA-Z0-9_]*$": {
+              "type": "string",
+              "description": "Essential script commands"
+            }
+          },
+          "additionalProperties": false
+        },
+        "sectionHeaders": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "sectionSeparators": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "mockData": {
+      "type": "object",
+      "required": ["weatherApi"],
+      "properties": {
+        "weatherApi": {
+          "type": "object",
+          "required": ["defaultLocation", "seed", "outputPath", "variationRange"],
+          "properties": {
+            "defaultLocation": {
+              "type": "object",
+              "required": ["latitude", "longitude", "timezone", "name", "country"],
+              "properties": {
+                "latitude": {
+                  "type": "number",
+                  "minimum": -90,
+                  "maximum": 90
+                },
+                "longitude": {
+                  "type": "number",
+                  "minimum": -180,
+                  "maximum": 180
+                },
+                "timezone": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "country": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            },
+            "seed": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "outputPath": {
+              "type": "string",
+              "pattern": ".*\\.json$"
+            },
+            "variationRange": {
+              "type": "object",
+              "required": ["temperature", "humidity", "pressure"],
+              "properties": {
+                "temperature": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "humidity": {
+                  "type": "integer",
+                  "minimum": 0
+                },
+                "pressure": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "miscScripts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "command"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "command": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

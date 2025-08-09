@@ -1,0 +1,152 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Frameworks Configuration Schema",
+  "description": "Schema for frameworks.json - defines frontend framework configurations",
+  "type": "object",
+  "properties": {
+    "frameworks": {
+      "type": "array",
+      "description": "Array of frontend framework configurations",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "dir", "assetsDir", "build", "meta"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-z]+$",
+            "description": "Unique lowercase identifier for the framework"
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Display name of the framework"
+          },
+          "displayName": {
+            "type": "string",
+            "description": "Optional extended display name"
+          },
+          "dir": {
+            "type": "string",
+            "pattern": "^[a-z]+$",
+            "description": "Directory name in apps/ folder"
+          },
+          "assetsDir": {
+            "type": "string",
+            "enum": ["public", "static", "src/assets"],
+            "description": "Assets directory within the framework app"
+          },
+          "build": {
+            "type": "object",
+            "required": ["buildCommand", "hasNodeModules", "devCommand", "testCommand", "lintFiles"],
+            "properties": {
+              "buildCommand": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Command to build the framework app"
+              },
+              "hasNodeModules": {
+                "type": "boolean",
+                "description": "Whether the framework has node_modules"
+              },
+              "devCommand": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Command to start development server"
+              },
+              "testCommand": {
+                "type": "string",
+                "pattern": "playwright test.*",
+                "description": "Playwright test command"
+              },
+              "lintFiles": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": ["js", "jsx", "ts", "tsx", "vue", "svelte", "html"]
+                },
+                "minItems": 1,
+                "description": "File extensions to lint"
+              }
+            },
+            "additionalProperties": false
+          },
+          "meta": {
+            "type": "object",
+            "required": ["emoji", "iconName", "website", "github", "color", "accentColor"],
+            "properties": {
+              "emoji": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Emoji representing the framework"
+              },
+              "iconName": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Icon name from Simple Icons"
+              },
+              "website": {
+                "type": "string",
+                "format": "uri",
+                "description": "Official framework website"
+              },
+              "github": {
+                "type": "string",
+                "pattern": "^(https://github\\.com/.+|)$",
+                "description": "GitHub repository URL"
+              },
+              "color": {
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$",
+                "description": "Primary color as hex code"
+              },
+              "accentColor": {
+                "type": "string",
+                "pattern": "^#[0-9A-Fa-f]{6}$",
+                "description": "Accent color as hex code"
+              },
+              "logo": {
+                "type": "string",
+                "description": "Logo URL (can be empty)"
+              }
+            },
+            "additionalProperties": false
+          },
+          "exampleRealApp": {
+            "type": "object",
+            "required": ["title", "description", "repo", "website", "logo"],
+            "properties": {
+              "title": {
+                "type": "string",
+                "description": "Title of example real-world app"
+              },
+              "description": {
+                "type": "string",
+                "description": "Description of example app"
+              },
+              "repo": {
+                "type": "string",
+                "pattern": "^(https://github\\.com/.+|)$",
+                "description": "Repository URL (can be empty)"
+              },
+              "website": {
+                "type": "string",
+                "pattern": "^(https?://.+|)$",
+                "description": "Website URL (can be empty)"
+              },
+              "logo": {
+                "type": "string",
+                "pattern": "^(https?://.+|)$",
+                "description": "Logo URL (can be empty)"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["frameworks"],
+  "additionalProperties": false
+}
