@@ -8,6 +8,7 @@
     "lint": "python scripts/verify/lint.py",
     "build": "python scripts/run/build.py",
     "start": "python scripts/run/serve.py",
+    "check": "python scripts/verify/check.py",
     "help": "python scripts/help.py",
     "// DEV COMMANDS": "-------------------------------------------------------",
     "dev:all": "npm run dev:alpine && npm run dev:angular && npm run dev:jquery && npm run dev:lit && npm run dev:preact && npm run dev:qwik && npm run dev:react && npm run dev:solid && npm run dev:svelte && npm run dev:vanilla && npm run dev:vanjs && npm run dev:vue",
@@ -78,7 +79,6 @@
     "perf:vanjs": "node scripts/performance/index.js --frameworks vanjs",
     "serve:production": "node scripts/performance/production-server.js",
     "serve:single": "node scripts/performance/serve-single.js",
-    "check": "cd scripts && python verify/check.py",
     "verify": "cd scripts && python verify/main.py"
   },
   "devDependencies": {

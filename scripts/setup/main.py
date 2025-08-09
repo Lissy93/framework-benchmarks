@@ -12,6 +12,7 @@ from setup.sync_assets import sync_assets
 from setup.generate_mocks import generate_mocks  
 from setup.generate_scripts import generate_scripts
 from setup.install_deps import install_deps
+from run.build import build_all
 
 console = Console()
 
@@ -21,7 +22,8 @@ console = Console()
 @click.option("--skip-mocks", is_flag=True, help="Skip mock data generation")
 @click.option("--skip-scripts", is_flag=True, help="Skip script generation")
 @click.option("--skip-deps", is_flag=True, help="Skip dependency installation")
-def setup_all(skip_assets: bool, skip_mocks: bool, skip_scripts: bool, skip_deps: bool):
+@click.option("--skip-build", is_flag=True, help="Skip building frameworks")
+def setup_all(skip_assets: bool, skip_mocks: bool, skip_scripts: bool, skip_deps: bool, skip_build: bool):
     """Run all setup tasks for the Weather Front project."""
     show_header("Weather Front Setup", "Running all project setup and management tasks")
     
@@ -39,6 +41,9 @@ def setup_all(skip_assets: bool, skip_mocks: bool, skip_scripts: bool, skip_deps
     if not skip_deps:
         tasks.append(("Installing framework dependencies", install_deps))
     
+    if not skip_build:
+        tasks.append(("Building all frameworks", build_all))
+    
     for task_name, task_func in tasks:
         console.print(f"\n🔧 {task_name}...")
         try:
@@ -47,6 +52,8 @@ def setup_all(skip_assets: bool, skip_mocks: bool, skip_scripts: bool, skip_deps
                 task_func.callback(force=False)
             elif task_func == generate_scripts:
                 task_func.callback(dry_run=False, verbose=False)
+            elif task_func == build_all:
+                task_func.callback(parallel=False)
             else:
                 task_func.callback()
         except Exception as e:
@@ -56,8 +63,8 @@ def setup_all(skip_assets: bool, skip_mocks: bool, skip_scripts: bool, skip_deps
     show_success("All setup tasks completed!")
     console.print("\n💡 Next steps:", style="bold cyan")
     console.print("  • Run `npm run verify` to check everything is working")
-    console.print("  • Run `npm run build:all` to build all frameworks")
-    console.print("  • Run `npm run serve:production` to serve production builds")
+    console.print("  • Run `npm start` to serve all frameworks")
+    console.print("  • Run performance tests with your built applications")
 
 
 if __name__ == "__main__":

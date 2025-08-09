@@ -45,14 +45,7 @@ class ScriptOrganizer:
         
         # Scripts configuration
         scripts_config = cfg.get("scripts", {})
-        self.essential_commands = OrderedDict(scripts_config.get("essentialCommands", {
-            "setup": "python scripts/setup/main.py",
-            "test": "python scripts/verify/test.py",
-            "lint": "python scripts/verify/lint.py", 
-            "build": "python scripts/run/build.py",
-            "start": "python scripts/run/serve.py",
-            "help": "node scripts"
-        }))
+        self.essential_commands = OrderedDict(scripts_config.get("essentialCommands", {}))
         
         section_headers = scripts_config.get("sectionHeaders", {})
         section_separators = scripts_config.get("sectionSeparators", {})
