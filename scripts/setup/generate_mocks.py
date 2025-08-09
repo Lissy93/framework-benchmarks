@@ -13,7 +13,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 
 from common import (
-    get_project_root, get_frameworks_config, get_framework_asset_dir,
+    get_project_root, get_config, get_frameworks, get_framework_asset_dir,
     show_header, show_success, show_error
 )
 
@@ -22,10 +22,10 @@ class MockWeatherGenerator:
 
     def __init__(self, config: Dict[str, Any] = None) -> None:
         if config is None:
-            config = get_frameworks_config()
+            config = get_config()
         
         # Get mock data configuration
-        mock_config = config.get("config", {}).get("mockData", {}).get("weatherApi", {})
+        mock_config = config.get("mockData", {}).get("weatherApi", {})
         self.location = mock_config.get("defaultLocation", {
             "latitude": 51.5074,
             "longitude": -0.1278,
@@ -198,18 +198,19 @@ def generate_mocks() -> None:
     show_header("Mock Data Generator", "Creating realistic weather data for testing")
 
     project_root = get_project_root()
-    frameworks_config = get_frameworks_config()
+    config = get_config()
+    frameworks = get_frameworks()
     
     # Get directory and mock data configuration
-    directories = frameworks_config.get("config", {}).get("directories", {})
+    directories = config.get("directories", {})
     apps_dir = project_root / directories.get("appDir", "apps")
     assets_dir_name = directories.get("assetsDir", "assets")
     
-    mock_config = frameworks_config.get("config", {}).get("mockData", {}).get("weatherApi", {})
+    mock_config = config.get("mockData", {}).get("weatherApi", {})
     output_path = mock_config.get("outputPath", "mocks/weather-data.json")
 
     # Task 1: Generate mock data with configuration
-    generator = MockWeatherGenerator(frameworks_config)
+    generator = MockWeatherGenerator(config)
     mock_data = generator.generate_mock_data()
 
     # Task 2: Write to configurable assets directory
@@ -219,11 +220,11 @@ def generate_mocks() -> None:
     with open(assets_mock_file, "w") as f:
         json.dump(mock_data, f, indent=2)
 
-    frameworks = [fw["id"] for fw in frameworks_config.get("frameworks", [])]
+    framework_ids = [fw["id"] for fw in frameworks]
     failed_apps: List[str] = []
 
     # Task 3: Copy the same file to each app
-    for framework in frameworks:
+    for framework in framework_ids:
         try:
             app_path = apps_dir / framework
             if not app_path.exists():
@@ -231,7 +232,7 @@ def generate_mocks() -> None:
                 failed_apps.append(framework)
                 continue
 
-            asset_dir_name = get_framework_asset_dir(framework, frameworks_config)
+            asset_dir_name = get_framework_asset_dir(framework, {"frameworks": frameworks})
             mocks_dir = app_path / asset_dir_name / "mocks"
             mocks_dir.mkdir(parents=True, exist_ok=True)
 

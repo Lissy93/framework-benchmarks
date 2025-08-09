@@ -17,11 +17,29 @@ def get_project_root() -> Path:
     return Path(__file__).parent.parent
 
 
-def get_frameworks_config() -> Dict[str, Any]:
-    """Load and return the frameworks configuration."""
-    config_path = get_project_root() / "frameworks.json"
+def get_config() -> Dict[str, Any]:
+    """Load and return the project configuration."""
+    config_path = get_project_root() / "config.json"
     with open(config_path, "r") as f:
         return json.load(f)
+
+
+def get_frameworks() -> List[Dict[str, Any]]:
+    """Load and return the frameworks array."""
+    frameworks_path = get_project_root() / "frameworks.json"
+    with open(frameworks_path, "r") as f:
+        data = json.load(f)
+        return data.get("frameworks", [])
+
+
+def get_frameworks_config() -> Dict[str, Any]:
+    """Load and return the combined frameworks and config (for backward compatibility)."""
+    config = get_config()
+    frameworks = get_frameworks()
+    return {
+        "config": config,
+        "frameworks": frameworks
+    }
 
 
 def show_header(title: str, description: str) -> None:

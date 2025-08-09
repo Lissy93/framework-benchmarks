@@ -99,15 +99,17 @@
         .framework-link {
             display: inline-block;
             text-decoration: none;
-            background: #3498db;
+            background: var(--fw-color, #3498db);
             color: white;
+
             padding: 10px 20px;
             border-radius: 6px;
             font-weight: 500;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, opacity 0.3s ease;
         }
         .framework-link:hover {
-            background: #2980b9;
+            /* background: #2980b9; */
+            opacity: 0.9;
             text-decoration: none;
         }
         .framework-link.disabled {

@@ -19,7 +19,7 @@ from rich.console import Console
 import sys
 sys.path.append(str(Path(__file__).parent.parent))
 
-from common import get_frameworks_config
+from common import get_config, get_frameworks
 
 console = Console()
 
@@ -27,7 +27,8 @@ class FrameworkServer:
     def __init__(self, port: int = 3000):
         self.app = Flask(__name__)
         self.port = port
-        self.config = get_frameworks_config()
+        self.config = get_config()
+        self.frameworks_list = get_frameworks()
         self.root_dir = Path(__file__).parent.parent.parent
         self.templates_dir = Path(__file__).parent
         self.frameworks = self._discover_frameworks()
@@ -38,11 +39,10 @@ class FrameworkServer:
     def _discover_frameworks(self) -> Dict[str, Dict]:
         """Discover frameworks and their build status from frameworks.json"""
         frameworks = {}
-        config_frameworks = self.config.get("frameworks", [])
-        directories = self.config.get("config", {}).get("directories", {})
+        directories = self.config.get("directories", {})
         app_dir = directories.get("appDir", "apps")
         
-        for framework_data in config_frameworks:
+        for framework_data in self.frameworks_list:
             framework_id = framework_data.get("id")
             build_config = framework_data.get("build", {})
             build_dir = build_config.get("dir", "dist")

@@ -15,17 +15,17 @@ from rich.table import Table
 # Add parent directory to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
 from common import (
-    get_project_root, get_frameworks_config,
+    get_project_root, get_config, get_frameworks,
     show_header, show_success, show_error, show_info
 )
 
 console = Console()
 
 class ScriptOrganizer:
-    def __init__(self, config: Dict[str, Any]):
-        self.frameworks = config.get("frameworks", [])
+    def __init__(self, config: Dict[str, Any], frameworks: List[Dict[str, Any]]):
+        self.frameworks = frameworks
         self.framework_ids = sorted([fw["id"] for fw in self.frameworks if "id" in fw])
-        cfg = config.get("config", {})
+        cfg = config
         
         # Directory configuration
         directories = cfg.get("directories", {})
@@ -178,13 +178,14 @@ def generate_scripts(dry_run: bool, verbose: bool):
     
     try:
         show_info("Loading frameworks configuration...")
-        config = get_frameworks_config()
-        framework_count = len(config.get("frameworks", []))
+        config = get_config()
+        frameworks = get_frameworks()
+        framework_count = len(frameworks)
         
         if verbose:
             console.print(f"   [dim]Found {framework_count} frameworks[/]")
         
-        organizer = ScriptOrganizer(config)
+        organizer = ScriptOrganizer(config, frameworks)
         show_info("Generating scripts...")
         scripts = organizer.build_all_scripts()
         

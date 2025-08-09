@@ -9,7 +9,7 @@ from rich.progress import Progress, SpinnerColumn, TextColumn
 
 import sys
 sys.path.append(str(Path(__file__).parent.parent))
-from common import get_frameworks_config, show_header
+from common import get_config, get_frameworks, show_header
 
 console = Console()
 
@@ -52,9 +52,9 @@ def build_all(parallel: bool):
     show_header("Build Apps", "Compile all framework applications to generate static dist")
 
     """Build all framework applications."""
-    config = get_frameworks_config()
-    frameworks = config.get("frameworks", [])
-    app_dir = Path(config.get("config", {}).get("directories", {}).get("appDir", "apps"))
+    config = get_config()
+    frameworks = get_frameworks()
+    app_dir = Path(config.get("directories", {}).get("appDir", "apps"))
     
     console.print(f"[bold]Building {len(frameworks)} frameworks...[/bold]")
     

@@ -1,0 +1,109 @@
+{
+  "directories": {
+    "appDir": "apps",
+    "testConfigDir": "tests/config",
+    "scriptsDir": "scripts",
+    "assetsDir": "assets",
+    "nodeModulesDir": "node_modules"
+  },
+  "buildTools": {
+    "requiresNpx": ["vite", "ng", "playwright"],
+    "pythonCommands": ["python3 -m http.server", "python -m http.server"]
+  },
+  "testing": {
+    "defaultTimeout": 300,
+    "maxRetries": 3,
+    "testReporter": "list",
+    "testCommand": "npx playwright test",
+    "configPathTemplate": "tests/config/playwright-{framework}.config.js"
+  },
+  "linting": {
+    "tool": "eslint",
+    "maxMessageLength": 200,
+    "excludePrefixes": ["npm", "warning", "\n", "\t"],
+    "errorPatterns": [
+      "(\\d+)\\s+errors?\\b",
+      "✖\\s+(\\d+)\\s+problems?.*?(\\d+)\\s+errors?",
+      "❌\\s*(\\d+)\\s*errors?"
+    ],
+    "warningPatterns": [
+      "(\\d+)\\s+warnings?\\b",
+      "⚠️?\\s*(\\d+)\\s*warnings?",
+      "\\b(\\d+)\\s+warnings?\\s+"
+    ]
+  },
+  "requirements": {
+    "nodeVersion": 16,
+    "tools": {
+      "node": "node --version",
+      "playwright": "npx playwright --version",
+      "eslint": "npx eslint --version"
+    }
+  },
+  "ui": {
+    "progressDelay": 0.25,
+    "passRateThresholds": {
+      "excellent": 100,
+      "good": 75,
+      "warning": 50
+    }
+  },
+  "scripts": {
+    "essentialCommands": {
+      "setup": "python scripts/setup/main.py",
+      "test": "python scripts/verify/test.py",
+      "lint": "python scripts/verify/lint.py",
+      "check": "python scripts/verify/check.py",
+      "build": "python scripts/run/build.py",
+      "start": "python scripts/run/serve.py",
+      "help": "python scripts/help.py"
+    },
+    "sectionHeaders": {
+      "dev": "// DEV COMMANDS",
+      "build": "// BUILD COMMANDS",
+      "test": "// TEST COMMANDS",
+      "lint": "// LINT COMMANDS",
+      "misc": "// MISC SCRIPTS"
+    },
+    "sectionSeparators": {
+      "dev": "-------------------------------------------------------",
+      "build": "-----------------------------------------------------",
+      "test": "------------------------------------------------------",
+      "lint": "------------------------------------------------------",
+      "misc": "--------------------------------------------------------"
+    }
+  },
+  "mockData": {
+    "weatherApi": {
+      "defaultLocation": {
+        "latitude": 51.5074,
+        "longitude": -0.1278,
+        "timezone": "GMT",
+        "name": "London",
+        "country": "UK"
+      },
+      "seed": 42,
+      "outputPath": "mocks/weather-data.json",
+      "variationRange": {
+        "temperature": 5,
+        "humidity": 15,
+        "pressure": 20
+      }
+    }
+  },
+  "miscScripts": [
+    {"name": "install:playwright", "command": "playwright install"},
+    {"name": "generate-mocks", "command": "cd scripts && python setup/generate_mocks.py"},
+    {"name": "generate-scripts", "command": "cd scripts && python setup/generate_scripts.py"},
+    {"name": "sync-assets", "command": "cd scripts && python setup/sync_assets.py"},
+    {"name": "perf", "command": "node scripts/performance/index.js"},
+    {"name": "perf:bundle", "command": "node scripts/performance/index.js --only bundle"},
+    {"name": "perf:html", "command": "node scripts/performance/index.js --html"},
+    {"name": "perf:lighthouse", "command": "node scripts/performance/index.js --only lighthouse"},
+    {"name": "perf:runtime", "command": "node scripts/performance/index.js --only runtime"},
+    {"name": "perf:vanjs", "command": "node scripts/performance/index.js --frameworks vanjs"},
+    {"name": "serve:production", "command": "node scripts/performance/production-server.js"},
+    {"name": "serve:single", "command": "node scripts/performance/serve-single.js"},
+    {"name": "verify", "command": "cd scripts && python verify/main.py"}
+  ]
+}
