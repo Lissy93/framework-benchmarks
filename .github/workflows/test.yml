@@ -285,6 +285,9 @@ jobs:
           echo "| Framework | Status | Duration | Attempts | Details |" >> $GITHUB_STEP_SUMMARY
           echo "|-----------|--------|----------|----------|---------|" >> $GITHUB_STEP_SUMMARY
           
+          # Create temp file for results tracking
+          > framework_results.txt
+          
           for framework in "${frameworks_array[@]}"; do
             echo "🔍 Processing framework: $framework"
             
@@ -292,71 +295,65 @@ jobs:
             status_file="test-status/${framework}.txt"
             details_file="test-details/${framework}.json"
             
-            # Process each framework individually with error handling
-            (
-              if [[ -f "$status_file" && -f "$details_file" ]]; then
-                echo "✅ Found both files for $framework"
-                status=$(cat "$status_file" 2>/dev/null || echo "unknown")
-                echo "📄 Status for $framework: $status"
-                
-                # Parse JSON details with better error handling
-                duration="unknown"
-                attempts="1"
-                icon="❓"
-                
-                if command -v jq >/dev/null 2>&1 && [[ -s "$details_file" ]]; then
-                  duration=$(jq -r '.duration // "unknown"' "$details_file" 2>/dev/null || echo "unknown")
-                  attempts=$(jq -r '.attempts // "1"' "$details_file" 2>/dev/null || echo "1") 
-                  icon=$(jq -r '.icon // "❓"' "$details_file" 2>/dev/null || echo "❓")
-                fi
-                
-                echo "📊 Parsed data - Duration: $duration, Attempts: $attempts, Icon: $icon"
-                
-                if [[ "$status" == "passed" ]]; then
-                  echo "| **${framework}** | ${icon} **Passed** | ${duration} | ${attempts} | ✨ All tests passed |" >> ../GITHUB_STEP_SUMMARY
-                  echo "PASSED_FRAMEWORK=$framework" >> ../framework_results.txt
-                  echo "✅ Added passed entry for $framework"
-                else
-                  retry_info=""
-                  if [[ "$attempts" != "1" && "$attempts" =~ ^[0-9]+$ && "$attempts" -gt 1 ]]; then
-                    retry_info=" (${attempts} attempts)"
-                  fi
-                  echo "| **${framework}** | ${icon} **Failed** | ${duration} | ${attempts} | ❌ Tests failed${retry_info} |" >> ../GITHUB_STEP_SUMMARY
-                  echo "FAILED_FRAMEWORK=$framework" >> ../framework_results.txt
-                  echo "❌ Added failed entry for $framework"
-                fi
-                
-              elif [[ -f "$status_file" ]]; then
-                echo "⚠️ Found only status file for $framework"
-                status=$(cat "$status_file" 2>/dev/null || echo "unknown")
-                if [[ "$status" == "passed" ]]; then
-                  echo "| **${framework}** | ✅ **Passed** | - | 1 | ✨ All tests passed |" >> ../GITHUB_STEP_SUMMARY
-                  echo "PASSED_FRAMEWORK=$framework" >> ../framework_results.txt
-                else
-                  echo "| **${framework}** | ❌ **Failed** | - | 1 | ❌ Tests failed |" >> ../GITHUB_STEP_SUMMARY
-                  echo "FAILED_FRAMEWORK=$framework" >> ../framework_results.txt
-                fi
-                
-              else
-                echo "❌ No files found for $framework"
-                echo "| **${framework}** | ⚠️ **No Result** | - | - | 🚫 Missing test results |" >> ../GITHUB_STEP_SUMMARY
-                echo "FAILED_FRAMEWORK=$framework" >> ../framework_results.txt
+            if [[ -f "$status_file" && -f "$details_file" ]]; then
+              echo "✅ Found both files for $framework"
+              status=$(cat "$status_file" 2>/dev/null || echo "unknown")
+              echo "📄 Status for $framework: $status"
+              
+              # Parse JSON details with better error handling
+              duration="unknown"
+              attempts="1"
+              icon="❓"
+              
+              if command -v jq >/dev/null 2>&1 && [[ -s "$details_file" ]]; then
+                duration=$(jq -r '.duration // "unknown"' "$details_file" 2>/dev/null || echo "unknown")
+                attempts=$(jq -r '.attempts // "1"' "$details_file" 2>/dev/null || echo "1") 
+                icon=$(jq -r '.icon // "❓"' "$details_file" 2>/dev/null || echo "❓")
               fi
-            ) || {
-              echo "⚠️ Error processing $framework, adding as failed"
-              echo "| **${framework}** | ❌ **Error** | - | - | 🚫 Processing error |" >> $GITHUB_STEP_SUMMARY
-              echo "FAILED_FRAMEWORK=$framework" >> framework_results.txt
-            }
+              
+              echo "📊 Parsed data - Duration: $duration, Attempts: $attempts, Icon: $icon"
+              
+              if [[ "$status" == "passed" ]]; then
+                echo "| **${framework}** | ${icon} **Passed** | ${duration} | ${attempts} | ✨ All tests passed |" >> ../GITHUB_STEP_SUMMARY
+                echo "PASSED" >> framework_results.txt
+                ((passed_count++))
+                echo "✅ Added passed entry for $framework (count: $passed_count)"
+              else
+                retry_info=""
+                if [[ "$attempts" != "1" && "$attempts" =~ ^[0-9]+$ && "$attempts" -gt 1 ]]; then
+                  retry_info=" (${attempts} attempts)"
+                fi
+                echo "| **${framework}** | ${icon} **Failed** | ${duration} | ${attempts} | ❌ Tests failed${retry_info} |" >> ../GITHUB_STEP_SUMMARY
+                echo "FAILED" >> framework_results.txt
+                ((failed_count++))
+                echo "❌ Added failed entry for $framework (count: $failed_count)"
+              fi
+              
+            elif [[ -f "$status_file" ]]; then
+              echo "⚠️ Found only status file for $framework"
+              status=$(cat "$status_file" 2>/dev/null || echo "unknown")
+              if [[ "$status" == "passed" ]]; then
+                echo "| **${framework}** | ✅ **Passed** | - | 1 | ✨ All tests passed |" >> ../GITHUB_STEP_SUMMARY
+                echo "PASSED" >> framework_results.txt
+                ((passed_count++))
+                echo "✅ Added passed entry for $framework (count: $passed_count)"
+              else
+                echo "| **${framework}** | ❌ **Failed** | - | 1 | ❌ Tests failed |" >> ../GITHUB_STEP_SUMMARY
+                echo "FAILED" >> framework_results.txt
+                ((failed_count++))
+                echo "❌ Added failed entry for $framework (count: $failed_count)"
+              fi
+              
+            else
+              echo "❌ No files found for $framework"
+              echo "| **${framework}** | ⚠️ **No Result** | - | - | 🚫 Missing test results |" >> ../GITHUB_STEP_SUMMARY
+              echo "FAILED" >> framework_results.txt
+              ((failed_count++))
+              echo "❌ Added no result entry for $framework (count: $failed_count)"
+            fi
           done
           
-          # Count results from the temp file
-          if [[ -f "framework_results.txt" ]]; then
-            passed_count=$(grep -c "PASSED_FRAMEWORK=" framework_results.txt || echo "0")
-            failed_count=$(grep -c "FAILED_FRAMEWORK=" framework_results.txt || echo "0")
-          else
-            passed_count=0
-            failed_count=$total_count
-          fi
+          echo "📊 Final counts before summary: Passed=$passed_count, Failed=$failed_count"
           
           # Return to original directory for the rest of the script  
           cd ..
