@@ -34,27 +34,24 @@ jobs:
           cache: 'npm'
           cache-dependency-path: package-lock.json
           
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+          
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+          
       - name: Install root dependencies
         run: |
           npm ci
           npx playwright install --with-deps
           
-      - name: Sync shared assets
-        run: npm run sync-assets
+      - name: Run Python setup script
+        run: python scripts/setup/main.py --skip-build
         
-      - name: Install framework dependencies
-        run: |
-          set -e  # Exit on error
-          # Install dependencies for each framework app
-          for app in apps/*/; do
-            if [ -f "$app/package.json" ]; then
-              echo "Installing dependencies for $(basename "$app")"
-              cd "$app"
-              npm i || { echo "Failed to install dependencies for $(basename "$app")"; exit 1; }
-              cd - > /dev/null
-            fi
-          done
-          
       - name: Cache node_modules and Playwright browsers
         uses: actions/cache@v4
         with:
@@ -73,8 +70,8 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.frameworks }}" != "all" ]; then
             frameworks="${{ github.event.inputs.frameworks }}"
           else
-            # Get framework list from centralized config
-            frameworks=$(node scripts/setup/generate-scripts.js github)
+            # Get framework list from Python config
+            frameworks=$(python scripts/get_frameworks.py)
           fi
           echo "frameworks=$(echo "[$frameworks]" | sed 's/,/", "/g' | sed 's/\[/[\"/ ; s/\]/\"]/')" >> $GITHUB_OUTPUT
           echo "Testing frameworks: $frameworks"
@@ -100,6 +97,16 @@ jobs:
           node-version: '18'
           cache: 'npm'
           
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.8'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+          
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+          
       - name: Restore dependencies cache
         uses: actions/cache@v4
         with:
@@ -116,7 +123,7 @@ jobs:
         run: |
           if [ ! -d ~/.cache/ms-playwright ]; then
             echo "Playwright cache miss - installing browsers"
-            playwright install --with-deps
+            npx playwright install --with-deps
           else
             echo "Playwright cache hit - skipping browser installation"
           fi
