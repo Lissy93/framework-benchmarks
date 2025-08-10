@@ -147,6 +147,10 @@ jobs:
             npm ci
           fi
           
+      - name: Run setup for project preparation
+        run: |
+          python scripts/setup/main.py --skip-build
+          
       - name: Run tests for ${{ matrix.framework }}
         id: test-run
         uses: nick-fields/retry@v2
