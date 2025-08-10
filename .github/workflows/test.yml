@@ -249,6 +249,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           pattern: "*-status"
+          path: test-artifacts
           merge-multiple: true
           
       - name: Generate enhanced test summary
@@ -256,9 +257,18 @@ jobs:
           echo "# 🧪 Test Results Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
-          # Debug: List available files
-          echo "📁 Available status files:"
-          ls -la *.txt *.json 2>/dev/null || echo "No status files found"
+          # Change to artifacts directory
+          cd test-artifacts || {
+            echo "❌ No test-artifacts directory found"
+            echo "| Framework | Status |" >> $GITHUB_STEP_SUMMARY  
+            echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
+            echo "| All | ❌ **No Results** |" >> $GITHUB_STEP_SUMMARY
+            exit 1
+          }
+          
+          # Debug: List directory structure
+          echo "📁 Artifacts directory structure:"
+          find . -type f -name "*.txt" -o -name "*.json" | head -20 || echo "No status files found"
           
           # Get frameworks that were tested
           frameworks="${{ needs.setup.outputs.frameworks }}"
@@ -278,14 +288,18 @@ jobs:
           for framework in "${frameworks_array[@]}"; do
             echo "🔍 Processing framework: $framework"
             
-            if [[ -f "${framework}.txt" && -f "${framework}.json" ]]; then
+            # Look for files in the nested structure
+            status_file="test-status/${framework}.txt"
+            details_file="test-details/${framework}.json"
+            
+            if [[ -f "$status_file" && -f "$details_file" ]]; then
               echo "✅ Found both files for $framework"
-              status=$(cat "${framework}.txt")
+              status=$(cat "$status_file")
               
               # Parse JSON details (fallback to defaults if parsing fails)
-              duration=$(jq -r '.duration // "unknown"' "${framework}.json" 2>/dev/null || echo "unknown")
-              attempts=$(jq -r '.attempts // "1"' "${framework}.json" 2>/dev/null || echo "1")
-              icon=$(jq -r '.icon // "❓"' "${framework}.json" 2>/dev/null || echo "❓")
+              duration=$(jq -r '.duration // "unknown"' "$details_file" 2>/dev/null || echo "unknown")
+              attempts=$(jq -r '.attempts // "1"' "$details_file" 2>/dev/null || echo "1")
+              icon=$(jq -r '.icon // "❓"' "$details_file" 2>/dev/null || echo "❓")
               
               if [[ "$status" == "passed" ]]; then
                 echo "| **${framework}** | ${icon} **Passed** | ${duration} | ${attempts} | ✨ All tests passed |" >> $GITHUB_STEP_SUMMARY
@@ -298,10 +312,10 @@ jobs:
                 echo "| **${framework}** | ${icon} **Failed** | ${duration} | ${attempts} | ❌ Tests failed${retry_info} |" >> $GITHUB_STEP_SUMMARY
                 ((failed_count++))
               fi
-            elif [[ -f "${framework}.txt" ]]; then
-              echo "⚠️ Found only txt file for $framework"
+            elif [[ -f "$status_file" ]]; then
+              echo "⚠️ Found only status file for $framework"
               # Fallback for missing JSON
-              status=$(cat "${framework}.txt")
+              status=$(cat "$status_file")
               if [[ "$status" == "passed" ]]; then
                 echo "| **${framework}** | ✅ **Passed** | - | 1 | ✨ All tests passed |" >> $GITHUB_STEP_SUMMARY
                 ((passed_count++))
@@ -310,11 +324,14 @@ jobs:
                 ((failed_count++))
               fi
             else
-              echo "❌ No files found for $framework"
+              echo "❌ No files found for $framework (looking for $status_file and $details_file)"
               echo "| **${framework}** | ⚠️ **No Result** | - | - | 🚫 Missing test results |" >> $GITHUB_STEP_SUMMARY
               ((failed_count++))
             fi
           done
+          
+          # Return to original directory for the rest of the script  
+          cd ..
           
           echo "" >> $GITHUB_STEP_SUMMARY
           
