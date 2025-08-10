@@ -3,7 +3,7 @@
 import json
 import subprocess
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 
 from rich.console import Console
 from rich.panel import Panel
@@ -148,7 +148,7 @@ def format_test_result_simple(passed: int, failed: int, timeout: int = 0) -> str
         return "[green]All tests passed[/]"
 
 
-def run_command(command: List[str], cwd: Path = None) -> tuple[bool, str]:
+def run_command(command: List[str], cwd: Path = None) -> Tuple[bool, str]:
     """Run a shell command and return success status and output."""
     try:
         result = subprocess.run(

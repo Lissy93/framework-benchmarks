@@ -3,6 +3,7 @@
 
 import subprocess
 from pathlib import Path
+from typing import Tuple
 import click
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
@@ -13,7 +14,7 @@ from common import get_config, get_frameworks, show_header
 
 console = Console()
 
-def build_framework(framework_id: str, framework_data: dict, app_dir: Path) -> tuple[bool, str]:
+def build_framework(framework_id: str, framework_data: dict, app_dir: Path) -> Tuple[bool, str]:
     """Build a single framework application."""
     build_config = framework_data.get("build", {})
     command = build_config.get("buildCommand")

@@ -8,7 +8,7 @@ but can be customized with the `assetsDir` config option in frameworks.json
 
 import shutil
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, List
 
 import click
 from rich.progress import Progress, SpinnerColumn, TextColumn
@@ -24,7 +24,7 @@ from common import (
 )
 
 
-def sync_app_assets(app_name: str, app_path: Path, assets_dir: Path, frameworks: list) -> bool:
+def sync_app_assets(app_name: str, app_path: Path, assets_dir: Path, frameworks: List[Dict[str, Any]]) -> bool:
     """Sync assets for a single app."""
     try:
         # Get framework-specific asset directory
