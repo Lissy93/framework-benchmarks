@@ -276,8 +276,8 @@ jobs:
               echo "> ⚠️ **${success_rate}% success rate** - ${failed_count} frameworks need attention."
             fi
             echo ""
-            echo "| Framework | Status | Attempts | Test Details | Links |"
-            echo "|-----------|--------|----------|--------------|-------|"
+            echo "| Framework | Status | Attempts |"
+            echo "|-----------|--------|----------|"
           } >> "$GITHUB_STEP_SUMMARY"
           
           # Process each framework
@@ -290,35 +290,22 @@ jobs:
               
               # Parse JSON details
               attempts="1"
-              node_version=""
-              playwright_version=""
               if [[ -f "$details_file" ]] && command -v jq >/dev/null 2>&1; then
                 attempts=$(jq -r '.attempts // "1"' "$details_file" 2>/dev/null || echo "1")
-                node_version=$(jq -r '.node_version // ""' "$details_file" 2>/dev/null || echo "")
-                playwright_version=$(jq -r '.playwright_version // ""' "$details_file" 2>/dev/null | sed 's/Version //' || echo "")
               fi
               
               # Build table row
               if [[ "$status" == "passed" ]]; then
                 icon="✅"
-                details="All tests passed"
                 passed_count=$((passed_count + 1))
               else
                 icon="❌"
-                details="Tests failed"
                 failed_count=$((failed_count + 1))
               fi
               
-              # Add version info if available
-              version_info=""
-              if [[ -n "$node_version" && -n "$playwright_version" ]]; then
-                version_info=" (Node $node_version, PW $playwright_version)"
-              fi
-              
-              links="[Logs](../../actions/runs/${{ github.run_id }})"
-              echo "| **${framework}** | ${icon} **${status^}** | ${attempts} | ${details}${version_info} | ${links} |" >> "$GITHUB_STEP_SUMMARY"
+              echo "| **${framework}** | ${icon} **${status^}** | ${attempts} |" >> "$GITHUB_STEP_SUMMARY"
             else
-              echo "| **${framework}** | ⚠️ **Missing** | - | No test results | - |" >> "$GITHUB_STEP_SUMMARY"
+              echo "| **${framework}** | ⚠️ **Missing** | - |" >> "$GITHUB_STEP_SUMMARY"
               failed_count=$((failed_count + 1))
             fi
           done
