@@ -13,9 +13,10 @@ on:
     types: [ opened, synchronize, reopened ]
   push:
     branches: [ main ]
-  schedule:
-    # Run tests daily at 6 AM UTC to catch dependency issues
-    - cron: '0 6 * * *'
+    paths:
+      - 'apps/**'
+      - 'frameworks.json'
+      - 'config.json'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -169,7 +170,10 @@ jobs:
           retry_wait_seconds: 30
           command: |
             echo "🧪 Running ${{ matrix.framework }} tests (attempt ${{ github.run_attempt }})"
-            npm run test:${{ matrix.framework }} -- --reporter=github
+            # Add framework context to test output for better annotations
+            echo "::group::${{ matrix.framework }} Framework Tests"
+            npm run test:${{ matrix.framework }} -- --reporter=github --reporter=list
+            echo "::endgroup::"
             
       - name: Create detailed result file
         if: always()
@@ -252,9 +256,15 @@ jobs:
           echo "# 🧪 Test Results Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           
+          # Debug: List available files
+          echo "📁 Available status files:"
+          ls -la *.txt *.json 2>/dev/null || echo "No status files found"
+          
           # Get frameworks that were tested
           frameworks="${{ needs.setup.outputs.frameworks }}"
           frameworks_array=($(echo "$frameworks" | tr -d '[]"' | tr ',' '\n' | xargs))
+          
+          echo "🎯 Expected frameworks: ${frameworks_array[@]}"
           
           # Initialize counters
           failed_count=0
@@ -266,14 +276,16 @@ jobs:
           echo "|-----------|--------|----------|----------|---------|" >> $GITHUB_STEP_SUMMARY
           
           for framework in "${frameworks_array[@]}"; do
+            echo "🔍 Processing framework: $framework"
+            
             if [[ -f "${framework}.txt" && -f "${framework}.json" ]]; then
+              echo "✅ Found both files for $framework"
               status=$(cat "${framework}.txt")
               
               # Parse JSON details (fallback to defaults if parsing fails)
               duration=$(jq -r '.duration // "unknown"' "${framework}.json" 2>/dev/null || echo "unknown")
               attempts=$(jq -r '.attempts // "1"' "${framework}.json" 2>/dev/null || echo "1")
               icon=$(jq -r '.icon // "❓"' "${framework}.json" 2>/dev/null || echo "❓")
-              timestamp=$(jq -r '.timestamp // "unknown"' "${framework}.json" 2>/dev/null || echo "unknown")
               
               if [[ "$status" == "passed" ]]; then
                 echo "| **${framework}** | ${icon} **Passed** | ${duration} | ${attempts} | ✨ All tests passed |" >> $GITHUB_STEP_SUMMARY
@@ -287,6 +299,7 @@ jobs:
                 ((failed_count++))
               fi
             elif [[ -f "${framework}.txt" ]]; then
+              echo "⚠️ Found only txt file for $framework"
               # Fallback for missing JSON
               status=$(cat "${framework}.txt")
               if [[ "$status" == "passed" ]]; then
@@ -297,6 +310,7 @@ jobs:
                 ((failed_count++))
               fi
             else
+              echo "❌ No files found for $framework"
               echo "| **${framework}** | ⚠️ **No Result** | - | - | 🚫 Missing test results |" >> $GITHUB_STEP_SUMMARY
               ((failed_count++))
             fi
@@ -378,15 +392,22 @@ jobs:
           frameworks_array=($(echo "$frameworks" | tr -d '[]"' | tr ',' '\n' | xargs))
           total_count=${#frameworks_array[@]}
           
-          # Determine badge color
-          if [ $FAILED_COUNT -eq 0 ]; then
-            badge_color="brightgreen"
+          # Determine badge color (with null checks)
+          if [[ -z "$FAILED_COUNT" || -z "$SUCCESS_RATE" ]]; then
+            badge_color="lightgrey"
+            badge_message="unknown"
+          elif [ $FAILED_COUNT -eq 0 ]; then
+            badge_color="brightgreen" 
+            badge_message="${PASSED_COUNT}/${total_count} passed"
           elif [ $SUCCESS_RATE -ge 80 ]; then
-            badge_color="green" 
+            badge_color="green"
+            badge_message="${PASSED_COUNT}/${total_count} passed"
           elif [ $SUCCESS_RATE -ge 50 ]; then
             badge_color="yellow"
+            badge_message="${PASSED_COUNT}/${total_count} passed"
           else
             badge_color="red"
+            badge_message="${PASSED_COUNT}/${total_count} passed"
           fi
           
           # Create badge JSON
@@ -394,7 +415,7 @@ jobs:
           {
             "schemaVersion": 1,
             "label": "tests",
-            "message": "${PASSED_COUNT}/${total_count} passed",
+            "message": "${badge_message}",
             "color": "${badge_color}",
             "namedLogo": "playwright",
             "logoColor": "white"
