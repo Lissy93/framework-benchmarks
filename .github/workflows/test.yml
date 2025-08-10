@@ -294,23 +294,38 @@ jobs:
             
             if [[ -f "$status_file" && -f "$details_file" ]]; then
               echo "✅ Found both files for $framework"
-              status=$(cat "$status_file")
+              status=$(cat "$status_file" 2>/dev/null || echo "unknown")
+              echo "📄 Status for $framework: $status"
               
-              # Parse JSON details (fallback to defaults if parsing fails)
-              duration=$(jq -r '.duration // "unknown"' "$details_file" 2>/dev/null || echo "unknown")
-              attempts=$(jq -r '.attempts // "1"' "$details_file" 2>/dev/null || echo "1")
-              icon=$(jq -r '.icon // "❓"' "$details_file" 2>/dev/null || echo "❓")
+              # Debug JSON content
+              echo "🔍 JSON content preview:"
+              head -3 "$details_file" || echo "Cannot read JSON file"
+              
+              # Parse JSON details with better error handling
+              if command -v jq >/dev/null 2>&1; then
+                duration=$(jq -r '.duration // "unknown"' "$details_file" 2>/dev/null || echo "unknown")
+                attempts=$(jq -r '.attempts // "1"' "$details_file" 2>/dev/null || echo "1") 
+                icon=$(jq -r '.icon // "❓"' "$details_file" 2>/dev/null || echo "❓")
+                echo "📊 Parsed data - Duration: $duration, Attempts: $attempts, Icon: $icon"
+              else
+                echo "⚠️ jq not available, using defaults"
+                duration="unknown"
+                attempts="1"
+                icon="❓"
+              fi
               
               if [[ "$status" == "passed" ]]; then
                 echo "| **${framework}** | ${icon} **Passed** | ${duration} | ${attempts} | ✨ All tests passed |" >> $GITHUB_STEP_SUMMARY
                 ((passed_count++))
+                echo "✅ Added passed entry for $framework"
               else
                 retry_info=""
-                if [[ "$attempts" -gt 1 ]]; then
+                if [[ "$attempts" != "1" && "$attempts" -gt 1 ]] 2>/dev/null; then
                   retry_info=" (${attempts} attempts)"
                 fi
                 echo "| **${framework}** | ${icon} **Failed** | ${duration} | ${attempts} | ❌ Tests failed${retry_info} |" >> $GITHUB_STEP_SUMMARY
                 ((failed_count++))
+                echo "❌ Added failed entry for $framework"
               fi
             elif [[ -f "$status_file" ]]; then
               echo "⚠️ Found only status file for $framework"
