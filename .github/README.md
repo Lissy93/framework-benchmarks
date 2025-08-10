@@ -193,19 +193,17 @@ To keep things uniform, all apps will share certain assets
 
 ### Commands
 
-See the [`package.json`](https://github.com/Lissy93/weather-front/blob/main/package.json) for all commands.
+- `npm run setup` - Creates mock data, syncs assets, updates scripts and installs dependencies
+- `npm run test` - Runs the test suite for all apps, or a specific app
+- `npm run lint` - Runs the linter for all apps, or a specific app
+- `npm run check` - Verifies the project is correctly setup and ready to go
+- `npm run build` - Builds all apps, or a specific app for production
+- `npm run start` - Starts the demo server, which serves up all built apps
+- `npm run help` - Displays a list of all available commands
 
-<details>
-<summary>The TL;DR</summary>
+See the [`package.json`](https://github.com/Lissy93/weather-front/blob/main/package.json) for all commands
 
-> - **First run**<br>`npm run setup` to prepare everything, then `npm run check` to validate the setup
-> - **Tests**<br>`npm run test` or `npm run test:[app]` - Run tests for all apps, or a specific app
-> - **Lint**<br>`npm run line` or `npm run lint:[app]` - Runs the linter for all apps, or a specific app
-> - **Dev**<br>`npm run dev:[app]` - Start the dev server with HMR for a specific app
-> - **Build**<br>`npm run build` or `npm run build:[app]` - Build for prod to `./apps/[app]/dist/`
-> - **Scripts**<br>`npm run help` to see a list of all scripts
-
-</details>
+Note that the project commands get generated automatically by the [`generate_scripts.py`](https://github.com/Lissy93/weather-front/blob/main/scripts/setup/generate_scripts.py) script, based on the contents of [`frameworks.json`](https://github.com/Lissy93/weather-front/blob/main/frameworks.json) and [`config.json`](https://github.com/Lissy93/weather-front/blob/main/config.json).
 
 ---
 

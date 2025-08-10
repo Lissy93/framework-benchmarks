@@ -116,6 +116,15 @@ jobs:
             ~/.cache/ms-playwright
           key: ${{ runner.os }}-node-modules-playwright-${{ hashFiles('**/package-lock.json') }}
           
+      - name: Install dependencies (if cache miss)
+        run: |
+          if [ ! -d "node_modules" ]; then
+            echo "Dependencies cache miss - installing"
+            npm ci
+          else
+            echo "Dependencies cache hit"
+          fi
+          
       - name: Add node_modules/.bin to PATH
         run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
           
@@ -126,6 +135,16 @@ jobs:
             npx playwright install --with-deps
           else
             echo "Playwright cache hit - skipping browser installation"
+          fi
+          
+      - name: Verify Playwright installation
+        run: |
+          echo "Checking @playwright/test availability..."
+          if [ -f "node_modules/@playwright/test/package.json" ]; then
+            echo "✅ @playwright/test found in node_modules"
+          else
+            echo "❌ @playwright/test not found, forcing npm ci"
+            npm ci
           fi
           
       - name: Run tests for ${{ matrix.framework }}
