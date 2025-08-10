@@ -314,18 +314,18 @@ jobs:
               echo "📊 Parsed data - Duration: $duration, Attempts: $attempts, Icon: $icon"
               
               if [[ "$status" == "passed" ]]; then
-                echo "| **${framework}** | ${icon} **Passed** | ${duration} | ${attempts} | ✨ All tests passed |" >> ../GITHUB_STEP_SUMMARY
-                echo "PASSED" >> framework_results.txt
-                ((passed_count++))
+                echo "| **${framework}** | ${icon} **Passed** | ${duration} | ${attempts} | ✨ All tests passed |" >> ../GITHUB_STEP_SUMMARY || echo "⚠️ Failed to write summary"
+                echo "PASSED" >> framework_results.txt || echo "⚠️ Failed to write results"
+                passed_count=$((${passed_count:-0} + 1))
                 echo "✅ Added passed entry for $framework (count: $passed_count)"
               else
                 retry_info=""
                 if [[ "$attempts" != "1" && "$attempts" =~ ^[0-9]+$ && "$attempts" -gt 1 ]]; then
                   retry_info=" (${attempts} attempts)"
                 fi
-                echo "| **${framework}** | ${icon} **Failed** | ${duration} | ${attempts} | ❌ Tests failed${retry_info} |" >> ../GITHUB_STEP_SUMMARY
-                echo "FAILED" >> framework_results.txt
-                ((failed_count++))
+                echo "| **${framework}** | ${icon} **Failed** | ${duration} | ${attempts} | ❌ Tests failed${retry_info} |" >> ../GITHUB_STEP_SUMMARY || echo "⚠️ Failed to write summary"
+                echo "FAILED" >> framework_results.txt || echo "⚠️ Failed to write results"
+                failed_count=$((${failed_count:-0} + 1))
                 echo "❌ Added failed entry for $framework (count: $failed_count)"
               fi
               
@@ -333,22 +333,22 @@ jobs:
               echo "⚠️ Found only status file for $framework"
               status=$(cat "$status_file" 2>/dev/null || echo "unknown")
               if [[ "$status" == "passed" ]]; then
-                echo "| **${framework}** | ✅ **Passed** | - | 1 | ✨ All tests passed |" >> ../GITHUB_STEP_SUMMARY
-                echo "PASSED" >> framework_results.txt
-                ((passed_count++))
+                echo "| **${framework}** | ✅ **Passed** | - | 1 | ✨ All tests passed |" >> ../GITHUB_STEP_SUMMARY || echo "⚠️ Failed to write summary"
+                echo "PASSED" >> framework_results.txt || echo "⚠️ Failed to write results"
+                passed_count=$((${passed_count:-0} + 1))
                 echo "✅ Added passed entry for $framework (count: $passed_count)"
               else
-                echo "| **${framework}** | ❌ **Failed** | - | 1 | ❌ Tests failed |" >> ../GITHUB_STEP_SUMMARY
-                echo "FAILED" >> framework_results.txt
-                ((failed_count++))
+                echo "| **${framework}** | ❌ **Failed** | - | 1 | ❌ Tests failed |" >> ../GITHUB_STEP_SUMMARY || echo "⚠️ Failed to write summary"
+                echo "FAILED" >> framework_results.txt || echo "⚠️ Failed to write results"
+                failed_count=$((${failed_count:-0} + 1))
                 echo "❌ Added failed entry for $framework (count: $failed_count)"
               fi
               
             else
               echo "❌ No files found for $framework"
-              echo "| **${framework}** | ⚠️ **No Result** | - | - | 🚫 Missing test results |" >> ../GITHUB_STEP_SUMMARY
-              echo "FAILED" >> framework_results.txt
-              ((failed_count++))
+              echo "| **${framework}** | ⚠️ **No Result** | - | - | 🚫 Missing test results |" >> ../GITHUB_STEP_SUMMARY || echo "⚠️ Failed to write summary"
+              echo "FAILED" >> framework_results.txt || echo "⚠️ Failed to write results"
+              failed_count=$((${failed_count:-0} + 1))
               echo "❌ Added no result entry for $framework (count: $failed_count)"
             fi
           done
