@@ -11,10 +11,19 @@ on:
   pull_request:
     branches: [ main, dev ]
     types: [ opened, synchronize, reopened ]
+  push:
+    branches: [ main ]
+  schedule:
+    # Run tests daily at 6 AM UTC to catch dependency issues
+    - cron: '0 6 * * *'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.9'
 
 jobs:
   setup:
@@ -162,17 +171,40 @@ jobs:
             echo "🧪 Running ${{ matrix.framework }} tests (attempt ${{ github.run_attempt }})"
             npm run test:${{ matrix.framework }} -- --reporter=github
             
-      - name: Create result file
+      - name: Create detailed result file
         if: always()
         run: |
-          mkdir -p test-status
+          mkdir -p test-status test-details
+          
+          # Determine final status (failed if all retries exhausted)
           if [[ "${{ steps.test-run.outcome }}" == "success" ]]; then
-            echo "passed" > test-status/${{ matrix.framework }}.txt
+            status="passed"
+            icon="✅"
           else
-            echo "failed" > test-status/${{ matrix.framework }}.txt
+            status="failed"
+            icon="❌"
           fi
+          
+          # Create status file
+          echo "$status" > test-status/${{ matrix.framework }}.txt
+          
+          # Create detailed results file
+          cat > test-details/${{ matrix.framework }}.json << EOF
+          {
+            "framework": "${{ matrix.framework }}",
+            "status": "$status",
+            "icon": "$icon",
+            "attempts": ${{ steps.test-run.outputs.total_attempts || '1' }},
+            "final_attempt": ${{ steps.test-run.outputs.exit_code || '0' }},
+            "duration": "${{ steps.test-run.outputs.elapsed_time || 'unknown' }}",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "runner": "${{ runner.os }}",
+            "node_version": "$(node --version)",
+            "playwright_version": "$(npx playwright --version | head -1)"
+          }
+          EOF
             
-      - name: Upload test results
+      - name: Upload test results (conditional)
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -180,15 +212,18 @@ jobs:
           path: |
             playwright-report/
             test-results/
+          if-no-files-found: ignore
           retention-days: 30
           
-      - name: Upload test status
+      - name: Upload test status and details
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.framework }}-status
-          path: test-status/${{ matrix.framework }}.txt
-          retention-days: 1
+          path: |
+            test-status/${{ matrix.framework }}.txt
+            test-details/${{ matrix.framework }}.json
+          retention-days: 7
 
   summary:
     name: Test Summary
@@ -212,59 +247,114 @@ jobs:
           pattern: "*-status"
           merge-multiple: true
           
-      - name: Generate test summary
+      - name: Generate enhanced test summary
         run: |
-          echo "## 🧪 Test Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "# 🧪 Test Results Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Framework | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|-----------|--------|" >> $GITHUB_STEP_SUMMARY
           
           # Get frameworks that were tested
           frameworks="${{ needs.setup.outputs.frameworks }}"
           frameworks_array=($(echo "$frameworks" | tr -d '[]"' | tr ',' '\n' | xargs))
           
-          # Check result of each framework based on status files
+          # Initialize counters
           failed_count=0
           passed_count=0
           total_count=${#frameworks_array[@]}
           
+          # Create enhanced table
+          echo "| Framework | Status | Duration | Attempts | Details |" >> $GITHUB_STEP_SUMMARY
+          echo "|-----------|--------|----------|----------|---------|" >> $GITHUB_STEP_SUMMARY
+          
           for framework in "${frameworks_array[@]}"; do
-            if [[ -f "${framework}.txt" ]]; then
+            if [[ -f "${framework}.txt" && -f "${framework}.json" ]]; then
               status=$(cat "${framework}.txt")
+              
+              # Parse JSON details (fallback to defaults if parsing fails)
+              duration=$(jq -r '.duration // "unknown"' "${framework}.json" 2>/dev/null || echo "unknown")
+              attempts=$(jq -r '.attempts // "1"' "${framework}.json" 2>/dev/null || echo "1")
+              icon=$(jq -r '.icon // "❓"' "${framework}.json" 2>/dev/null || echo "❓")
+              timestamp=$(jq -r '.timestamp // "unknown"' "${framework}.json" 2>/dev/null || echo "unknown")
+              
               if [[ "$status" == "passed" ]]; then
-                echo "| ${framework} | ✅ Passed |" >> $GITHUB_STEP_SUMMARY
+                echo "| **${framework}** | ${icon} **Passed** | ${duration} | ${attempts} | ✨ All tests passed |" >> $GITHUB_STEP_SUMMARY
                 ((passed_count++))
               else
-                echo "| ${framework} | ❌ Failed |" >> $GITHUB_STEP_SUMMARY
+                retry_info=""
+                if [[ "$attempts" -gt 1 ]]; then
+                  retry_info=" (${attempts} attempts)"
+                fi
+                echo "| **${framework}** | ${icon} **Failed** | ${duration} | ${attempts} | ❌ Tests failed${retry_info} |" >> $GITHUB_STEP_SUMMARY
+                ((failed_count++))
+              fi
+            elif [[ -f "${framework}.txt" ]]; then
+              # Fallback for missing JSON
+              status=$(cat "${framework}.txt")
+              if [[ "$status" == "passed" ]]; then
+                echo "| **${framework}** | ✅ **Passed** | - | 1 | ✨ All tests passed |" >> $GITHUB_STEP_SUMMARY
+                ((passed_count++))
+              else
+                echo "| **${framework}** | ❌ **Failed** | - | 1 | ❌ Tests failed |" >> $GITHUB_STEP_SUMMARY
                 ((failed_count++))
               fi
             else
-              echo "| ${framework} | ⚠️  No result |" >> $GITHUB_STEP_SUMMARY
+              echo "| **${framework}** | ⚠️ **No Result** | - | - | 🚫 Missing test results |" >> $GITHUB_STEP_SUMMARY
               ((failed_count++))
             fi
           done
           
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 📊 Summary" >> $GITHUB_STEP_SUMMARY
-          echo "- **Total frameworks**: $total_count" >> $GITHUB_STEP_SUMMARY
-          echo "- **Passed**: $passed_count" >> $GITHUB_STEP_SUMMARY
-          echo "- **Failed**: $failed_count" >> $GITHUB_STEP_SUMMARY
+          
+          # Success rate calculation
+          success_rate=$(( passed_count * 100 / total_count ))
+          
+          # Colorized summary boxes
+          echo "## 📊 Results Overview" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### 📊 Workflow Details" >> $GITHUB_STEP_SUMMARY
-          echo "- **Trigger**: ${{ github.event_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Branch**: ${{ github.ref_name }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Actor**: ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value | Percentage |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|------------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Total Frameworks** | ${total_count} | 100% |" >> $GITHUB_STEP_SUMMARY
+          echo "| **✅ Passed** | ${passed_count} | ${success_rate}% |" >> $GITHUB_STEP_SUMMARY
+          echo "| **❌ Failed** | ${failed_count} | $(( failed_count * 100 / total_count ))% |" >> $GITHUB_STEP_SUMMARY
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Status badge
+          if [[ $failed_count -eq 0 ]]; then
+            echo "## 🎉 Status: ALL TESTS PASSED!" >> $GITHUB_STEP_SUMMARY
+            echo "> Perfect score! All ${total_count} frameworks are working correctly." >> $GITHUB_STEP_SUMMARY
+          elif [[ $success_rate -ge 80 ]]; then
+            echo "## ✅ Status: MOSTLY SUCCESSFUL" >> $GITHUB_STEP_SUMMARY
+            echo "> ${success_rate}% success rate - ${passed_count}/${total_count} frameworks passing." >> $GITHUB_STEP_SUMMARY
+          elif [[ $success_rate -ge 50 ]]; then
+            echo "## ⚠️ Status: PARTIAL SUCCESS" >> $GITHUB_STEP_SUMMARY
+            echo "> ${success_rate}% success rate - ${failed_count} frameworks need attention." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "## ❌ Status: NEEDS ATTENTION" >> $GITHUB_STEP_SUMMARY
+            echo "> Only ${success_rate}% success rate - significant issues detected." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 🔧 Workflow Information" >> $GITHUB_STEP_SUMMARY
+          echo "| Property | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| **Trigger** | ${{ github.event_name }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Branch** | \`${{ github.ref_name }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Commit** | \`${{ github.sha }}\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Actor** | @${{ github.actor }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Run ID** | ${{ github.run_id }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| **Timestamp** | $(date -u +"%Y-%m-%d %H:%M:%S UTC") |" >> $GITHUB_STEP_SUMMARY
           
           # Set environment variable for final status check
           echo "FAILED_COUNT=$failed_count" >> $GITHUB_ENV
           echo "PASSED_COUNT=$passed_count" >> $GITHUB_ENV
+          echo "SUCCESS_RATE=$success_rate" >> $GITHUB_ENV
           
-      - name: Check overall status
+      - name: Set workflow status
         run: |
           echo "📊 Final Results:"
           echo "   ✅ Passed: $PASSED_COUNT"
           echo "   ❌ Failed: $FAILED_COUNT"
+          echo "   📈 Success Rate: $SUCCESS_RATE%"
           
           if [[ "$FAILED_COUNT" -gt 0 ]]; then
             echo ""
@@ -277,3 +367,44 @@ jobs:
             echo ""
             echo "✅ All framework tests passed successfully. Party time! 🎉"
           fi
+          
+      - name: Create status badge data
+        if: always()
+        run: |
+          mkdir -p badge-data
+          
+          # Calculate total frameworks from the array
+          frameworks="${{ needs.setup.outputs.frameworks }}"
+          frameworks_array=($(echo "$frameworks" | tr -d '[]"' | tr ',' '\n' | xargs))
+          total_count=${#frameworks_array[@]}
+          
+          # Determine badge color
+          if [ $FAILED_COUNT -eq 0 ]; then
+            badge_color="brightgreen"
+          elif [ $SUCCESS_RATE -ge 80 ]; then
+            badge_color="green" 
+          elif [ $SUCCESS_RATE -ge 50 ]; then
+            badge_color="yellow"
+          else
+            badge_color="red"
+          fi
+          
+          # Create badge JSON
+          cat > badge-data/test-results.json << EOF
+          {
+            "schemaVersion": 1,
+            "label": "tests",
+            "message": "${PASSED_COUNT}/${total_count} passed",
+            "color": "${badge_color}",
+            "namedLogo": "playwright",
+            "logoColor": "white"
+          }
+          EOF
+          
+      - name: Upload badge data
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: badge-data
+          path: badge-data/test-results.json
+          retention-days: 90
