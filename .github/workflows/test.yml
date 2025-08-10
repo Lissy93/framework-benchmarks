@@ -314,7 +314,7 @@ jobs:
               echo "📊 Parsed data - Duration: $duration, Attempts: $attempts, Icon: $icon"
               
               if [[ "$status" == "passed" ]]; then
-                echo "| **${framework}** | ${icon} **Passed** | ${duration} | ${attempts} | ✨ All tests passed |" >> ../GITHUB_STEP_SUMMARY || echo "⚠️ Failed to write summary"
+                echo "| **${framework}** | ${icon} **Passed** | ${duration} | ${attempts} | ✨ All tests passed |" >> "$GITHUB_STEP_SUMMARY" || echo "⚠️ Failed to write summary"
                 echo "PASSED" >> framework_results.txt || echo "⚠️ Failed to write results"
                 passed_count=$((${passed_count:-0} + 1))
                 echo "✅ Added passed entry for $framework (count: $passed_count)"
@@ -323,7 +323,7 @@ jobs:
                 if [[ "$attempts" != "1" && "$attempts" =~ ^[0-9]+$ && "$attempts" -gt 1 ]]; then
                   retry_info=" (${attempts} attempts)"
                 fi
-                echo "| **${framework}** | ${icon} **Failed** | ${duration} | ${attempts} | ❌ Tests failed${retry_info} |" >> ../GITHUB_STEP_SUMMARY || echo "⚠️ Failed to write summary"
+                echo "| **${framework}** | ${icon} **Failed** | ${duration} | ${attempts} | ❌ Tests failed${retry_info} |" >> "$GITHUB_STEP_SUMMARY" || echo "⚠️ Failed to write summary"
                 echo "FAILED" >> framework_results.txt || echo "⚠️ Failed to write results"
                 failed_count=$((${failed_count:-0} + 1))
                 echo "❌ Added failed entry for $framework (count: $failed_count)"
@@ -333,12 +333,12 @@ jobs:
               echo "⚠️ Found only status file for $framework"
               status=$(cat "$status_file" 2>/dev/null || echo "unknown")
               if [[ "$status" == "passed" ]]; then
-                echo "| **${framework}** | ✅ **Passed** | - | 1 | ✨ All tests passed |" >> ../GITHUB_STEP_SUMMARY || echo "⚠️ Failed to write summary"
+                echo "| **${framework}** | ✅ **Passed** | - | 1 | ✨ All tests passed |" >> "$GITHUB_STEP_SUMMARY" || echo "⚠️ Failed to write summary"
                 echo "PASSED" >> framework_results.txt || echo "⚠️ Failed to write results"
                 passed_count=$((${passed_count:-0} + 1))
                 echo "✅ Added passed entry for $framework (count: $passed_count)"
               else
-                echo "| **${framework}** | ❌ **Failed** | - | 1 | ❌ Tests failed |" >> ../GITHUB_STEP_SUMMARY || echo "⚠️ Failed to write summary"
+                echo "| **${framework}** | ❌ **Failed** | - | 1 | ❌ Tests failed |" >> "$GITHUB_STEP_SUMMARY" || echo "⚠️ Failed to write summary"
                 echo "FAILED" >> framework_results.txt || echo "⚠️ Failed to write results"
                 failed_count=$((${failed_count:-0} + 1))
                 echo "❌ Added failed entry for $framework (count: $failed_count)"
@@ -346,7 +346,7 @@ jobs:
               
             else
               echo "❌ No files found for $framework"
-              echo "| **${framework}** | ⚠️ **No Result** | - | - | 🚫 Missing test results |" >> ../GITHUB_STEP_SUMMARY || echo "⚠️ Failed to write summary"
+              echo "| **${framework}** | ⚠️ **No Result** | - | - | 🚫 Missing test results |" >> "$GITHUB_STEP_SUMMARY" || echo "⚠️ Failed to write summary"
               echo "FAILED" >> framework_results.txt || echo "⚠️ Failed to write results"
               failed_count=$((${failed_count:-0} + 1))
               echo "❌ Added no result entry for $framework (count: $failed_count)"
@@ -363,14 +363,30 @@ jobs:
           # Success rate calculation
           success_rate=$(( passed_count * 100 / total_count ))
           
-          # Colorized summary boxes
-          echo "## 📊 Results Overview" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Metric | Value | Percentage |" >> $GITHUB_STEP_SUMMARY
+          echo "## 📊 Framework Test Results" >> $GITHUB_STEP_SUMMARY  
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Create individual framework progress bars
+          for framework in "${frameworks_array[@]}"; do
+            if grep -q "PASSED" framework_results.txt 2>/dev/null && 
+               grep -A1 -B1 "Processing framework: $framework" <<< "$(cat framework_results.txt)" | grep -q "PASSED" 2>/dev/null; then
+              echo "- **${framework}**: ✅ **100%** (All tests passed)" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "- **${framework}**: ❌ **0%** (Tests failed)" >> $GITHUB_STEP_SUMMARY  
+            fi
+          done
+          
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "## 📈 Overall Statistics" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "🎯 **Success Rate: ${success_rate}%** (${passed_count}/${total_count} frameworks)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Count | Percentage |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-------|------------|" >> $GITHUB_STEP_SUMMARY
-          echo "| **Total Frameworks** | ${total_count} | 100% |" >> $GITHUB_STEP_SUMMARY
-          echo "| **✅ Passed** | ${passed_count} | ${success_rate}% |" >> $GITHUB_STEP_SUMMARY
-          echo "| **❌ Failed** | ${failed_count} | $(( failed_count * 100 / total_count ))% |" >> $GITHUB_STEP_SUMMARY
+          echo "| ✅ **Passed** | ${passed_count} | ${success_rate}% |" >> $GITHUB_STEP_SUMMARY
+          echo "| ❌ **Failed** | ${failed_count} | $(( failed_count * 100 / total_count ))% |" >> $GITHUB_STEP_SUMMARY
+          echo "| 📊 **Total** | ${total_count} | 100% |" >> $GITHUB_STEP_SUMMARY
           
           echo "" >> $GITHUB_STEP_SUMMARY
           
