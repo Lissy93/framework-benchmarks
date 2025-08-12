@@ -21,6 +21,10 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   setup:
     name: Setup for Linting
@@ -145,6 +149,7 @@ jobs:
           status: ${{ env.LINT_STATUS }}
           color: ${{ env.LINT_COLOR }}
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: badges
 
   summary:
     name: Lint Summary
