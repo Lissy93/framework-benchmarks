@@ -228,6 +228,38 @@ jobs:
             test-status/${{ matrix.framework }}.txt
             test-details/${{ matrix.framework }}.json
           retention-days: 7
+          
+      - name: Determine test badge details
+        if: always()
+        continue-on-error: true
+        run: |
+          if [[ "${{ steps.test-run.outcome }}" == "success" ]]; then
+            status="passing"
+            color="4c1"
+          else
+            attempts="${{ steps.test-run.outputs.total_attempts || '1' }}"
+            if [[ "$attempts" -gt "1" ]]; then
+              status="unstable"
+              color="fe7d37"
+            else
+              status="failing"
+              color="e05d44"
+            fi
+          fi
+          
+          echo "TEST_STATUS=$status" >> $GITHUB_ENV
+          echo "TEST_COLOR=$color" >> $GITHUB_ENV
+          
+      - name: Generate test badge
+        if: always()
+        continue-on-error: true
+        uses: RubbaBoy/BYOB@v1.3.0
+        with:
+          name: test-${{ matrix.framework }}
+          label: tests
+          status: ${{ env.TEST_STATUS }}
+          color: ${{ env.TEST_COLOR }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   summary:
     name: Test Summary

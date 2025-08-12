@@ -103,6 +103,48 @@ jobs:
           name: lint-report-${{ matrix.framework }}
           path: lint-reports/${{ matrix.framework }}-lint-report.json
           retention-days: 30
+          
+      - name: Generate lint badge
+        if: always()
+        continue-on-error: true
+        run: |
+          report_file="lint-reports/${{ matrix.framework }}-lint-report.json"
+          if [ -f "$report_file" ]; then
+            error_count=$(jq '[.[].errorCount] | add // 0' "$report_file" 2>/dev/null || echo "0")
+            warning_count=$(jq '[.[].warningCount] | add // 0' "$report_file" 2>/dev/null || echo "0")
+            
+            if [ "$error_count" = "0" ] && [ "$warning_count" = "0" ]; then
+              status="clean"
+              color="4c1"
+            elif [ "$error_count" = "0" ]; then
+              status="$warning_count warnings"
+              color="dfb317"
+            else
+              if [ "$warning_count" -gt "0" ]; then
+                status="$error_count errors, $warning_count warnings"
+              else
+                status="$error_count errors"
+              fi
+              color="e05d44"
+            fi
+          else
+            status="unknown"
+            color="9f9f9f"
+          fi
+          
+          echo "LINT_STATUS=$status" >> $GITHUB_ENV
+          echo "LINT_COLOR=$color" >> $GITHUB_ENV
+          
+      - name: Create lint badge
+        if: always()
+        continue-on-error: true
+        uses: RubbaBoy/BYOB@v1.3.0
+        with:
+          name: lint-${{ matrix.framework }}
+          label: lint
+          status: ${{ env.LINT_STATUS }}
+          color: ${{ env.LINT_COLOR }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
 
   summary:
     name: Lint Summary
