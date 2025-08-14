@@ -227,7 +227,7 @@ jobs:
                                !entry.url.includes('vite/dist') &&
                                !entry.url.includes('/@vite/') &&
                                !entry.url.includes('/@fs/') &&
-                               entry.text.length > 100; // Skip very small files
+                               entry.text && entry.text.length > 100; // Skip very small files
               
               if (isAppFile) {
                 relevantFiles++;
