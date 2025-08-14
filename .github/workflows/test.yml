@@ -233,10 +233,11 @@ jobs:
             test-details/${{ matrix.framework }}.json
           retention-days: 7
           
-      - name: Generate test badge
+      - name: Generate and commit test badge
         if: always()
         continue-on-error: true
         run: |
+          # Determine badge status and color
           if [[ "${{ steps.test-run.outcome }}" == "success" ]]; then
             status="passing"
             color="brightgreen"
@@ -251,21 +252,18 @@ jobs:
             fi
           fi
           
-          # Create badge directory
-          mkdir -p badges
-          
-          # Generate shields.io URL and download SVG
+          # Generate and commit badge
           badge_url="https://img.shields.io/badge/tests-${status}-${color}"
-          curl -o "badges/test-${{ matrix.framework }}.svg" "$badge_url"
+          curl -o "test-${{ matrix.framework }}.svg" "$badge_url"
           
-      - name: Upload test badge
-        if: always()
-        continue-on-error: true
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-badge-${{ matrix.framework }}
-          path: badges/test-${{ matrix.framework }}.svg
-          retention-days: 7
+          # Commit to badges branch
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin badges:badges 2>/dev/null || git checkout --orphan badges
+          git checkout badges 2>/dev/null || true
+          git add "test-${{ matrix.framework }}.svg"
+          git commit -m "Update test-${{ matrix.framework }} badge" || true
+          git push origin badges || true
 
   summary:
     name: Test Summary
@@ -429,36 +427,3 @@ jobs:
           path: badge-data/test-results.json
           retention-days: 90
           
-      - name: Download test badge artifacts
-        if: always()
-        uses: actions/download-artifact@v4
-        with:
-          pattern: "test-badge-*"
-          path: test-badges
-          merge-multiple: true
-          
-      - name: Deploy test badges to badges branch
-        if: github.ref == 'refs/heads/main' && always()
-        run: |
-          # Configure git
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'actions@github.com'
-          
-          # Clone badges branch or create if it doesn't exist
-          git clone --single-branch --branch badges https://github.com/${{ github.repository }}.git badges-repo 2>/dev/null || {
-            git clone https://github.com/${{ github.repository }}.git badges-repo
-            cd badges-repo
-            git checkout --orphan badges
-            git rm -rf .
-            echo "# Badges" > README.md
-            cd ..
-          }
-          
-          # Copy test badge files
-          cp test-badges/*.svg badges-repo/ 2>/dev/null || true
-          
-          # Commit and push
-          cd badges-repo
-          git add .
-          git commit -m "Update test badges $(date)" || exit 0
-          git push origin badges

@@ -108,10 +108,11 @@ jobs:
           path: lint-reports/${{ matrix.framework }}-lint-report.json
           retention-days: 30
           
-      - name: Generate lint badge
+      - name: Generate and commit lint badge
         if: always()
         continue-on-error: true
         run: |
+          # Determine badge status and color
           report_file="lint-reports/${{ matrix.framework }}-lint-report.json"
           if [ -f "$report_file" ]; then
             error_count=$(jq '[.[].errorCount] | add // 0' "$report_file" 2>/dev/null || echo "0")
@@ -136,21 +137,18 @@ jobs:
             color="lightgrey"
           fi
           
-          # Create badge directory
-          mkdir -p badges
-          
-          # Generate shields.io URL and download SVG
+          # Generate and commit badge
           badge_url="https://img.shields.io/badge/lint-${status}-${color}"
-          curl -o "badges/lint-${{ matrix.framework }}.svg" "$badge_url"
+          curl -o "lint-${{ matrix.framework }}.svg" "$badge_url"
           
-      - name: Upload lint badge
-        if: always()
-        continue-on-error: true
-        uses: actions/upload-artifact@v4
-        with:
-          name: lint-badge-${{ matrix.framework }}
-          path: badges/lint-${{ matrix.framework }}.svg
-          retention-days: 7
+          # Commit to badges branch
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git fetch origin badges:badges 2>/dev/null || git checkout --orphan badges
+          git checkout badges 2>/dev/null || true
+          git add "lint-${{ matrix.framework }}.svg"
+          git commit -m "Update lint-${{ matrix.framework }} badge" || true
+          git push origin badges || true
 
   summary:
     name: Lint Summary
@@ -250,40 +248,6 @@ jobs:
               echo -e "$table_rows"
             fi
           } >> $GITHUB_STEP_SUMMARY
-          
-      - name: Download lint badge artifacts
-        if: always()
-        uses: actions/download-artifact@v4
-        with:
-          pattern: "lint-badge-*"
-          path: lint-badges
-          merge-multiple: true
-          
-      - name: Deploy lint badges to badges branch
-        if: github.ref == 'refs/heads/main' && always()
-        run: |
-          # Configure git
-          git config --global user.name 'GitHub Actions'
-          git config --global user.email 'actions@github.com'
-          
-          # Clone badges branch or create if it doesn't exist
-          git clone --single-branch --branch badges https://github.com/${{ github.repository }}.git badges-repo 2>/dev/null || {
-            git clone https://github.com/${{ github.repository }}.git badges-repo
-            cd badges-repo
-            git checkout --orphan badges
-            git rm -rf .
-            echo "# Badges" > README.md
-            cd ..
-          }
-          
-          # Copy lint badge files
-          cp lint-badges/*.svg badges-repo/ 2>/dev/null || true
-          
-          # Commit and push
-          cd badges-repo
-          git add .
-          git commit -m "Update lint badges $(date)" || exit 0
-          git push origin badges
           
       - name: Check overall status
         run: |
