@@ -122,8 +122,13 @@ class FrameworkServer:
                 />
                 <div class="framework-name">{framework_info["name"]}</div>
                 <a href="{link_url}{mock_param}" class="{link_class}">
-                    {'View App' if status_class == 'status-built' else 'View Error'}
+                    <span>{'View App' if status_class == 'status-built' else 'View Error'}</span>
                 </a>
+                <div class="framework-links">
+                    <a href="https://github.com/Lissy93/weather-front/tree/main/apps/{framework_id}#readme">Code</a>
+                    <a>Status</a>
+                    <a>Results</a>
+                </div>
             </div>
             '''
             cards_html.append(card_html)

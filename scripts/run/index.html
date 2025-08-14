@@ -42,10 +42,10 @@
         .framework-card {
             border: 3px solid #ecf0f1;
             border-radius: 12px;
-            padding: 24px;
+            padding: 1.5rem 1rem 0.5rem;
             text-align: center;
             transition: all 0.3s ease;
-            background: #fff;
+            background: #fafafa;
             position: relative;
             overflow: hidden;
             position: relative;
@@ -60,16 +60,20 @@
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: left 0.6s;
         }
         .framework-card:hover::before {
             left: 100%;
         }
         .framework-card:hover {
             border-color: var(--fw-color, #3498db);
+            background: #fff;
             transform: translateY(-4px);
-            box-shadow: 0 12px 24px rgba(52, 152, 219, 0.2);
+            box-shadow: 0 12px 24px color-mix(in srgb, var(--fw-color, #3498db) 20%, transparent);
+            .framework-links {
+                opacity: 1;
+            }
         }
         .framework-icon {
             font-size: 3em;
@@ -105,15 +109,42 @@
             padding: 10px 20px;
             border-radius: 6px;
             font-weight: 500;
-            transition: background 0.3s ease, opacity 0.3s ease;
+            transition: all 0.3s ease;
+        }
+        .framework-link span {
+            background: inherit;
+            background-clip: inherit;
+            background-clip: text;
+            color: transparent;
+            font-weight: semibold;
+            filter: invert(1) grayscale(1) contrast(9);
         }
         .framework-link:hover {
-            /* background: #2980b9; */
-            opacity: 0.9;
+            filter: brightness(1.1);
             text-decoration: none;
         }
         .framework-link.disabled {
             background: #95a5a6;
+        }
+        .framework-links {
+            display: flex;
+            gap: 0.25rem;
+            margin-top: 0.5rem;
+            color: black;
+            opacity: 0;
+            a {
+                background: color-mix(in srgb, var(--fw-color, #3498db) 20%, transparent);
+                padding: 1px 8px;
+                border-radius: 4px;
+                transition: background 0.3s ease;
+                text-decoration: none;
+                color: inherit;
+                font-size: 0.9em;
+                font-weight: 500;
+                &:hover {
+                    background: color-mix(in srgb, var(--fw-color, #3498db) 60%, transparent);
+                }
+            }
         }
         
         .info-section {
