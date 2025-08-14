@@ -127,64 +127,133 @@ jobs:
           
           # Create coverage test that instruments JavaScript
           cat > coverage-test.js << 'EOF'
-          const { test, expect } = require('@playwright/test');
+          const { test } = require('@playwright/test');
           
-          test.describe('Coverage Collection', () => {
-            test('collect JavaScript coverage', async ({ page, context }) => {
-              // Start JS coverage
-              await context.grantPermissions(['accessibility-events']);
-              await page.coverage.startJSCoverage({ resetOnNavigation: false });
+          test('collect JavaScript coverage for ${{ matrix.framework }}', async ({ page }) => {
+            // Start JS coverage
+            await page.coverage.startJSCoverage({ 
+              resetOnNavigation: false,
+              includeRawScriptCoverage: true 
+            });
+            
+            try {
+              // Navigate to the app
+              await page.goto('/', { waitUntil: 'networkidle' });
+              console.log('Navigated to app');
               
-              // Run through the app functionality
-              await page.goto('/');
-              await page.waitForLoadState('networkidle');
+              // Wait for the page to be ready
+              await page.waitForTimeout(2000);
               
-              // Interact with key features to trigger code execution
-              const searchInput = page.locator('input[type="text"], input[placeholder*="city"], input[id*="search"], input[name*="city"]').first();
-              if (await searchInput.count() > 0) {
-                await searchInput.fill('London');
-                await page.keyboard.press('Enter');
-                await page.waitForTimeout(2000);
-              }
+              // Try to interact with search functionality
+              const searchSelectors = [
+                'input[type="text"]',
+                'input[placeholder*="city" i]',
+                'input[id*="search" i]',
+                'input[name*="city" i]',
+                'input[class*="search" i]',
+                '.search input',
+                '#search',
+                '[data-testid*="search"] input'
+              ];
               
-              // Try to trigger weather display
-              const weatherElements = page.locator('[data-testid*="weather"], .weather, #weather, .temperature, .forecast').first();
-              if (await weatherElements.count() > 0) {
-                await weatherElements.waitFor({ timeout: 5000 }).catch(() => {});
-              }
-              
-              // Collect coverage
-              const coverage = await page.coverage.stopJSCoverage();
-              
-              // Calculate coverage statistics
-              let totalBytes = 0;
-              let usedBytes = 0;
-              
-              for (const entry of coverage) {
-                if (entry.url.includes('localhost') && !entry.url.includes('node_modules')) {
-                  totalBytes += entry.text.length;
-                  for (const range of entry.ranges) {
-                    usedBytes += range.end - range.start;
+              let searchFound = false;
+              for (const selector of searchSelectors) {
+                try {
+                  const input = page.locator(selector).first();
+                  if (await input.count() > 0 && await input.isVisible()) {
+                    await input.fill('London');
+                    await page.keyboard.press('Enter');
+                    await page.waitForTimeout(3000);
+                    searchFound = true;
+                    console.log(`Found and used search input: ${selector}`);
+                    break;
                   }
+                } catch (e) {
+                  // Continue to next selector
                 }
               }
               
-              const coveragePercentage = totalBytes > 0 ? Math.round((usedBytes / totalBytes) * 100) : 0;
+              if (!searchFound) {
+                console.log('No search input found, continuing...');
+              }
               
-              // Save coverage data
-              const coverageData = {
-                totalBytes,
-                usedBytes,
-                coveragePercentage,
-                entries: coverage.filter(entry => 
-                  entry.url.includes('localhost') && !entry.url.includes('node_modules')
-                ).length
-              };
+              // Try to trigger various UI interactions
+              const interactionSelectors = [
+                'button',
+                '.btn',
+                '[role="button"]',
+                'a[href]',
+                '.weather',
+                '.forecast',
+                '[data-testid]',
+                '.card',
+                '.item'
+              ];
               
-              require('fs').writeFileSync('coverage-${{ matrix.framework }}-data.json', JSON.stringify(coverageData, null, 2));
+              for (const selector of interactionSelectors.slice(0, 3)) {
+                try {
+                  const elements = page.locator(selector);
+                  const count = await elements.count();
+                  if (count > 0) {
+                    const element = elements.first();
+                    if (await element.isVisible()) {
+                      await element.click({ timeout: 1000 });
+                      await page.waitForTimeout(500);
+                      console.log(`Clicked element: ${selector}`);
+                    }
+                  }
+                } catch (e) {
+                  // Continue to next interaction
+                }
+              }
               
-              console.log(`Coverage: ${coveragePercentage}% (${usedBytes}/${totalBytes} bytes across ${coverageData.entries} files)`);
-            });
+            } catch (error) {
+              console.log('Error during interaction:', error.message);
+            }
+            
+            // Collect coverage
+            const coverage = await page.coverage.stopJSCoverage();
+            console.log(`Collected coverage for ${coverage.length} files`);
+            
+            // Calculate coverage statistics
+            let totalBytes = 0;
+            let usedBytes = 0;
+            let relevantFiles = 0;
+            
+            for (const entry of coverage) {
+              // Filter for app files (exclude external dependencies)
+              const isAppFile = entry.url.includes('localhost') && 
+                               !entry.url.includes('node_modules') &&
+                               !entry.url.includes('vite/dist') &&
+                               !entry.url.includes('/@vite/') &&
+                               !entry.url.includes('/@fs/') &&
+                               entry.text.length > 100; // Skip very small files
+              
+              if (isAppFile) {
+                relevantFiles++;
+                totalBytes += entry.text.length;
+                for (const range of entry.ranges) {
+                  usedBytes += range.end - range.start;
+                }
+                console.log(`File: ${entry.url} - ${entry.text.length} bytes`);
+              }
+            }
+            
+            const coveragePercentage = totalBytes > 0 ? Math.round((usedBytes / totalBytes) * 100) : 0;
+            
+            // Save coverage data
+            const coverageData = {
+              framework: '${{ matrix.framework }}',
+              totalBytes,
+              usedBytes,
+              coveragePercentage,
+              relevantFiles,
+              timestamp: new Date().toISOString()
+            };
+            
+            require('fs').writeFileSync('coverage-${{ matrix.framework }}-data.json', JSON.stringify(coverageData, null, 2));
+            
+            console.log(`Final Coverage: ${coveragePercentage}% (${usedBytes}/${totalBytes} bytes across ${relevantFiles} files)`);
           });
           EOF
           
@@ -299,17 +368,11 @@ jobs:
           } >> $GITHUB_STEP_SUMMARY
           
           for framework in "${frameworks_array[@]}"; do
-            coverage_file="coverage-artifacts/coverage-${framework}.json"
-            if [[ -f "$coverage_file" ]]; then
-              # Calculate coverage from test results
-              total_tests=$(jq '.suites[].tests | length' "$coverage_file" 2>/dev/null | awk '{sum += $1} END {print sum}' || echo "0")
-              passed_tests=$(jq '.suites[].tests[] | select(.status == "passed") | 1' "$coverage_file" 2>/dev/null | wc -l || echo "0")
-              
-              if [ "$total_tests" -gt 0 ]; then
-                coverage=$(( passed_tests * 100 / total_tests ))
-              else
-                coverage=0
-              fi
+            coverage_data_file="coverage-artifacts/coverage-${framework}-data.json"
+            if [[ -f "$coverage_data_file" ]]; then
+              # Extract coverage from data file
+              coverage=$(jq -r '.coveragePercentage // 0' "$coverage_data_file" 2>/dev/null || echo "0")
+              files=$(jq -r '.relevantFiles // 0' "$coverage_data_file" 2>/dev/null || echo "0")
               
               total_coverage=$((total_coverage + coverage))
               framework_count=$((framework_count + 1))
@@ -328,7 +391,7 @@ jobs:
                 status="Poor"
               fi
               
-              echo "| **${framework}** | ${coverage}% | ${icon} ${status} |" >> $GITHUB_STEP_SUMMARY
+              echo "| **${framework}** | ${coverage}% (${files} files) | ${icon} ${status} |" >> $GITHUB_STEP_SUMMARY
             else
               echo "| **${framework}** | N/A | ⚪ Missing |" >> $GITHUB_STEP_SUMMARY
             fi
