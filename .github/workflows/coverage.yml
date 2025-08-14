@@ -215,19 +215,53 @@ jobs:
             const coverage = await page.coverage.stopJSCoverage();
             console.log(`Collected coverage for ${coverage.length} files`);
             
+            // Debug: Log all URLs first
+            for (const entry of coverage) {
+              console.log(`Found file: ${entry.url} (${entry.text ? entry.text.length : 0} bytes)`);
+            }
+            
             // Calculate coverage statistics
             let totalBytes = 0;
             let usedBytes = 0;
             let relevantFiles = 0;
             
             for (const entry of coverage) {
-              // Filter for app files (exclude external dependencies)
-              const isAppFile = entry.url.includes('localhost') && 
+              // Universal filtering for all framework types
+              const isAppFile = entry.text && 
+                               entry.text.length > 50 &&
+                               (
+                                 // Include all localhost/127.0.0.1 served files
+                                 entry.url.includes('localhost') || 
+                                 entry.url.includes('127.0.0.1') ||
+                                 // Include Vite HMR files (React, Vue, Svelte)
+                                 entry.url.includes('/@id/') ||
+                                 // Include bundled files from dev servers
+                                 entry.url.startsWith('http://localhost:') ||
+                                 entry.url.startsWith('http://127.0.0.1:') ||
+                                 // Include relative paths for static files
+                                 (entry.url.startsWith('/') && entry.url.includes('.js'))
+                               ) &&
+                               // Exclude external dependencies and dev tools
                                !entry.url.includes('node_modules') &&
-                               !entry.url.includes('vite/dist') &&
-                               !entry.url.includes('/@vite/') &&
+                               !entry.url.includes('vite/dist/client') &&
+                               !entry.url.includes('/@vite/client') &&
                                !entry.url.includes('/@fs/') &&
-                               entry.text && entry.text.length > 100; // Skip very small files
+                               !entry.url.includes('chrome-extension') &&
+                               !entry.url.includes('webpack') &&
+                               !entry.url.includes('hot-update') &&
+                               !entry.url.includes('sockjs') &&
+                               !entry.url.includes('__vite') &&
+                               // Framework-specific exclusions
+                               !entry.url.includes('angular/core') &&
+                               !entry.url.includes('react/jsx-runtime') &&
+                               !entry.url.includes('vue/dist') &&
+                               !entry.url.includes('svelte/internal') &&
+                               !entry.url.includes('@angular/') &&
+                               !entry.url.includes('@vue/') &&
+                               !entry.url.includes('@svelte/') &&
+                               !entry.url.includes('zone.js') &&
+                               !entry.url.includes('rxjs/') &&
+                               !entry.url.includes('tslib');
               
               if (isAppFile) {
                 relevantFiles++;
@@ -235,7 +269,9 @@ jobs:
                 for (const range of entry.ranges) {
                   usedBytes += range.end - range.start;
                 }
-                console.log(`File: ${entry.url} - ${entry.text.length} bytes`);
+                console.log(`✓ Including file: ${entry.url} - ${entry.text.length} bytes (${entry.ranges.length} ranges)`);
+              } else if (entry.text && entry.text.length > 0) {
+                console.log(`✗ Excluding file: ${entry.url} - ${entry.text.length} bytes`);
               }
             }
             
