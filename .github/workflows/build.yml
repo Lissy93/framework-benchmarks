@@ -66,6 +66,8 @@ jobs:
           path: |
             node_modules
             apps/*/node_modules
+            apps/*/public
+            apps/*/static
             assets
           key: setup-cache-${{ github.sha }}
         
@@ -111,6 +113,8 @@ jobs:
           path: |
             node_modules
             apps/*/node_modules
+            apps/*/public
+            apps/*/static
             assets
           key: setup-cache-${{ github.sha }}
           fail-on-cache-miss: true
@@ -185,14 +189,19 @@ jobs:
         uses: actions/checkout@v4
         
       - name: Download all build artifacts
+        continue-on-error: true
         uses: actions/download-artifact@v4
         with:
           pattern: build-*
           path: builds
+          merge-multiple: true
           
       - name: Create website structure
         run: |
           frameworks=$(echo '${{ needs.setup.outputs.frameworks }}' | jq -r '.[]' | tr '\n' ' ')
+          echo "Frameworks to process: $frameworks"
+          echo "Available build artifacts:"
+          ls -la builds/ || echo "No builds directory found"
           mkdir -p website
           
           # Create index.html
