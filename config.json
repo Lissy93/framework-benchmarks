@@ -91,11 +91,40 @@
       }
     }
   },
+  "benchmarks": {
+    "server": {
+      "host": "127.0.0.1",
+      "port": 3000,
+      "baseUrl": "http://127.0.0.1:3000",
+      "healthEndpoint": "/health"
+    },
+    "lighthouse": {
+      "categories": ["performance", "accessibility", "best-practices", "seo"],
+      "settings": {
+        "onlyCategories": ["performance", "accessibility", "best-practices", "seo"],
+        "output": "json",
+        "chromeFlags": ["--headless=new", "--no-sandbox", "--disable-gpu", "--disable-dev-shm-usage", "--disable-extensions", "--disable-background-timer-throttling", "--disable-backgrounding-occluded-windows", "--disable-renderer-backgrounding"]
+      },
+      "thresholds": {
+        "performance": 80,
+        "accessibility": 90,
+        "best-practices": 80,
+        "seo": 90
+      }
+    },
+    "output": {
+      "directory": "benchmark-results",
+      "formats": ["json", "html"],
+      "timestamp": true
+    }
+  },
   "miscScripts": [
     {"name": "install:playwright", "command": "playwright install"},
     {"name": "generate-mocks", "command": "cd scripts && python setup/generate_mocks.py"},
     {"name": "generate-scripts", "command": "cd scripts && python setup/generate_scripts.py"},
     {"name": "sync-assets", "command": "cd scripts && python setup/sync_assets.py"},
+    {"name": "benchmark", "command": "cd scripts && python benchmark/main.py"},
+    {"name": "benchmark:lighthouse", "command": "cd scripts && python benchmark/lighthouse.py"},
     {"name": "perf", "command": "node scripts/performance/index.js"},
     {"name": "perf:bundle", "command": "node scripts/performance/index.js --only bundle"},
     {"name": "perf:html", "command": "node scripts/performance/index.js --html"},

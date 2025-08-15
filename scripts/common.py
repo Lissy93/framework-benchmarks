@@ -76,6 +76,18 @@ def show_info(message: str) -> None:
     console.print(f"\nℹ️  {message}", style="blue")
 
 
+def show_subheader(title: str) -> None:
+    """Display a formatted subheader for benchmark sections."""
+    panel = Panel(
+        Text(title, justify="center", style="bold white"),
+        border_style="cyan",
+        padding=(0, 1),
+        expand=False
+    )
+    console.print()
+    console.print(panel)
+
+
 def print_bold(text: str, style: str = "bold") -> None:
     """Print text in bold using Rich formatting."""
     console.print(text, style=style)
