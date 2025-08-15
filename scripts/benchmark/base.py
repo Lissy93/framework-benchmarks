@@ -84,13 +84,14 @@ class BenchmarkRunner(ABC):
         except requests.RequestException:
             return False
     
-    def run_all_frameworks(self, frameworks: Optional[List[str]] = None) -> List[BenchmarkResult]:
+    def run_all_frameworks(self, frameworks: Optional[List[str]] = None, executions: int = 1) -> List[BenchmarkResult]:
         """Run benchmarks for all or specified frameworks."""
         if frameworks is None:
             frameworks = [fw["id"] for fw in self.frameworks]
         
+        execution_text = f" ({executions} executions each)" if executions > 1 else ""
         show_header(f"{self.benchmark_name} Benchmark", 
-                   f"Running {self.benchmark_name.lower()} benchmarks for {len(frameworks)} frameworks")
+                   f"Running {self.benchmark_name.lower()} benchmarks for {len(frameworks)} frameworks{execution_text}")
         
         # Check server is running
         if not self.check_server_health():
@@ -103,14 +104,24 @@ class BenchmarkRunner(ABC):
             # Run benchmarks
             for framework in frameworks:
                 try:
-                    console.print(f"\n🔄 Running {self.benchmark_name} for [bold]{framework}[/bold]...")
-                    result = self.run_single_benchmark(framework)
-                    self.results.append(result)
-                    
-                    if result.success:
-                        console.print(f"✅ Completed {framework}")
+                    if executions == 1:
+                        console.print(f"\n🔄 Running {self.benchmark_name} for [bold]{framework}[/bold]...")
+                        result = self.run_single_benchmark(framework)
+                        self.results.append(result)
+                        
+                        if result.success:
+                            console.print(f"✅ Completed {framework}")
+                        else:
+                            console.print(f"❌ Failed {framework}: {result.error_message}")
                     else:
-                        console.print(f"❌ Failed {framework}: {result.error_message}")
+                        console.print(f"\n🔄 Running {self.benchmark_name} for [bold]{framework}[/bold] ({executions} executions)...")
+                        result = self.run_multiple_executions(framework, executions)
+                        self.results.append(result)
+                        
+                        if result.success:
+                            console.print(f"✅ Completed {framework} (averaged from {executions} runs)")
+                        else:
+                            console.print(f"❌ Failed {framework}: {result.error_message}")
                         
                 except Exception as e:
                     error_result = BenchmarkResult(framework, self.benchmark_name, {})
@@ -124,6 +135,133 @@ class BenchmarkRunner(ABC):
                 self.cleanup()
         
         return self.results
+    
+    def run_multiple_executions(self, framework: str, executions: int) -> BenchmarkResult:
+        """Run multiple executions of a benchmark and average the results."""
+        successful_results = []
+        failed_results = []
+        
+        for execution in range(executions):
+            console.print(f"   [dim]Execution {execution + 1}/{executions}...[/dim]")
+            
+            # Clear browser cache between runs for accuracy
+            if hasattr(self, '_clear_browser_cache'):
+                self._clear_browser_cache()
+            
+            result = self.run_single_benchmark(framework)
+            
+            if result.success:
+                successful_results.append(result)
+                console.print(f"   [green]✓[/green] Run {execution + 1} completed")
+            else:
+                failed_results.append(result)
+                console.print(f"   [red]✗[/red] Run {execution + 1} failed: {result.error_message}")
+        
+        # If we have no successful results, return the first failure
+        if not successful_results:
+            return failed_results[0] if failed_results else BenchmarkResult(framework, self.benchmark_name, {})
+        
+        # Average the successful results
+        return self._average_results(framework, successful_results, len(failed_results))
+    
+    def _average_results(self, framework: str, results: List[BenchmarkResult], failed_count: int) -> BenchmarkResult:
+        """Average multiple benchmark results with statistical analysis."""
+        if not results:
+            return BenchmarkResult(framework, self.benchmark_name, {})
+        
+        # Start with the first result as template
+        averaged_data = results[0].data.copy()
+        statistics = {}
+        
+        # Average numerical scores with statistics
+        if "scores" in averaged_data:
+            score_stats = {}
+            for score_name in averaged_data["scores"]:
+                values = [r.data["scores"][score_name] for r in results if score_name in r.data.get("scores", {})]
+                if values:
+                    avg_score = round(sum(values) / len(values), 1)
+                    averaged_data["scores"][score_name] = avg_score
+                    
+                    # Calculate statistics
+                    score_stats[score_name] = {
+                        "min": round(min(values), 1),
+                        "max": round(max(values), 1),
+                        "std_dev": round(self._calculate_std_dev(values), 2) if len(values) > 1 else 0.0
+                    }
+            
+            if score_stats:
+                statistics["scores"] = score_stats
+        
+        # Average metrics with statistics
+        if "metrics" in averaged_data:
+            metric_stats = {}
+            for metric_name in averaged_data["metrics"]:
+                # Average numeric values
+                numeric_values = []
+                display_values = []
+                score_values = []
+                
+                for result in results:
+                    if metric_name in result.data.get("metrics", {}):
+                        metric = result.data["metrics"][metric_name]
+                        if metric.get("value") is not None:
+                            numeric_values.append(metric["value"])
+                        if metric.get("score") is not None:
+                            score_values.append(metric["score"])
+                        if metric.get("displayValue"):
+                            display_values.append(metric["displayValue"])
+                
+                if numeric_values:
+                    avg_value = sum(numeric_values) / len(numeric_values)
+                    averaged_data["metrics"][metric_name]["value"] = avg_value
+                    
+                    # Calculate statistics for this metric
+                    metric_stats[metric_name] = {
+                        "min": round(min(numeric_values), 2),
+                        "max": round(max(numeric_values), 2),
+                        "std_dev": round(self._calculate_std_dev(numeric_values), 2) if len(numeric_values) > 1 else 0.0
+                    }
+                    
+                    # Update display value based on averaged numeric value
+                    if display_values and "s" in display_values[0]:  # Time in seconds
+                        averaged_data["metrics"][metric_name]["displayValue"] = f"{avg_value / 1000:.1f}\u00a0s"
+                    elif display_values and "ms" in display_values[0]:  # Time in milliseconds
+                        averaged_data["metrics"][metric_name]["displayValue"] = f"{avg_value:.0f}\u00a0ms"
+                    else:  # Other metrics (like CLS)
+                        averaged_data["metrics"][metric_name]["displayValue"] = f"{avg_value:.3f}"
+                
+                if score_values:
+                    avg_score = sum(score_values) / len(score_values)
+                    averaged_data["metrics"][metric_name]["score"] = avg_score
+                    
+                    # Add score statistics to the existing metric stats
+                    if metric_name in metric_stats:
+                        metric_stats[metric_name]["score_min"] = round(min(score_values), 3)
+                        metric_stats[metric_name]["score_max"] = round(max(score_values), 3)
+                        metric_stats[metric_name]["score_std_dev"] = round(self._calculate_std_dev(score_values), 3) if len(score_values) > 1 else 0.0
+            
+            if metric_stats:
+                statistics["metrics"] = metric_stats
+        
+        # Add execution metadata
+        averaged_data["execution_stats"] = {
+            "total_executions": len(results) + failed_count,
+            "successful_executions": len(results),
+            "failed_executions": failed_count,
+            "averaged": True,
+            "statistics": statistics
+        }
+        
+        return BenchmarkResult(framework, self.benchmark_name, averaged_data)
+    
+    def _calculate_std_dev(self, values: List[float]) -> float:
+        """Calculate standard deviation of a list of values."""
+        if len(values) <= 1:
+            return 0.0
+        
+        mean = sum(values) / len(values)
+        variance = sum((x - mean) ** 2 for x in values) / (len(values) - 1)
+        return variance ** 0.5
     
     def save_results(self, results: Optional[List[BenchmarkResult]] = None) -> Path:
         """Save benchmark results to file."""

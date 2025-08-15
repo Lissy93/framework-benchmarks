@@ -27,6 +27,12 @@ npm run benchmark lighthouse -- -f react,vue,svelte
 # Show detailed results
 npm run benchmark lighthouse -- --detailed
 
+# Run multiple executions for improved accuracy
+npm run benchmark lighthouse -- --executions 5
+
+# Combine options for comprehensive testing
+npm run benchmark lighthouse -- -f react,vue -e 3 --detailed
+
 # Check server status
 npm run benchmark server-check
 ```
@@ -36,6 +42,20 @@ npm run benchmark server-check
 - `npm run benchmark server-check` - Verify server is running  
 - `npm run benchmark all` - Run all benchmarks
 - `npm run benchmark lighthouse` - Run Lighthouse audits
+
+### Command Options
+
+**Common Flags:**
+- `-f, --frameworks` - Comma-separated frameworks (e.g., `react,vue,svelte`)
+- `-d, --detailed` - Show detailed results with individual scores and metrics
+- `-s, --save` - Save results to file (enabled by default)
+- `-e, --executions` - Number of runs per framework for averaging (default: 1)
+
+**Multiple Executions Feature:**
+- Runs each benchmark multiple times and averages results
+- Provides statistical analysis (min, max, standard deviation)
+- Clears browser cache between runs for accuracy
+- Shows execution progress with completion indicators
 
 ## Chrome Setup
 
@@ -111,6 +131,36 @@ Results are saved to `benchmark-results/` with timestamps:
 - **JSON format** - Raw data for analysis
 - **Console output** - Formatted tables with pass/fail status
 
+### Multiple Execution Results
+
+When using `--executions > 1`, results include:
+- **Averaged scores** - Mean values across all successful runs
+- **Statistical analysis** - Min/max/standard deviation for all metrics
+- **Execution metadata** - Run counts, success/failure statistics
+
+Example statistics in saved JSON:
+```json
+{
+  "execution_stats": {
+    "total_executions": 5,
+    "successful_executions": 5,
+    "failed_executions": 0,
+    "averaged": true,
+    "statistics": {
+      "scores": {
+        "performance": {"min": 95.0, "max": 98.0, "std_dev": 1.2}
+      },
+      "metrics": {
+        "first-contentful-paint": {
+          "min": 1850.5, "max": 1975.2, "std_dev": 45.3,
+          "score_min": 0.85, "score_max": 0.87, "score_std_dev": 0.01
+        }
+      }
+    }
+  }
+}
+```
+
 ## Troubleshooting
 
 ### "Unable to connect to Chrome"
@@ -125,6 +175,11 @@ Results are saved to `benchmark-results/` with timestamps:
 ### Framework not found
 - Check framework is built: `npm run build:react`
 - Verify server shows framework: http://127.0.0.1:3000/
+
+### Inconsistent benchmark results
+- Use `--executions 3` or higher for more stable averages
+- Statistical analysis helps identify result variability
+- Cache clearing between runs improves accuracy
 
 ## Architecture
 

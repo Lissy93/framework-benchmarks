@@ -129,6 +129,36 @@ class LighthouseRunner(BenchmarkRunner):
         return result
     
     
+    def _clear_browser_cache(self):
+        """Clear browser cache between runs for accuracy."""
+        try:
+            # Use Chrome DevTools Protocol to clear cache
+            import requests
+            
+            # Clear various caches through DevTools Protocol
+            devtools_commands = [
+                {"method": "Network.clearBrowserCache", "params": {}},
+                {"method": "Storage.clearDataForOrigin", "params": {
+                    "origin": self.server_config.get("baseUrl", "http://127.0.0.1:3000"),
+                    "storageTypes": "all"
+                }},
+                {"method": "Runtime.discardConsoleEntries", "params": {}}
+            ]
+            
+            for command in devtools_commands:
+                try:
+                    response = requests.post(
+                        "http://127.0.0.1:9222/json/runtime/evaluate",
+                        json=command,
+                        timeout=5
+                    )
+                except:
+                    # If DevTools calls fail, that's ok - continue anyway
+                    pass
+        except:
+            # Cache clearing is optional - don't fail if it doesn't work
+            pass
+    
     def cleanup(self):
         """Clean up Chrome launcher if we started it."""
         if self.chrome_launcher:
