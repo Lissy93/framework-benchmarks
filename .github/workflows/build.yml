@@ -307,7 +307,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: website
-          path: website/
+          path: website/**
           retention-days: 30
 
   deploy:
@@ -315,7 +315,6 @@ jobs:
     needs: [setup, build, website]
     if: always()
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -331,28 +330,42 @@ jobs:
           
       - name: Deploy to website branch
         run: |
+          set -euo pipefail
           git config user.name 'liss-bot'
           git config user.email 'alicia-gh-bot@mail.as93.net'
-          
-          # Switch to website branch
-          git fetch origin website:website 2>/dev/null || git checkout --orphan website
-          git checkout website 2>/dev/null || true
-          git pull origin website 2>/dev/null || true
-          
-          # Clear and copy new content
-          find . -maxdepth 1 -not -name '.git' -not -name 'website' -exec rm -rf {} + 2>/dev/null || true
-          cp -r website/* . 2>/dev/null || echo "⚠️ No website files found"
-          
-          if git add . && git diff --staged --quiet; then
+
+          # Switch to website branch (create if missing)
+          if git ls-remote --exit-code --heads origin website >/dev/null 2>&1; then
+            git fetch origin website:website
+            git checkout website
+            git pull origin website || true
+          else
+            git checkout --orphan website
+            git commit --allow-empty -m "init website branch" || true
+          fi
+
+          # Ensure artifact exists
+          if [ ! -d "website" ] || [ -z "$(ls -A website 2>/dev/null)" ]; then
+            echo "⚠️ No website files found in ./website"
+            exit 1
+          fi
+
+          # Clear branch root but keep .git and the downloaded folder
+          find . -maxdepth 1 -mindepth 1 \
+            -not -name '.git' \
+            -not -name 'website' \
+            -exec rm -rf {} + 2>/dev/null || true
+
+          # Copy (includes dotfiles)
+          cp -a website/. .
+
+          # Commit only if there are changes
+          if git add -A && git diff --staged --quiet; then
             echo "ℹ️ No website changes to deploy"
           else
             git commit -m "Deploy website"
-            if git push origin website; then
-              echo "✅ Successfully deployed website"
-            else
-              echo "⚠️ Failed to deploy website"
-              exit 1
-            fi
+            git push origin website
+            echo "✅ Successfully deployed website"
           fi
 
   badges:
