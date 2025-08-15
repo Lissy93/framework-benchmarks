@@ -239,21 +239,24 @@ jobs:
         run: |
           # Determine badge status and color
           if [[ "${{ steps.test-run.outcome }}" == "success" ]]; then
-            status="passing"
-            color="brightgreen"
+            status="Passing"
+            color="3cd96b"
+            label_color="33b348"
           else
             attempts="${{ steps.test-run.outputs.total_attempts || '1' }}"
             if [[ "$attempts" -gt "1" ]]; then
-              status="unstable"
-              color="orange"
+              status="Unstable"
+              color="fb974e"
+              label_color="d58144"
             else
-              status="failing"
-              color="red"
+              status="Failing"
+              color="ff5666"
+              label_color="d5334a"
             fi
           fi
           
-          # Generate and commit badge
-          badge_url="https://img.shields.io/badge/tests-${status}-${color}"
+          # Generate badge with new styling
+          badge_url="https://img.shields.io/badge/Tests-${status}-${color}?logo=vitest&logoColor=fff&labelColor=${label_color}"
           curl -o "test-${{ matrix.framework }}.svg" "$badge_url"
           
           # Commit to badges branch
