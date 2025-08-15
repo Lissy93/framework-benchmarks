@@ -90,20 +90,57 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r scripts/requirements.txt
         
-      - name: Install dependencies
-        run: npm i
+      - name: Install root dependencies
+        run: npm ci
+        
+      - name: Install framework dependencies
+        run: |
+          cd apps/${{ matrix.framework }}
+          if [ -f package.json ] && [ -f package-lock.json ]; then
+            npm ci
+          elif [ -f package.json ]; then
+            npm install
+          else
+            echo "No package.json found, skipping npm install"
+          fi
         
       - name: Build ${{ matrix.framework }}
         id: build-run
         run: |
           cd apps/${{ matrix.framework }}
-          if npm run build; then
-            echo "status=success" >> $GITHUB_OUTPUT
-            echo "✅ Build successful"
+          
+          # Check if build script exists
+          if npm run | grep -q "build"; then
+            if npm run build; then
+              echo "status=success" >> $GITHUB_OUTPUT
+              echo "✅ Build successful"
+            else
+              echo "status=failure" >> $GITHUB_OUTPUT
+              echo "❌ Build failed"
+              exit 1
+            fi
           else
-            echo "status=failure" >> $GITHUB_OUTPUT
-            echo "❌ Build failed"
-            exit 1
+            # No build needed (e.g., alpine, vanilla)
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "✅ No build step required"
+          fi
+          
+      - name: Prepare artifacts
+        if: steps.build-run.outputs.status == 'success'
+        run: |
+          cd apps/${{ matrix.framework }}
+          mkdir -p ../../artifacts/${{ matrix.framework }}
+          
+          # Copy built files (different frameworks use different output dirs)
+          if [ -d "dist" ]; then
+            cp -r dist/* ../../artifacts/${{ matrix.framework }}/
+          elif [ -d "build" ]; then
+            cp -r build/* ../../artifacts/${{ matrix.framework }}/
+          else
+            # For frameworks without build step (alpine, vanilla)
+            cp -r * ../../artifacts/${{ matrix.framework }}/
+            # Remove node_modules if present
+            rm -rf ../../artifacts/${{ matrix.framework }}/node_modules
           fi
           
       - name: Upload build artifacts
@@ -111,7 +148,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-${{ matrix.framework }}
-          path: apps/${{ matrix.framework }}/dist/
+          path: artifacts/${{ matrix.framework }}/
           retention-days: 7
           
       - name: Generate build badge
