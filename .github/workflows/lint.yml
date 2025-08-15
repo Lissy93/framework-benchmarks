@@ -108,9 +108,8 @@ jobs:
           path: lint-reports/${{ matrix.framework }}-lint-report.json
           retention-days: 30
           
-      - name: Generate and commit lint badge
+      - name: Generate lint badge
         if: always()
-        continue-on-error: true
         run: |
           # Determine badge status and color
           report_file="lint-reports/${{ matrix.framework }}-lint-report.json"
@@ -127,15 +126,9 @@ jobs:
               color="fb974e"
               label_color="d58144"
             else
-              if [ "$warning_count" -gt "0" ]; then
-                status="${error_count}_errors"
-                color="ff5666"
-                label_color="d5334a"
-              else
-                status="${error_count}_errors"
-                color="ff5666"
-                label_color="d5334a"
-              fi
+              status="${error_count}_errors"
+              color="ff5666"
+              label_color="d5334a"
             fi
           else
             status="unknown"
@@ -143,18 +136,17 @@ jobs:
             label_color="939393"
           fi
           
-          # Generate badge with new styling
+          # Generate badge
           badge_url="https://img.shields.io/badge/Lint-${status}-${color}?logo=eslint&logoColor=fff&labelColor=${label_color}"
           curl -o "lint-${{ matrix.framework }}.svg" "$badge_url"
           
-          # Commit to badges branch
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git fetch origin badges:badges 2>/dev/null || git checkout --orphan badges
-          git checkout badges 2>/dev/null || true
-          git add "lint-${{ matrix.framework }}.svg"
-          git commit -m "Update lint-${{ matrix.framework }} badge" || true
-          git push origin badges || true
+      - name: Upload badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: badge-lint-${{ matrix.framework }}
+          path: lint-${{ matrix.framework }}.svg
+          retention-days: 1
 
   summary:
     name: Lint Summary
@@ -262,4 +254,49 @@ jobs:
             exit 1
           else
             echo "✅ All linting passed successfully!"
+          fi
+
+  badges:
+    name: Update Lint Badges
+    needs: [setup, lint]
+    if: always()
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout with bot token
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
+          fetch-depth: 0
+          
+      - name: Download all badges
+        uses: actions/download-artifact@v4
+        with:
+          pattern: badge-lint-*
+          path: badges
+          merge-multiple: true
+          
+      - name: Commit badges
+        run: |
+          git config user.name 'liss-bot'
+          git config user.email 'alicia-gh-bot@mail.as93.net'
+          
+          # Switch to badges branch
+          git fetch origin badges:badges 2>/dev/null || git checkout --orphan badges
+          git checkout badges 2>/dev/null || true
+          git pull origin badges 2>/dev/null || true
+          
+          # Copy badges and commit
+          cp badges/*.svg . 2>/dev/null || echo "⚠️ No badge files found"
+          
+          if git add *.svg && git diff --staged --quiet; then
+            echo "ℹ️ No badge changes to commit"
+          else
+            git commit -m "Update lint badges"
+            if git push origin badges; then
+              echo "✅ Successfully updated lint badges"
+            else
+              echo "⚠️ Failed to push badge updates"
+              exit 1
+            fi
           fi

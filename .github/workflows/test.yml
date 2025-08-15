@@ -233,9 +233,8 @@ jobs:
             test-details/${{ matrix.framework }}.json
           retention-days: 7
           
-      - name: Generate and commit test badge
+      - name: Generate test badge
         if: always()
-        continue-on-error: true
         run: |
           # Determine badge status and color
           if [[ "${{ steps.test-run.outcome }}" == "success" ]]; then
@@ -255,18 +254,17 @@ jobs:
             fi
           fi
           
-          # Generate badge with new styling
+          # Generate badge
           badge_url="https://img.shields.io/badge/Tests-${status}-${color}?logo=vitest&logoColor=fff&labelColor=${label_color}"
           curl -o "test-${{ matrix.framework }}.svg" "$badge_url"
           
-          # Commit to badges branch
-          git config --global user.name 'github-actions[bot]'
-          git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git fetch origin badges:badges 2>/dev/null || git checkout --orphan badges
-          git checkout badges 2>/dev/null || true
-          git add "test-${{ matrix.framework }}.svg"
-          git commit -m "Update test-${{ matrix.framework }} badge" || true
-          git push origin badges || true
+      - name: Upload badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: badge-test-${{ matrix.framework }}
+          path: test-${{ matrix.framework }}.svg
+          retention-days: 1
 
   summary:
     name: Test Summary
@@ -429,4 +427,48 @@ jobs:
           name: badge-data
           path: badge-data/test-results.json
           retention-days: 90
+
+  badges:
+    name: Update Test Badges
+    needs: [setup, test]
+    if: always()
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout with bot token
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
+          fetch-depth: 0
           
+      - name: Download all badges
+        uses: actions/download-artifact@v4
+        with:
+          pattern: badge-test-*
+          path: badges
+          merge-multiple: true
+          
+      - name: Commit badges
+        run: |
+          git config user.name 'liss-bot'
+          git config user.email 'alicia-gh-bot@mail.as93.net'
+          
+          # Switch to badges branch
+          git fetch origin badges:badges 2>/dev/null || git checkout --orphan badges
+          git checkout badges 2>/dev/null || true
+          git pull origin badges 2>/dev/null || true
+          
+          # Copy badges and commit
+          cp badges/*.svg . 2>/dev/null || echo "⚠️ No badge files found"
+          
+          if git add *.svg && git diff --staged --quiet; then
+            echo "ℹ️ No badge changes to commit"
+          else
+            git commit -m "Update test badges"
+            if git push origin badges; then
+              echo "✅ Successfully updated test badges"
+            else
+              echo "⚠️ Failed to push badge updates"
+              exit 1
+            fi
+          fi
