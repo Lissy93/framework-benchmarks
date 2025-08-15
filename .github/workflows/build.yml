@@ -1,0 +1,324 @@
+name: 🚀 Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      frameworks:
+        description: 'Frameworks to build (comma-separated, see frameworks.json for available options)'
+        required: false
+        default: 'all'
+        type: string
+  pull_request:
+    branches: [ main, master, dev ]
+    paths:
+      - 'apps/**'
+      - 'frameworks.json'
+      - 'config.json'
+      - '.github/workflows/build.yml'
+    types: [ opened, synchronize, reopened ]
+  push:
+    branches: [ main ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  setup:
+    name: Setup for Building
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      frameworks: ${{ steps.matrix.outputs.frameworks }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+          
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+        
+      - name: Determine frameworks to build
+        id: matrix
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.frameworks }}" != "all" ]; then
+            frameworks="${{ github.event.inputs.frameworks }}"
+          else
+            frameworks=$(python scripts/get_frameworks.py)
+          fi
+          echo "frameworks=$(echo "[$frameworks]" | sed 's/,/", "/g' | sed 's/\[/[\"/ ; s/\]/\"]/')" >> $GITHUB_OUTPUT
+          echo "Building frameworks: $frameworks"
+
+  build:
+    name: Build ${{ matrix.framework }}
+    needs: setup
+    if: fromJSON(needs.setup.outputs.frameworks)[0] != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: ${{ fromJSON(needs.setup.outputs.frameworks) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+          
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+        
+      - name: Install dependencies
+        run: npm i
+        
+      - name: Build ${{ matrix.framework }}
+        id: build-run
+        run: |
+          cd apps/${{ matrix.framework }}
+          if npm run build; then
+            echo "status=success" >> $GITHUB_OUTPUT
+            echo "✅ Build successful"
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            echo "❌ Build failed"
+            exit 1
+          fi
+          
+      - name: Upload build artifacts
+        if: steps.build-run.outputs.status == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.framework }}
+          path: apps/${{ matrix.framework }}/dist/
+          retention-days: 7
+          
+      - name: Generate build badge
+        if: always()
+        run: |
+          if [[ "${{ steps.build-run.outputs.status }}" == "success" ]]; then
+            status="Success"
+            color="3cd96b"
+            label_color="33b348"
+          else
+            status="Failed"
+            color="ff5666"
+            label_color="d5334a"
+          fi
+          
+          badge_url="https://img.shields.io/badge/Build-${status}-${color}?logo=rocket&logoColor=fff&labelColor=${label_color}"
+          curl -o "build-${{ matrix.framework }}.svg" "$badge_url"
+          
+      - name: Upload badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: badge-build-${{ matrix.framework }}
+          path: build-${{ matrix.framework }}.svg
+          retention-days: 1
+
+  website:
+    name: Generate Static Website
+    needs: [setup, build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Download all build artifacts
+        uses: actions/download-artifact@v4
+        with:
+          pattern: build-*
+          path: builds
+          
+      - name: Create website structure
+        run: |
+          frameworks=$(echo '${{ needs.setup.outputs.frameworks }}' | jq -r '.[]' | tr '\n' ' ')
+          mkdir -p website
+          
+          # Create index.html
+          cat > website/index.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Weather App Demos</title>
+            <style>
+              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui; margin: 2rem; }
+              .container { max-width: 800px; margin: 0 auto; }
+              .framework-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0; }
+              .framework-card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; text-decoration: none; color: inherit; }
+              .framework-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+              .framework-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem; }
+              .demo-link { color: #0066cc; }
+            </style>
+          </head>
+          <body>
+            <div class="container">
+              <h1>🌤️ Weather App Framework Demos</h1>
+              <p>Compare the same weather application built with different frontend frameworks.</p>
+              <div class="framework-grid">
+          EOF
+          
+          # Add framework cards
+          for framework in $frameworks; do
+            cat >> website/index.html << EOF
+                <a href="/${framework}/demo/" class="framework-card">
+                  <div class="framework-name">${framework^}</div>
+                  <div class="demo-link">View Demo →</div>
+                </a>
+          EOF
+          done
+          
+          cat >> website/index.html << 'EOF'
+              </div>
+            </div>
+          </body>
+          </html>
+          EOF
+          
+          # Create framework demo directories
+          for framework in $frameworks; do
+            framework_dir="website/${framework}/demo"
+            mkdir -p "$framework_dir"
+            
+            # Check if build artifacts exist
+            if [ -d "builds/build-${framework}" ]; then
+              cp -r builds/build-${framework}/* "$framework_dir/"
+              echo "✅ Added ${framework} demo"
+            else
+              # Create placeholder if build failed
+              cat > "$framework_dir/index.html" << EOF
+          <!DOCTYPE html>
+          <html>
+          <head><title>${framework^} Demo - Build Failed</title></head>
+          <body>
+            <h1>Build Failed</h1>
+            <p>The ${framework} demo could not be built.</p>
+            <a href="/">← Back to all demos</a>
+          </body>
+          </html>
+          EOF
+              echo "⚠️ Build failed for ${framework}, added placeholder"
+            fi
+          done
+          
+      - name: Upload website artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: website
+          path: website/
+          retention-days: 30
+
+  deploy:
+    name: Deploy Website
+    needs: [setup, build, website]
+    if: always()
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
+          fetch-depth: 0
+          
+      - name: Download website
+        uses: actions/download-artifact@v4
+        with:
+          name: website
+          path: website
+          
+      - name: Deploy to website branch
+        run: |
+          git config user.name 'liss-bot'
+          git config user.email 'alicia-gh-bot@mail.as93.net'
+          
+          # Switch to website branch
+          git fetch origin website:website 2>/dev/null || git checkout --orphan website
+          git checkout website 2>/dev/null || true
+          git pull origin website 2>/dev/null || true
+          
+          # Clear and copy new content
+          find . -maxdepth 1 -not -name '.git' -not -name 'website' -exec rm -rf {} + 2>/dev/null || true
+          cp -r website/* . 2>/dev/null || echo "⚠️ No website files found"
+          
+          if git add . && git diff --staged --quiet; then
+            echo "ℹ️ No website changes to deploy"
+          else
+            git commit -m "Deploy website"
+            if git push origin website; then
+              echo "✅ Successfully deployed website"
+            else
+              echo "⚠️ Failed to deploy website"
+              exit 1
+            fi
+          fi
+
+  badges:
+    name: Update Build Badges
+    needs: [setup, build]
+    if: always()
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
+          fetch-depth: 0
+          
+      - name: Download all badges
+        uses: actions/download-artifact@v4
+        with:
+          pattern: badge-build-*
+          path: badges
+          merge-multiple: true
+          
+      - name: Commit badges
+        run: |
+          git config user.name 'liss-bot'
+          git config user.email 'alicia-gh-bot@mail.as93.net'
+          
+          # Switch to badges branch
+          git fetch origin badges:badges 2>/dev/null || git checkout --orphan badges
+          git checkout badges 2>/dev/null || true
+          git pull origin badges 2>/dev/null || true
+          
+          # Copy badges and commit
+          cp badges/*.svg . 2>/dev/null || echo "⚠️ No badge files found"
+          
+          if git add *.svg && git diff --staged --quiet; then
+            echo "ℹ️ No badge changes to commit"
+          else
+            git commit -m "Update build badges"
+            if git push origin badges; then
+              echo "✅ Successfully updated build badges"
+            else
+              echo "⚠️ Failed to push badge updates"
+              exit 1
+            fi
+          fi
