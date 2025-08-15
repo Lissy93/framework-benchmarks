@@ -219,7 +219,6 @@ jobs:
         with:
           pattern: build-*
           path: builds
-          merge-multiple: true
           
       - name: Create website structure
         run: |
@@ -280,20 +279,14 @@ jobs:
             framework_dir="website/${framework}/demo"
             mkdir -p "$framework_dir"
             
-            # Check if build artifacts exist (try multiple possible locations)
-            copied=false
-            for possible_path in "builds/build-${framework}" "builds/${framework}" "build-${framework}"; do
-              if [ -d "$possible_path" ] && [ "$(ls -A "$possible_path" 2>/dev/null)" ]; then
-                echo "Found artifacts at: $possible_path"
-                cp -r "$possible_path"/* "$framework_dir/"
-                echo "✅ Added ${framework} demo"
-                copied=true
-                break
-              fi
-            done
-            
-            if [ "$copied" = "false" ]; then
-              echo "⚠️ No artifacts found for ${framework}, creating placeholder"
+            # Check if build artifacts exist 
+            artifact_path="builds/build-${framework}"
+            if [ -d "$artifact_path" ] && [ "$(ls -A "$artifact_path" 2>/dev/null)" ]; then
+              echo "Found artifacts at: $artifact_path"
+              cp -r "$artifact_path"/* "$framework_dir/"
+              echo "✅ Added ${framework} demo"
+            else
+              echo "⚠️ No artifacts found for ${framework} at $artifact_path, creating placeholder"
               # Create placeholder if build failed
               cat > "$framework_dir/index.html" << EOF
           <!DOCTYPE html>
