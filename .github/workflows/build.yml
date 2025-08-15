@@ -90,39 +90,20 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r scripts/requirements.txt
         
-      - name: Install root dependencies
-        run: npm ci
+      - name: Run project setup
+        run: python scripts/setup/main.py --skip-build
         
-      - name: Install framework dependencies
-        run: |
-          cd apps/${{ matrix.framework }}
-          if [ -f package.json ] && [ -f package-lock.json ]; then
-            npm ci
-          elif [ -f package.json ]; then
-            npm install
-          else
-            echo "No package.json found, skipping npm install"
-          fi
+      - name: Verify setup
+        run: python scripts/verify/check.py
         
       - name: Build ${{ matrix.framework }}
         id: build-run
         run: |
-          cd apps/${{ matrix.framework }}
-          
-          # Check if build script exists
-          if npm run | grep -q "build"; then
-            if npm run build; then
-              echo "status=success" >> $GITHUB_OUTPUT
-              echo "✅ Build successful"
-            else
-              echo "status=failure" >> $GITHUB_OUTPUT
-              echo "❌ Build failed"
-              exit 1
-            fi
-          else
-            # No build needed (e.g., alpine, vanilla)
+          if python scripts/run/build.py --framework ${{ matrix.framework }} --ci; then
             echo "status=success" >> $GITHUB_OUTPUT
-            echo "✅ No build step required"
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            exit 1
           fi
           
       - name: Prepare artifacts
