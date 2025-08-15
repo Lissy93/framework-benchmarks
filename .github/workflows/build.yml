@@ -359,6 +359,9 @@ jobs:
           # Copy (includes dotfiles)
           cp -a website/. .
 
+          # Remove the website directory after copying
+          rm -rf website
+
           # Commit only if there are changes
           if git add -A && git diff --staged --quiet; then
             echo "ℹ️ No website changes to deploy"
