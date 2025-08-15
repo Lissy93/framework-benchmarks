@@ -29,15 +29,21 @@ permissions:
 
 jobs:
   setup:
-    name: Setup for Building
+    name: Setup and Prepare Environment
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     outputs:
       frameworks: ${{ steps.matrix.outputs.frameworks }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
         
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -45,8 +51,23 @@ jobs:
           cache: 'pip'
           cache-dependency-path: scripts/requirements.txt
           
-      - name: Install Python dependencies
-        run: pip install -r scripts/requirements.txt
+      - name: Install dependencies and setup project
+        run: |
+          pip install -r scripts/requirements.txt
+          npm ci
+          python scripts/setup/main.py --skip-build
+          
+      - name: Verify setup
+        run: python scripts/verify/check.py
+        
+      - name: Cache setup for build jobs
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            assets
+          key: setup-cache-${{ github.sha }}
         
       - name: Determine frameworks to build
         id: matrix
@@ -74,12 +95,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
-          cache: 'npm'
-          
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
@@ -90,14 +105,15 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r scripts/requirements.txt
         
-      - name: Install root dependencies
-        run: npm ci
-        
-      - name: Run project setup
-        run: python scripts/setup/main.py --skip-build
-        
-      - name: Verify setup
-        run: python scripts/verify/check.py
+      - name: Restore setup cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            assets
+          key: setup-cache-${{ github.sha }}
+          fail-on-cache-miss: true
         
       - name: Build ${{ matrix.framework }}
         id: build-run

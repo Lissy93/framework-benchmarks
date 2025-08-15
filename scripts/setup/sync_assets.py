@@ -68,6 +68,11 @@ def sync_assets():
     assets_dir = project_root / assets_dir_name
     apps_dir = project_root / apps_dir_name
     
+    # Ensure assets directory structure exists
+    required_asset_dirs = ["icons", "styles", "mocks"]
+    for dir_name in required_asset_dirs:
+        (assets_dir / dir_name).mkdir(parents=True, exist_ok=True)
+    
     # Get UI configuration
     ui_config = config.get("ui", {})
     progress_delay = ui_config.get("progressDelay", 0.25)
