@@ -1,0 +1,1 @@
+import{_ as l}from"./q-DejqvCso.js";import"./q-DEY21A0b.js";const i=()=>l("div",null,{class:"loading","data-testid":"loading"},[l("div",null,{class:"loading__spinner"},null,3,null),l("p",null,null,"Loading weather data...",3,null)],3,"Kl_0");export{i as s_WBTbmW10JLI};

@@ -1,0 +1,1 @@
+import{_ as r,a as l}from"./q-DejqvCso.js";import"./q-DEY21A0b.js";const n=s=>r("div",null,{class:"error","data-testid":"error"},[r("h2",null,{class:"error__title"},"Unable to fetch weather data",3,null),r("p",null,{class:"error__message"},l(e=>e.message,[s]),3,null)],3,"sQ_0");export{n as s_yQWkFCWADAQ};
