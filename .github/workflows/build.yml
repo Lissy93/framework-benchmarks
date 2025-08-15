@@ -130,21 +130,46 @@ jobs:
           fi
           
       - name: Prepare artifacts
-        if: steps.build-run.outputs.status == 'success'
+        if: always()
         run: |
+          echo "Build status: ${{ steps.build-run.outputs.status }}"
           cd apps/${{ matrix.framework }}
-          mkdir -p ../../artifacts/${{ matrix.framework }}
+          ls -la
+          echo "Looking for build outputs..."
           
-          # Copy built files (different frameworks use different output dirs)
-          if [ -d "dist" ]; then
-            cp -r dist/* ../../artifacts/${{ matrix.framework }}/
-          elif [ -d "build" ]; then
-            cp -r build/* ../../artifacts/${{ matrix.framework }}/
+          if [ "${{ steps.build-run.outputs.status }}" == "success" ]; then
+            mkdir -p ../../artifacts/${{ matrix.framework }}
+            
+            # Use same logic as serve.py to find correct build directory
+            framework="${{ matrix.framework }}"
+            if [ "$framework" = "svelte" ]; then
+              build_dir="build"
+            elif [ "$framework" = "angular" ]; then
+              build_dir="dist/weather-app-angular"
+            elif [ "$framework" = "vanilla" ] || [ "$framework" = "alpine" ]; then
+              build_dir=""  # No build directory needed
+            else
+              build_dir="dist"  # Default for most frameworks
+            fi
+            
+            if [ -n "$build_dir" ] && [ -d "$build_dir" ]; then
+              echo "Found build directory: $build_dir"
+              cp -r "$build_dir"/* ../../artifacts/${{ matrix.framework }}/
+            elif [ -z "$build_dir" ]; then
+              echo "No build directory needed, copying source files"
+              # For frameworks without build step (alpine, vanilla)
+              cp -r * ../../artifacts/${{ matrix.framework }}/
+              # Remove node_modules if present
+              rm -rf ../../artifacts/${{ matrix.framework }}/node_modules
+            else
+              echo "Expected build directory '$build_dir' not found"
+              ls -la
+            fi
+            
+            echo "Artifact contents:"
+            ls -la ../../artifacts/${{ matrix.framework }}/ || echo "No artifacts created"
           else
-            # For frameworks without build step (alpine, vanilla)
-            cp -r * ../../artifacts/${{ matrix.framework }}/
-            # Remove node_modules if present
-            rm -rf ../../artifacts/${{ matrix.framework }}/node_modules
+            echo "Build failed for ${{ matrix.framework }}, skipping artifact preparation"
           fi
           
       - name: Upload build artifacts
@@ -202,6 +227,10 @@ jobs:
           echo "Frameworks to process: $frameworks"
           echo "Available build artifacts:"
           ls -la builds/ || echo "No builds directory found"
+          if [ -d "builds" ]; then
+            echo "Contents of builds directory:"
+            find builds/ -type f | head -20
+          fi
           mkdir -p website
           
           # Create index.html
@@ -251,11 +280,20 @@ jobs:
             framework_dir="website/${framework}/demo"
             mkdir -p "$framework_dir"
             
-            # Check if build artifacts exist
-            if [ -d "builds/build-${framework}" ]; then
-              cp -r builds/build-${framework}/* "$framework_dir/"
-              echo "✅ Added ${framework} demo"
-            else
+            # Check if build artifacts exist (try multiple possible locations)
+            copied=false
+            for possible_path in "builds/build-${framework}" "builds/${framework}" "build-${framework}"; do
+              if [ -d "$possible_path" ] && [ "$(ls -A "$possible_path" 2>/dev/null)" ]; then
+                echo "Found artifacts at: $possible_path"
+                cp -r "$possible_path"/* "$framework_dir/"
+                echo "✅ Added ${framework} demo"
+                copied=true
+                break
+              fi
+            done
+            
+            if [ "$copied" = "false" ]; then
+              echo "⚠️ No artifacts found for ${framework}, creating placeholder"
               # Create placeholder if build failed
               cat > "$framework_dir/index.html" << EOF
           <!DOCTYPE html>
