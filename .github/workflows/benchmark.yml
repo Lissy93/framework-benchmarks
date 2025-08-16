@@ -1,0 +1,283 @@
+name: 📈 Framework Benchmarks
+
+on:
+  workflow_dispatch:
+    inputs:
+      benchmark_types:
+        description: 'Benchmark types to run (comma-separated)'
+        required: false
+        default: 'lighthouse,bundle-size,source-analysis,build-time,dev-server,resource-usage'
+        type: string
+      frameworks:
+        description: 'Frameworks to test (comma-separated, blank for all)'
+        required: false
+        default: ''
+        type: string
+      executions:
+        description: 'Number of executions per benchmark (for averaging)'
+        required: false
+        default: '1'
+        type: string
+      detailed_output:
+        description: 'Show detailed benchmark results'
+        required: false
+        default: false
+        type: boolean
+      timeout_minutes:
+        description: 'Job timeout in minutes'
+        required: false
+        default: '60'
+        type: string
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  benchmark:
+    name: Run Framework Benchmarks
+    runs-on: ubuntu-latest
+    timeout-minutes: ${{ fromJson(github.event.inputs.timeout_minutes || '60') }}
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: 🔧 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: 📦 Install System Dependencies
+        run: |
+          # Update package lists
+          sudo apt-get update
+          
+          # Install Chrome dependencies for Lighthouse
+          sudo apt-get install -y \
+            wget \
+            gnupg \
+            ca-certificates \
+            fonts-liberation \
+            libasound2 \
+            libatk-bridge2.0-0 \
+            libdrm2 \
+            libgtk-3-0 \
+            libnspr4 \
+            libnss3 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxrandr2 \
+            xdg-utils \
+            libgbm1 \
+            libxss1
+
+      - name: 🌐 Install Google Chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+        id: setup-chrome
+
+      - name: 📋 Verify Chrome Installation
+        run: |
+          echo "Chrome path: ${{ steps.setup-chrome.outputs.chrome-path }}"
+          ${{ steps.setup-chrome.outputs.chrome-path }} --version
+          which google-chrome || which chromium-browser || echo "Chrome executable not found in PATH"
+
+      - name: 🔧 Setup Project
+        run: |
+          echo "Installing root dependencies..."
+          npm ci
+          
+          echo "Setting up project with npm run setup..."
+          npm run setup
+
+      - name: 🚀 Start Development Server
+        run: |
+          echo "Starting development server..."
+          npm start &
+          
+          # Wait for server to be ready with timeout
+          timeout=60
+          elapsed=0
+          while [ $elapsed -lt $timeout ]; do
+            if curl -sf http://localhost:3000/health > /dev/null 2>&1; then
+              echo "✅ Server is ready!"
+              break
+            fi
+            echo "⏳ Waiting for server... (${elapsed}s)"
+            sleep 2
+            elapsed=$((elapsed + 2))
+          done
+          
+          if [ $elapsed -ge $timeout ]; then
+            echo "❌ Server failed to start within ${timeout}s"
+            echo "Checking server logs..."
+            jobs
+            exit 1
+          fi
+        timeout-minutes: 2
+
+      - name: 🔍 Verify Project Setup
+        run: |
+          echo "Verifying project setup with npm run verify..."
+          npm run verify
+          
+          echo "Testing server endpoints..."
+          
+          # Test health endpoint
+          curl -f http://localhost:3000/health || {
+            echo "❌ Health endpoint failed"
+            exit 1
+          }
+          
+          # Test a few framework endpoints
+          for framework in react vue svelte; do
+            echo "Testing $framework endpoint..."
+            curl -f "http://localhost:3000/$framework/?mock=true" > /dev/null || {
+              echo "⚠️ $framework endpoint failed, but continuing..."
+            }
+          done
+          
+          echo "✅ Project verification complete"
+
+      - name: 🔧 Prepare Benchmark Environment
+        run: |
+          mkdir -p benchmark-results
+          echo "PYTHONPATH=$PWD:$PWD/scripts" >> $GITHUB_ENV
+          
+          echo "📊 Benchmark Configuration:"
+          echo "  Types: ${{ github.event.inputs.benchmark_types || 'all' }}"
+          echo "  Frameworks: ${{ github.event.inputs.frameworks || 'all' }}"
+          echo "  Executions: ${{ github.event.inputs.executions || '1' }}"
+          echo "  Detailed: ${{ github.event.inputs.detailed_output }}"
+
+      - name: 🧪 Run Benchmarks
+        run: |
+          set -e  # Exit on error
+          
+          # Parse inputs with defaults
+          benchmark_types="${{ github.event.inputs.benchmark_types }}"
+          frameworks="${{ github.event.inputs.frameworks }}"
+          executions="${{ github.event.inputs.executions }}"
+          detailed="${{ github.event.inputs.detailed_output }}"
+          
+          # Build command arguments for the benchmark script
+          cmd_args=()
+          cmd_args+=("all")  # Run all benchmarks by default
+          
+          if [ -n "$benchmark_types" ]; then
+            cmd_args+=("--type" "$benchmark_types")
+          fi
+          
+          if [ -n "$frameworks" ]; then
+            cmd_args+=("--frameworks" "$frameworks")
+          fi
+          
+          if [ "$executions" != "1" ] && [ -n "$executions" ]; then
+            cmd_args+=("--executions" "$executions")
+          fi
+          
+          if [ "$detailed" = "true" ]; then
+            cmd_args+=("--detailed")
+          fi
+          
+          # Always save results
+          cmd_args+=("--save")
+          
+          echo "🚀 Running benchmarks: npm run benchmark ${cmd_args[*]}"
+          
+          # Run benchmarks with retry logic
+          max_retries=2
+          retry=0
+          
+          while [ $retry -le $max_retries ]; do
+            if [ $retry -gt 0 ]; then
+              echo "⏳ Retry attempt $retry/$max_retries..."
+              sleep 10
+            fi
+            
+            if npm run benchmark -- "${cmd_args[@]}"; then
+              echo "✅ Benchmarks completed successfully!"
+              break
+            else
+              exit_code=$?
+              echo "❌ Benchmarks failed with exit code $exit_code"
+              
+              if [ $retry -eq $max_retries ]; then
+                echo "💥 All retry attempts exhausted"
+                exit $exit_code
+              fi
+              
+              retry=$((retry + 1))
+              
+              # Clean up any hanging processes before retry
+              pkill -f "chrome" || true
+              pkill -f "chromium" || true
+              sleep 5
+            fi
+          done
+        timeout-minutes: 45
+
+      - name: 📊 Generate Benchmark Summary
+        if: always()
+        run: |
+          echo "## 📊 Benchmark Results Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          if [ -d "benchmark-results" ]; then
+            result_count=$(find benchmark-results -name "*.json" -type f | wc -l)
+            latest_dir=$(find benchmark-results -mindepth 1 -maxdepth 1 -type d | sort -r | head -1)
+            
+            echo "- **Results Generated**: $result_count files" >> $GITHUB_STEP_SUMMARY
+            echo "- **Run Date**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+            echo "- **Artifacts**: Available for download below" >> $GITHUB_STEP_SUMMARY
+            
+            if [ -n "$latest_dir" ]; then
+              echo "- **Latest Results**: $(basename "$latest_dir")" >> $GITHUB_STEP_SUMMARY
+            fi
+          else
+            echo "⚠️ No benchmark results directory found" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 📤 Upload Benchmark Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: benchmark-results-${{ github.run_number }}
+          path: |
+            benchmark-results/
+            !benchmark-results/**/.gitkeep
+          retention-days: 30
+          compression-level: 6
+
+      - name: 📤 Upload Detailed Logs
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: benchmark-logs-${{ github.run_number }}
+          path: |
+            **/*.log
+            **/npm-debug.log*
+            **/yarn-debug.log*
+            **/yarn-error.log*
+          retention-days: 7
+          if-no-files-found: ignore
+
+      - name: 🧹 Cleanup
+        if: always()
+        run: |
+          echo "🧹 Cleaning up processes..."
+          pkill -f "npm.*start" || true
+          pkill -f "chrome" || true
+          pkill -f "chromium" || true
+          echo "✅ Cleanup complete"

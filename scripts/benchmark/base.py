@@ -263,25 +263,47 @@ class BenchmarkRunner(ABC):
         variance = sum((x - mean) ** 2 for x in values) / (len(values) - 1)
         return variance ** 0.5
     
-    def save_results(self, results: Optional[List[BenchmarkResult]] = None) -> Path:
-        """Save benchmark results to file."""
+    def save_results(self, results: Optional[List[BenchmarkResult]] = None, run_id: Optional[str] = None) -> Path:
+        """Save benchmark results to file with enhanced metadata for programmatic access."""
         if results is None:
             results = self.results
         
-        # Create output directory
+        # Create output directory with date-based organization
         project_root = Path(__file__).parent.parent.parent
-        output_dir = project_root / self.output_config.get("directory", "benchmark-results")
-        output_dir.mkdir(exist_ok=True)
+        base_output_dir = project_root / self.output_config.get("directory", "benchmark-results")
+        
+        # Create date-based subdirectory for better organization
+        date_str = datetime.now().strftime("%Y-%m-%d")
+        output_dir = base_output_dir / date_str
+        output_dir.mkdir(parents=True, exist_ok=True)
         
         # Generate filename with timestamp
         timestamp_str = datetime.now().strftime("%Y%m%d_%H%M%S")
         filename = f"{self.benchmark_name.lower().replace(' ', '_')}_{timestamp_str}.json"
         output_path = output_dir / filename
         
-        # Save results
+        # Extract framework list and success/failure counts for metadata
+        frameworks_tested = [r.framework for r in results]
+        successful_frameworks = [r.framework for r in results if r.success]
+        failed_frameworks = [r.framework for r in results if not r.success]
+        
+        # Enhanced output data with metadata for programmatic access
         output_data = {
             "benchmark_type": self.benchmark_name,
+            "benchmark_slug": self.benchmark_name.lower().replace(' ', '_'),
             "timestamp": datetime.now().isoformat(),
+            "date": date_str,
+            "run_id": run_id or f"run_{timestamp_str}",
+            "metadata": {
+                "frameworks_tested": frameworks_tested,
+                "frameworks_count": len(frameworks_tested),
+                "successful_count": len(successful_frameworks),
+                "failed_count": len(failed_frameworks),
+                "successful_frameworks": successful_frameworks,
+                "failed_frameworks": failed_frameworks,
+                "execution_time_iso": datetime.now().isoformat(),
+                "file_path": str(output_path.relative_to(project_root))
+            },
             "config": self.benchmark_config.get(self.benchmark_name.lower(), {}),
             "results": [result.to_dict() for result in results]
         }
@@ -289,7 +311,87 @@ class BenchmarkRunner(ABC):
         with open(output_path, 'w') as f:
             json.dump(output_data, f, indent=2)
         
+        # Update index files for easy discovery
+        self._update_index_files(output_dir, base_output_dir, output_data, output_path)
+        
         return output_path
+    
+    def _update_index_files(self, date_dir: Path, base_dir: Path, run_data: Dict, result_file: Path):
+        """Update index files for easier programmatic discovery."""
+        
+        # Create daily index
+        daily_index_path = date_dir / "index.json"
+        daily_index = self._load_or_create_index(daily_index_path)
+        
+        # Add this benchmark to daily index
+        benchmark_entry = {
+            "benchmark_type": run_data["benchmark_slug"],
+            "timestamp": run_data["timestamp"],
+            "run_id": run_data["run_id"],
+            "frameworks_count": run_data["metadata"]["frameworks_count"],
+            "successful_count": run_data["metadata"]["successful_count"],
+            "failed_count": run_data["metadata"]["failed_count"],
+            "file": result_file.name
+        }
+        
+        # Update daily index
+        if "benchmarks" not in daily_index:
+            daily_index["benchmarks"] = []
+        
+        # Remove existing entry for this benchmark type (if re-run)
+        daily_index["benchmarks"] = [b for b in daily_index["benchmarks"] 
+                                    if b["benchmark_type"] != run_data["benchmark_slug"]]
+        daily_index["benchmarks"].append(benchmark_entry)
+        daily_index["last_updated"] = run_data["timestamp"]
+        daily_index["date"] = run_data["date"]
+        
+        with open(daily_index_path, 'w') as f:
+            json.dump(daily_index, f, indent=2)
+        
+        # Create/update global index
+        global_index_path = base_dir / "index.json"
+        global_index = self._load_or_create_index(global_index_path)
+        
+        # Track available dates and benchmark types
+        if "available_dates" not in global_index:
+            global_index["available_dates"] = []
+        if "available_benchmark_types" not in global_index:
+            global_index["available_benchmark_types"] = []
+        
+        if run_data["date"] not in global_index["available_dates"]:
+            global_index["available_dates"].append(run_data["date"])
+            global_index["available_dates"].sort(reverse=True)  # Most recent first
+        
+        if run_data["benchmark_slug"] not in global_index["available_benchmark_types"]:
+            global_index["available_benchmark_types"].append(run_data["benchmark_slug"])
+            global_index["available_benchmark_types"].sort()
+        
+        # Update latest results tracking
+        if "latest_results" not in global_index:
+            global_index["latest_results"] = {}
+        
+        global_index["latest_results"][run_data["benchmark_slug"]] = {
+            "date": run_data["date"],
+            "timestamp": run_data["timestamp"],
+            "file": str(result_file.relative_to(base_dir)),
+            "frameworks_count": run_data["metadata"]["frameworks_count"],
+            "successful_count": run_data["metadata"]["successful_count"]
+        }
+        
+        global_index["last_updated"] = run_data["timestamp"]
+        
+        with open(global_index_path, 'w') as f:
+            json.dump(global_index, f, indent=2)
+    
+    def _load_or_create_index(self, index_path: Path) -> Dict:
+        """Load existing index or create new one."""
+        if index_path.exists():
+            try:
+                with open(index_path, 'r') as f:
+                    return json.load(f)
+            except (json.JSONDecodeError, IOError):
+                pass
+        return {}
     
     def display_summary(self, results: Optional[List[BenchmarkResult]] = None):
         """Display a summary of benchmark results."""
