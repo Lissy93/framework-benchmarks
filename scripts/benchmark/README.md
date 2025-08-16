@@ -24,6 +24,14 @@ Source code complexity and maintainability analysis measuring:
 - **Halstead Metrics** - Operator/operand analysis and program volume
 - **Maintainability Index** - Microsoft's maintainability formula (0-100 scale)
 
+### ⏱️ Build Time
+Build performance and output size measurement:
+- **Build Duration** - Time to execute framework build command (clean builds only)
+- **Output Size** - Total size of generated build artifacts
+- **Build Status** - Success/failure with error details
+- **Build Restoration** - Preserves existing build output (non-destructive)
+- **Cache Cleaning** - Automatically cleans build caches for accurate measurements
+
 ### 🔍 Resource Usage
 System resource monitoring with browser-level and OS-level metrics:
 - **Memory Usage** - System memory consumption and browser heap analysis
@@ -58,6 +66,9 @@ npm run benchmark bundle-size
 # Run source code analysis
 npm run benchmark source-analysis
 
+# Run build time measurement
+npm run benchmark build-time
+
 # Run system resource monitoring
 npm run benchmark resource-usage
 
@@ -65,10 +76,10 @@ npm run benchmark resource-usage
 npm run benchmark all
 
 # Run specific benchmark types only (excluding resource-usage)
-npm run benchmark all -- --type lighthouse,bundle-size,source-analysis
+npm run benchmark all -- --type lighthouse,bundle-size,source-analysis,build-time
 
-# Run only Lighthouse and Bundle Size
-npm run benchmark all -- --type lighthouse,bundle-size
+# Run only Build Time and Bundle Size
+npm run benchmark all -- --type build-time,bundle-size
 
 # Combine options for comprehensive testing
 npm run benchmark lighthouse -- -f react,vue -e 3 --detailed
@@ -86,6 +97,7 @@ npm run benchmark server-check
 - `npm run benchmark lighthouse` - Run Lighthouse audits
 - `npm run benchmark bundle-size` - Analyze bundle sizes
 - `npm run benchmark source-analysis` - Analyze source code complexity
+- `npm run benchmark build-time` - Measure build time and output size
 - `npm run benchmark resource-usage` - Monitor system resource usage
 
 ### Command Options
@@ -95,22 +107,24 @@ npm run benchmark server-check
 - `-d, --detailed` - Show detailed results with individual scores and metrics
 - `-s, --save` - Save results to file (enabled by default)
 - `-e, --executions` - Number of runs per framework for averaging (default: 1)
-- `-t, --type` - Benchmark types to run for `all` command (comma-separated: `lighthouse,bundle-size,source-analysis,resource-usage`)
+- `-t, --type` - Benchmark types to run for `all` command (comma-separated: `lighthouse,bundle-size,source-analysis,build-time,resource-usage`)
 
 **Selective Benchmark Types Feature:**
 - Use `--type` with the `all` command to run only specific benchmark types
-- Comma-separated values: `lighthouse,bundle-size,source-analysis,resource-usage`
+- Comma-separated values: `lighthouse,bundle-size,source-analysis,build-time,resource-usage`
 - Useful for excluding resource-usage on lightweight apps where resource differences are minimal
 - Examples:
-  - `--type lighthouse,bundle-size` - Performance and size analysis only
-  - `--type lighthouse,bundle-size,source-analysis` - All except resource monitoring
+  - `--type lighthouse,bundle-size,build-time` - Performance, size, and build analysis
+  - `--type build-time,bundle-size` - Build performance and output size only
+  - `--type lighthouse,bundle-size,source-analysis` - All except build time and resource monitoring
 
 **Multiple Executions Feature:**
 - Runs each benchmark multiple times and averages results
 - Provides statistical analysis (min, max, standard deviation)
 - Clears browser cache between runs for accuracy
 - Shows execution progress with completion indicators
-- **Note**: Bundle size, source analysis, and resource usage run only once (always produce same results)
+- **Note**: Bundle size and source analysis run only once (always produce same results)
+- **Build time benefits from multiple executions** for measuring build consistency and cache effects
 
 ## Prerequisites
 
@@ -127,6 +141,15 @@ Source code analysis requires:
 - **Source code** - Analyzes files in framework `src/` directories
 - **No build required** - Works directly with source files
 - **No server required** - Works offline with source files
+
+### For Build Time Measurement
+Build time analysis requires:
+- **Node.js dependencies** - `npm install` must be run for frameworks with `hasNodeModules: true`
+- **Framework directories** - Individual framework folders in `apps/` directory
+- **Build commands** - Uses `buildCommand` from `frameworks.json`
+- **No server required** - Works offline with source and dependencies
+- **Non-destructive** - Automatically backs up and restores existing build output
+- **Clean builds only** - Always cleans caches and build output for accurate measurements
 
 ### For Resource Usage Monitoring
 Resource monitoring requires:
@@ -265,6 +288,13 @@ Example statistics in saved JSON:
 - Check that `src/` directories contain source files
 - Verify source files have supported extensions (.js, .jsx, .ts, .tsx, .vue, .svelte, etc.)
 
+### Build time measurement fails
+- Ensure Node.js dependencies are installed: `npm install` in each framework directory
+- Check that framework directories exist in `apps/` folder
+- Verify build commands are correct in `frameworks.json`
+- For build timeout errors: increase timeout (currently 5 minutes) or optimize build process
+- Check disk space if backup/restore operations fail
+
 ### Resource monitoring fails
 - Ensure server is running: `npm start` and verify with `npm run benchmark server-check`
 - Install Python dependencies: `pip install psutil websockets requests`
@@ -334,11 +364,12 @@ The benchmarking system uses:
 - **Lighthouse implementation** (`lighthouse.py`) - Google Lighthouse integration
 - **Bundle size implementation** (`bundle_size.py`) - Bundle analysis with gzip compression
 - **Source analysis implementation** (`source_analysis.py`) - Code complexity and maintainability analysis
+- **Build time implementation** (`build_time.py`) - Build performance measurement with backup/restore
 - **Resource monitoring implementation** (`resource_monitor.py`) - System resource monitoring with dual approach:
   - **System-level monitoring** - Process CPU/memory via psutil
   - **Browser-level monitoring** - Heap analysis via Chrome DevTools Protocol
 - **Main CLI** (`main.py`) - Command interface and orchestration
-- **Configuration** - Settings in `config.json` following project patterns
+- **Configuration** - Settings in `config.json` and `frameworks.json`
 
 ## Adding New Benchmarks
 

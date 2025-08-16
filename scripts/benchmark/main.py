@@ -75,7 +75,7 @@ def run_with_progress(runner, frameworks_str, executions, detailed, save):
     framework_list = [f.strip() for f in frameworks_str.split(',')] if frameworks_str else [fw["id"] for fw in runner.frameworks]
     
     # Bundle size and source analysis don't need multiple executions (always same result)
-    # Resource usage can benefit from multiple executions for averaging
+    # Build time, lighthouse, and resource usage can benefit from multiple executions for averaging
     actual_executions = 1 if runner.benchmark_name in ["Bundle Size", "Source Analysis"] else executions
     
     # All benchmarks use 1 step per framework for simple progress
@@ -239,6 +239,27 @@ def source_analysis(frameworks: str, detailed: bool, save: bool):
 @click.option('--detailed', '-d', is_flag=True, help='Show detailed results')
 @click.option('--save', '-s', is_flag=True, default=True, help='Save results to file')
 @click.option('--executions', '-e', default=1, type=int, help='Number of times to run each benchmark (for averaging)')
+def build_time(frameworks: str, detailed: bool, save: bool, executions: int):
+    """Measure build time and output size for frameworks."""
+    from build_time import BuildTimeRunner
+    
+    results = run_with_progress(BuildTimeRunner(clean_build=True), frameworks, executions, detailed, save)
+    if not results:
+        return
+    
+    # Show final summary
+    successful, failed = [r for r in results if r.success], [r for r in results if not r.success]
+    if failed:
+        show_error(f"{len(failed)} frameworks failed build time measurement")
+    else:
+        show_success(f"Build time measurement completed for {len(successful)} frameworks")
+
+
+@cli.command()
+@click.option('--frameworks', '-f', help='Comma-separated list of frameworks to benchmark')
+@click.option('--detailed', '-d', is_flag=True, help='Show detailed results')
+@click.option('--save', '-s', is_flag=True, default=True, help='Save results to file')
+@click.option('--executions', '-e', default=1, type=int, help='Number of times to run each benchmark (for averaging)')
 def resource_usage(frameworks: str, detailed: bool, save: bool, executions: int):
     """Monitor system resource usage (memory, CPU, browser metrics)."""
     from resource_monitor import ResourceUsageRunner
@@ -256,7 +277,7 @@ def resource_usage(frameworks: str, detailed: bool, save: bool, executions: int)
 
 
 @cli.command()
-@click.option('--type', '-t', help='Benchmark types to run (comma-separated: lighthouse,bundle-size,source-analysis,resource-usage)')
+@click.option('--type', '-t', help='Benchmark types to run (comma-separated: lighthouse,bundle-size,source-analysis,build-time,resource-usage)')
 @click.option('--frameworks', '-f', help='Comma-separated list of frameworks to benchmark')
 @click.option('--detailed', '-d', is_flag=True, help='Show detailed results')
 @click.option('--save', '-s', is_flag=True, default=True, help='Save results to file')
@@ -266,10 +287,11 @@ def all(type: str, frameworks: str, detailed: bool, save: bool, executions: int)
     from lighthouse import LighthouseRunner
     from bundle_size import BundleSizeRunner
     from source_analysis import SourceAnalysisRunner
+    from build_time import BuildTimeRunner
     from resource_monitor import ResourceUsageRunner
     
     # Parse and validate benchmark types
-    available_types = ['lighthouse', 'bundle-size', 'source-analysis', 'resource-usage']
+    available_types = ['lighthouse', 'bundle-size', 'source-analysis', 'build-time', 'resource-usage']
     
     if type:
         # Parse comma-separated types and validate
@@ -294,6 +316,8 @@ def all(type: str, frameworks: str, detailed: bool, save: bool, executions: int)
             results = run_with_progress(BundleSizeRunner(), frameworks, 1, detailed, save)
         elif benchmark_type == 'source-analysis':
             results = run_with_progress(SourceAnalysisRunner(), frameworks, 1, detailed, save)
+        elif benchmark_type == 'build-time':
+            results = run_with_progress(BuildTimeRunner(), frameworks, executions, detailed, save)
         elif benchmark_type == 'resource-usage':
             results = run_with_progress(ResourceUsageRunner(), frameworks, 1, detailed, save)
         else:
@@ -331,6 +355,10 @@ def list():
     console.print("    Measures: Code complexity, maintainability, lines of code")
     console.print("    Metrics: Cyclomatic complexity, Halstead metrics, maintainability index")
     console.print()
+    console.print("  • [bold]build-time[/bold] - Build time and output size measurement")
+    console.print("    Measures: Build execution time, output bundle size")
+    console.print("    Metrics: Build duration, output size, build status")
+    console.print()
     console.print("  • [bold]resource-usage[/bold] - System resource monitoring")
     console.print("    Measures: Memory usage, CPU utilization, browser heap metrics")
     console.print("    Metrics: Memory efficiency, CPU peaks, interaction resource deltas")
@@ -339,9 +367,12 @@ def list():
     console.print("  python benchmark/main.py lighthouse")
     console.print("  python benchmark/main.py bundle-size")
     console.print("  python benchmark/main.py source-analysis")
+    console.print("  python benchmark/main.py build-time")
     console.print("  python benchmark/main.py resource-usage")
     console.print("  python benchmark/main.py all")
+    console.print("  python benchmark/main.py all --type lighthouse,bundle-size,build-time")
     console.print("  python benchmark/main.py lighthouse -f react,vue,svelte")
+    console.print("  python benchmark/main.py build-time -e 3 -f react,vue")
     console.print("  python benchmark/main.py all --detailed")
 
 
