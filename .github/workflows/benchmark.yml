@@ -30,7 +30,7 @@ on:
         type: string
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: '20'
   PYTHON_VERSION: '3.11'
 
 jobs:
@@ -99,6 +99,9 @@ jobs:
         run: |
           echo "Installing root dependencies..."
           npm ci
+          
+          echo "Installing Python dependencies..."
+          pip install -r scripts/requirements.txt
           
           echo "Setting up project with npm run setup..."
           npm run setup
