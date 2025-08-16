@@ -32,6 +32,13 @@ Build performance and output size measurement:
 - **Build Restoration** - Preserves existing build output (non-destructive)
 - **Cache Cleaning** - Automatically cleans build caches for accurate measurements
 
+### 🚀 Dev Server
+Development server performance and hot module reload speed:
+- **Startup Time** - Time from command execution to server ready
+- **HMR Speed** - Hot module reload response time after file changes
+- **Port Detection** - Automatic port extraction from dev commands
+- **Process Management** - Automatic cleanup of dev server processes
+
 ### 🔍 Resource Usage
 System resource monitoring with browser-level and OS-level metrics:
 - **Memory Usage** - System memory consumption and browser heap analysis
@@ -69,6 +76,9 @@ npm run benchmark source-analysis
 # Run build time measurement
 npm run benchmark build-time
 
+# Run dev server performance measurement
+npm run benchmark dev-server
+
 # Run system resource monitoring
 npm run benchmark resource-usage
 
@@ -76,10 +86,10 @@ npm run benchmark resource-usage
 npm run benchmark all
 
 # Run specific benchmark types only (excluding resource-usage)
-npm run benchmark all -- --type lighthouse,bundle-size,source-analysis,build-time
+npm run benchmark all -- --type lighthouse,bundle-size,source-analysis,build-time,dev-server
 
-# Run only Build Time and Bundle Size
-npm run benchmark all -- --type build-time,bundle-size
+# Run developer experience benchmarks
+npm run benchmark all -- --type dev-server,build-time
 
 # Combine options for comprehensive testing
 npm run benchmark lighthouse -- -f react,vue -e 3 --detailed
@@ -98,6 +108,7 @@ npm run benchmark server-check
 - `npm run benchmark bundle-size` - Analyze bundle sizes
 - `npm run benchmark source-analysis` - Analyze source code complexity
 - `npm run benchmark build-time` - Measure build time and output size
+- `npm run benchmark dev-server` - Measure dev server startup and HMR speed
 - `npm run benchmark resource-usage` - Monitor system resource usage
 
 ### Command Options
@@ -107,16 +118,16 @@ npm run benchmark server-check
 - `-d, --detailed` - Show detailed results with individual scores and metrics
 - `-s, --save` - Save results to file (enabled by default)
 - `-e, --executions` - Number of runs per framework for averaging (default: 1)
-- `-t, --type` - Benchmark types to run for `all` command (comma-separated: `lighthouse,bundle-size,source-analysis,build-time,resource-usage`)
+- `-t, --type` - Benchmark types to run for `all` command (comma-separated: `lighthouse,bundle-size,source-analysis,build-time,dev-server,resource-usage`)
 
 **Selective Benchmark Types Feature:**
 - Use `--type` with the `all` command to run only specific benchmark types
-- Comma-separated values: `lighthouse,bundle-size,source-analysis,build-time,resource-usage`
+- Comma-separated values: `lighthouse,bundle-size,source-analysis,build-time,dev-server,resource-usage`
 - Useful for excluding resource-usage on lightweight apps where resource differences are minimal
 - Examples:
   - `--type lighthouse,bundle-size,build-time` - Performance, size, and build analysis
-  - `--type build-time,bundle-size` - Build performance and output size only
-  - `--type lighthouse,bundle-size,source-analysis` - All except build time and resource monitoring
+  - `--type dev-server,build-time` - Developer experience benchmarks
+  - `--type lighthouse,bundle-size,source-analysis` - Core performance analysis
 
 **Multiple Executions Feature:**
 - Runs each benchmark multiple times and averages results
@@ -124,7 +135,7 @@ npm run benchmark server-check
 - Clears browser cache between runs for accuracy
 - Shows execution progress with completion indicators
 - **Note**: Bundle size and source analysis run only once (always produce same results)
-- **Build time benefits from multiple executions** for measuring build consistency and cache effects
+- **Build time and dev server benefit from multiple executions** for measuring consistency
 
 ## Prerequisites
 
@@ -150,6 +161,15 @@ Build time analysis requires:
 - **No server required** - Works offline with source and dependencies
 - **Non-destructive** - Automatically backs up and restores existing build output
 - **Clean builds only** - Always cleans caches and build output for accurate measurements
+
+### For Dev Server Measurement
+Dev server analysis requires:
+- **Node.js dependencies** - `npm install` must be run for frameworks with dev servers
+- **Framework directories** - Individual framework folders in `apps/` directory
+- **Dev commands** - Uses `devCommand` from `frameworks.json`
+- **Available ports** - Framework-specific ports must be available
+- **Source files** - Source code files for HMR testing
+- **Process cleanup** - Automatic termination of dev server processes
 
 ### For Resource Usage Monitoring
 Resource monitoring requires:
@@ -295,6 +315,13 @@ Example statistics in saved JSON:
 - For build timeout errors: increase timeout (currently 5 minutes) or optimize build process
 - Check disk space if backup/restore operations fail
 
+### Dev server measurement fails
+- Ensure Node.js dependencies are installed: `npm install` in each framework directory
+- Check that dev server ports are available (not in use by other processes)
+- Verify dev commands are correct in `frameworks.json`
+- For startup timeout errors: check framework-specific setup requirements
+- Ensure source files exist for HMR testing
+
 ### Resource monitoring fails
 - Ensure server is running: `npm start` and verify with `npm run benchmark server-check`
 - Install Python dependencies: `pip install psutil websockets requests`
@@ -365,6 +392,7 @@ The benchmarking system uses:
 - **Bundle size implementation** (`bundle_size.py`) - Bundle analysis with gzip compression
 - **Source analysis implementation** (`source_analysis.py`) - Code complexity and maintainability analysis
 - **Build time implementation** (`build_time.py`) - Build performance measurement with backup/restore
+- **Dev server implementation** (`dev_server.py`) - Development server startup and HMR speed measurement
 - **Resource monitoring implementation** (`resource_monitor.py`) - System resource monitoring with dual approach:
   - **System-level monitoring** - Process CPU/memory via psutil
   - **Browser-level monitoring** - Heap analysis via Chrome DevTools Protocol

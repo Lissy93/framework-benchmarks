@@ -260,6 +260,27 @@ def build_time(frameworks: str, detailed: bool, save: bool, executions: int):
 @click.option('--detailed', '-d', is_flag=True, help='Show detailed results')
 @click.option('--save', '-s', is_flag=True, default=True, help='Save results to file')
 @click.option('--executions', '-e', default=1, type=int, help='Number of times to run each benchmark (for averaging)')
+def dev_server(frameworks: str, detailed: bool, save: bool, executions: int):
+    """Measure dev server startup time and HMR speed."""
+    from dev_server import DevServerRunner
+    
+    results = run_with_progress(DevServerRunner(), frameworks, executions, detailed, save)
+    if not results:
+        return
+    
+    # Show final summary
+    successful, failed = [r for r in results if r.success], [r for r in results if not r.success]
+    if failed:
+        show_error(f"{len(failed)} frameworks failed dev server measurement")
+    else:
+        show_success(f"Dev server measurement completed for {len(successful)} frameworks")
+
+
+@cli.command()
+@click.option('--frameworks', '-f', help='Comma-separated list of frameworks to benchmark')
+@click.option('--detailed', '-d', is_flag=True, help='Show detailed results')
+@click.option('--save', '-s', is_flag=True, default=True, help='Save results to file')
+@click.option('--executions', '-e', default=1, type=int, help='Number of times to run each benchmark (for averaging)')
 def resource_usage(frameworks: str, detailed: bool, save: bool, executions: int):
     """Monitor system resource usage (memory, CPU, browser metrics)."""
     from resource_monitor import ResourceUsageRunner
@@ -277,7 +298,7 @@ def resource_usage(frameworks: str, detailed: bool, save: bool, executions: int)
 
 
 @cli.command()
-@click.option('--type', '-t', help='Benchmark types to run (comma-separated: lighthouse,bundle-size,source-analysis,build-time,resource-usage)')
+@click.option('--type', '-t', help='Benchmark types to run (comma-separated: lighthouse,bundle-size,source-analysis,build-time,dev-server,resource-usage)')
 @click.option('--frameworks', '-f', help='Comma-separated list of frameworks to benchmark')
 @click.option('--detailed', '-d', is_flag=True, help='Show detailed results')
 @click.option('--save', '-s', is_flag=True, default=True, help='Save results to file')
@@ -288,10 +309,11 @@ def all(type: str, frameworks: str, detailed: bool, save: bool, executions: int)
     from bundle_size import BundleSizeRunner
     from source_analysis import SourceAnalysisRunner
     from build_time import BuildTimeRunner
+    from dev_server import DevServerRunner
     from resource_monitor import ResourceUsageRunner
     
     # Parse and validate benchmark types
-    available_types = ['lighthouse', 'bundle-size', 'source-analysis', 'build-time', 'resource-usage']
+    available_types = ['lighthouse', 'bundle-size', 'source-analysis', 'build-time', 'dev-server', 'resource-usage']
     
     if type:
         # Parse comma-separated types and validate
@@ -318,6 +340,8 @@ def all(type: str, frameworks: str, detailed: bool, save: bool, executions: int)
             results = run_with_progress(SourceAnalysisRunner(), frameworks, 1, detailed, save)
         elif benchmark_type == 'build-time':
             results = run_with_progress(BuildTimeRunner(), frameworks, executions, detailed, save)
+        elif benchmark_type == 'dev-server':
+            results = run_with_progress(DevServerRunner(), frameworks, executions, detailed, save)
         elif benchmark_type == 'resource-usage':
             results = run_with_progress(ResourceUsageRunner(), frameworks, 1, detailed, save)
         else:
@@ -359,6 +383,10 @@ def list():
     console.print("    Measures: Build execution time, output bundle size")
     console.print("    Metrics: Build duration, output size, build status")
     console.print()
+    console.print("  • [bold]dev-server[/bold] - Dev server startup and HMR speed measurement")
+    console.print("    Measures: Dev server startup time, hot module reload speed")
+    console.print("    Metrics: Startup duration, HMR response time")
+    console.print()
     console.print("  • [bold]resource-usage[/bold] - System resource monitoring")
     console.print("    Measures: Memory usage, CPU utilization, browser heap metrics")
     console.print("    Metrics: Memory efficiency, CPU peaks, interaction resource deltas")
@@ -368,11 +396,13 @@ def list():
     console.print("  python benchmark/main.py bundle-size")
     console.print("  python benchmark/main.py source-analysis")
     console.print("  python benchmark/main.py build-time")
+    console.print("  python benchmark/main.py dev-server")
     console.print("  python benchmark/main.py resource-usage")
     console.print("  python benchmark/main.py all")
     console.print("  python benchmark/main.py all --type lighthouse,bundle-size,build-time")
+    console.print("  python benchmark/main.py all --type dev-server,build-time")
     console.print("  python benchmark/main.py lighthouse -f react,vue,svelte")
-    console.print("  python benchmark/main.py build-time -e 3 -f react,vue")
+    console.print("  python benchmark/main.py dev-server -e 3 -f react,vue")
     console.print("  python benchmark/main.py all --detailed")
 
 
