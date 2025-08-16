@@ -17,6 +17,13 @@ JavaScript and CSS bundle analysis measuring:
 - **Compression** - Gzip compression ratios
 - **Framework Overhead** - Pure framework code (excludes shared assets)
 
+### 📊 Source Analysis
+Source code complexity and maintainability analysis measuring:
+- **Lines of Code** - Physical and logical source lines
+- **Cyclomatic Complexity** - Code path complexity and decision points
+- **Halstead Metrics** - Operator/operand analysis and program volume
+- **Maintainability Index** - Microsoft's maintainability formula (0-100 scale)
+
 ## Usage
 
 ### Quick Start
@@ -39,6 +46,9 @@ npm run benchmark lighthouse -- --executions 5
 # Run bundle size analysis
 npm run benchmark bundle-size
 
+# Run source code analysis
+npm run benchmark source-analysis
+
 # Run all benchmarks
 npm run benchmark all
 
@@ -56,6 +66,7 @@ npm run benchmark server-check
 - `npm run benchmark all` - Run all benchmarks
 - `npm run benchmark lighthouse` - Run Lighthouse audits
 - `npm run benchmark bundle-size` - Analyze bundle sizes
+- `npm run benchmark source-analysis` - Analyze source code complexity
 
 ### Command Options
 
@@ -70,7 +81,7 @@ npm run benchmark server-check
 - Provides statistical analysis (min, max, standard deviation)
 - Clears browser cache between runs for accuracy
 - Shows execution progress with completion indicators
-- **Note**: Bundle size analysis runs only once (always produces same results)
+- **Note**: Bundle size and source analysis run only once (always produce same results)
 
 ## Prerequisites
 
@@ -81,6 +92,12 @@ The Lighthouse benchmarking system automatically detects and launches Chrome acr
 Bundle size analysis requires:
 - **Built frameworks** - Run `npm run build:framework` first
 - **No server required** - Works offline with built assets
+
+### For Source Analysis
+Source code analysis requires:
+- **Source code** - Analyzes files in framework `src/` directories
+- **No build required** - Works directly with source files
+- **No server required** - Works offline with source files
 
 ### Automatic Chrome Management (Lighthouse Only)
 The system will automatically:
@@ -207,12 +224,18 @@ Example statistics in saved JSON:
 - Check that `dist/` or `build/` directories exist in framework folders
 - Verify build output contains JavaScript/CSS files
 
+### Source analysis fails
+- Ensure framework directories exist in `apps/` folder
+- Check that `src/` directories contain source files
+- Verify source files have supported extensions (.js, .jsx, .ts, .tsx, .vue, .svelte, etc.)
+
 ## Architecture
 
 The benchmarking system uses:
 - **Base classes** (`base.py`) - Extensible framework for new benchmark types
 - **Lighthouse implementation** (`lighthouse.py`) - Google Lighthouse integration
 - **Bundle size implementation** (`bundle_size.py`) - Bundle analysis with gzip compression
+- **Source analysis implementation** (`source_analysis.py`) - Code complexity and maintainability analysis
 - **Main CLI** (`main.py`) - Command interface and orchestration
 - **Configuration** - Settings in `config.json` following project patterns
 

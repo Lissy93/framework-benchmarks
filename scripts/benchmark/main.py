@@ -41,8 +41,8 @@ def run_with_progress(runner, frameworks_str, executions, detailed, save):
     # Parse frameworks
     framework_list = [f.strip() for f in frameworks_str.split(',')] if frameworks_str else [fw["id"] for fw in runner.frameworks]
     
-    # Bundle size doesn't need multiple executions (always same result)
-    actual_executions = 1 if runner.benchmark_name == "Bundle Size" else executions
+    # Bundle size and source analysis don't need multiple executions (always same result)
+    actual_executions = 1 if runner.benchmark_name in ["Bundle Size", "Source Analysis"] else executions
     
     # Setup progress bar
     setup_progress_bar(len(framework_list) * actual_executions, "Benchmarking frameworks")
@@ -124,7 +124,27 @@ def bundle_size(frameworks: str, detailed: bool, save: bool):
 
 
 @cli.command()
-@click.option('--type', '-t', type=click.Choice(['lighthouse', 'bundle-size'], case_sensitive=False), 
+@click.option('--frameworks', '-f', help='Comma-separated list of frameworks to benchmark')
+@click.option('--detailed', '-d', is_flag=True, help='Show detailed results')
+@click.option('--save', '-s', is_flag=True, default=True, help='Save results to file')
+def source_analysis(frameworks: str, detailed: bool, save: bool):
+    """Analyze source code complexity and maintainability."""
+    from source_analysis import SourceAnalysisRunner
+    
+    results = run_with_progress(SourceAnalysisRunner(), frameworks, 1, detailed, save)
+    if not results:
+        return
+    
+    # Show final summary
+    successful, failed = [r for r in results if r.success], [r for r in results if not r.success]
+    if failed:
+        show_error(f"{len(failed)} frameworks failed source code analysis")
+    else:
+        show_success(f"Source code analysis completed for {len(successful)} frameworks")
+
+
+@cli.command()
+@click.option('--type', '-t', type=click.Choice(['lighthouse', 'bundle-size', 'source-analysis'], case_sensitive=False), 
               help='Benchmark type to run')
 @click.option('--frameworks', '-f', help='Comma-separated list of frameworks to benchmark')
 @click.option('--detailed', '-d', is_flag=True, help='Show detailed results')
@@ -134,8 +154,9 @@ def all(type: str, frameworks: str, detailed: bool, save: bool, executions: int)
     """Run all available benchmarks."""
     from lighthouse import LighthouseRunner
     from bundle_size import BundleSizeRunner
+    from source_analysis import SourceAnalysisRunner
     
-    benchmark_types = [type] if type else ['lighthouse', 'bundle-size']
+    benchmark_types = [type] if type else ['lighthouse', 'bundle-size', 'source-analysis']
     console.print(f"🚀 Running benchmarks: {', '.join(benchmark_types)}")
     
     all_results = {}
@@ -146,6 +167,8 @@ def all(type: str, frameworks: str, detailed: bool, save: bool, executions: int)
             results = run_with_progress(LighthouseRunner(), frameworks, executions, detailed, save)
         elif benchmark_type == 'bundle-size':
             results = run_with_progress(BundleSizeRunner(), frameworks, 1, detailed, save)
+        elif benchmark_type == 'source-analysis':
+            results = run_with_progress(SourceAnalysisRunner(), frameworks, 1, detailed, save)
         else:
             results = []
         
@@ -176,10 +199,15 @@ def list():
     console.print("  • [bold]bundle-size[/bold] - Bundle size analysis")
     console.print("    Measures: JavaScript/CSS file sizes, compression ratios")
     console.print("    Metrics: Total size, gzipped size, file counts")
+    console.print()
+    console.print("  • [bold]source-analysis[/bold] - Source code complexity analysis")
+    console.print("    Measures: Code complexity, maintainability, lines of code")
+    console.print("    Metrics: Cyclomatic complexity, Halstead metrics, maintainability index")
     
     console.print("\n💡 Usage examples:")
     console.print("  python benchmark/main.py lighthouse")
     console.print("  python benchmark/main.py bundle-size")
+    console.print("  python benchmark/main.py source-analysis")
     console.print("  python benchmark/main.py all")
     console.print("  python benchmark/main.py lighthouse -f react,vue,svelte")
     console.print("  python benchmark/main.py all --detailed")

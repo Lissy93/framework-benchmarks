@@ -36,7 +36,10 @@
 └────────────────────────┴────────────────────────────────────────────────────┘
 
 ┌─ Performance & Analysis ────────────────────────────────────────────────────┐
-
+│ npm run benchmark all          │ Run all benchmarks                         │
+│ npm run benchmark lighthouse   │ Google Lighthouse performance audits       │
+│ npm run benchmark bundle-size  │ Bundle size analysis with compression      │
+│ npm run benchmark source       │ Source code complexity & maintainability   │
 └─────────────────────────────────────────────────────────────────────────────┘
 
 
@@ -68,4 +71,11 @@
 │ ├── validate_schemas.py                   │ Validate JSON schemas         │
 │ ├── frameworks-schema.json                │ Schema for frameworks.json    │
 │ ╰── config-schema.json                    │ Schema for config.json        │
+├── benchmark/ - PERFORMANCE & ANALYSIS     │                               │
+│ ├── main.py                               │ Main benchmark CLI interface  │
+│ ├── lighthouse.py                         │ Google Lighthouse performance │
+│ ├── bundle_size.py                        │ Bundle size analysis          │
+│ ├── source_analysis.py                    │ Source code complexity        │
+│ ├── base.py                               │ Base benchmark runner class   │
+│ ╰── chrome_launcher.py                    │ Chrome browser management     │
 ╰───────────────────────────────────────────┴───────────────────────────────╯
