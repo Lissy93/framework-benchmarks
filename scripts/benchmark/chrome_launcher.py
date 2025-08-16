@@ -109,6 +109,15 @@ class ChromeLauncher:
             "--disable-extensions",
             "--no-first-run",
             "--disable-default-apps",
+            "--disable-background-timer-throttling",
+            "--disable-backgrounding-occluded-windows",
+            "--disable-renderer-backgrounding",
+            "--disable-features=TranslateUI",
+            "--disable-component-extensions-with-background-pages",
+            "--no-default-browser-check",
+            "--no-first-run",
+            "--disable-web-security",
+            "--allow-running-insecure-content",
             f"--remote-debugging-port={self.port}",
             f"--user-data-dir={self.user_data_dir}"
         ]
@@ -117,16 +126,21 @@ class ChromeLauncher:
             console.print(f"[dim]Launching Chrome: {chrome_path}[/dim]")
             self.process = subprocess.Popen(
                 chrome_args,
-                stdout=subprocess.DEVNULL,
-                stderr=subprocess.DEVNULL
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                preexec_fn=os.setsid if hasattr(os, 'setsid') else None
             )
             
-            # Wait for Chrome to start up
-            for _ in range(10):
-                time.sleep(0.5)
+            # Wait for Chrome to start up with better timing
+            for attempt in range(20):
+                time.sleep(0.3)
                 if self.is_remote_chrome_available():
                     console.print(f"[green]Chrome launched on port {self.port}[/green]")
                     return True
+                # Check if process died
+                if self.process.poll() is not None:
+                    console.print(f"[red]Chrome process died with exit code {self.process.returncode}[/red]")
+                    break
             
             console.print("[red]Chrome failed to start remote debugging[/red]")
             self.cleanup()

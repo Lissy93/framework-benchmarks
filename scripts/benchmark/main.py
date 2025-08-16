@@ -357,11 +357,15 @@ def all(type: str, frameworks: str, detailed: bool, save: bool, executions: int)
             console.print(f"{benchmark_type.replace('-', ' ').title()}: {len(successful)} passed, {len(failed)} failed")
     
     total_failed = sum(len([r for r in results if not r.success]) for results in all_results.values())
+    total_successful = sum(len([r for r in results if r.success]) for results in all_results.values())
+    
     if total_failed == 0:
-        show_success("All benchmarks completed successfully! 🎉")
+        show_success("✅ All benchmarks completed successfully!")
+    elif total_successful == 0:
+        show_error("❌ All benchmarks failed!")
+        sys.exit(1)
     else:
-        show_error(f"{total_failed} benchmark(s) failed")
-
+        console.print(f"⚠️ {total_failed} benchmark(s) failed, {total_successful} passed ok")
 
 @cli.command()
 def list():
