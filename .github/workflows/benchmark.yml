@@ -62,13 +62,12 @@ jobs:
           # Update package lists
           sudo apt-get update
           
-          # Install Chrome dependencies for Lighthouse
+          # Install Chrome dependencies for Lighthouse (with Ubuntu 24.04 compatibility)
           sudo apt-get install -y \
             wget \
             gnupg \
             ca-certificates \
             fonts-liberation \
-            libasound2 \
             libatk-bridge2.0-0 \
             libdrm2 \
             libgtk-3-0 \
@@ -80,6 +79,9 @@ jobs:
             xdg-utils \
             libgbm1 \
             libxss1
+          
+          # Install audio library (try both old and new package names)
+          sudo apt-get install -y libasound2t64 || sudo apt-get install -y libasound2
 
       - name: 🌐 Install Google Chrome
         uses: browser-actions/setup-chrome@v1
@@ -233,20 +235,25 @@ jobs:
         run: |
           echo "## 📊 Benchmark Results Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Run Date**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
           
-          if [ -d "benchmark-results" ]; then
+          # Check if benchmarks ran successfully
+          if [ -d "benchmark-results" ] && [ "$(find benchmark-results -name "*.json" -type f | wc -l)" -gt 0 ]; then
             result_count=$(find benchmark-results -name "*.json" -type f | wc -l)
             latest_dir=$(find benchmark-results -mindepth 1 -maxdepth 1 -type d | sort -r | head -1)
             
+            echo "- **Status**: ✅ Success" >> $GITHUB_STEP_SUMMARY
             echo "- **Results Generated**: $result_count files" >> $GITHUB_STEP_SUMMARY
-            echo "- **Run Date**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
             echo "- **Artifacts**: Available for download below" >> $GITHUB_STEP_SUMMARY
             
             if [ -n "$latest_dir" ]; then
               echo "- **Latest Results**: $(basename "$latest_dir")" >> $GITHUB_STEP_SUMMARY
             fi
           else
-            echo "⚠️ No benchmark results directory found" >> $GITHUB_STEP_SUMMARY
+            echo "- **Status**: ❌ Failed" >> $GITHUB_STEP_SUMMARY
+            echo "- **Reason**: Benchmarks did not complete successfully" >> $GITHUB_STEP_SUMMARY
+            echo "- **Check**: Review the workflow logs for error details" >> $GITHUB_STEP_SUMMARY
+            echo "- **Artifacts**: Debug logs may be available below (if any)" >> $GITHUB_STEP_SUMMARY
           fi
 
       - name: 📤 Upload Benchmark Results
