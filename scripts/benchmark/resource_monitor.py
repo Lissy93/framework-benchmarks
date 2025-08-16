@@ -5,6 +5,9 @@ import asyncio
 import json
 import psutil
 import requests
+import subprocess
+import shutil
+import tempfile
 import time
 import websockets
 from typing import Dict, List, Optional, Any
@@ -17,6 +20,18 @@ from rich.table import Table
 from base import BenchmarkRunner, BenchmarkResult
 
 console = Console()
+
+
+def _get_wsl_windows_host_ip() -> Optional[str]:
+    """Get Windows host IP from WSL for DevTools connection."""
+    try:
+        # nameserver in resolv.conf points at the Windows host (WSL2)
+        with open("/etc/resolv.conf") as f:
+            for line in f:
+                if line.startswith("nameserver"):
+                    return line.split()[1].strip()
+    except Exception:
+        return None
 
 
 @dataclass
@@ -66,48 +81,75 @@ class InteractionMetrics:
         }
 
 
+def launch_isolated_chrome(port=0, url="about:blank"):
+    """Launch an isolated Chrome instance with its own user data directory."""
+    chrome = shutil.which("google-chrome") or shutil.which("chromium-browser") or shutil.which("chromium")
+    if not chrome:
+        raise RuntimeError("Chrome/Chromium not found")
+
+    udir = tempfile.mkdtemp(prefix="chrome-fw-")
+    args = [
+        chrome, "--headless=new",
+        f"--remote-debugging-port={port or 0}",  # 0 lets Chrome pick a free port
+        f"--user-data-dir={udir}",
+        "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage",
+        "--disable-extensions", "--disable-plugins",
+        "--disable-background-timer-throttling",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-renderer-backgrounding",
+        "--window-size=1920,1080",
+        url
+    ]
+    proc = subprocess.Popen(args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    return proc, udir
+
+
 class SystemResourceMonitor:
     """Monitor system-level resource usage for browser processes."""
     
-    def __init__(self, browser_name: str = "chrome"):
+    def __init__(self, browser_name: str = "chrome", root_pid: Optional[int] = None):
         self.browser_name = browser_name.lower()
         self.baseline: Optional[ResourceSnapshot] = None
         self.monitoring = False
         self.samples: List[ResourceSnapshot] = []
+        self.root_pid = root_pid
         
-        # Browser process names by platform
+        # Browser process names by platform (expanded for WSL/Linux)
         self.browser_processes = {
-            'chrome': ['chrome', 'chromium', 'chrome.exe', 'Google Chrome'],
+            'chrome': ['chrome', 'chromium', 'chrome.exe', 'Google Chrome', 
+                      'google-chrome', 'google-chrome-stable', 'chromium-browser'],
             'firefox': ['firefox', 'firefox.exe'],
             'edge': ['msedge', 'msedge.exe'],
             'safari': ['safari', 'Safari']
         }
     
+    def _descendant_procs(self) -> List[psutil.Process]:
+        """Get descendant processes from root PID or all browser processes."""
+        if not self.root_pid:
+            return self.find_browser_processes()
+        try:
+            root = psutil.Process(self.root_pid)
+            return [root] + root.children(recursive=True)
+        except psutil.Error:
+            return []
+    
     def find_browser_processes(self) -> List[psutil.Process]:
-        """Find all browser-related processes."""
+        """Find all browser-related processes (improved detection)."""
         process_names = self.browser_processes.get(self.browser_name, [self.browser_name])
         processes = []
         
         try:
-            all_procs = []
-            for proc in psutil.process_iter(['pid', 'name', 'create_time']):
-                proc_name = proc.info['name'].lower()
-                all_procs.append(proc_name)
-                if any(name.lower() in proc_name for name in process_names):
+            for proc in psutil.process_iter(['pid', 'name', 'cmdline', 'create_time']):
+                # Check both process name and command line
+                proc_name = (proc.info.get('name') or '').lower()
+                cmdline = ' '.join(proc.info.get('cmdline') or []).lower()
+                
+                # Match against both name and command line for better detection
+                name_match = any(name.lower() in proc_name for name in process_names)
+                cmdline_match = any(name.lower() in cmdline for name in process_names)
+                
+                if name_match or cmdline_match:
                     processes.append(psutil.Process(proc.info['pid']))
-            
-            # Debug: show what processes we're looking for and what we found (only when debugging)
-            debug_mode = False  # Set to True for debugging
-            if debug_mode:
-                if len(processes) == 0:
-                    console.print(f"[dim red]Looking for {process_names} but found 0 processes[/dim red]")
-                    # Show some example processes to help debug
-                    chrome_like = [p for p in all_procs if 'chrome' in p or 'browser' in p or 'firefox' in p][:5]
-                    if chrome_like:
-                        console.print(f"[dim red]Found browser-like processes: {chrome_like}[/dim red]")
-                else:
-                    process_list = [p.name() for p in processes[:3]]  # Show first 3
-                    console.print(f"[dim green]Found {len(processes)} browser processes: {process_list}[/dim green]")
                 
         except (psutil.NoSuchProcess, psutil.AccessDenied):
             pass
@@ -116,7 +158,7 @@ class SystemResourceMonitor:
     
     def get_resource_snapshot(self) -> ResourceSnapshot:
         """Get current system resource usage."""
-        processes = self.find_browser_processes()
+        processes = self._descendant_procs() if self.root_pid else self.find_browser_processes()
         
         total_memory = 0
         total_cpu = 0
@@ -124,7 +166,8 @@ class SystemResourceMonitor:
         
         if process_count == 0:
             # Debug: print why no processes found
-            console.print(f"[dim red]No browser processes found for {self.browser_name}[/dim red]")
+            if not self.root_pid:
+                console.print(f"[dim red]No browser processes found for {self.browser_name}[/dim red]")
             return ResourceSnapshot(
                 timestamp=time.time(),
                 memory_mb=0,
@@ -132,12 +175,21 @@ class SystemResourceMonitor:
                 process_count=0
             )
         
-        # Collect CPU usage (requires interval for accuracy)
+        # Prime CPU measurement for all processes first
+        for proc in processes:
+            try:
+                proc.cpu_percent(None)  # Prime CPU measurement
+            except psutil.Error:
+                pass
+        
+        # Wait a short interval
+        time.sleep(0.2)
+        
+        # Collect actual measurements
         cpu_samples = []
         for proc in processes:
             try:
-                # Use longer interval for more accurate CPU measurement
-                cpu = proc.cpu_percent(interval=0.2)  # Increased interval for better CPU measurement
+                cpu = proc.cpu_percent(None)  # Get actual measurement
                 memory = proc.memory_info().rss / 1024 / 1024  # MB
                 
                 cpu_samples.append(cpu)
@@ -193,29 +245,15 @@ class SystemResourceMonitor:
         if not self.baseline:
             return current
         
-        # Calculate deltas from baseline
-        memory_delta = current.memory_mb - self.baseline.memory_mb
-        cpu_delta = current.cpu_percent - self.baseline.cpu_percent
-        
-        # For memory: use delta if meaningful (>5MB change), otherwise show a fraction of current usage
-        if abs(memory_delta) > 5.0:
-            memory_result = abs(memory_delta)  # Meaningful change detected
-        else:
-            # Show a small fraction of total memory to indicate app-specific usage
-            memory_result = current.memory_mb * 0.05  # 5% of total as estimated app usage
-        
-        # For CPU: use delta if meaningful, otherwise show estimated minimum
-        if abs(cpu_delta) > 1.0:
-            cpu_result = abs(cpu_delta)  # Meaningful change detected  
-        else:
-            # Show estimated minimum CPU for JavaScript frameworks
-            cpu_result = 0.8  # Estimated baseline CPU for running JS apps
+        # Calculate pure deltas (no artificial floors)
+        memory_delta = max(0.0, current.memory_mb - self.baseline.memory_mb)
+        cpu_delta = max(0.0, current.cpu_percent - self.baseline.cpu_percent)
         
         return ResourceSnapshot(
             timestamp=current.timestamp,
-            memory_mb=max(0, memory_result),
-            cpu_percent=max(0, cpu_result),
-            process_count=current.process_count - self.baseline.process_count,
+            memory_mb=memory_delta,
+            cpu_percent=cpu_delta,
+            process_count=max(0, current.process_count - self.baseline.process_count),
             browser_memory_mb=current.browser_memory_mb,
             browser_heap_mb=current.browser_heap_mb,
             browser_heap_limit_mb=current.browser_heap_limit_mb
@@ -225,45 +263,89 @@ class SystemResourceMonitor:
 class BrowserResourceMonitor:
     """Monitor browser-internal resource usage via Chrome DevTools Protocol."""
     
-    def __init__(self, debug_port: int = 9222):
+    def __init__(self, debug_host: str = "localhost", debug_port: int = 9222):
+        self.debug_host = debug_host
         self.debug_port = debug_port
         self.websocket_url = None
         self.websocket = None
         self.session_id = 1
     
     async def connect(self) -> bool:
-        """Connect to Chrome DevTools Protocol."""
+        """Connect to Chrome DevTools Protocol with resilient target creation."""
+        base = f"http://{self.debug_host}:{self.debug_port}"
         try:
-            # Get WebSocket URL with better error handling
-            response = requests.get(f"http://localhost:{self.debug_port}/json", timeout=10)
-            if response.status_code != 200:
-                return False
-                
-            tabs = response.json()
-            if not tabs:
-                return False
+            # 1) Try browser-level WebSocket first (works even if there are no pages)
+            version_response = requests.get(f"{base}/json/version", timeout=5)
+            version_response.raise_for_status()
+            browser_ws = version_response.json().get("webSocketDebuggerUrl")
+
+            # 2) Ensure there is at least one page target
+            tabs_response = requests.get(f"{base}/json/list", timeout=5)
+            tabs_response.raise_for_status()
+            tabs = tabs_response.json()
             
-            # Find a suitable tab (prefer ones with a URL that isn't empty)
-            target_tab = None
+            if not tabs:
+                # Create about:blank page
+                requests.get(f"{base}/json/new?about:blank", timeout=5)
+                tabs_response = requests.get(f"{base}/json/list", timeout=5)
+                tabs = tabs_response.json()
+
+            # 3) Pick a page target, else fall back to browser target
+            target_ws = None
             for tab in tabs:
-                if tab.get('type') == 'page' and tab.get('webSocketDebuggerUrl'):
-                    target_tab = tab
+                if tab.get("type") == "page" and tab.get("webSocketDebuggerUrl"):
+                    target_ws = tab["webSocketDebuggerUrl"]
                     break
             
-            if not target_tab:
-                target_tab = tabs[0]  # Fallback to first tab
-            
-            self.websocket_url = target_tab['webSocketDebuggerUrl']
-            
-            # Connect to WebSocket with longer timeout
+            if not target_ws:
+                # Fall back to browser session
+                target_ws = browser_ws
+
+            if not target_ws:
+                return False
+
+            self.websocket_url = target_ws
             self.websocket = await websockets.connect(
                 self.websocket_url, 
-                timeout=10,
-                ping_interval=None  # Disable ping to avoid connection issues
+                timeout=10, 
+                ping_interval=None
             )
             return True
             
-        except Exception as e:
+        except Exception:
+            return False
+    
+    async def navigate_to_url(self, url: str) -> bool:
+        """Navigate to a specific URL and wait for load."""
+        if not self.websocket:
+            return False
+        
+        try:
+            # Enable required domains
+            await self.send_command("Page.enable")
+            await self.send_command("Runtime.enable")
+            
+            # Navigate to the URL
+            await self.send_command("Page.navigate", {"url": url})
+            
+            # Wait for load event (or timeout)
+            timeout_count = 0
+            while timeout_count < 30:  # 3 second timeout
+                try:
+                    response = await asyncio.wait_for(self.websocket.recv(), timeout=0.1)
+                    data = json.loads(response)
+                    if data.get("method") == "Page.loadEventFired":
+                        return True
+                except asyncio.TimeoutError:
+                    timeout_count += 1
+                    continue
+                except Exception:
+                    break
+            
+            # If no load event received, still consider successful if no error
+            return True
+            
+        except Exception:
             return False
     
     async def send_command(self, method: str, params: Dict = None) -> Dict:
@@ -287,58 +369,47 @@ class BrowserResourceMonitor:
             return {}
     
     async def get_memory_usage(self) -> Dict:
-        """Get browser memory usage via DevTools."""
+        """Get browser memory usage via DevTools using Performance.getMetrics."""
+        if not self.websocket:
+            return {"connection_working": False}
+
         try:
-            # Enable Runtime domain first
+            # Enable domains
+            await self.send_command("Page.enable")
             await self.send_command("Runtime.enable")
+            await self.send_command("Performance.enable")
+
+            # Optional: trigger GC for a tighter snapshot
+            await self.send_command("HeapProfiler.enable")
+            await self.send_command("HeapProfiler.collectGarbage")
+
+            # Get performance metrics (more robust than Runtime.getHeapUsage)
+            perf_response = await self.send_command("Performance.getMetrics")
             
-            # Force garbage collection for more accurate measurement
-            await self.send_command("Runtime.runIfWaitingForDebugger")
-            
-            # Get heap usage with better error handling
-            heap_response = await self.send_command("Runtime.getHeapUsage")
-            
-            if "result" in heap_response and heap_response["result"]:
-                heap_data = heap_response["result"]
-                used_size = heap_data.get("usedSize", 0)
-                total_size = heap_data.get("totalSize", 0)
-                limit_size = heap_data.get("heapSizeLimit", 0)
+            if "result" in perf_response and "metrics" in perf_response["result"]:
+                metrics = {m["name"]: m["value"] for m in perf_response["result"]["metrics"]}
                 
-                # Convert to MB
-                used_mb = used_size / 1024 / 1024
-                total_mb = total_size / 1024 / 1024
-                limit_mb = limit_size / 1024 / 1024
+                used = float(metrics.get("JSHeapUsedSize", 0.0))
+                total = float(metrics.get("JSHeapTotalSize", 0.0))
                 
-                # Return even small values - they might be significant
                 return {
-                    "heap_used_mb": used_mb,
-                    "heap_total_mb": total_mb,
-                    "heap_limit_mb": limit_mb,
-                    "raw_used_bytes": used_size,
+                    "heap_used_mb": used / (1024 * 1024),
+                    "heap_total_mb": total / (1024 * 1024),
                     "connection_working": True
                 }
             else:
-                # DevTools API call succeeded but no data returned
                 return {
                     "heap_used_mb": 0,
                     "heap_total_mb": 0,
-                    "heap_limit_mb": 0,
-                    "raw_used_bytes": 0,
                     "connection_working": True,
                     "no_heap_data": True
                 }
-        except Exception as e:
-            # DevTools connection failed
+        except Exception:
             return {
                 "heap_used_mb": 0,
                 "heap_total_mb": 0,
-                "heap_limit_mb": 0,
-                "raw_used_bytes": 0,
-                "connection_working": False,
-                "error": str(e)
+                "connection_working": False
             }
-        
-        return {"heap_used_mb": 0, "heap_total_mb": 0, "heap_limit_mb": 0, "connection_working": False}
     
     async def close(self):
         """Close WebSocket connection."""
@@ -355,8 +426,15 @@ class ResourceUsageRunner(BenchmarkRunner):
     
     def __init__(self):
         super().__init__()
-        self.system_monitor = SystemResourceMonitor()
-        self.browser_monitor = BrowserResourceMonitor()
+        self.system_monitor = SystemResourceMonitor()  # Will be replaced per framework
+        self.browser_monitor = None
+        
+        # Set up candidate hosts for DevTools (WSL-friendly)
+        self.browser_hosts = ["localhost"]
+        win_ip = _get_wsl_windows_host_ip()
+        if win_ip:
+            self.browser_hosts.append(win_ip)
+        
         self.interaction_scenarios = [
             ("Initial Load", self._measure_initial_load),
             ("Weather Search", self._measure_weather_search),
@@ -364,32 +442,47 @@ class ResourceUsageRunner(BenchmarkRunner):
             ("Memory Stress", self._measure_memory_stress)
         ]
     
+    async def _try_connect_browser(self) -> Optional[BrowserResourceMonitor]:
+        """Try connecting to Chrome DevTools on multiple hosts."""
+        for host in self.browser_hosts:
+            browser = BrowserResourceMonitor(debug_host=host, debug_port=9222)
+            if await browser.connect():
+                return browser
+        return None
+
     def check_server_health(self) -> bool:
         """Resource monitoring requires a running server."""
         if not super().check_server_health():
             return False
         
-        # Check if Chrome DevTools is available
-        try:
-            response = requests.get("http://localhost:9222/json", timeout=3)
-            if response.status_code == 200:
-                console.print("[green]✓ Chrome DevTools Protocol available - heap monitoring enabled[/green]")
-                return True
-            else:
-                self._show_devtools_setup_instructions()
-                return True  # Still allow resource monitoring without DevTools
-        except requests.RequestException:
+        # Check if Chrome DevTools is available on any host
+        devtools_available = False
+        for host in self.browser_hosts:
+            try:
+                response = requests.get(f"http://{host}:9222/json/version", timeout=3)
+                if response.status_code == 200:
+                    console.print(f"[green]✓ Chrome DevTools Protocol available at {host}:9222 - heap monitoring enabled[/green]")
+                    devtools_available = True
+                    break
+            except requests.RequestException:
+                continue
+        
+        if not devtools_available:
             self._show_devtools_setup_instructions()
-            return True  # Still allow resource monitoring without DevTools
+        
+        return True  # Always allow resource monitoring, with or without DevTools
     
     def _show_devtools_setup_instructions(self):
         """Show instructions for enabling Chrome DevTools."""
         console.print("\n[yellow]⚠ Chrome DevTools not available - heap monitoring disabled[/yellow]")
         console.print("[dim]To enable heap monitoring, restart Chrome with debugging enabled:[/dim]")
         console.print("[dim]1. Close all Chrome windows[/dim]")
-        console.print("[dim]2. Start Chrome with: google-chrome --remote-debugging-port=9222[/dim]")
-        console.print("[dim]   Or on macOS: /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222[/dim]")
-        console.print("[dim]3. Navigate to your benchmark URL (http://127.0.0.1:3000/)[/dim]")
+        console.print("[dim]2. Start Chrome with debugging:[/dim]")
+        console.print("[dim]   • WSL/Linux: google-chrome --remote-debugging-port=9222 --user-data-dir=/tmp/chrome-debug[/dim]")
+        console.print("[dim]   • Windows: chrome.exe --remote-debugging-port=9222 --remote-debugging-address=0.0.0.0[/dim]")
+        console.print("[dim]   • macOS: /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222[/dim]")
+        console.print("[dim]3. Navigate to: http://127.0.0.1:3000/[/dim]")
+        console.print("[dim]4. If using Windows Chrome from WSL, check /etc/resolv.conf for Windows host IP[/dim]")
         console.print("[dim]Note: System-level memory and CPU monitoring will still work without DevTools[/dim]\n")
     
     def run_single_benchmark(self, framework: str) -> BenchmarkResult:
@@ -658,124 +751,269 @@ class ResourceUsageRunner(BenchmarkRunner):
         
         return self._create_interaction_metrics("Memory Stress", start_time, samples)
     
-    def _measure_initial_load_sync(self, url: str) -> InteractionMetrics:
+    def _measure_initial_load_sync(self, url: str, browser_monitor=None) -> InteractionMetrics:
         """Measure resources during initial page load (synchronous version)."""
         start_time = time.time()
         samples = []
         
-        # Optimized: Fewer samples with shorter intervals
-        measurement_intervals = [0.3, 0.5, 0.8]  # Faster measurements
+        # Simulate some page interaction if DevTools available
+        if browser_monitor:
+            try:
+                # Trigger some JavaScript execution to create measurable load
+                asyncio.run(browser_monitor.send_command("Runtime.evaluate", {
+                    "expression": "for(let i=0; i<100000; i++) { Math.random(); }"
+                }))
+            except Exception:
+                pass
         
-        for i, interval in enumerate(measurement_intervals):
+        # Take 3 measurements with intervals
+        for i in range(3):
             sample = self.system_monitor.get_resource_snapshot()
+            
+            # Get browser heap data if available
+            if browser_monitor:
+                try:
+                    heap_data = asyncio.run(browser_monitor.get_memory_usage())
+                    if heap_data.get("connection_working", False):
+                        sample.browser_memory_mb = heap_data.get("heap_total_mb", 0)
+                        sample.browser_heap_mb = heap_data.get("heap_used_mb", 0)
+                        sample.browser_heap_limit_mb = heap_data.get("heap_total_mb", 0)
+                except Exception:
+                    pass
+            
             samples.append(sample)
             
-            if i < len(measurement_intervals) - 1:  # Don't sleep after last measurement
-                time.sleep(interval)
+            if i < 2:  # Don't sleep after last measurement
+                time.sleep(0.5)
         
         return self._create_interaction_metrics("Initial Load", start_time, samples)
     
-    def _measure_weather_search_sync(self, url: str) -> InteractionMetrics:
+    def _measure_weather_search_sync(self, url: str, browser_monitor=None) -> InteractionMetrics:
         """Measure resources during weather search simulation (synchronous version)."""
         start_time = time.time()
         samples = []
         
-        # Optimized: Fewer searches, faster execution
-        search_phases = ["Initial", "Peak", "Sustained"]  # 3 phases instead of 8 cities
+        # Simulate search interactions
+        search_phases = ["Initial", "Peak", "Sustained"]
         
         for i, phase in enumerate(search_phases):
+            # Simulate search activity if DevTools available
+            if browser_monitor:
+                try:
+                    # Simulate typing in search field and DOM manipulation
+                    asyncio.run(browser_monitor.send_command("Runtime.evaluate", {
+                        "expression": f"document.body.innerHTML += '<div>Search {phase}</div>'; for(let i=0; i<50000; i++) {{ Math.sin(i); }}"
+                    }))
+                except Exception:
+                    pass
+            
             sample = self.system_monitor.get_resource_snapshot()
+            
+            # Get heap data if available
+            if browser_monitor:
+                try:
+                    heap_data = asyncio.run(browser_monitor.get_memory_usage())
+                    if heap_data.get("connection_working", False):
+                        sample.browser_heap_mb = heap_data.get("heap_used_mb", 0)
+                except Exception:
+                    pass
+            
             samples.append(sample)
             
-            # Shorter delays
             if i < len(search_phases) - 1:
                 time.sleep(0.4)
         
         return self._create_interaction_metrics("Weather Search", start_time, samples)
     
-    def _measure_ui_interactions_sync(self, url: str) -> InteractionMetrics:
+    def _measure_ui_interactions_sync(self, url: str, browser_monitor=None) -> InteractionMetrics:
         """Measure resources during UI interactions (synchronous version)."""
         start_time = time.time()
         samples = []
         
-        # Optimized: Fewer samples, faster execution
-        for i in range(3):  # Reduced from 8 to 3 samples
+        # Simulate UI interactions
+        for i in range(3):
+            # Simulate clicks and UI updates if DevTools available
+            if browser_monitor:
+                try:
+                    # Simulate UI interactions and DOM updates
+                    asyncio.run(browser_monitor.send_command("Runtime.evaluate", {
+                        "expression": f"document.body.style.backgroundColor = 'hsl({i*120}, 50%, 95%)'; for(let j=0; j<30000; j++) {{ document.createElement('span'); }}"
+                    }))
+                except Exception:
+                    pass
+            
             sample = self.system_monitor.get_resource_snapshot()
+            
+            # Get heap data if available
+            if browser_monitor:
+                try:
+                    heap_data = asyncio.run(browser_monitor.get_memory_usage())
+                    if heap_data.get("connection_working", False):
+                        sample.browser_heap_mb = heap_data.get("heap_used_mb", 0)
+                except Exception:
+                    pass
+            
             samples.append(sample)
-            if i < 2:  # Don't sleep after last sample
-                time.sleep(0.5)  # Reduced from 0.8s
+            if i < 2:
+                time.sleep(0.5)
         
         return self._create_interaction_metrics("UI Interactions", start_time, samples)
     
-    def _measure_memory_stress_sync(self, url: str) -> InteractionMetrics:
+    def _measure_memory_stress_sync(self, url: str, browser_monitor=None) -> InteractionMetrics:
         """Measure resources under memory stress conditions (synchronous version)."""
         start_time = time.time()
         samples = []
         
-        # Optimized: Fewer samples with shorter intervals
-        for i in range(3):  # Reduced from 10 to 3 samples
+        # Simulate memory-intensive operations
+        for i in range(3):
+            # Create memory pressure if DevTools available
+            if browser_monitor:
+                try:
+                    # Simulate memory allocation and heavy computation
+                    asyncio.run(browser_monitor.send_command("Runtime.evaluate", {
+                        "expression": f"let arr{i} = new Array(100000).fill(0).map((_, idx) => Math.random() * idx); arr{i}.sort();"
+                    }))
+                except Exception:
+                    pass
+            
             sample = self.system_monitor.get_resource_snapshot()
+            
+            # Get heap data if available
+            if browser_monitor:
+                try:
+                    heap_data = asyncio.run(browser_monitor.get_memory_usage())
+                    if heap_data.get("connection_working", False):
+                        sample.browser_heap_mb = heap_data.get("heap_used_mb", 0)
+                except Exception:
+                    pass
+            
             samples.append(sample)
-            if i < 2:  # Don't sleep after last sample
-                time.sleep(1)  # Reduced from 2s
+            if i < 2:
+                time.sleep(1)
         
         return self._create_interaction_metrics("Memory Stress", start_time, samples)
     
     def _measure_framework_resources_simple(self, framework: str) -> Dict:
-        """Measure comprehensive resource usage for a framework (simple version)."""
+        """Measure comprehensive resource usage for a framework with isolated Chrome."""
         
-        # Step 1: Establishing baseline
-        baseline = self.system_monitor.establish_baseline(quiet=True)
-        
-        # Step 2: Check browser connection
-        browser_connected = False
-        try:
-            response = requests.get("http://localhost:9222/json", timeout=3)
-            browser_connected = response.status_code == 200
-        except:
-            pass
-        
-        # Step 3: Load application and wait for stabilization
         framework_url = self.get_framework_url(framework)
-        time.sleep(2)  # Wait for page load and stabilization
+        chrome_proc = None
+        chrome_user_dir = None
+        browser_monitor = None
         
-        # Step 4: Run all interaction scenarios
-        interaction_results = []
-        scenarios = [
-            ("Initial Load", self._measure_initial_load_sync),
-            ("Weather Search", self._measure_weather_search_sync),
-            ("UI Interactions", self._measure_ui_interactions_sync),
-            ("Memory Stress", self._measure_memory_stress_sync)
-        ]
-        
-        for scenario_name, scenario_func in scenarios:
+        try:
+            # Step 1: Launch isolated Chrome instance for this framework
+            console.print(f"[dim]🚀 {framework}: Launching isolated Chrome...[/dim]")
+            chrome_proc, chrome_user_dir = launch_isolated_chrome(port=9223, url=framework_url)
+            
+            # Set up monitoring for this specific Chrome instance
+            self.system_monitor = SystemResourceMonitor(root_pid=chrome_proc.pid)
+            
+            # Wait for Chrome to start and load the page
+            time.sleep(3)
+            
+            # Step 2: Establish baseline with the isolated Chrome
+            baseline = self.system_monitor.establish_baseline(quiet=True)
+            console.print(f"[dim]📊 {framework}: Baseline established - {baseline.memory_mb:.1f}MB[/dim]")
+            
+            # Step 3: Try to connect DevTools to the isolated Chrome
             try:
-                interaction_data = scenario_func(framework_url)
-                interaction_results.append(interaction_data)
+                browser_monitor = BrowserResourceMonitor(debug_host="localhost", debug_port=9223)
+                connected = asyncio.run(browser_monitor.connect())
+                if connected:
+                    # Navigate to the framework URL and wait for load
+                    navigation_success = asyncio.run(browser_monitor.navigate_to_url(framework_url))
+                    if navigation_success:
+                        console.print(f"[dim]✓ {framework}: DevTools connected and navigated[/dim]")
+                    else:
+                        console.print(f"[dim]⚠ {framework}: DevTools connected but navigation failed[/dim]")
+                else:
+                    console.print(f"[dim]⚠ {framework}: DevTools connection failed[/dim]")
+                    browser_monitor = None
             except Exception:
-                pass  # Continue with other scenarios if one fails
-        
-        # Step 5: Final measurements
-        final_snapshot = self.system_monitor.get_resource_snapshot()
-        app_usage = self.system_monitor.calculate_app_usage(final_snapshot)
-        
-        return {
-            "framework": framework,
-            "baseline": {
-                "memory_mb": baseline.memory_mb,
-                "cpu_percent": baseline.cpu_percent,
-                "process_count": baseline.process_count
-            },
-            "final_usage": {
-                "total_memory_mb": final_snapshot.memory_mb,
-                "total_cpu_percent": final_snapshot.cpu_percent,
-                "app_memory_mb": app_usage.memory_mb,
-                "app_cpu_percent": app_usage.cpu_percent,
-                "process_count": final_snapshot.process_count
-            },
-            "interactions": [interaction.to_dict() for interaction in interaction_results],
-            "summary": self._calculate_summary_metrics(interaction_results, app_usage)
-        }
+                console.print(f"[dim]⚠ {framework}: DevTools unavailable[/dim]")
+                browser_monitor = None
+            
+            # Allow additional time for JavaScript to initialize
+            time.sleep(2)
+            
+            # Step 4: Run interaction scenarios
+            interaction_results = []
+            scenarios = [
+                ("Initial Load", self._measure_initial_load_sync),
+                ("Weather Search", self._measure_weather_search_sync),
+                ("UI Interactions", self._measure_ui_interactions_sync),
+                ("Memory Stress", self._measure_memory_stress_sync)
+            ]
+            
+            for scenario_name, scenario_func in scenarios:
+                try:
+                    console.print(f"[dim]⚡ {framework}: Running {scenario_name}...[/dim]")
+                    interaction_data = scenario_func(framework_url, browser_monitor)
+                    interaction_results.append(interaction_data)
+                except Exception as e:
+                    console.print(f"[dim]⚠ {framework}: {scenario_name} failed: {str(e)}[/dim]")
+            
+            # Step 5: Final measurements
+            final_snapshot = self.system_monitor.get_resource_snapshot()
+            app_usage = self.system_monitor.calculate_app_usage(final_snapshot)
+            console.print(f"[dim]📊 {framework}: Final usage - {app_usage.memory_mb:.1f}MB, {app_usage.cpu_percent:.1f}% CPU[/dim]")
+            
+            return {
+                "framework": framework,
+                "baseline": {
+                    "memory_mb": baseline.memory_mb,
+                    "cpu_percent": baseline.cpu_percent,
+                    "process_count": baseline.process_count
+                },
+                "final_usage": {
+                    "total_memory_mb": final_snapshot.memory_mb,
+                    "total_cpu_percent": final_snapshot.cpu_percent,
+                    "app_memory_mb": app_usage.memory_mb,
+                    "app_cpu_percent": app_usage.cpu_percent,
+                    "process_count": final_snapshot.process_count
+                },
+                "interactions": [interaction.to_dict() for interaction in interaction_results],
+                "summary": self._calculate_summary_metrics(interaction_results, app_usage)
+            }
+            
+        except Exception as e:
+            console.print(f"[red]✗ {framework}: Measurement failed: {str(e)}[/red]")
+            return {
+                "framework": framework,
+                "error": str(e),
+                "baseline": {"memory_mb": 0, "cpu_percent": 0, "process_count": 0},
+                "final_usage": {"total_memory_mb": 0, "total_cpu_percent": 0, "app_memory_mb": 0, "app_cpu_percent": 0, "process_count": 0},
+                "interactions": [],
+                "summary": {}
+            }
+            
+        finally:
+            # Clean up browser and DevTools
+            if browser_monitor:
+                try:
+                    asyncio.run(browser_monitor.close())
+                except Exception:
+                    pass
+            
+            if chrome_proc:
+                try:
+                    chrome_proc.terminate()
+                    chrome_proc.wait(timeout=5)
+                    console.print(f"[dim]🗑️ {framework}: Chrome process terminated[/dim]")
+                except Exception:
+                    try:
+                        chrome_proc.kill()
+                        chrome_proc.wait(timeout=2)
+                    except Exception:
+                        pass
+            
+            if chrome_user_dir:
+                try:
+                    shutil.rmtree(chrome_user_dir, ignore_errors=True)
+                    console.print(f"[dim]🗑️ {framework}: Cleaned up user directory[/dim]")
+                except Exception:
+                    pass
     
     def _create_interaction_metrics(self, name: str, start_time: float, samples: List[ResourceSnapshot]) -> InteractionMetrics:
         """Create interaction metrics from samples."""
@@ -784,28 +1022,22 @@ class ResourceUsageRunner(BenchmarkRunner):
         
         duration = time.time() - start_time
         
-        # Calculate memory delta with better sensitivity
+        # Calculate memory delta
         memory_values = [s.memory_mb for s in samples]
-        memory_delta = max(memory_values) - min(memory_values)
+        memory_delta = max(memory_values) - min(memory_values) if memory_values else 0
         
         # If delta is very small, use average usage above baseline
-        if memory_delta < 1.0 and self.system_monitor.baseline:
+        if memory_delta < 1.0 and self.system_monitor.baseline and memory_values:
             avg_memory = sum(memory_values) / len(memory_values)
             baseline_memory = self.system_monitor.baseline.memory_mb
             memory_delta = max(0, avg_memory - baseline_memory)
         
-        # Calculate CPU metrics with better handling
+        # Calculate CPU metrics (report actual values)
         cpu_values = [s.cpu_percent for s in samples]
         cpu_peak = max(cpu_values) if cpu_values else 0
         cpu_average = sum(cpu_values) / len(cpu_values) if cpu_values else 0
         
-        # If CPU is very low, still show some value for active interactions
-        if cpu_average < 0.1 and cpu_peak < 0.1:
-            # Estimate minimal CPU usage for JavaScript execution
-            cpu_average = 0.5  # 0.5% estimated minimum for JS execution
-            cpu_peak = 1.0     # 1% estimated peak for interaction
-        
-        # Enhanced heap delta calculation
+        # Calculate heap delta
         heap_values = [s.browser_heap_mb for s in samples if s.browser_heap_mb > 0]
         if heap_values:
             heap_delta = max(heap_values) - min(heap_values)
