@@ -256,8 +256,7 @@ def resource_usage(frameworks: str, detailed: bool, save: bool, executions: int)
 
 
 @cli.command()
-@click.option('--type', '-t', type=click.Choice(['lighthouse', 'bundle-size', 'source-analysis', 'resource-usage'], case_sensitive=False), 
-              help='Benchmark type to run')
+@click.option('--type', '-t', help='Benchmark types to run (comma-separated: lighthouse,bundle-size,source-analysis,resource-usage)')
 @click.option('--frameworks', '-f', help='Comma-separated list of frameworks to benchmark')
 @click.option('--detailed', '-d', is_flag=True, help='Show detailed results')
 @click.option('--save', '-s', is_flag=True, default=True, help='Save results to file')
@@ -269,7 +268,20 @@ def all(type: str, frameworks: str, detailed: bool, save: bool, executions: int)
     from source_analysis import SourceAnalysisRunner
     from resource_monitor import ResourceUsageRunner
     
-    benchmark_types = [type] if type else ['lighthouse', 'bundle-size', 'source-analysis', 'resource-usage']
+    # Parse and validate benchmark types
+    available_types = ['lighthouse', 'bundle-size', 'source-analysis', 'resource-usage']
+    
+    if type:
+        # Parse comma-separated types and validate
+        benchmark_types = [t.strip().lower() for t in type.split(',')]
+        invalid_types = [t for t in benchmark_types if t not in available_types]
+        if invalid_types:
+            console.print(f"❌ Invalid benchmark types: {', '.join(invalid_types)}")
+            console.print(f"Available types: {', '.join(available_types)}")
+            return
+    else:
+        benchmark_types = available_types
+    
     console.print(f"🚀 Running benchmarks: {', '.join(benchmark_types)}")
     
     all_results = {}

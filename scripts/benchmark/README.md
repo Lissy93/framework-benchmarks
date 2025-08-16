@@ -31,6 +31,8 @@ System resource monitoring with browser-level and OS-level metrics:
 - **Resource Efficiency** - Memory and CPU efficiency scoring (0-100 scale)
 - **Interaction Analysis** - Resource usage during specific user interactions
 
+**Note**: Resource monitoring is most valuable for larger applications with significant performance differences. For lightweight apps like these weather demos, the differences may be minimal and less meaningful. Consider excluding with `--type lighthouse,bundle-size,source-analysis` for more focused results.
+
 ## Usage
 
 ### Quick Start
@@ -62,9 +64,16 @@ npm run benchmark resource-usage
 # Run all benchmarks
 npm run benchmark all
 
+# Run specific benchmark types only (excluding resource-usage)
+npm run benchmark all -- --type lighthouse,bundle-size,source-analysis
+
+# Run only Lighthouse and Bundle Size
+npm run benchmark all -- --type lighthouse,bundle-size
+
 # Combine options for comprehensive testing
 npm run benchmark lighthouse -- -f react,vue -e 3 --detailed
 npm run benchmark all -- -f react,vue --detailed
+npm run benchmark all -- --type lighthouse,bundle-size -f react,vue --detailed
 
 # Check server status
 npm run benchmark server-check
@@ -86,6 +95,15 @@ npm run benchmark server-check
 - `-d, --detailed` - Show detailed results with individual scores and metrics
 - `-s, --save` - Save results to file (enabled by default)
 - `-e, --executions` - Number of runs per framework for averaging (default: 1)
+- `-t, --type` - Benchmark types to run for `all` command (comma-separated: `lighthouse,bundle-size,source-analysis,resource-usage`)
+
+**Selective Benchmark Types Feature:**
+- Use `--type` with the `all` command to run only specific benchmark types
+- Comma-separated values: `lighthouse,bundle-size,source-analysis,resource-usage`
+- Useful for excluding resource-usage on lightweight apps where resource differences are minimal
+- Examples:
+  - `--type lighthouse,bundle-size` - Performance and size analysis only
+  - `--type lighthouse,bundle-size,source-analysis` - All except resource monitoring
 
 **Multiple Executions Feature:**
 - Runs each benchmark multiple times and averages results
