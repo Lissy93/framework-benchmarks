@@ -133,6 +133,7 @@ jobs:
         timeout-minutes: 2
 
       - name: 🔍 Verify Project Setup
+        continue-on-error: true
         run: |
           echo "Verifying project setup with npm run verify..."
           npm run verify

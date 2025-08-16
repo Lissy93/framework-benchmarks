@@ -3,7 +3,7 @@
   "title": "Configuration Schema",
   "description": "Schema for config.json - defines project configuration settings",
   "type": "object",
-  "required": ["directories", "buildTools", "testing", "linting", "requirements", "ui", "scripts", "mockData", "miscScripts"],
+  "required": ["directories", "buildTools", "testing", "linting", "requirements", "ui", "scripts", "mockData", "benchmarks", "miscScripts"],
   "properties": {
     "directories": {
       "type": "object",
@@ -270,6 +270,112 @@
                 }
               },
               "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "benchmarks": {
+      "type": "object",
+      "required": ["server", "lighthouse", "output"],
+      "properties": {
+        "server": {
+          "type": "object",
+          "required": ["host", "port", "baseUrl", "healthEndpoint"],
+          "properties": {
+            "host": {
+              "type": "string",
+              "description": "Server host address"
+            },
+            "port": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 65535,
+              "description": "Server port number"
+            },
+            "baseUrl": {
+              "type": "string",
+              "format": "uri",
+              "description": "Base URL for benchmarks"
+            },
+            "healthEndpoint": {
+              "type": "string",
+              "pattern": "^/.*",
+              "description": "Health check endpoint path"
+            }
+          },
+          "additionalProperties": false
+        },
+        "lighthouse": {
+          "type": "object",
+          "required": ["categories", "settings", "thresholds"],
+          "properties": {
+            "categories": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["performance", "accessibility", "best-practices", "seo", "pwa"]
+              },
+              "description": "Lighthouse categories to test"
+            },
+            "settings": {
+              "type": "object",
+              "required": ["onlyCategories", "output", "chromeFlags"],
+              "properties": {
+                "onlyCategories": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                "output": {
+                  "type": "string",
+                  "enum": ["json", "html", "csv"]
+                },
+                "chromeFlags": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "thresholds": {
+              "type": "object",
+              "patternProperties": {
+                "^[a-zA-Z-]+$": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "additionalProperties": false
+        },
+        "output": {
+          "type": "object",
+          "required": ["directory", "formats", "timestamp"],
+          "properties": {
+            "directory": {
+              "type": "string",
+              "description": "Output directory for benchmark results"
+            },
+            "formats": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": ["json", "html", "csv"]
+              },
+              "description": "Output formats"
+            },
+            "timestamp": {
+              "type": "boolean",
+              "description": "Include timestamp in output files"
             }
           },
           "additionalProperties": false
