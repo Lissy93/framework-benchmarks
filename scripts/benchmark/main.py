@@ -7,6 +7,8 @@ from pathlib import Path
 import click
 from rich.console import Console
 from rich.progress import Progress, TaskID
+from rich.live import Live
+from rich.layout import Layout
 
 # Add parent directory to path for imports
 sys.path.append(str(Path(__file__).parent.parent))
@@ -15,18 +17,49 @@ from common import show_header, show_success, show_error, show_subheader
 console = Console()
 global_progress = None
 global_task = None
+suppress_output = False
 
 def setup_progress_bar(total_steps: int, description: str = "Running benchmarks"):
     """Setup global progress bar."""
     global global_progress, global_task
-    global_progress = Progress(console=console)
+    from rich.progress import Progress, BarColumn, TextColumn, TimeRemainingColumn, SpinnerColumn
+    
+    global_progress = Progress(
+        SpinnerColumn(),
+        TextColumn("[bold blue]{task.fields[framework]}", justify="left"),
+        TextColumn("[dim]{task.fields[stage]}", justify="left"),
+        BarColumn(bar_width=50),
+        TextColumn("[progress.percentage]{task.percentage:>3.0f}%"),
+        TimeRemainingColumn(),
+        console=console,
+        transient=False,  # Keep progress bar visible
+        refresh_per_second=10
+    )
     global_progress.start()
-    global_task = global_progress.add_task(f"[cyan]{description}", total=total_steps)
+    global_task = global_progress.add_task(
+        description, 
+        total=total_steps,
+        framework="Starting...",
+        stage=""
+    )
 
-def update_progress():
-    """Advance progress by one step."""
+def update_progress(framework: str = "", stage: str = ""):
+    """Advance progress by one step with optional status update."""
     if global_progress and global_task is not None:
         global_progress.advance(global_task)
+        if framework or stage:
+            global_progress.update(global_task, framework=framework, stage=stage)
+        # Debug: Print current progress
+        current = global_progress.tasks[global_task].completed
+        total = global_progress.tasks[global_task].total
+        # print(f"DEBUG: Progress {current}/{total}")
+    # else:
+        # print(f"DEBUG: Progress bar not initialized - global_progress={global_progress}, global_task={global_task}")
+
+def update_progress_status(framework: str = "", stage: str = ""):
+    """Update progress status without advancing."""
+    if global_progress and global_task is not None:
+        global_progress.update(global_task, framework=framework, stage=stage)
 
 def cleanup_progress():
     """Clean up progress bar."""
@@ -42,23 +75,78 @@ def run_with_progress(runner, frameworks_str, executions, detailed, save):
     framework_list = [f.strip() for f in frameworks_str.split(',')] if frameworks_str else [fw["id"] for fw in runner.frameworks]
     
     # Bundle size and source analysis don't need multiple executions (always same result)
+    # Resource usage can benefit from multiple executions for averaging
     actual_executions = 1 if runner.benchmark_name in ["Bundle Size", "Source Analysis"] else executions
     
+    # All benchmarks use 1 step per framework for simple progress
+    sub_steps_per_framework = 1
+    total_steps = len(framework_list) * actual_executions * sub_steps_per_framework
+    
     # Setup progress bar
-    setup_progress_bar(len(framework_list) * actual_executions, "Benchmarking frameworks")
+    setup_progress_bar(total_steps, "Benchmarking frameworks")
     
     try:
-        # Patch runner to update progress
-        original_run = runner.run_single_benchmark
-        runner.run_single_benchmark = lambda fw: (lambda r: (update_progress(), r)[1])(original_run(fw))
+        # Store original console methods to selectively suppress output during progress
+        original_print = console.print
+        global suppress_output
         
-        # Run benchmarks
+        def selective_print(*args, **kwargs):
+            # Only suppress if flag is set and not an important message
+            global suppress_output
+            if suppress_output and args and isinstance(args[0], str):
+                msg = str(args[0]).lower()
+                # Suppress resource monitoring console output during progress
+                if any(keyword in msg for keyword in [
+                    '📊 establishing resource baseline',
+                    'devtools memory access failed',
+                    '✓ react:', '✓ vue:', '✓ svelte:', '✓ angular:', '✓ lit:', '✓ vanjs:',
+                    '⚠ react:', '⚠ vue:', '⚠ svelte:', '⚠ angular:', '⚠ lit:', '⚠ vanjs:',
+                    '⚡ react:', '⚡ vue:', '⚡ svelte:', '⚡ angular:', '⚡ lit:', '⚡ vanjs:',
+                    '📊 react:', '📊 vue:', '📊 svelte:', '📊 angular:', '📊 lit:', '📊 vanjs:',
+                    'baseline', 'devtools', 'loading', 'running', 'completed', 'final measurements'
+                ]):
+                    return
+                # Allow all other messages through (errors, final summary, etc.)
+            return original_print(*args, **kwargs)
+        
+        # Replace console.print with selective version
+        console.print = selective_print
+        
+        # Enhanced progress tracking based on benchmark type
+        global suppress_output
+        suppress_output = True  # Enable output suppression during benchmarks
+        
+        # Standard progress tracking for all benchmarks (including resource usage)
+        original_run = runner.run_single_benchmark
+        
+        def enhanced_run(fw):
+            update_progress_status(fw, "Processing...")
+            result = original_run(fw)
+            update_progress(fw, "Completed")
+            return result
+        
+        runner.run_single_benchmark = enhanced_run
         results = runner.run_all_frameworks(framework_list, executions=actual_executions)
+        
+        # Disable output suppression for results display
+        suppress_output = False
+        
+        # Restore original console.print
+        console.print = original_print
+        
         if not results:
             show_error("No benchmark results generated")
             return None
         
+        # Clear the progress bar before showing results
+        cleanup_progress()
+        
+        # Ensure all output is displayed normally
+        console.print = original_print
+        suppress_output = False
+        
         # Display and save results
+        console.print("\n")  # Add clear spacing after progress bar
         runner.display_summary()
         if detailed:
             runner.display_detailed_results()
@@ -68,7 +156,10 @@ def run_with_progress(runner, frameworks_str, executions, detailed, save):
         
         return results
     finally:
-        cleanup_progress()
+        # Restore console.print in case of exception
+        console.print = original_print
+        if global_progress:  # Only cleanup if not already done
+            cleanup_progress()
 
 
 @click.group()
@@ -144,7 +235,28 @@ def source_analysis(frameworks: str, detailed: bool, save: bool):
 
 
 @cli.command()
-@click.option('--type', '-t', type=click.Choice(['lighthouse', 'bundle-size', 'source-analysis'], case_sensitive=False), 
+@click.option('--frameworks', '-f', help='Comma-separated list of frameworks to benchmark')
+@click.option('--detailed', '-d', is_flag=True, help='Show detailed results')
+@click.option('--save', '-s', is_flag=True, default=True, help='Save results to file')
+@click.option('--executions', '-e', default=1, type=int, help='Number of times to run each benchmark (for averaging)')
+def resource_usage(frameworks: str, detailed: bool, save: bool, executions: int):
+    """Monitor system resource usage (memory, CPU, browser metrics)."""
+    from resource_monitor import ResourceUsageRunner
+    
+    results = run_with_progress(ResourceUsageRunner(), frameworks, executions, detailed, save)
+    if not results:
+        return
+    
+    # Show final summary
+    successful, failed = [r for r in results if r.success], [r for r in results if not r.success]
+    if failed:
+        show_error(f"{len(failed)} frameworks failed resource usage monitoring")
+    else:
+        show_success(f"Resource usage monitoring completed for {len(successful)} frameworks")
+
+
+@cli.command()
+@click.option('--type', '-t', type=click.Choice(['lighthouse', 'bundle-size', 'source-analysis', 'resource-usage'], case_sensitive=False), 
               help='Benchmark type to run')
 @click.option('--frameworks', '-f', help='Comma-separated list of frameworks to benchmark')
 @click.option('--detailed', '-d', is_flag=True, help='Show detailed results')
@@ -155,8 +267,9 @@ def all(type: str, frameworks: str, detailed: bool, save: bool, executions: int)
     from lighthouse import LighthouseRunner
     from bundle_size import BundleSizeRunner
     from source_analysis import SourceAnalysisRunner
+    from resource_monitor import ResourceUsageRunner
     
-    benchmark_types = [type] if type else ['lighthouse', 'bundle-size', 'source-analysis']
+    benchmark_types = [type] if type else ['lighthouse', 'bundle-size', 'source-analysis', 'resource-usage']
     console.print(f"🚀 Running benchmarks: {', '.join(benchmark_types)}")
     
     all_results = {}
@@ -169,6 +282,8 @@ def all(type: str, frameworks: str, detailed: bool, save: bool, executions: int)
             results = run_with_progress(BundleSizeRunner(), frameworks, 1, detailed, save)
         elif benchmark_type == 'source-analysis':
             results = run_with_progress(SourceAnalysisRunner(), frameworks, 1, detailed, save)
+        elif benchmark_type == 'resource-usage':
+            results = run_with_progress(ResourceUsageRunner(), frameworks, 1, detailed, save)
         else:
             results = []
         
@@ -203,11 +318,16 @@ def list():
     console.print("  • [bold]source-analysis[/bold] - Source code complexity analysis")
     console.print("    Measures: Code complexity, maintainability, lines of code")
     console.print("    Metrics: Cyclomatic complexity, Halstead metrics, maintainability index")
+    console.print()
+    console.print("  • [bold]resource-usage[/bold] - System resource monitoring")
+    console.print("    Measures: Memory usage, CPU utilization, browser heap metrics")
+    console.print("    Metrics: Memory efficiency, CPU peaks, interaction resource deltas")
     
     console.print("\n💡 Usage examples:")
     console.print("  python benchmark/main.py lighthouse")
     console.print("  python benchmark/main.py bundle-size")
     console.print("  python benchmark/main.py source-analysis")
+    console.print("  python benchmark/main.py resource-usage")
     console.print("  python benchmark/main.py all")
     console.print("  python benchmark/main.py lighthouse -f react,vue,svelte")
     console.print("  python benchmark/main.py all --detailed")

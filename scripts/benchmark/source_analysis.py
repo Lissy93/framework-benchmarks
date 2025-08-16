@@ -1,5 +1,40 @@
 #!/usr/bin/env python3
-"""Source code analysis for complexity and maintainability metrics."""
+"""
+Source Analysis (Code size and complexity)
+=========================================
+This is a very rudimentary script to calculate approximate code quality based on
+SLOC, cyclomatic complexity and halstead metrics to build a maintainability index
+
+Core Definitions:
+- SLOC (source lines of code):
+  - Physical: Non-empty lines in the files
+  - Logical: Approximate count of executable statements
+- Cyclomatic Complexity:
+  - Number of independent paths through the code (aka decision points + 1)
+- Halstead Metrics:
+  - length: Total occurrences of operators and operands.
+  - vocab: Unique operators + unique operands
+  - volume: length x log2(vocab), measures implementation size.
+- Maintainability Index (MI, 0-100):
+  - Scaled 0-100 based on halstead volume, cyclomatic complexity and logical SLOC
+
+How it works:
+- Recursively scans source files in within --dir for supported extensions
+- Extracts any <script> content for mixed files (e.g. vue, svelte, .html, etc).
+- Counts physical/logical lines, decisions, operators/operands.
+- Calculates Halstead metrics & Maintainability Index
+- Builds final results, totals and averages, and
+  - Includes per-file metrics when --per-file flag set
+  - Writes results to file, when --output-file is set
+
+Usage
+  python measure-complexity.py
+    --dir [app-directory-to-analyse]
+    --output-file [path-to-json-to-save-results]
+    --per-file # if set, will include breakdown for each file
+
+Licensed under MIT, © Alicia Sykes <https://github.com/lissy93> 2025
+"""
 
 import math
 import os

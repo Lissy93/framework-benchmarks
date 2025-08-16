@@ -40,6 +40,7 @@
 │ npm run benchmark lighthouse   │ Google Lighthouse performance audits       │
 │ npm run benchmark bundle-size  │ Bundle size analysis with compression      │
 │ npm run benchmark source       │ Source code complexity & maintainability   │
+│ npm run benchmark resource     │ System resource monitoring (memory, CPU)   │
 └─────────────────────────────────────────────────────────────────────────────┘
 
 
@@ -76,6 +77,7 @@
 │ ├── lighthouse.py                         │ Google Lighthouse performance │
 │ ├── bundle_size.py                        │ Bundle size analysis          │
 │ ├── source_analysis.py                    │ Source code complexity        │
+│ ├── resource_monitor.py                   │ System resource monitoring    │
 │ ├── base.py                               │ Base benchmark runner class   │
 │ ╰── chrome_launcher.py                    │ Chrome browser management     │
 ╰───────────────────────────────────────────┴───────────────────────────────╯

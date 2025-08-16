@@ -24,6 +24,13 @@ Source code complexity and maintainability analysis measuring:
 - **Halstead Metrics** - Operator/operand analysis and program volume
 - **Maintainability Index** - Microsoft's maintainability formula (0-100 scale)
 
+### 🔍 Resource Usage
+System resource monitoring with browser-level and OS-level metrics:
+- **Memory Usage** - System memory consumption and browser heap analysis
+- **CPU Utilization** - Process-level CPU usage and interaction peaks
+- **Resource Efficiency** - Memory and CPU efficiency scoring (0-100 scale)
+- **Interaction Analysis** - Resource usage during specific user interactions
+
 ## Usage
 
 ### Quick Start
@@ -49,6 +56,9 @@ npm run benchmark bundle-size
 # Run source code analysis
 npm run benchmark source-analysis
 
+# Run system resource monitoring
+npm run benchmark resource-usage
+
 # Run all benchmarks
 npm run benchmark all
 
@@ -67,6 +77,7 @@ npm run benchmark server-check
 - `npm run benchmark lighthouse` - Run Lighthouse audits
 - `npm run benchmark bundle-size` - Analyze bundle sizes
 - `npm run benchmark source-analysis` - Analyze source code complexity
+- `npm run benchmark resource-usage` - Monitor system resource usage
 
 ### Command Options
 
@@ -81,7 +92,7 @@ npm run benchmark server-check
 - Provides statistical analysis (min, max, standard deviation)
 - Clears browser cache between runs for accuracy
 - Shows execution progress with completion indicators
-- **Note**: Bundle size and source analysis run only once (always produce same results)
+- **Note**: Bundle size, source analysis, and resource usage run only once (always produce same results)
 
 ## Prerequisites
 
@@ -98,6 +109,13 @@ Source code analysis requires:
 - **Source code** - Analyzes files in framework `src/` directories
 - **No build required** - Works directly with source files
 - **No server required** - Works offline with source files
+
+### For Resource Usage Monitoring
+Resource monitoring requires:
+- **Running server** - Server must be running at configured port
+- **Browser processes** - Chrome/Chromium for DevTools Protocol access
+- **System permissions** - Access to monitor system processes (psutil)
+- **Python dependencies** - `psutil`, `websockets`, `requests`
 
 ### Automatic Chrome Management (Lighthouse Only)
 The system will automatically:
@@ -229,6 +247,68 @@ Example statistics in saved JSON:
 - Check that `src/` directories contain source files
 - Verify source files have supported extensions (.js, .jsx, .ts, .tsx, .vue, .svelte, etc.)
 
+### Resource monitoring fails
+- Ensure server is running: `npm start` and verify with `npm run benchmark server-check`
+- Install Python dependencies: `pip install psutil websockets requests`
+- Check system permissions for process monitoring
+- For WSL/Linux: ensure browser processes are accessible
+- For enhanced monitoring: launch Chrome with `--remote-debugging-port=9222`
+
+## Resource Usage Details
+
+### What Resource Monitoring Measures
+
+**System-Level Metrics:**
+- **Memory Usage** - Total memory consumption by browser processes (MB)
+- **CPU Usage** - CPU utilization percentage across all browser processes
+- **Process Count** - Number of browser processes created by the application
+
+**Browser-Level Metrics (when DevTools available):**
+- **JavaScript Heap** - V8 heap memory usage and limits
+- **Heap Growth** - Memory allocation patterns during interactions
+
+**Interaction Scenarios:**
+- **Initial Load** - Resource usage during page loading and initialization
+- **Weather Search** - Resource consumption during search operations
+- **UI Interactions** - Resource usage during user interface interactions
+- **Memory Stress** - Long-term resource monitoring to detect memory leaks
+
+### Understanding Results
+
+**Efficiency Scores (0-100, higher is better):**
+- **Memory Efficiency** - How efficiently the app uses memory relative to baseline
+- **CPU Efficiency** - CPU usage efficiency during interactions
+
+**Key Metrics:**
+- **App Memory Usage** - Memory used by application (excluding browser baseline)
+- **Peak CPU Usage** - Maximum CPU utilization during testing
+- **Average CPU Usage** - Mean CPU usage across all interactions
+- **Resource Deltas** - Memory and CPU changes during specific interactions
+
+**Color Coding:**
+- 🟢 **Green (80-100)** - Excellent efficiency
+- 🟡 **Yellow (60-79)** - Good efficiency  
+- 🔴 **Red (0-59)** - Poor efficiency, optimization needed
+
+### Interpreting Resource Data
+
+**Memory Analysis:**
+- Low baseline + small deltas = efficient memory management
+- Large heap growth = potential memory leaks
+- High process count = framework overhead
+
+**CPU Analysis:**
+- Low average CPU = efficient processing
+- High peak CPU = expensive operations during interactions
+- Sustained high CPU = performance bottlenecks
+
+**Comparative Analysis:**
+Use resource monitoring to compare frameworks for:
+- Memory footprint differences
+- CPU efficiency variations
+- Resource usage patterns
+- Performance optimization opportunities
+
 ## Architecture
 
 The benchmarking system uses:
@@ -236,6 +316,9 @@ The benchmarking system uses:
 - **Lighthouse implementation** (`lighthouse.py`) - Google Lighthouse integration
 - **Bundle size implementation** (`bundle_size.py`) - Bundle analysis with gzip compression
 - **Source analysis implementation** (`source_analysis.py`) - Code complexity and maintainability analysis
+- **Resource monitoring implementation** (`resource_monitor.py`) - System resource monitoring with dual approach:
+  - **System-level monitoring** - Process CPU/memory via psutil
+  - **Browser-level monitoring** - Heap analysis via Chrome DevTools Protocol
 - **Main CLI** (`main.py`) - Command interface and orchestration
 - **Configuration** - Settings in `config.json` following project patterns
 
