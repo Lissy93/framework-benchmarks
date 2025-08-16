@@ -36,6 +36,11 @@
             "enum": ["public", "static", "src/assets"],
             "description": "Assets directory within the framework app"
           },
+          "buildDir": {
+            "type": "string",
+            "enum": ["dist", "build", "."],
+            "description": "Build output directory (defaults to 'dist' if not specified)"
+          },
           "build": {
             "type": "object",
             "required": ["buildCommand", "hasNodeModules", "devCommand", "testCommand", "lintFiles"],

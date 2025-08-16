@@ -11,6 +11,12 @@ Google Lighthouse performance audits measuring:
 - **Best Practices** - Security, modern standards
 - **SEO** - Search engine optimization
 
+### 📦 Bundle Size
+JavaScript and CSS bundle analysis measuring:
+- **File Sizes** - Uncompressed and gzipped bundle sizes
+- **Compression** - Gzip compression ratios
+- **Framework Overhead** - Pure framework code (excludes shared assets)
+
 ## Usage
 
 ### Quick Start
@@ -30,8 +36,15 @@ npm run benchmark lighthouse -- --detailed
 # Run multiple executions for improved accuracy
 npm run benchmark lighthouse -- --executions 5
 
+# Run bundle size analysis
+npm run benchmark bundle-size
+
+# Run all benchmarks
+npm run benchmark all
+
 # Combine options for comprehensive testing
 npm run benchmark lighthouse -- -f react,vue -e 3 --detailed
+npm run benchmark all -- -f react,vue --detailed
 
 # Check server status
 npm run benchmark server-check
@@ -42,6 +55,7 @@ npm run benchmark server-check
 - `npm run benchmark server-check` - Verify server is running  
 - `npm run benchmark all` - Run all benchmarks
 - `npm run benchmark lighthouse` - Run Lighthouse audits
+- `npm run benchmark bundle-size` - Analyze bundle sizes
 
 ### Command Options
 
@@ -56,12 +70,19 @@ npm run benchmark server-check
 - Provides statistical analysis (min, max, standard deviation)
 - Clears browser cache between runs for accuracy
 - Shows execution progress with completion indicators
+- **Note**: Bundle size analysis runs only once (always produces same results)
 
-## Chrome Setup
+## Prerequisites
 
+### For Lighthouse Benchmarks
 The Lighthouse benchmarking system automatically detects and launches Chrome across different platforms.
 
-### Automatic Chrome Management
+### For Bundle Size Analysis
+Bundle size analysis requires:
+- **Built frameworks** - Run `npm run build:framework` first
+- **No server required** - Works offline with built assets
+
+### Automatic Chrome Management (Lighthouse Only)
 The system will automatically:
 - **Detect** existing Chrome installations
 - **Launch** Chrome with remote debugging if needed
@@ -181,11 +202,17 @@ Example statistics in saved JSON:
 - Statistical analysis helps identify result variability
 - Cache clearing between runs improves accuracy
 
+### Bundle size analysis fails
+- Ensure frameworks are built: `npm run build:react`, `npm run build:vue`, etc.
+- Check that `dist/` or `build/` directories exist in framework folders
+- Verify build output contains JavaScript/CSS files
+
 ## Architecture
 
 The benchmarking system uses:
 - **Base classes** (`base.py`) - Extensible framework for new benchmark types
 - **Lighthouse implementation** (`lighthouse.py`) - Google Lighthouse integration
+- **Bundle size implementation** (`bundle_size.py`) - Bundle analysis with gzip compression
 - **Main CLI** (`main.py`) - Command interface and orchestration
 - **Configuration** - Settings in `config.json` following project patterns
 
