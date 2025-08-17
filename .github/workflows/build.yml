@@ -270,12 +270,25 @@ jobs:
 
           # Copy website files (includes dotfiles)
           cp -a website/. .
+          
+          # Debug: Check if static directory was copied
+          echo "Checking for static directory after copy:"
+          ls -la static/ || echo "No static directory found"
+          echo "Files before git add:"
+          find . -name "static" -type d || echo "No static directory found"
 
           # Remove the website directory after copying
           rm -rf website
 
           # Commit only if there are changes
-          if git add -A && git diff --staged --quiet; then
+          echo "Running git add -A..."
+          git add -A
+          echo "Files staged for commit:"
+          git diff --staged --name-only | head -20
+          echo "Checking if static directory is staged:"
+          git diff --staged --name-only | grep "static/" || echo "No static files staged"
+          
+          if git diff --staged --quiet; then
             echo "ℹ️ No website changes to deploy"
           else
             git commit -m "Deploy website"
