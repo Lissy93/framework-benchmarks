@@ -180,6 +180,18 @@ jobs:
           
       - name: Install Python dependencies
         run: pip install -r scripts/requirements.txt
+      
+      - name: Restore setup cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            apps/*/public
+            apps/*/static
+            assets
+          key: setup-cache-${{ github.sha }}
+          fail-on-cache-miss: true
 
       - name: Build all frameworks and generate website
         run: |
