@@ -120,19 +120,11 @@
   },
   "miscScripts": [
     {"name": "install:playwright", "command": "playwright install"},
-    {"name": "generate-mocks", "command": "cd scripts && python setup/generate_mocks.py"},
-    {"name": "generate-scripts", "command": "cd scripts && python setup/generate_scripts.py"},
-    {"name": "sync-assets", "command": "cd scripts && python setup/sync_assets.py"},
-    {"name": "benchmark", "command": "cd scripts && python benchmark/main.py"},
-    {"name": "benchmark:lighthouse", "command": "cd scripts && python benchmark/lighthouse.py"},
-    {"name": "perf", "command": "node scripts/performance/index.js"},
-    {"name": "perf:bundle", "command": "node scripts/performance/index.js --only bundle"},
-    {"name": "perf:html", "command": "node scripts/performance/index.js --html"},
-    {"name": "perf:lighthouse", "command": "node scripts/performance/index.js --only lighthouse"},
-    {"name": "perf:runtime", "command": "node scripts/performance/index.js --only runtime"},
-    {"name": "perf:vanjs", "command": "node scripts/performance/index.js --frameworks vanjs"},
-    {"name": "serve:production", "command": "node scripts/performance/production-server.js"},
-    {"name": "serve:single", "command": "node scripts/performance/serve-single.js"},
-    {"name": "verify", "command": "cd scripts && python verify/main.py"}
+    {"name": "generate-mocks", "command": "python scripts/setup/generate_mocks.py"},
+    {"name": "generate-scripts", "command": "python scripts/setup/generate_scripts.py"},
+    {"name": "sync-assets", "command": "python scripts/setup/sync_assets.py"},
+    {"name": "benchmark", "command": "python scripts/benchmark/main.py"},
+    {"name": "benchmark:lighthouse", "command": "python scripts/benchmark/lighthouse.py"},
+    {"name": "verify", "command": "python scripts/verify/main.py"}
   ]
 }
