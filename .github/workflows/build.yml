@@ -197,7 +197,7 @@ jobs:
       - name: Build all frameworks and generate website
         run: |
           echo "Building all frameworks for comparison website..."
-          python scripts/run/build.py --for-comparison
+          python scripts/run/build.py -- --for-comparison
           
       - name: Verify website generation
         run: |
