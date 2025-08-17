@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ config.website.title }}{% endblock %}</title>
+    <meta name="description" content="{% block description %}{{ config.website.description }}{% endblock %}">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for_static('images/favicon.ico') }}">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for_static('css/main.css') }}">
+    {% block extra_css %}{% endblock %}
+    
+    <!-- Meta tags for social sharing -->
+    <meta property="og:title" content="{% block og_title %}{{ config.website.title }}{% endblock %}">
+    <meta property="og:description" content="{% block og_description %}{{ config.website.description }}{% endblock %}">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navigation">
+            <a href="/" class="nav-logo">
+                <h1>{{ config.website.title }}</h1>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link{% if page_type == 'homepage' %} active{% endif %}">Home</a>
+                <a href="https://github.com/anthropics/weather-front" class="nav-link" target="_blank">GitHub</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Frontend Framework Comparison. Open source project.</p>
+            <div class="footer-links">
+                <a href="https://github.com/anthropics/weather-front" target="_blank">GitHub</a>
+                <a href="https://github.com/anthropics/weather-front/issues" target="_blank">Issues</a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}{{ config.website.title }} - Compare Frontend Frameworks{% endblock %}
+
+{% block content %}
+<div class="homepage">
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Compare Frontend Frameworks</h2>
+            <p>Explore {{ frameworks|length }} different frontend frameworks through identical weather applications. Compare performance, bundle size, and development experience.</p>
+        </div>
+    </section>
+    
+    <section class="frameworks-grid">
+        <h3>Available Frameworks</h3>
+        <div class="grid">
+            {% for framework in frameworks %}
+            <div class="framework-card" data-framework="{{ framework.id }}">
+                <div class="framework-icon">
+                    {% if framework.icon %}
+                    <img src="{{ url_for_static('images/frameworks/' + framework.id + '.svg') }}" 
+                         alt="{{ framework.name }} logo" 
+                         onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+                    <div class="framework-fallback" style="display: none;">{{ framework.name[0] }}</div>
+                    {% else %}
+                    <div class="framework-fallback">{{ framework.name[0] }}</div>
+                    {% endif %}
+                </div>
+                
+                <h4>{{ framework.name or framework.displayName }}</h4>
+                <p class="framework-description">{{ framework.description or "A modern frontend framework" }}</p>
+                
+                <div class="framework-meta">
+                    {% if framework.meta %}
+                    <span class="framework-category">Framework</span>
+                    {% endif %}
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/{{ framework.id }}/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/{{ framework.id }}" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    
+    <section class="features">
+        <div class="features-content">
+            <h3>What's Included</h3>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Performance Testing</h4>
+                    <p>Lighthouse audits, bundle analysis, and runtime performance metrics</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h4>Bundle Analysis</h4>
+                    <p>Compare JavaScript and CSS bundle sizes across frameworks</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔍</div>
+                    <h4>Source Code</h4>
+                    <p>Identical weather app implemented in each framework for fair comparison</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🛠️</div>
+                    <h4>Development Experience</h4>
+                    <p>Build times, development server startup, and tooling comparison</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for_static('css/homepage.css') }}">
+{% endblock %}

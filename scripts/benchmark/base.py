@@ -70,9 +70,9 @@ class BenchmarkRunner(ABC):
         pass
     
     def get_framework_url(self, framework: str) -> str:
-        """Get the URL for a framework."""
+        """Get the URL for a framework app."""
         base_url = self.server_config.get("baseUrl", "http://127.0.0.1:3000")
-        return f"{base_url}/{framework}/?mock=true"
+        return f"{base_url}/{framework}/app/?mock=true"
     
     def check_server_health(self) -> bool:
         """Check if the benchmark server is running."""

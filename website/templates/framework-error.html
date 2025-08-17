@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{{ framework_name }} App Not Available - {{ config.website.title }}{% endblock %}
+
+{% block content %}
+<div class="framework-error-page">
+    <div class="error-container">
+        <div class="error-icon">🚫</div>
+        <h2>{{ framework_name }} App Not Available</h2>
+        
+        <div class="error-message">
+            <div class="error-type">Build Required</div>
+            <div class="error-details">
+                This framework app hasn't been built yet. The application needs to be compiled before it can be served.
+            </div>
+            {% if framework_id %}
+            <div class="error-path">
+                Expected location: apps/{{ framework_id }}/{{ build_dir or 'dist' }}/index.html
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="solution-box">
+            <div class="solution-title">How to Fix This</div>
+            <ul class="solution-steps">
+                {% if framework_id %}
+                <li>npm run build:{{ framework_id }}</li>
+                {% endif %}
+                <li>npm run build:all</li>
+                <li>npm run setup && npm run build:all</li>
+            </ul>
+            <p>After building, refresh this page to access the app.</p>
+        </div>
+        
+        {% if available_frameworks %}
+        <div class="available-apps">
+            <h3>Try These Built Frameworks</h3>
+            <div class="app-grid">
+                {% for fw in available_frameworks %}
+                {% if fw.exists %}
+                <a href="/{{ fw.id }}/app/" class="app-card">
+                    <div class="app-emoji">{{ fw.emoji }}</div>
+                    <div class="app-name">{{ fw.name }}</div>
+                </a>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        {% endif %}
+        
+        <div class="error-actions">
+            <a href="/" class="btn btn-primary">← Back to Homepage</a>
+            <a href="/{{ framework_id }}/" class="btn btn-secondary">Framework Info</a>
+            <a href="/health" class="btn btn-secondary">Health Check</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for_static('css/framework-error.css') }}">
+{% endblock %}

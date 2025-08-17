@@ -4,7 +4,10 @@
     "testConfigDir": "tests/config",
     "scriptsDir": "scripts",
     "assetsDir": "assets",
-    "nodeModulesDir": "node_modules"
+    "nodeModulesDir": "node_modules",
+    "websiteDir": "website",
+    "templatesDir": "website/templates",
+    "staticDir": "website/static"
   },
   "buildTools": {
     "requiresNpx": ["vite", "ng", "playwright"],
@@ -116,6 +119,22 @@
       "directory": "benchmark-results",
       "formats": ["json", "html"],
       "timestamp": true
+    }
+  },
+  "website": {
+    "title": "Frontend Framework Comparison",
+    "description": "A comprehensive comparison of modern frontend frameworks",
+    "paths": {
+      "homepage": "/",
+      "frameworkLanding": "/{framework}",
+      "frameworkApp": "/{framework}/app",
+      "frameworkSource": "/{framework}/source",
+      "notFound": "/404"
+    },
+    "deployment": {
+      "outputDir": "dist-website",
+      "baseUrl": "",
+      "copyAssets": true
     }
   },
   "miscScripts": [

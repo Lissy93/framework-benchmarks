@@ -360,7 +360,6 @@ def all(type: str, frameworks: str, detailed: bool, save: bool, executions: int)
     if save:
         from pathlib import Path
         project_root = Path(__file__).parent.parent.parent  # scripts/benchmark/ -> project root
-        print(f"Saving benchmark results to: {project_root / 'benchmark-results'}")
         benchmark_results_dir = project_root / "benchmark-results"
         benchmark_results_dir.mkdir(exist_ok=True)
         

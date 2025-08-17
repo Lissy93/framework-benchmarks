@@ -3,11 +3,11 @@
   "title": "Configuration Schema",
   "description": "Schema for config.json - defines project configuration settings",
   "type": "object",
-  "required": ["directories", "buildTools", "testing", "linting", "requirements", "ui", "scripts", "mockData", "benchmarks", "miscScripts"],
+  "required": ["directories", "buildTools", "testing", "linting", "requirements", "ui", "scripts", "mockData", "benchmarks", "website", "miscScripts"],
   "properties": {
     "directories": {
       "type": "object",
-      "required": ["appDir", "testConfigDir", "scriptsDir", "assetsDir", "nodeModulesDir"],
+      "required": ["appDir", "testConfigDir", "scriptsDir", "assetsDir", "nodeModulesDir", "websiteDir", "templatesDir", "staticDir"],
       "properties": {
         "appDir": {
           "type": "string",
@@ -29,6 +29,18 @@
         "nodeModulesDir": {
           "type": "string",
           "description": "Node modules directory name"
+        },
+        "websiteDir": {
+          "type": "string",
+          "description": "Website files directory"
+        },
+        "templatesDir": {
+          "type": "string", 
+          "description": "HTML templates directory"
+        },
+        "staticDir": {
+          "type": "string",
+          "description": "Static assets directory"
         }
       },
       "additionalProperties": false
@@ -376,6 +388,69 @@
             "timestamp": {
               "type": "boolean",
               "description": "Include timestamp in output files"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "website": {
+      "type": "object",
+      "required": ["title", "description", "paths", "deployment"],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Website title"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Website description"
+        },
+        "paths": {
+          "type": "object",
+          "required": ["homepage", "frameworkLanding", "frameworkApp", "frameworkSource", "notFound"],
+          "properties": {
+            "homepage": {
+              "type": "string",
+              "description": "Homepage URL pattern"
+            },
+            "frameworkLanding": {
+              "type": "string",
+              "description": "Framework landing page URL pattern"
+            },
+            "frameworkApp": {
+              "type": "string",
+              "description": "Framework app URL pattern"
+            },
+            "frameworkSource": {
+              "type": "string",
+              "description": "Framework source URL pattern"
+            },
+            "notFound": {
+              "type": "string",
+              "description": "404 page URL"
+            }
+          },
+          "additionalProperties": false
+        },
+        "deployment": {
+          "type": "object",
+          "required": ["outputDir", "baseUrl", "copyAssets"],
+          "properties": {
+            "outputDir": {
+              "type": "string",
+              "description": "Static build output directory"
+            },
+            "baseUrl": {
+              "type": "string",
+              "description": "Base URL for deployed site"
+            },
+            "copyAssets": {
+              "type": "boolean",
+              "description": "Whether to copy static assets"
             }
           },
           "additionalProperties": false

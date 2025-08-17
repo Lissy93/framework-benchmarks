@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Page Not Found - {{ config.website.title }}{% endblock %}
+
+{% block content %}
+<div class="error-page">
+    <div class="error-content">
+        <div class="error-code">404</div>
+        <h2>Page Not Found</h2>
+        <p>The page you're looking for doesn't exist or has been moved.</p>
+        
+        <div class="error-actions">
+            <a href="/" class="btn btn-primary">Go to Homepage</a>
+            <a href="javascript:history.back()" class="btn btn-secondary">Go Back</a>
+        </div>
+        
+        <div class="suggestions">
+            <h3>Try These Instead</h3>
+            <ul>
+                <li><a href="/">Homepage</a> - View all available frameworks</li>
+                <li><a href="/react">React</a> - Popular component-based framework</li>
+                <li><a href="/vue">Vue</a> - Progressive JavaScript framework</li>
+                <li><a href="/svelte">Svelte</a> - Compile-time optimized framework</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for_static('css/error.css') }}">
+{% endblock %}
