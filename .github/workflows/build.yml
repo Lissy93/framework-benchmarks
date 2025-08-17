@@ -118,49 +118,49 @@ jobs:
           key: setup-cache-${{ github.sha }}
           fail-on-cache-miss: true
         
-      # - name: Build ${{ matrix.framework }}
-      #   id: build-run
-      #   run: |
-      #     if python scripts/run/build.py --framework ${{ matrix.framework }} --ci --for-comparison; then
-      #       echo "status=success" >> $GITHUB_OUTPUT
-      #     else
-      #       echo "status=failure" >> $GITHUB_OUTPUT
-      #       exit 1
-      #     fi
+      - name: Build ${{ matrix.framework }}
+        id: build-run
+        run: |
+          if python scripts/run/build.py --framework ${{ matrix.framework }} --ci --for-comparison; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            exit 1
+          fi
           
-      # - name: Log build status
-      #   if: always()
-      #   run: |
-      #     echo "Build status for ${{ matrix.framework }}: ${{ steps.build-run.outputs.status }}"
-      #     if [ "${{ steps.build-run.outputs.status }}" == "success" ]; then
-      #       echo "✅ ${{ matrix.framework }} built successfully"
-      #     else
-      #       echo "❌ ${{ matrix.framework }} build failed"
-      #     fi
+      - name: Log build status
+        if: always()
+        run: |
+          echo "Build status for ${{ matrix.framework }}: ${{ steps.build-run.outputs.status }}"
+          if [ "${{ steps.build-run.outputs.status }}" == "success" ]; then
+            echo "✅ ${{ matrix.framework }} built successfully"
+          else
+            echo "❌ ${{ matrix.framework }} build failed"
+          fi
           
-      # - name: Generate build badge
-      #   if: always()
-      #   run: |
-      #     if [[ "${{ steps.build-run.outputs.status }}" == "success" ]]; then
-      #       status="Success"
-      #       color="3cd96b"
-      #       label_color="33b348"
-      #     else
-      #       status="Failed"
-      #       color="ff5666"
-      #       label_color="d5334a"
-      #     fi
+      - name: Generate build badge
+        if: always()
+        run: |
+          if [[ "${{ steps.build-run.outputs.status }}" == "success" ]]; then
+            status="Success"
+            color="3cd96b"
+            label_color="33b348"
+          else
+            status="Failed"
+            color="ff5666"
+            label_color="d5334a"
+          fi
           
-      #     badge_url="https://img.shields.io/badge/Build-${status}-${color}?logo=rocket&logoColor=fff&labelColor=${label_color}"
-      #     curl -o "build-${{ matrix.framework }}.svg" "$badge_url"
+          badge_url="https://img.shields.io/badge/Build-${status}-${color}?logo=rocket&logoColor=fff&labelColor=${label_color}"
+          curl -o "build-${{ matrix.framework }}.svg" "$badge_url"
           
-      # - name: Upload badge
-      #   if: always()
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: badge-build-${{ matrix.framework }}
-      #     path: build-${{ matrix.framework }}.svg
-      #     retention-days: 1
+      - name: Upload badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: badge-build-${{ matrix.framework }}
+          path: build-${{ matrix.framework }}.svg
+          retention-days: 1
 
   website:
     name: Generate Static Website
@@ -180,7 +180,7 @@ jobs:
           
       - name: Install Python dependencies
         run: pip install -r scripts/requirements.txt
-      
+        
       - name: Restore setup cache
         uses: actions/cache/restore@v4
         with:
@@ -192,7 +192,7 @@ jobs:
             assets
           key: setup-cache-${{ github.sha }}
           fail-on-cache-miss: true
-
+          
       - name: Build all frameworks and generate website
         run: |
           echo "Building all frameworks for comparison website..."
@@ -201,7 +201,7 @@ jobs:
       - name: Upload website artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: dist-website
+          name: website
           path: dist-website
           retention-days: 30
 
@@ -219,86 +219,59 @@ jobs:
       - name: Download website
         uses: actions/download-artifact@v4
         with:
-          name: dist-website
-          path: website
+          name: website
+          path: website-artifact
           
       - name: Deploy to website branch
         run: |
-
-          echo "==== Root ==== "
-          ls -la
-          echo ""
-          echo "==== Website ==== "
-          ls -la dist-website
-          echo ""
-          echo "==== Static ==== "
-          ls -la dist-website/static
-          echo ""
-          echo "==== CSS==== "
-          ls -la dist-website/static/css
-
-          cp -r dist-website/static dist-website/static2
-
-          echo "=== Okkk ===="
-          ls -la dist-website
-        
+          set -euo pipefail
           git config user.name 'liss-bot'
           git config user.email 'alicia-gh-bot@mail.as93.net'
 
-          
-          ls -la 
-          
+          # Debug: Confirm artifact exists before git operations
+          echo "🔍 Artifact contents before git operations:"
+          ls -la website-artifact/ || echo "❌ No website-artifact directory"
+          ls -la website-artifact/static/ || echo "❌ No static directory in artifact"
+          echo "Static directory file count: $(find website-artifact/static -type f 2>/dev/null | wc -l)"
+
           # Switch to website branch (create if missing)
           if git ls-remote --exit-code --heads origin website >/dev/null 2>&1; then
-            # git fetch origin website:website
-            git fetch origin
-            git checkout origin website
-            # git pull origin website || true
+            git fetch origin website:website
+            git checkout website
+            git pull origin website || true
           else
             git checkout --orphan website
             git commit --allow-empty -m "init website branch" || true
           fi
 
+          # Debug: Confirm artifact still exists after git operations
+          echo "🔍 Artifact contents after git operations:"
+          ls -la website-artifact/ || echo "❌ No website-artifact directory after git ops"
+          ls -la website-artifact/static/ || echo "❌ No static directory after git ops"
+          echo "Static directory file count after git ops: $(find website-artifact/static -type f 2>/dev/null | wc -l)"
+
           # Ensure artifact exists
-          # if [ ! -d "website" ] || [ -z "$(ls -A website 2>/dev/null)" ]; then
-          #   echo "⚠️ No website files found in ./website"
-          #   exit 1
-          # fi
+          if [ ! -d "website-artifact" ] || [ -z "$(ls -A website-artifact 2>/dev/null)" ]; then
+            echo "⚠️ No website files found in ./website-artifact"
+            exit 1
+          fi
 
           # Clear branch root but keep .git and the downloaded folder
-          # find . -maxdepth 1 -mindepth 1 \
-          #   -not -name '.git' \
-          #   -not -name 'website' \
-          #   -exec rm -rf {} + 2>/dev/null || true
+          find . -maxdepth 1 -mindepth 1 \
+            -not -name '.git' \
+            -not -name 'website-artifact' \
+            -exec rm -rf {} + 2>/dev/null || true
 
           # Copy website files (includes dotfiles)
-          ls dist-website/static
-          # cp -a website/static/ ./
-          cp -aL dist-website/. .
-          ls -la 
+          cp -a website-artifact/. .
           
-          echo "==== Root ==== "
-          ls -la
-          echo ""
-          echo "==== Static ==== "
-          ls -la static
-          echo ""
-          echo "==== CSS==== "
-          ls -la static/css
-          
-          # Remove the website directory after copying
-          rm -rf website
+          # Debug: Confirm static directory was copied
+          echo "🔍 Files after copy:"
+          ls -la static/ || echo "❌ No static directory after copy"
+          echo "Static directory file count after copy: $(find static -type f 2>/dev/null | wc -l)"
 
-          echo "POST DELETION LS "
-          echo "==== Root ==== "
-          ls -la
-          echo ""
-          echo "==== Static ==== "
-          ls -la static
-          echo ""
-          echo "==== CSS==== "
-          ls -la static/css
-
+          # Remove the website-artifact directory after copying
+          rm -rf website-artifact
 
           # Commit only if there are changes
           git add -A
