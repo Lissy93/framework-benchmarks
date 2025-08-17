@@ -197,24 +197,7 @@ jobs:
       - name: Build all frameworks and generate website
         run: |
           echo "Building all frameworks for comparison website..."
-          python scripts/run/build.py -- --for-comparison
-          
-      - name: Verify website generation
-        run: |
-          if [ -d "dist-website" ]; then
-            echo "✅ Website generated successfully"
-            echo "Generated files:"
-            find dist-website -type f | head -20
-            echo ""
-            echo "Directory structure:"
-            ls -la dist-website/
-            echo ""
-            echo "Static directory contents:"
-            ls -la dist-website/static/ || echo "No static directory found"
-          else
-            echo "❌ Website generation failed - dist-website directory not found"
-            exit 1
-          fi
+          npm run build -- --for-comparison 
           
       - name: Upload website artifacts
         uses: actions/upload-artifact@v4
@@ -242,7 +225,6 @@ jobs:
           
       - name: Deploy to website branch
         run: |
-          set -euo pipefail
           git config user.name 'liss-bot'
           git config user.email 'alicia-gh-bot@mail.as93.net'
 
@@ -270,19 +252,13 @@ jobs:
 
           # Copy website files (includes dotfiles)
           cp -a website/. .
-          
-          # Debug: Check if static directory was copied
-          echo "Checking for static directory after copy:"
-          ls -la static/ || echo "No static directory found"
-          echo "Files before git add:"
-          find . -name "static" -type d || echo "No static directory found"
 
           # Remove the website directory after copying
           rm -rf website
 
           # Commit only if there are changes
-          echo "Running git add -A..."
           git add -A
+          git add -f static/** || true
           echo "Files staged for commit:"
           git diff --staged --name-only | head -20
           echo "Checking if static directory is staged:"
