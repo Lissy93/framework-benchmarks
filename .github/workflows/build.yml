@@ -198,8 +198,6 @@ jobs:
         run: |
           echo "Building all frameworks for comparison website..."
           python scripts/run/build.py --for-comparison
-          echo "Generating static website..."
-          python scripts/run/build_website.py --verbose
           
       - name: Verify website generation
         run: |
