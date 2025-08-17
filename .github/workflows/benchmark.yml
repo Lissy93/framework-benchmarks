@@ -197,9 +197,6 @@ jobs:
             cmd_args+=("--detailed")
           fi
           
-          # Always save results
-          cmd_args+=("--save")
-          
           echo "🚀 Running benchmarks: npm run benchmark ${cmd_args[*]}"
           
           # Run benchmarks with retry logic
