@@ -53,6 +53,7 @@
 ├───────────────────────────────────────────┬───────────────────────────────┤
 ├── main.py                                 │ Main entry point - help/info  │
 ├── common.py                               │ Shared utilities & config     │
+├── get_frameworks.py                       │ Framework list helper utility │
 ├── setup/ - PROJECT SETUP & INITIALIZATION │                               │
 │ ├── main.py                               │ Complete setup - run all      │
 │ ├── generate_scripts.py                   │ Generate package.json scripts │
@@ -61,9 +62,10 @@
 │ ╰── install_deps.py                       │ Install all dependencies      │
 ├── run/ - BUILD & SERVE APPLICATIONS       │                               │
 │ ├── build.py                              │ Build all framework apps      │
+│ ├── build_website.py                      │ Generate static site for cdn  │
 │ ├── serve.py                              │ Production server (Flask)     │
-│ ├── index.html                            │ Server UI template            │
-│ ╰── error.html                            │ Server error page template    │
+│ ├── generator.py                          │ Website template generator    │
+│ ╰── set-base-hrefs.js                     │ Asset path fixing for builds  │
 ├── verify/ - QUALITY ASSURANCE & VALIDATION│                               │
 │ ├── main.py                               │ Run all verification tasks    │
 │ ├── check.py                              │ Verify setup & dependencies   │
@@ -76,8 +78,13 @@
 │ ├── main.py                               │ Main benchmark CLI interface  │
 │ ├── lighthouse.py                         │ Google Lighthouse performance │
 │ ├── bundle_size.py                        │ Bundle size analysis          │
+│ ├── build_time.py                         │ Build time measurement        │
+│ ├── dev_server.py                         │ Dev server startup analysis   │
 │ ├── source_analysis.py                    │ Source code complexity        │
 │ ├── resource_monitor.py                   │ System resource monitoring    │
 │ ├── base.py                               │ Base benchmark runner class   │
 │ ╰── chrome_launcher.py                    │ Chrome browser management     │
+├── transform/ - CODE TRANSFORMATION        │                               │
+│ ├── build_app_readme.py                   │ Generate app-specific READMEs │
+│ ╰── insert_statuses.py                    │ Insert build status badges    │
 ╰───────────────────────────────────────────┴───────────────────────────────╯

@@ -8,14 +8,6 @@ on:
         required: false
         default: 'all'
         type: string
-  pull_request:
-    branches: [ main, master, dev ]
-    paths:
-      - 'apps/**'
-      - 'frameworks.json'
-      - 'config.json'
-      - '.github/workflows/build.yml'
-    types: [ opened, synchronize, reopened ]
   push:
     branches: [ main ]
 
@@ -221,10 +213,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: website
-          path: website
+          path: website-artifact
           
       - name: Deploy to website branch
         run: |
+          set -euo pipefail
           git config user.name 'liss-bot'
           git config user.email 'alicia-gh-bot@mail.as93.net'
 
@@ -239,30 +232,25 @@ jobs:
           fi
 
           # Ensure artifact exists
-          if [ ! -d "website" ] || [ -z "$(ls -A website 2>/dev/null)" ]; then
-            echo "⚠️ No website files found in ./website"
+          if [ ! -d "website-artifact" ] || [ -z "$(ls -A website-artifact 2>/dev/null)" ]; then
+            echo "⚠️ No website files found in ./website-artifact"
             exit 1
           fi
 
           # Clear branch root but keep .git and the downloaded folder
           find . -maxdepth 1 -mindepth 1 \
             -not -name '.git' \
-            -not -name 'website' \
+            -not -name 'website-artifact' \
             -exec rm -rf {} + 2>/dev/null || true
 
           # Copy website files (includes dotfiles)
-          cp -a website/. .
+          cp -a website-artifact/. .
 
-          # Remove the website directory after copying
-          rm -rf website
+          # Remove the website-artifact directory after copying
+          rm -rf website-artifact
 
           # Commit only if there are changes
           git add -A
-          git add -f static/** || true
-          echo "Files staged for commit:"
-          git diff --staged --name-only | head -20
-          echo "Checking if static directory is staged:"
-          git diff --staged --name-only | grep "static/" || echo "No static files staged"
           
           if git diff --staged --quiet; then
             echo "ℹ️ No website changes to deploy"
