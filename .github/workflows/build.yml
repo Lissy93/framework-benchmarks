@@ -252,23 +252,21 @@ jobs:
           fi
 
           # Ensure artifact exists
-          if [ ! -d "website" ] || [ -z "$(ls -A website 2>/dev/null)" ]; then
-            echo "⚠️ No website files found in ./website"
-            exit 1
-          fi
+          # if [ ! -d "website" ] || [ -z "$(ls -A website 2>/dev/null)" ]; then
+          #   echo "⚠️ No website files found in ./website"
+          #   exit 1
+          # fi
 
           # Clear branch root but keep .git and the downloaded folder
-          find . -maxdepth 1 -mindepth 1 \
-            -not -name '.git' \
-            -not -name 'website' \
-            -exec rm -rf {} + 2>/dev/null || true
+          # find . -maxdepth 1 -mindepth 1 \
+          #   -not -name '.git' \
+          #   -not -name 'website' \
+          #   -exec rm -rf {} + 2>/dev/null || true
 
           # Copy website files (includes dotfiles)
+          cp -a website/static/ ./
           cp -aL website/. .
           ls -la 
-
-          mkdir static
-          cp -a website/static/ ./static/
           
           echo "==== Root ==== "
           ls -la
