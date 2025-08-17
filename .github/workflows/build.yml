@@ -221,11 +221,25 @@ jobs:
         with:
           name: website
           path: website
+
+      - name: Check fucking logs
+        run: |
+          echo "Root"
+          ls -la
+          echo "Website"
+          ls -la website
+          ls -la
+          echo "Static"
+          ls -la website/static
+          ls -la
+          echo "CSS"
+          ls -la website/static/css
+          
           
       - name: Deploy to website branch
         run: |
-          git config user.name 'liss-bot'
-          git config user.email 'alicia-gh-bot@mail.as93.net'
+          # git config user.name 'liss-bot'
+          # git config user.email 'alicia-gh-bot@mail.as93.net'
 
           # Switch to website branch (create if missing)
           if git ls-remote --exit-code --heads origin website >/dev/null 2>&1; then
@@ -233,8 +247,9 @@ jobs:
             git checkout website
             git pull origin website || true
           else
-            git checkout --orphan website
-            git commit --allow-empty -m "init website branch" || true
+            # git checkout --orphan website
+            # git commit --allow-empty -m "init website branch" || true
+            echo "🥴🥴🥴🥴 Branch no exist"
           fi
 
           # Ensure artifact exists
@@ -244,17 +259,27 @@ jobs:
           fi
 
           # Clear branch root but keep .git and the downloaded folder
-          find . -maxdepth 1 -mindepth 1 \
-            -not -name '.git' \
-            -not -name 'website' \
-            -exec rm -rf {} + 2>/dev/null || true
+          # find . -maxdepth 1 -mindepth 1 \
+          #   -not -name '.git' \
+          #   -not -name 'website' \
+          #   -exec rm -rf {} + 2>/dev/null || true
 
           # Copy website files (includes dotfiles)
-          cp -a website/. .
 
+          echo "ℹ️ Pre-copy"
+          ls -la
+          
+          cp -a website/. .
+          
+          echo "ℹ️ Post-copy"
+          ls -la
+          
           # Remove the website directory after copying
           rm -rf website
-
+          
+          echo "ℹ️ Post-removal of ./website/"
+          ls -la
+          
           # Commit only if there are changes
           git add -A
           git add -f static/** || true
