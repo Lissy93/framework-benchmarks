@@ -220,7 +220,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: website
-          path: dist-website/**
+          path: |
+            dist-website/*
+            dist-website/static/**
           retention-days: 30
 
   deploy:
