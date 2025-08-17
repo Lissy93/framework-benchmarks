@@ -219,8 +219,8 @@ jobs:
       - name: Download website
         uses: actions/download-artifact@v4
         with:
-          name: website
-          path: dist-website
+          name: dist-website
+          path: website
           
       - name: Deploy to website branch
         run: |
