@@ -232,6 +232,13 @@ jobs:
               sleep 5
             fi
           done
+          
+          # Ensure benchmark-results directory exists with at least a summary file
+          if [ ! -d "benchmark-results" ]; then
+            echo "⚠️  Creating benchmark-results directory as fallback"
+            mkdir -p benchmark-results
+            echo '{"status":"no_results","timestamp":"'$(date -u +%Y-%m-%dT%H:%M:%SZ)'","message":"Benchmarks completed but no results found"}' > benchmark-results/summary.json
+          fi
         timeout-minutes: 45
 
       - name: 📊 Generate Benchmark Summary
@@ -258,6 +265,27 @@ jobs:
             echo "- **Reason**: Benchmarks did not complete successfully" >> $GITHUB_STEP_SUMMARY
             echo "- **Check**: Review the workflow logs for error details" >> $GITHUB_STEP_SUMMARY
             echo "- **Artifacts**: Debug logs may be available below (if any)" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 🔍 Debug Benchmark Results
+        if: always()
+        run: |
+          echo "📁 Current working directory:"
+          pwd
+          echo "📁 Listing project root contents:"
+          ls -la
+          echo "📁 Checking benchmark-results directory:"
+          if [ -d "benchmark-results" ]; then
+            echo "✅ benchmark-results exists"
+            find benchmark-results -type f -name "*.json" | head -10
+            echo "📊 File count: $(find benchmark-results -type f | wc -l)"
+          else
+            echo "❌ benchmark-results directory not found"
+          fi
+          echo "📁 Checking scripts directory for benchmark-results:"
+          if [ -d "scripts/benchmark-results" ]; then
+            echo "⚠️  Found benchmark-results in scripts/"
+            find scripts/benchmark-results -type f -name "*.json" | head -5
           fi
 
       - name: 📤 Upload Benchmark Results
