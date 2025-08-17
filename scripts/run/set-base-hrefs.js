@@ -56,6 +56,33 @@ function buildFrameworkForComparison(framework) {
       stdio: 'inherit' 
     });
     
+    // Post-build fix for Qwik: update generated HTML and JS files to use correct asset paths
+    if (framework === 'qwik') {
+      const distHtmlPath = path.join(frameworkPath, 'dist', 'index.html');
+      if (fs.existsSync(distHtmlPath)) {
+        let html = fs.readFileSync(distHtmlPath, 'utf8');
+        // Convert relative paths to absolute paths for the base
+        html = html.replace(/src="\.\//g, `src="/${framework}/app/`);
+        html = html.replace(/href="\.\//g, `href="/${framework}/app/`);
+        fs.writeFileSync(distHtmlPath, html);
+        console.log(`🔧 Fixed Qwik asset paths in generated HTML`);
+      }
+      
+      // Also fix CSS paths in the generated JS files
+      const buildDir = path.join(frameworkPath, 'dist', 'build');
+      if (fs.existsSync(buildDir)) {
+        const jsFiles = fs.readdirSync(buildDir).filter(file => file.endsWith('.js'));
+        jsFiles.forEach(jsFile => {
+          const jsPath = path.join(buildDir, jsFile);
+          let jsContent = fs.readFileSync(jsPath, 'utf8');
+          // Fix CSS paths in the JavaScript bundles
+          jsContent = jsContent.replace(/href:"styles\//g, `href:"/${framework}/app/styles/`);
+          fs.writeFileSync(jsPath, jsContent);
+        });
+        console.log(`🔧 Fixed CSS paths in ${jsFiles.length} Qwik JS files`);
+      }
+    }
+    
     console.log(`✅ ${framework} built successfully`);
   } finally {
     // Restore original config
