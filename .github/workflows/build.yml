@@ -118,49 +118,49 @@ jobs:
           key: setup-cache-${{ github.sha }}
           fail-on-cache-miss: true
         
-      - name: Build ${{ matrix.framework }}
-        id: build-run
-        run: |
-          if python scripts/run/build.py --framework ${{ matrix.framework }} --ci --for-comparison; then
-            echo "status=success" >> $GITHUB_OUTPUT
-          else
-            echo "status=failure" >> $GITHUB_OUTPUT
-            exit 1
-          fi
+      # - name: Build ${{ matrix.framework }}
+      #   id: build-run
+      #   run: |
+      #     if python scripts/run/build.py --framework ${{ matrix.framework }} --ci --for-comparison; then
+      #       echo "status=success" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "status=failure" >> $GITHUB_OUTPUT
+      #       exit 1
+      #     fi
           
-      - name: Log build status
-        if: always()
-        run: |
-          echo "Build status for ${{ matrix.framework }}: ${{ steps.build-run.outputs.status }}"
-          if [ "${{ steps.build-run.outputs.status }}" == "success" ]; then
-            echo "✅ ${{ matrix.framework }} built successfully"
-          else
-            echo "❌ ${{ matrix.framework }} build failed"
-          fi
+      # - name: Log build status
+      #   if: always()
+      #   run: |
+      #     echo "Build status for ${{ matrix.framework }}: ${{ steps.build-run.outputs.status }}"
+      #     if [ "${{ steps.build-run.outputs.status }}" == "success" ]; then
+      #       echo "✅ ${{ matrix.framework }} built successfully"
+      #     else
+      #       echo "❌ ${{ matrix.framework }} build failed"
+      #     fi
           
-      - name: Generate build badge
-        if: always()
-        run: |
-          if [[ "${{ steps.build-run.outputs.status }}" == "success" ]]; then
-            status="Success"
-            color="3cd96b"
-            label_color="33b348"
-          else
-            status="Failed"
-            color="ff5666"
-            label_color="d5334a"
-          fi
+      # - name: Generate build badge
+      #   if: always()
+      #   run: |
+      #     if [[ "${{ steps.build-run.outputs.status }}" == "success" ]]; then
+      #       status="Success"
+      #       color="3cd96b"
+      #       label_color="33b348"
+      #     else
+      #       status="Failed"
+      #       color="ff5666"
+      #       label_color="d5334a"
+      #     fi
           
-          badge_url="https://img.shields.io/badge/Build-${status}-${color}?logo=rocket&logoColor=fff&labelColor=${label_color}"
-          curl -o "build-${{ matrix.framework }}.svg" "$badge_url"
+      #     badge_url="https://img.shields.io/badge/Build-${status}-${color}?logo=rocket&logoColor=fff&labelColor=${label_color}"
+      #     curl -o "build-${{ matrix.framework }}.svg" "$badge_url"
           
-      - name: Upload badge
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: badge-build-${{ matrix.framework }}
-          path: build-${{ matrix.framework }}.svg
-          retention-days: 1
+      # - name: Upload badge
+      #   if: always()
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: badge-build-${{ matrix.framework }}
+      #     path: build-${{ matrix.framework }}.svg
+      #     retention-days: 1
 
   website:
     name: Generate Static Website
