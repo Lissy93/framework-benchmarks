@@ -236,16 +236,21 @@ jobs:
           echo ""
           echo "==== CSS==== "
           ls -la website/static/css
-          
+
+          cp -r website/static website/static2
         
           git config user.name 'liss-bot'
           git config user.email 'alicia-gh-bot@mail.as93.net'
 
+          
+          ls -la 
+          
           # Switch to website branch (create if missing)
           if git ls-remote --exit-code --heads origin website >/dev/null 2>&1; then
-            git fetch origin website:website
+            # git fetch origin website:website
+            git fetch origin
             git checkout website
-            git pull origin website || true
+            # git pull origin website || true
           else
             git checkout --orphan website
             git commit --allow-empty -m "init website branch" || true
@@ -264,7 +269,8 @@ jobs:
           #   -exec rm -rf {} + 2>/dev/null || true
 
           # Copy website files (includes dotfiles)
-          cp -a website/static/ ./
+          ls website/static
+          # cp -a website/static/ ./
           cp -aL website/. .
           ls -la 
           
