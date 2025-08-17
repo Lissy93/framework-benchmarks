@@ -205,6 +205,12 @@ jobs:
             echo "✅ Website generated successfully"
             echo "Generated files:"
             find dist-website -type f | head -20
+            echo ""
+            echo "Directory structure:"
+            ls -la dist-website/
+            echo ""
+            echo "Static directory contents:"
+            ls -la dist-website/static/ || echo "No static directory found"
           else
             echo "❌ Website generation failed - dist-website directory not found"
             exit 1
@@ -214,7 +220,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: website
-          path: dist-website/
+          path: dist-website/**
           retention-days: 30
 
   deploy:
@@ -251,8 +257,8 @@ jobs:
           fi
 
           # Ensure artifact exists
-          if [ ! -d "website/dist-website" ] || [ -z "$(ls -A website/dist-website 2>/dev/null)" ]; then
-            echo "⚠️ No website files found in ./website/dist-website"
+          if [ ! -d "website" ] || [ -z "$(ls -A website 2>/dev/null)" ]; then
+            echo "⚠️ No website files found in ./website"
             exit 1
           fi
 
@@ -262,11 +268,17 @@ jobs:
             -not -name 'website' \
             -exec rm -rf {} + 2>/dev/null || true
 
-          # Copy (includes dotfiles)
-          cp -a website/dist-website/. .
+          # Copy website files (includes dotfiles)
+          cp -a website/. .
 
           # Remove the website directory after copying
           rm -rf website
+          
+          # Copy assets directory if it exists (overwrite conflicts)
+          if [ -d "assets" ]; then
+            echo "ℹ️ Copying assets directory..."
+            cp -a assets/. .
+          fi
 
           # Commit only if there are changes
           if git add -A && git diff --staged --quiet; then
