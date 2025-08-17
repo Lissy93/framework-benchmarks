@@ -38,9 +38,10 @@ class FrameworkServer:
         self.frameworks_list = get_frameworks()
         self.root_dir = Path(__file__).parent.parent.parent
         
-        # Configure Flask with correct static folder
+        # Configure Flask with correct static folder and disable strict slashes
         static_folder = str(self.root_dir / self.config["directories"]["staticDir"])
         self.app = Flask(__name__, static_folder=static_folder, static_url_path='/static')
+        self.app.url_map.strict_slashes = False
         
         self.frameworks = self._discover_frameworks()
         
@@ -138,57 +139,14 @@ class FrameworkServer:
             return assets_fallback(framework_id)
             
         
-        # Framework asset routes (must come before framework app routes)
-        def serve_framework_asset(asset_path: str, allowed_patterns: list = None):
-            """Helper to serve framework assets based on referer."""
-            referer = request.headers.get('Referer', '')
-            
-            # Extract framework ID from referer
-            for fw_id, framework in self.frameworks.items():
-                if f'/{fw_id}/app/' in referer and framework["exists"]:
-                    file_path = framework["full_path"] / asset_path
-                    if file_path.exists():
-                        return send_file(file_path)
-            
-            return "Asset not found", 404
         
-        @self.app.route('/_app/<path:subpath>')
-        def svelte_assets(subpath):
-            """Serve Svelte _app assets."""
-            return serve_framework_asset(f"_app/{subpath}")
-        
-        @self.app.route('/assets/<path:subpath>')
-        def vite_assets(subpath):
-            """Serve Vite assets."""
-            return serve_framework_asset(f"assets/{subpath}")
-            
-        @self.app.route('/styles/<path:subpath>')
-        def styles_assets(subpath):
-            """Serve style assets."""
-            return serve_framework_asset(f"styles/{subpath}")
-            
-        
-        @self.app.route('/dist/<path:subpath>')
-        def dist_assets(subpath):
-            """Serve dist assets."""
-            return serve_framework_asset(f"dist/{subpath}")
-            
-        @self.app.route('/build/<path:subpath>')
-        def build_assets(subpath):
-            """Serve build assets."""
-            return serve_framework_asset(f"build/{subpath}")
-        
-        # CSS for the website only (not used for framework pages)
-        @self.app.route('/css/<path:subpath>')
-        def css_assets(subpath):
-            """Serve CSS assets."""
-            return serve_framework_asset(f"css/{subpath}")
+
 
         # Framework apps (for benchmarking and usage)
         @self.app.route('/<framework_id>/app/')
         @self.app.route('/<framework_id>/app/<path:subpath>')
         def framework_app(framework_id, subpath=''):
-            """Serve the actual framework applications."""
+            """Serve the actual framework applications and all their assets."""
             if framework_id not in self.frameworks:
                 return self.website_generator.render_404(), 404
             
@@ -214,7 +172,7 @@ class FrameworkServer:
                     build_dir=framework.get('config', {}).get('buildDir', 'dist')
                 ), 404
             
-            # Handle index.html or specific file requests
+            # Handle index.html or specific file/directory requests
             if not subpath or subpath.endswith('/'):
                 file_path = framework["full_path"] / "index.html"
             else:
@@ -232,9 +190,11 @@ class FrameworkServer:
             if not file_path.exists():
                 return "File not found", 404
             
-            # Serve the file
+            # Serve the file with appropriate MIME type
             if file_path.is_file():
-                return send_file(file_path)
+                # Guess MIME type for proper content serving
+                mime_type, _ = mimetypes.guess_type(str(file_path))
+                return send_file(file_path, mimetype=mime_type)
             else:
                 return "Not a file", 404
         
@@ -249,9 +209,50 @@ class FrameworkServer:
             github_url = f"https://github.com/anthropics/weather-front/tree/main/apps/{framework_id}"
             return redirect(github_url)
 
+
+        # Framework asset redirects (catch assets requested from framework landing pages)
+        @self.app.route('/<framework_id>/assets/<path:asset_path>')
+        @self.app.route('/<framework_id>/build/<path:asset_path>')
+        @self.app.route('/<framework_id>/styles/<path:asset_path>')
+        @self.app.route('/<framework_id>/_app/<path:asset_path>')
+        @self.app.route('/<framework_id>/js/<path:asset_path>')
+        @self.app.route('/<framework_id>/public/<path:asset_path>')
+        @self.app.route('/<framework_id>/src/<path:asset_path>')
+        def framework_asset_redirect(framework_id, asset_path):
+            """Redirect framework asset requests to the app directory."""
+            if framework_id in self.frameworks:
+                # Get the original path segments to reconstruct the proper route
+                path_segments = request.path.split('/')
+                if len(path_segments) >= 3:
+                    asset_type = path_segments[2]  # 'assets', 'build', 'styles', '_app'
+                    remaining_path = '/'.join(path_segments[3:])
+                    redirect_url = f"/{framework_id}/app/{asset_type}/{remaining_path}"
+                    return redirect(redirect_url)
+            return self.website_generator.render_404(), 404
+        
+        # Special redirect for Svelte assets that start with /_app
+        @self.app.route('/_app/<path:asset_path>')
+        def svelte_asset_redirect(asset_path):
+            """Redirect Svelte _app assets to the correct framework directory based on referer."""
+            referer = request.headers.get('Referer', '')
+            
+            # Try to determine framework from referer
+            if '/svelte/app' in referer:
+                return redirect(f"/svelte/app/_app/{asset_path}")
+            
+            # Fallback: try to find the asset in any framework's _app directory
+            for framework_id, framework in self.frameworks.items():
+                if framework["exists"]:
+                    asset_file = framework["full_path"] / "_app" / asset_path
+                    if asset_file.exists():
+                        return redirect(f"/{framework_id}/app/_app/{asset_path}")
+            
+            return self.website_generator.render_404(), 404
+
         # Serves static global assets from /assets (only if path not already matched)
         @self.app.route('/<path:req_path>')
         def assets_fallback(req_path: str):
+            # Try global assets directory
             try:
                 candidate = (self.assets_dir / req_path).resolve()
                 candidate.relative_to(self.assets_dir)

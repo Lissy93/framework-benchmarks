@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  base: './',
   esbuild: {
     loader: 'jsx',
     include: /src\/.*\.jsx?$/,

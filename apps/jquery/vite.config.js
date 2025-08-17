@@ -7,6 +7,7 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url));
 export default defineConfig({
   root: resolve(__dirname),
   publicDir: 'public',
+  base: './',
   build: {
     outDir: 'dist',
     rollupOptions: {

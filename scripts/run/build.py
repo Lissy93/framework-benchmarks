@@ -1,256 +1,175 @@
 #!/usr/bin/env python3
-"""
-Static website builder for deployment.
-Generates a complete static website from the framework comparison templates.
-"""
+"""Build all framework applications with progress tracking."""
 
-import json
-import shutil
+import subprocess
+import sys
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Tuple
 import click
 from rich.console import Console
-from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TaskID
+from rich.progress import Progress, SpinnerColumn, TextColumn
 
-import sys
 sys.path.append(str(Path(__file__).parent.parent))
-
-from common import get_config, get_frameworks
-from generator import WebsiteGenerator
+from common import get_config, get_frameworks, show_header
 
 console = Console()
 
+def build_framework(framework_id: str, framework_data: dict, app_dir: Path) -> Tuple[bool, str]:
+    """Build a single framework application."""
+    build_config = framework_data.get("build", {})
+    command = build_config.get("buildCommand")
+    
+    if not command or "echo" in command:
+        return True, "No build step required"
+    
+    framework_path = app_dir / framework_id
+    if not framework_path.exists():
+        return False, f"Directory not found"
+    
+    try:
+        # Use npm run build for most frameworks
+        cmd = ["npm", "run", "build"] if command in ["vite build", "ng build"] else command
+        result = subprocess.run(
+            cmd,
+            shell=isinstance(cmd, str),
+            cwd=framework_path,
+            capture_output=True, 
+            text=True, 
+            timeout=120
+        )
+        if result.returncode == 0:
+            return True, "Build successful"
+        else:
+            error = result.stderr.strip()[:50] + "..." if result.stderr else "Unknown error"
+            return False, f"Build failed: {error}"
+    except subprocess.TimeoutExpired:
+        return False, "Build timeout (>2min)"
+    except Exception:
+        return False, "Build command failed"
 
-class StaticWebsiteBuilder:
-    """Builds a static version of the framework comparison website."""
+@click.command()
+@click.option('--parallel', '-p', is_flag=True, help='Build frameworks in parallel (not implemented)')
+@click.option('--framework', '-f', help='Build a single framework by ID')
+@click.option('--ci', is_flag=True, help='CI mode: exit 1 on build failure, minimal output')
+@click.option('--skip-website', is_flag=True, help='Skip building the website after frameworks')
+@click.option('--for-comparison', is_flag=True, help='Build frameworks with absolute paths for comparison website')
+def build_all(parallel: bool, framework: str, ci: bool, skip_website: bool, for_comparison: bool):
+    """Build framework applications."""
+    show_header("Build Apps", "Compile all framework applications to generate static dist")
+
+    # Use comparison build script if requested
+    if for_comparison:
+        console.print("[bold]Building frameworks for comparison website...[/bold]")
+        try:
+            comparison_script = Path(__file__).parent / "set-base-hrefs.js"
+            if comparison_script.exists():
+                result = subprocess.run(["node", str(comparison_script)])
+                if result.returncode == 0:
+                    console.print("[green]✓ All frameworks built for comparison[/green]")
+                    if not skip_website:
+                        console.print(f"\n[bold]Building website...[/bold]")
+                        build_website_script = Path(__file__).parent / "build_website.py"
+                        if build_website_script.exists():
+                            result = subprocess.run([sys.executable, str(build_website_script), "--verbose"])
+                            if result.returncode == 0:
+                                console.print("[green]✓ Website built successfully[/green]")
+                            else:
+                                console.print("[red]✗ Website build failed[/red]")
+                    return
+                else:
+                    console.print("[red]✗ Comparison build failed[/red]")
+                    if ci:
+                        sys.exit(1)
+                    return
+            else:
+                console.print("[red]✗ Comparison build script not found[/red]")
+                if ci:
+                    sys.exit(1)
+                return
+        except Exception as e:
+            console.print(f"[red]✗ Comparison build error: {str(e)[:100]}[/red]")
+            if ci:
+                sys.exit(1)
+            return
+
+    config = get_config()
+    frameworks = get_frameworks()
+    app_dir = Path(config.get("directories", {}).get("appDir", "apps"))
     
-    def __init__(self, base_url: str = ""):
-        self.config = get_config()
-        self.base_url = base_url.rstrip('/')
-        self.root_dir = Path(__file__).parent.parent.parent
-        self.frameworks_list = get_frameworks()
-        
-        # Get output directory from config
-        output_config = self.config.get("website", {}).get("deployment", {})
-        self.output_dir = self.root_dir / output_config.get("outputDir", "dist-website")
-        
-        # Initialize website generator for static mode
-        self.generator = WebsiteGenerator(base_url=self.base_url, is_static=True)
+    # Filter to single framework if specified
+    if framework:
+        frameworks = [fw for fw in frameworks if fw.get("id") == framework]
+        if not frameworks:
+            console.print(f"[red]Framework '{framework}' not found[/red]")
+            sys.exit(1)
     
-    def build(self, clean: bool = True) -> None:
-        """
-        Build the complete static website.
-        
-        Args:
-            clean: Whether to clean the output directory first
-        """
-        console.print("🏗️  Building static framework comparison website...")
-        
-        if clean and self.output_dir.exists():
-            console.print("🧹 Cleaning output directory...")
-            shutil.rmtree(self.output_dir)
-        
-        self.output_dir.mkdir(parents=True, exist_ok=True)
-        
+    if not ci:
+        console.print(f"[bold]Building {len(frameworks)} framework{'s' if len(frameworks) != 1 else ''}...[/bold]")
+    
+    results = {}
+    
+    if ci and len(frameworks) == 1:
+        # CI mode for single framework - simple output
+        framework_data = frameworks[0]
+        framework_id = framework_data.get("id")
+        success, message = build_framework(framework_id, framework_data, app_dir)
+        console.print(f"Build {framework_id}: {message}")
+        sys.exit(0 if success else 1)
+    else:
+        # Normal mode with progress
         with Progress(
             SpinnerColumn(),
             TextColumn("[progress.description]{task.description}"),
-            BarColumn(),
             console=console
         ) as progress:
             
-            # Build HTML pages
-            pages_task = progress.add_task("Generating HTML pages...", total=None)
-            pages = self._build_html_pages()
-            progress.update(pages_task, completed=len(pages), total=len(pages))
-            
-            # Copy static assets
-            assets_task = progress.add_task("Copying static assets...", total=None)
-            self._copy_static_assets()
-            progress.update(assets_task, completed=1, total=1)
-            
-            # Copy framework apps for deployment
-            apps_task = progress.add_task("Copying framework apps...", total=None)
-            copied_apps = self._copy_framework_apps()
-            progress.update(apps_task, completed=copied_apps, total=len(self.frameworks_list))
-            
-            # Generate additional files
-            extras_task = progress.add_task("Generating additional files...", total=None)
-            self._generate_additional_files()
-            progress.update(extras_task, completed=1, total=1)
+            for framework_data in frameworks:
+                framework_id = framework_data.get("id")
+                if not framework_id:
+                    continue
+                    
+                task = progress.add_task(f"Building {framework_id}...", total=None)
+                success, message = build_framework(framework_id, framework_data, app_dir)
+                results[framework_id] = (success, message)
+                
+                status = "[green]✓[/green]" if success else "[red]✗[/red]"
+                progress.update(task, description=f"{status} {framework_id} - {message}")
         
-        console.print(f"✅ Static website built successfully!")
-        console.print(f"📁 Output directory: {self.output_dir}")
-        console.print(f"📄 Generated {len(pages)} HTML pages")
-        console.print(f"📱 Copied {copied_apps} framework apps")
+        # Summary
+        successful = sum(1 for success, _ in results.values() if success)
+        total = len(results)
+        
+        if successful == total:
+            console.print(f"[bold green]All {total} frameworks built successfully![/bold green]")
+        else:
+            console.print(f"[bold yellow]{successful}/{total} frameworks built successfully[/bold yellow]")
+            for fw, (success, message) in results.items():
+                if not success:
+                    console.print(f"[red]Failed: {fw} - {message}[/red]")
+        
+        if ci and successful != total:
+            sys.exit(1)
     
-    def _build_html_pages(self) -> Dict[str, str]:
-        """Generate all HTML pages and write them to files."""
-        pages = self.generator.get_all_static_pages()
-        
-        for url_path, html_content in pages.items():
-            # Convert URL path to file path
-            if url_path == '/':
-                file_path = self.output_dir / 'index.html'
-            else:
-                # Remove leading/trailing slashes and create directory structure
-                clean_path = url_path.strip('/')
-                file_path = self.output_dir / clean_path / 'index.html'
-            
-            # Create directory if needed
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            
-            # Write HTML
-            with open(file_path, 'w', encoding='utf-8') as f:
-                f.write(html_content)
-        
-        return pages
-    
-    def _copy_static_assets(self) -> None:
-        """Copy static assets (CSS, JS, images) to output directory."""
-        static_dir = self.root_dir / self.config["directories"]["staticDir"]
-        static_output = self.output_dir / 'static'
-        
-        if static_dir.exists():
-            if static_output.exists():
-                shutil.rmtree(static_output)
-            shutil.copytree(static_dir, static_output)
-    
-    def _copy_framework_apps(self) -> int:
-        """Copy built framework apps to the output directory."""
-        copied_count = 0
-        app_dir = self.config.get("directories", {}).get("appDir", "apps")
-        
-        for framework_data in self.frameworks_list:
-            framework_id = framework_data.get("id")
-            build_config = framework_data.get("build", {})
-            build_dir = build_config.get("dir", "dist")
-            
-            # Handle special cases for build directories (same as serve.py)
-            if framework_id == "svelte":
-                build_dir = "build"
-            elif framework_id == "angular":
-                build_dir = "dist/weather-app-angular"
-            elif framework_id in ["vanilla", "alpine"]:
-                build_dir = None
-            
-            # Construct source path
-            if build_dir:
-                source_path = self.root_dir / app_dir / framework_id / build_dir
-            else:
-                source_path = self.root_dir / app_dir / framework_id
-            
-            # Skip if not built
-            if not source_path.exists() or not (source_path / "index.html").exists():
-                console.print(f"⚠️  Skipping {framework_id} - not built")
-                continue
-            
-            # Copy to output directory
-            output_app_dir = self.output_dir / framework_id / "app"
-            
-            if output_app_dir.exists():
-                shutil.rmtree(output_app_dir)
-            
-            output_app_dir.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copytree(source_path, output_app_dir)
-            copied_count += 1
-        
-        return copied_count
-    
-    def _generate_additional_files(self) -> None:
-        """Generate additional files for deployment (robots.txt, sitemap, etc.)."""
-        
-        # Generate robots.txt
-        robots_content = f"""User-agent: *
-Allow: /
+    # Build website if not skipped and frameworks built successfully
+    if not skip_website and not framework:  # Only build website when building all frameworks
+        if successful == total:
+            console.print(f"\n[bold]Building website...[/bold]")
+            try:
+                build_website_script = Path(__file__).parent / "build_website.py"
+                if build_website_script.exists():
+                    result = subprocess.run([sys.executable, str(build_website_script), "--verbose"])
+                    if result.returncode == 0:
+                        console.print("[green]✓ Website built successfully[/green]")
+                    else:
+                        console.print("[red]✗ Website build failed[/red]")
+                else:
+                    console.print("[yellow]⚠ build_website.py not found, skipping website build[/yellow]")
+            except Exception as e:
+                console.print(f"[red]✗ Website build error: {str(e)[:100]}[/red]")
+                if ci:
+                    sys.exit(1)
+        else:
+            console.print("[yellow]⚠ Skipping website build due to framework build failures[/yellow]")
 
-Sitemap: {self.base_url}/sitemap.xml
-"""
-        with open(self.output_dir / "robots.txt", "w") as f:
-            f.write(robots_content)
-        
-        # Generate sitemap.xml
-        sitemap_urls = [self.base_url + "/"]
-        for framework in self.frameworks_list:
-            framework_id = framework.get("id")
-            if framework_id:
-                sitemap_urls.append(f"{self.base_url}/{framework_id}/")
-                sitemap_urls.append(f"{self.base_url}/{framework_id}/app/")
-        
-        sitemap_content = f"""<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-"""
-        for url in sitemap_urls:
-            sitemap_content += f"""  <url>
-    <loc>{url}</loc>
-    <lastmod>{self._get_build_date()}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-"""
-        sitemap_content += "</urlset>"
-        
-        with open(self.output_dir / "sitemap.xml", "w") as f:
-            f.write(sitemap_content)
-        
-        # Generate _redirects for Netlify (if needed)
-        redirects_content = """# Netlify redirects
-/*/source  https://github.com/anthropics/weather-front/tree/main/apps/:splat  302
-/*  /404/  404
-"""
-        with open(self.output_dir / "_redirects", "w") as f:
-            f.write(redirects_content)
-        
-        # Generate .htaccess for Apache (if needed)
-        htaccess_content = """# Apache redirects
-RewriteEngine On
-
-# Redirect source code requests to GitHub
-RewriteRule ^([^/]+)/source/?$ https://github.com/anthropics/weather-front/tree/main/apps/$1 [R=302,L]
-
-# Handle 404s
-ErrorDocument 404 /404/index.html
-
-# Security headers
-Header always set X-Frame-Options "SAMEORIGIN"
-Header always set X-Content-Type-Options "nosniff"
-Header always set Referrer-Policy "strict-origin-when-cross-origin"
-"""
-        with open(self.output_dir / ".htaccess", "w") as f:
-            f.write(htaccess_content)
-    
-    def _get_build_date(self) -> str:
-        """Get current date in ISO format for sitemap."""
-        from datetime import datetime
-        return datetime.now().strftime("%Y-%m-%d")
-
-
-@click.command()
-@click.option('--base-url', default="", help='Base URL for the deployed website')
-@click.option('--output', '-o', help='Output directory (overrides config)')
-@click.option('--no-clean', is_flag=True, help='Do not clean output directory first')
-@click.option('--verbose', '-v', is_flag=True, help='Verbose output')
-def build_website(base_url: str, output: str, no_clean: bool, verbose: bool):
-    """Build static website for deployment."""
-    
-    if verbose:
-        console.print("🔧 Building static framework comparison website...")
-        console.print(f"Base URL: {base_url or '(relative paths)'}")
-    
-    builder = StaticWebsiteBuilder(base_url=base_url)
-    
-    # Override output directory if specified
-    if output:
-        builder.output_dir = Path(output).resolve()
-    
-    if verbose:
-        console.print(f"Output directory: {builder.output_dir}")
-    
-    builder.build(clean=not no_clean)
-    
-    if verbose:
-        console.print(f"✨ Website ready for deployment!")
-
-
-if __name__ == "__main__":
-    build_website()
+if __name__ == '__main__':
+    build_all()
