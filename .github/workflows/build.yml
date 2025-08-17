@@ -249,7 +249,7 @@ jobs:
           if git ls-remote --exit-code --heads origin website >/dev/null 2>&1; then
             # git fetch origin website:website
             git fetch origin
-            git checkout website
+            git checkout origin website
             # git pull origin website || true
           else
             git checkout --orphan website
