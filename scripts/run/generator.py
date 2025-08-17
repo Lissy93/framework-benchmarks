@@ -55,10 +55,8 @@ class WebsiteGenerator:
         
         def url_for_static(filename: str) -> str:
             """Generate URL for static assets."""
-            if self.is_static:
-                return f"{self.base_url}/static/{filename}"
-            else:
-                return f"/static/{filename}"
+            prefix = f"{self.base_url}/static/" if self.is_static and self.base_url else ("static/" if self.is_static else "/static/")
+            return f"{prefix}{filename}"
         
         def url_for_framework(framework_id: str, path: str = "") -> str:
             """Generate URL for framework pages."""

@@ -214,7 +214,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: website
-          path: dist-website/**
+          path: dist-website/
           retention-days: 30
 
   deploy:
@@ -226,7 +226,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.BOT_TOKEN }}
           fetch-depth: 0
           
       - name: Download website
@@ -252,8 +251,8 @@ jobs:
           fi
 
           # Ensure artifact exists
-          if [ ! -d "website" ] || [ -z "$(ls -A website 2>/dev/null)" ]; then
-            echo "⚠️ No website files found in ./website"
+          if [ ! -d "website/dist-website" ] || [ -z "$(ls -A website/dist-website 2>/dev/null)" ]; then
+            echo "⚠️ No website files found in ./website/dist-website"
             exit 1
           fi
 
@@ -264,7 +263,7 @@ jobs:
             -exec rm -rf {} + 2>/dev/null || true
 
           # Copy (includes dotfiles)
-          cp -a website/. .
+          cp -a website/dist-website/. .
 
           # Remove the website directory after copying
           rm -rf website
