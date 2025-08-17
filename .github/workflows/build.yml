@@ -198,6 +198,8 @@ jobs:
         run: |
           echo "Building all frameworks for comparison website..."
           python scripts/run/build.py --for-comparison
+          echo "Generating static website..."
+          python scripts/run/build_website.py --verbose
           
       - name: Verify website generation
         run: |
@@ -273,12 +275,6 @@ jobs:
 
           # Remove the website directory after copying
           rm -rf website
-          
-          # Copy assets directory if it exists (overwrite conflicts)
-          if [ -d "assets" ]; then
-            echo "ℹ️ Copying assets directory..."
-            cp -a assets/. .
-          fi
 
           # Commit only if there are changes
           if git add -A && git diff --staged --quiet; then

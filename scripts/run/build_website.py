@@ -69,6 +69,11 @@ class StaticWebsiteBuilder:
             self._copy_static_assets()
             progress.update(assets_task, completed=1, total=1)
             
+            # Copy assets directory
+            project_assets_task = progress.add_task("Copying project assets...", total=None)
+            self._copy_project_assets()
+            progress.update(project_assets_task, completed=1, total=1)
+            
             # Copy framework apps for deployment
             apps_task = progress.add_task("Copying framework apps...", total=None)
             copied_apps = self._copy_framework_apps()
@@ -115,6 +120,23 @@ class StaticWebsiteBuilder:
             if static_output.exists():
                 shutil.rmtree(static_output)
             shutil.copytree(static_dir, static_output)
+    
+    def _copy_project_assets(self) -> None:
+        """Copy project assets directory to the output directory root."""
+        assets_dir = self.root_dir / self.config.get("directories", {}).get("assetsDir", "assets")
+        
+        if assets_dir.exists():
+            # Copy all contents of assets directory to output root
+            for item in assets_dir.iterdir():
+                dest = self.output_dir / item.name
+                if item.is_dir():
+                    if dest.exists():
+                        shutil.rmtree(dest)
+                    shutil.copytree(item, dest)
+                else:
+                    if dest.exists():
+                        dest.unlink()
+                    shutil.copy2(item, dest)
     
     def _copy_framework_apps(self) -> int:
         """Copy built framework apps to the output directory."""
