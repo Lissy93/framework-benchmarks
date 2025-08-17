@@ -201,7 +201,7 @@ jobs:
       - name: Upload website artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: website
+          name: dist-website
           path: dist-website
           retention-days: 30
 
@@ -220,7 +220,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: website
-          path: website
+          path: dist-website
           
       - name: Deploy to website branch
         run: |
@@ -229,15 +229,18 @@ jobs:
           ls -la
           echo ""
           echo "==== Website ==== "
-          ls -la website
+          ls -la dist-website
           echo ""
           echo "==== Static ==== "
-          ls -la website/static
+          ls -la dist-website/static
           echo ""
           echo "==== CSS==== "
-          ls -la website/static/css
+          ls -la dist-website/static/css
 
-          cp -r website/static website/static2
+          cp -r dist-website/static dist-website/static2
+
+          echo "=== Okkk ===="
+          ls -la dist-website
         
           git config user.name 'liss-bot'
           git config user.email 'alicia-gh-bot@mail.as93.net'
@@ -269,9 +272,9 @@ jobs:
           #   -exec rm -rf {} + 2>/dev/null || true
 
           # Copy website files (includes dotfiles)
-          ls website/static
+          ls dist-website/static
           # cp -a website/static/ ./
-          cp -aL website/. .
+          cp -aL dist-website/. .
           ls -la 
           
           echo "==== Root ==== "
