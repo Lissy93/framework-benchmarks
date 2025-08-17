@@ -122,63 +122,22 @@ jobs:
       - name: Build ${{ matrix.framework }}
         id: build-run
         run: |
-          if python scripts/run/build.py --framework ${{ matrix.framework }} --ci; then
+          if python scripts/run/build.py --framework ${{ matrix.framework }} --ci --for-comparison; then
             echo "status=success" >> $GITHUB_OUTPUT
           else
             echo "status=failure" >> $GITHUB_OUTPUT
             exit 1
           fi
           
-      - name: Prepare artifacts
+      - name: Log build status
         if: always()
         run: |
-          echo "Build status: ${{ steps.build-run.outputs.status }}"
-          cd apps/${{ matrix.framework }}
-          ls -la
-          echo "Looking for build outputs..."
-          
+          echo "Build status for ${{ matrix.framework }}: ${{ steps.build-run.outputs.status }}"
           if [ "${{ steps.build-run.outputs.status }}" == "success" ]; then
-            mkdir -p ../../artifacts/${{ matrix.framework }}
-            
-            # Use same logic as serve.py to find correct build directory
-            framework="${{ matrix.framework }}"
-            if [ "$framework" = "svelte" ]; then
-              build_dir="build"
-            elif [ "$framework" = "angular" ]; then
-              build_dir="dist/weather-app-angular"
-            elif [ "$framework" = "vanilla" ] || [ "$framework" = "alpine" ]; then
-              build_dir=""  # No build directory needed
-            else
-              build_dir="dist"  # Default for most frameworks
-            fi
-            
-            if [ -n "$build_dir" ] && [ -d "$build_dir" ]; then
-              echo "Found build directory: $build_dir"
-              cp -r "$build_dir"/* ../../artifacts/${{ matrix.framework }}/
-            elif [ -z "$build_dir" ]; then
-              echo "No build directory needed, copying source files"
-              # For frameworks without build step (alpine, vanilla)
-              cp -r * ../../artifacts/${{ matrix.framework }}/
-              # Remove node_modules if present
-              rm -rf ../../artifacts/${{ matrix.framework }}/node_modules
-            else
-              echo "Expected build directory '$build_dir' not found"
-              ls -la
-            fi
-            
-            echo "Artifact contents:"
-            ls -la ../../artifacts/${{ matrix.framework }}/ || echo "No artifacts created"
+            echo "✅ ${{ matrix.framework }} built successfully"
           else
-            echo "Build failed for ${{ matrix.framework }}, skipping artifact preparation"
+            echo "❌ ${{ matrix.framework }} build failed"
           fi
-          
-      - name: Upload build artifacts
-        if: steps.build-run.outputs.status == 'success'
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-${{ matrix.framework }}
-          path: artifacts/${{ matrix.framework }}/
-          retention-days: 7
           
       - name: Generate build badge
         if: always()
@@ -213,101 +172,49 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         
-      - name: Download all build artifacts
-        continue-on-error: true
-        uses: actions/download-artifact@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          pattern: build-*
-          path: builds
+          python-version: '3.9'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
           
-      - name: Create website structure
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+        
+      - name: Restore setup cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            apps/*/public
+            apps/*/static
+            assets
+          key: setup-cache-${{ github.sha }}
+          fail-on-cache-miss: true
+          
+      - name: Build all frameworks and generate website
         run: |
-          frameworks=$(echo '${{ needs.setup.outputs.frameworks }}' | jq -r '.[]' | tr '\n' ' ')
-          echo "Frameworks to process: $frameworks"
-          echo "Available build artifacts:"
-          ls -la builds/ || echo "No builds directory found"
-          if [ -d "builds" ]; then
-            echo "Contents of builds directory:"
-            find builds/ -type f | head -20
+          echo "Building all frameworks for comparison website..."
+          python scripts/run/build.py --for-comparison
+          
+      - name: Verify website generation
+        run: |
+          if [ -d "dist-website" ]; then
+            echo "✅ Website generated successfully"
+            echo "Generated files:"
+            find dist-website -type f | head -20
+          else
+            echo "❌ Website generation failed - dist-website directory not found"
+            exit 1
           fi
-          mkdir -p website
-          
-          # Create index.html
-          cat > website/index.html << 'EOF'
-          <!DOCTYPE html>
-          <html lang="en">
-          <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Weather App Demos</title>
-            <style>
-              body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui; margin: 2rem; }
-              .container { max-width: 800px; margin: 0 auto; }
-              .framework-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0; }
-              .framework-card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; text-decoration: none; color: inherit; }
-              .framework-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-              .framework-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem; }
-              .demo-link { color: #0066cc; }
-            </style>
-          </head>
-          <body>
-            <div class="container">
-              <h1>🌤️ Weather App Framework Demos</h1>
-              <p>Compare the same weather application built with different frontend frameworks.</p>
-              <div class="framework-grid">
-          EOF
-          
-          # Add framework cards
-          for framework in $frameworks; do
-            cat >> website/index.html << EOF
-                <a href="/${framework}/demo/" class="framework-card">
-                  <div class="framework-name">${framework^}</div>
-                  <div class="demo-link">View Demo →</div>
-                </a>
-          EOF
-          done
-          
-          cat >> website/index.html << 'EOF'
-              </div>
-            </div>
-          </body>
-          </html>
-          EOF
-          
-          # Create framework demo directories
-          for framework in $frameworks; do
-            framework_dir="website/${framework}/demo"
-            mkdir -p "$framework_dir"
-            
-            # Check if build artifacts exist 
-            artifact_path="builds/build-${framework}"
-            if [ -d "$artifact_path" ] && [ "$(ls -A "$artifact_path" 2>/dev/null)" ]; then
-              echo "Found artifacts at: $artifact_path"
-              cp -r "$artifact_path"/* "$framework_dir/"
-              echo "✅ Added ${framework} demo"
-            else
-              echo "⚠️ No artifacts found for ${framework} at $artifact_path, creating placeholder"
-              # Create placeholder if build failed
-              cat > "$framework_dir/index.html" << EOF
-          <!DOCTYPE html>
-          <html>
-          <head><title>${framework^} Demo - Build Failed</title></head>
-          <body>
-            <h1>Build Failed</h1>
-            <p>The ${framework} demo could not be built.</p>
-            <a href="/">← Back to all demos</a>
-          </body>
-          </html>
-          EOF
-              echo "⚠️ Build failed for ${framework}, added placeholder"
-            fi
-          done
           
       - name: Upload website artifacts
         uses: actions/upload-artifact@v4
         with:
           name: website
-          path: website/**
+          path: dist-website/**
           retention-days: 30
 
   deploy:
