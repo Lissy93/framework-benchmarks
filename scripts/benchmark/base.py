@@ -269,8 +269,11 @@ class BenchmarkRunner(ABC):
             results = self.results
         
         # Create output directory with date-based organization
-        project_root = Path(__file__).parent.parent.parent
+        project_root = Path(__file__).parent.parent.parent  # scripts/benchmark/ -> project root
         base_output_dir = project_root / self.output_config.get("directory", "benchmark-results")
+        
+        # Ensure the benchmark-results directory exists
+        base_output_dir.mkdir(parents=True, exist_ok=True)
         
         # Create date-based subdirectory for better organization
         date_str = datetime.now().strftime("%Y-%m-%d")

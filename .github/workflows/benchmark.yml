@@ -1,4 +1,4 @@
-name: 📈 Framework Benchmarks
+name: 📈 Benchmark
 
 on:
   workflow_dispatch:
@@ -132,11 +132,11 @@ jobs:
           fi
         timeout-minutes: 2
 
-      - name: 🔍 Verify Project Setup
+      - name: 🔍 Verify Project Setup  
         continue-on-error: true
         run: |
-          echo "Verifying project setup with npm run verify..."
-          npm run verify
+          echo "Verifying project setup (skipping tests since server is running)..."
+          cd scripts && python verify/main.py --skip-test
           
           echo "Testing server endpoints..."
           

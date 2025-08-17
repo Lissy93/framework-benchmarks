@@ -131,15 +131,22 @@ class ChromeLauncher:
                 preexec_fn=os.setsid if hasattr(os, 'setsid') else None
             )
             
-            # Wait for Chrome to start up with better timing
-            for attempt in range(20):
-                time.sleep(0.3)
+            # Wait for Chrome to start up with better timing and more attempts
+            for attempt in range(30):  # Increased attempts for CI environments
+                time.sleep(0.5)  # Longer sleep for stability
                 if self.is_remote_chrome_available():
                     console.print(f"[green]Chrome launched on port {self.port}[/green]")
                     return True
                 # Check if process died
                 if self.process.poll() is not None:
                     console.print(f"[red]Chrome process died with exit code {self.process.returncode}[/red]")
+                    # Try to read stderr for more info
+                    try:
+                        _, stderr = self.process.communicate(timeout=1)
+                        if stderr:
+                            console.print(f"[red]Chrome stderr: {stderr.decode()[:200]}[/red]")
+                    except:
+                        pass
                     break
             
             console.print("[red]Chrome failed to start remote debugging[/red]")

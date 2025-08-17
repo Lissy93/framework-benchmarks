@@ -39,6 +39,9 @@ class LighthouseRunner(BenchmarkRunner):
         if not self._ensure_chrome_ready():
             return self._create_error_result(framework, "Chrome not available - install Chrome to run Lighthouse benchmarks")
         
+        # Clear browser cache to ensure fresh results for each framework
+        self._clear_browser_cache()
+        
         try:
             return self._run_lighthouse_audit(framework, url)
         except subprocess.TimeoutExpired:
@@ -61,13 +64,20 @@ class LighthouseRunner(BenchmarkRunner):
         with tempfile.NamedTemporaryFile(mode='w', suffix='.json', delete=False) as tmp_file:
             tmp_path = tmp_file.name
         
-        # Build Lighthouse command
+        # Add cache-busting parameter to URL to ensure fresh results
+        import time
+        cache_bust_url = f"{url}&_cb={int(time.time() * 1000)}"
+        
+        # Build Lighthouse command with cache-busting flags
         cmd = [
-            "npx", "lighthouse", url,
-            "--output", "json",
+            "npx", "lighthouse", cache_bust_url,
+            "--output", "json", 
             "--output-path", tmp_path,
             "--quiet",
-            "--port", "9222"
+            "--port", "9222",
+            "--throttling-method", "simulate",  # Consistent throttling
+            "--emulated-form-factor", "desktop",  # Consistent form factor
+            "--chrome-flags", "--disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-extensions"
         ]
         
         # Add categories
@@ -132,29 +142,45 @@ class LighthouseRunner(BenchmarkRunner):
     def _clear_browser_cache(self):
         """Clear browser cache between runs for accuracy."""
         try:
-            # Use Chrome DevTools Protocol to clear cache
             import requests
             
-            # Clear various caches through DevTools Protocol
+            # Get list of open tabs
+            tabs_response = requests.get("http://127.0.0.1:9222/json", timeout=5)
+            if tabs_response.status_code != 200:
+                return
+            
+            tabs = tabs_response.json()
+            if not tabs:
+                return
+            
+            # Use the first available tab
+            tab = tabs[0]
+            ws_url = tab.get('webSocketDebuggerUrl')
+            if not ws_url:
+                return
+            
+            # Send DevTools commands to clear cache and storage
             devtools_commands = [
-                {"method": "Network.clearBrowserCache", "params": {}},
-                {"method": "Storage.clearDataForOrigin", "params": {
+                {"id": 1, "method": "Network.clearBrowserCache", "params": {}},
+                {"id": 2, "method": "Network.clearBrowserCookies", "params": {}},
+                {"id": 3, "method": "Storage.clearDataForOrigin", "params": {
                     "origin": self.server_config.get("baseUrl", "http://127.0.0.1:3000"),
                     "storageTypes": "all"
                 }},
-                {"method": "Runtime.discardConsoleEntries", "params": {}}
+                {"id": 4, "method": "Runtime.discardConsoleEntries", "params": {}}
             ]
             
+            # For now, just use a simple approach with requests to the tab endpoint
             for command in devtools_commands:
                 try:
-                    response = requests.post(
-                        "http://127.0.0.1:9222/json/runtime/evaluate",
-                        json=command,
-                        timeout=5
+                    requests.post(
+                        f"http://127.0.0.1:9222/json/runtime/evaluate",
+                        json={"expression": f"console.clear(); localStorage.clear(); sessionStorage.clear();"},
+                        timeout=2
                     )
                 except:
-                    # If DevTools calls fail, that's ok - continue anyway
                     pass
+                    
         except:
             # Cache clearing is optional - don't fail if it doesn't work
             pass

@@ -53,11 +53,19 @@ class DevServerRunner(BenchmarkRunner):
     
     def _find_framework_dir(self, framework_config: Dict) -> Optional[Path]:
         """Find the framework directory."""
-        for possible_path in [Path("../../apps"), Path("apps"), Path("./apps")]:
+        script_dir = Path(__file__).parent
+        project_root = script_dir.parent.parent  # Go up from scripts/benchmark/ to project root
+        
+        for possible_path in [
+            project_root / "apps",    # From project root
+            Path("../../apps"),       # Relative from scripts/benchmark/
+            Path("apps"),             # From current working directory
+            Path("./apps")            # Alternative current directory
+        ]:
             if possible_path.exists():
                 framework_dir = possible_path / framework_config["dir"]
                 if framework_dir.exists():
-                    return framework_dir
+                    return framework_dir.resolve()  # Get absolute path
         return None
     
     def _extract_port_from_command(self, dev_command: str) -> int:

@@ -136,11 +136,19 @@ class BuildTimeRunner(BenchmarkRunner):
                 build_command = "npx vite build"
             elif build_command == "ng build":
                 build_command = "npx ng build"
-            # Find apps directory - could be relative to script or to cwd
+            # Find apps directory - look from project root
             apps_dir = None
-            for possible_path in [Path("../../apps"), Path("apps"), Path("./apps")]:
+            script_dir = Path(__file__).parent
+            project_root = script_dir.parent.parent  # Go up from scripts/benchmark/ to project root
+            
+            for possible_path in [
+                project_root / "apps",    # From project root
+                Path("../../apps"),       # Relative from scripts/benchmark/
+                Path("apps"),             # From current working directory
+                Path("./apps")            # Alternative current directory
+            ]:
                 if possible_path.exists():
-                    apps_dir = possible_path
+                    apps_dir = possible_path.resolve()  # Get absolute path
                     break
             
             if not apps_dir:

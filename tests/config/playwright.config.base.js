@@ -136,8 +136,14 @@ function createConfig(framework) {
 
     webServer: {
       ...config.webServer,
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: !process.env.CI, 
       timeout: 30 * 1000,
+      // In CI, skip starting web server if it's already running
+      ...(process.env.CI && process.env.SKIP_WEBSERVER ? {
+        command: undefined,
+        url: undefined,
+        reuseExistingServer: true
+      } : {})
     },
   });
 }

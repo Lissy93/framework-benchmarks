@@ -356,6 +356,26 @@ def all(type: str, frameworks: str, detailed: bool, save: bool, executions: int)
             successful, failed = [r for r in results if r.success], [r for r in results if not r.success]
             console.print(f"{benchmark_type.replace('-', ' ').title()}: {len(successful)} passed, {len(failed)} failed")
     
+    # Ensure benchmark-results directory exists even if all benchmarks failed
+    if save:
+        from pathlib import Path
+        project_root = Path(__file__).parent.parent
+        benchmark_results_dir = project_root / "benchmark-results"
+        benchmark_results_dir.mkdir(exist_ok=True)
+        
+        # Create a summary file indicating what was attempted
+        from datetime import datetime
+        summary_file = benchmark_results_dir / f"summary_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+        summary_data = {
+            "timestamp": datetime.now().isoformat(),
+            "attempted_benchmarks": benchmark_types,
+            "completed_benchmarks": [bt for bt, results in all_results.items() if results],
+            "total_results": {bt: len(results) for bt, results in all_results.items()}
+        }
+        with open(summary_file, 'w') as f:
+            import json
+            json.dump(summary_data, f, indent=2)
+    
     total_failed = sum(len([r for r in results if not r.success]) for results in all_results.values())
     total_successful = sum(len([r for r in results if r.success]) for results in all_results.values())
     
