@@ -228,12 +228,6 @@ jobs:
           git config user.name 'liss-bot'
           git config user.email 'alicia-gh-bot@mail.as93.net'
 
-          # Debug: Confirm artifact exists before git operations
-          echo "🔍 Artifact contents before git operations:"
-          ls -la website-artifact/ || echo "❌ No website-artifact directory"
-          ls -la website-artifact/static/ || echo "❌ No static directory in artifact"
-          echo "Static directory file count: $(find website-artifact/static -type f 2>/dev/null | wc -l)"
-
           # Switch to website branch (create if missing)
           if git ls-remote --exit-code --heads origin website >/dev/null 2>&1; then
             git fetch origin website:website
@@ -243,12 +237,6 @@ jobs:
             git checkout --orphan website
             git commit --allow-empty -m "init website branch" || true
           fi
-
-          # Debug: Confirm artifact still exists after git operations
-          echo "🔍 Artifact contents after git operations:"
-          ls -la website-artifact/ || echo "❌ No website-artifact directory after git ops"
-          ls -la website-artifact/static/ || echo "❌ No static directory after git ops"
-          echo "Static directory file count after git ops: $(find website-artifact/static -type f 2>/dev/null | wc -l)"
 
           # Ensure artifact exists
           if [ ! -d "website-artifact" ] || [ -z "$(ls -A website-artifact 2>/dev/null)" ]; then
@@ -264,22 +252,12 @@ jobs:
 
           # Copy website files (includes dotfiles)
           cp -a website-artifact/. .
-          
-          # Debug: Confirm static directory was copied
-          echo "🔍 Files after copy:"
-          ls -la static/ || echo "❌ No static directory after copy"
-          echo "Static directory file count after copy: $(find static -type f 2>/dev/null | wc -l)"
 
           # Remove the website-artifact directory after copying
           rm -rf website-artifact
 
           # Commit only if there are changes
           git add -A
-          git add -f static/** || true
-          echo "Files staged for commit:"
-          git diff --staged --name-only | head -20
-          echo "Checking if static directory is staged:"
-          git diff --staged --name-only | grep "static/" || echo "No static files staged"
           
           if git diff --staged --quiet; then
             echo "ℹ️ No website changes to deploy"
