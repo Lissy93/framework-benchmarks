@@ -264,7 +264,9 @@ jobs:
             -exec rm -rf {} + 2>/dev/null || true
 
           # Copy website files (includes dotfiles)
-          cp -a website/. .
+          # mkdir static
+          # cp -a website/static/ ./static/
+          cp -aL website/. .
 
           # Remove the website directory after copying
           rm -rf website
