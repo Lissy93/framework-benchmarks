@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather App - jQuery</title>
+    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg">
+    <link rel="stylesheet" href="/jquery/app/styles/design-system.css">
+    <link rel="stylesheet" href="/jquery/app/styles/variables.css">
+    <link rel="stylesheet" href="/jquery/app/styles/base.css">
+    <link rel="stylesheet" href="/jquery/app/styles/components.css">
+  <script type="module" crossorigin src="/jquery/app/assets/main-tGEXmxu0.js"></script>
+  <link rel="stylesheet" crossorigin href="/jquery/app/assets/main-B8yDWYWW.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1 class="header__title">Weather Front</h1>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <section class="search-section">
+                <form class="search-form" data-testid="search-form">
+                    <div class="search-form__group">
+                        <label for="location-input" class="sr-only">Enter city name</label>
+                        <input 
+                            type="text" 
+                            id="location-input"
+                            class="search-input" 
+                            placeholder="Enter city name..."
+                            data-testid="search-input"
+                            autocomplete="off"
+                        >
+                        <button type="submit" class="search-button" data-testid="search-button">
+                            <span class="search-button__text">Get Weather</span>
+                            <span class="search-button__icon">🌦️</span>
+                        </button>
+                    </div>
+                </form>
+            </section>
+
+            <div class="weather-container" data-testid="weather-container">
+                <!-- Loading State -->
+                <div class="loading" data-testid="loading" hidden>
+                    <div class="loading__spinner"></div>
+                    <p>Loading weather data...</p>
+                </div>
+
+                <!-- Error State -->
+                <div class="error" data-testid="error" hidden>
+                    <h2 class="error__title">Unable to load weather data</h2>
+                    <p class="error__message"></p>
+                </div>
+
+                <!-- Weather Content -->
+                <div class="weather-content" data-testid="weather-content" hidden>
+                    <div class="weather-layout">
+                        <!-- Current Weather -->
+                        <section class="current-section">
+                            <h2 class="section-title">Current Weather</h2>
+                            <div class="weather-card" data-testid="current-weather">
+                                <div class="current-weather">
+                                    <h3 class="current-weather__location" data-testid="current-location"></h3>
+                                    <div class="current-weather__main">
+                                        <div class="current-weather__icon" data-testid="current-icon">🌤️</div>
+                                        <div class="current-weather__temp-group">
+                                            <div class="current-weather__temp" data-testid="current-temperature"></div>
+                                            <div class="current-weather__condition" data-testid="current-condition"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="current-weather__details">
+                                        <div class="weather-detail">
+                                            <div class="weather-detail__label">Feels like</div>
+                                            <div class="weather-detail__value" data-testid="feels-like"></div>
+                                        </div>
+                                        <div class="weather-detail">
+                                            <div class="weather-detail__label">Humidity</div>
+                                            <div class="weather-detail__value" data-testid="humidity"></div>
+                                        </div>
+                                        <div class="weather-detail">
+                                            <div class="weather-detail__label">Wind Speed</div>
+                                            <div class="weather-detail__value" data-testid="wind-speed"></div>
+                                        </div>
+                                        <div class="weather-detail">
+                                            <div class="weather-detail__label">Pressure</div>
+                                            <div class="weather-detail__value" data-testid="pressure"></div>
+                                        </div>
+                                        <div class="weather-detail">
+                                            <div class="weather-detail__label">Cloud Cover</div>
+                                            <div class="weather-detail__value" data-testid="cloud-cover"></div>
+                                        </div>
+                                        <div class="weather-detail">
+                                            <div class="weather-detail__label">Wind Direction</div>
+                                            <div class="weather-detail__value" data-testid="wind-direction"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <!-- Forecast -->
+                        <section class="forecast-section">
+                            <h2 class="section-title">7-Day Forecast</h2>
+                            <div class="forecast">
+                                <div class="forecast__list" data-testid="forecast-list">
+                                    <!-- Forecast items will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p class="footer__text">
+                Built with jQuery • MIT License • 
+                <a href="https://github.com/Lissy93" class="footer__link" target="_blank" rel="noopener">Alicia Sykes</a>
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>

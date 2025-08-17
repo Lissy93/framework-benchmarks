@@ -1,73 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Weather App Demos</title>
-  <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui; margin: 2rem; }
-    .container { max-width: 800px; margin: 0 auto; }
-    .framework-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin: 2rem 0; }
-    .framework-card { border: 1px solid #ddd; border-radius: 8px; padding: 1rem; text-decoration: none; color: inherit; }
-    .framework-card:hover { box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-    .framework-name { font-size: 1.2rem; font-weight: bold; margin-bottom: 0.5rem; }
-    .demo-link { color: #0066cc; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frontend Framework Comparison - Compare Frontend Frameworks</title>
+    <meta name="description" content="A comprehensive comparison of modern frontend frameworks">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/static/images/favicon.ico">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/main.css">
+<link rel="stylesheet" href="/static/css/homepage.css">
+    
+    <!-- Meta tags for social sharing -->
+    <meta property="og:title" content="Frontend Framework Comparison">
+    <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
-  <div class="container">
-    <h1>🌤️ Weather App Framework Demos</h1>
-    <p>Compare the same weather application built with different frontend frameworks.</p>
-    <div class="framework-grid">
-      <a href="/vanilla/demo/" class="framework-card">
-        <div class="framework-name">Vanilla</div>
-        <div class="demo-link">View Demo →</div>
-      </a>
-      <a href="/react/demo/" class="framework-card">
-        <div class="framework-name">React</div>
-        <div class="demo-link">View Demo →</div>
-      </a>
-      <a href="/angular/demo/" class="framework-card">
-        <div class="framework-name">Angular</div>
-        <div class="demo-link">View Demo →</div>
-      </a>
-      <a href="/svelte/demo/" class="framework-card">
-        <div class="framework-name">Svelte</div>
-        <div class="demo-link">View Demo →</div>
-      </a>
-      <a href="/preact/demo/" class="framework-card">
-        <div class="framework-name">Preact</div>
-        <div class="demo-link">View Demo →</div>
-      </a>
-      <a href="/solid/demo/" class="framework-card">
-        <div class="framework-name">Solid</div>
-        <div class="demo-link">View Demo →</div>
-      </a>
-      <a href="/qwik/demo/" class="framework-card">
-        <div class="framework-name">Qwik</div>
-        <div class="demo-link">View Demo →</div>
-      </a>
-      <a href="/vue/demo/" class="framework-card">
-        <div class="framework-name">Vue</div>
-        <div class="demo-link">View Demo →</div>
-      </a>
-      <a href="/jquery/demo/" class="framework-card">
-        <div class="framework-name">Jquery</div>
-        <div class="demo-link">View Demo →</div>
-      </a>
-      <a href="/alpine/demo/" class="framework-card">
-        <div class="framework-name">Alpine</div>
-        <div class="demo-link">View Demo →</div>
-      </a>
-      <a href="/lit/demo/" class="framework-card">
-        <div class="framework-name">Lit</div>
-        <div class="demo-link">View Demo →</div>
-      </a>
-      <a href="/vanjs/demo/" class="framework-card">
-        <div class="framework-name">Vanjs</div>
-        <div class="demo-link">View Demo →</div>
-      </a>
-    </div>
-  </div>
+    <header class="main-header">
+        <nav class="navigation">
+            <a href="/" class="nav-logo">
+                <h1>Frontend Framework Comparison</h1>
+            </a>
+            <div class="nav-links">
+                <a href="/" class="nav-link active">Home</a>
+                <a href="https://github.com/anthropics/weather-front" class="nav-link" target="_blank">GitHub</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+<div class="homepage">
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Compare Frontend Frameworks</h2>
+            <p>Explore 12 different frontend frameworks through identical weather applications. Compare performance, bundle size, and development experience.</p>
+        </div>
+    </section>
+    
+    <section class="frameworks-grid">
+        <h3>Available Frameworks</h3>
+        <div class="grid">
+            <div class="framework-card" data-framework="vanilla">
+                <div class="framework-icon">
+                    <div class="framework-fallback">V</div>
+                </div>
+                
+                <h4>Vanilla JS</h4>
+                <p class="framework-description">A modern frontend framework</p>
+                
+                <div class="framework-meta">
+                    <span class="framework-category">Framework</span>
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/vanilla/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/vanilla" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="framework-card" data-framework="react">
+                <div class="framework-icon">
+                    <div class="framework-fallback">R</div>
+                </div>
+                
+                <h4>React</h4>
+                <p class="framework-description">A modern frontend framework</p>
+                
+                <div class="framework-meta">
+                    <span class="framework-category">Framework</span>
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/react/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/react" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="framework-card" data-framework="angular">
+                <div class="framework-icon">
+                    <div class="framework-fallback">A</div>
+                </div>
+                
+                <h4>Angular</h4>
+                <p class="framework-description">A modern frontend framework</p>
+                
+                <div class="framework-meta">
+                    <span class="framework-category">Framework</span>
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/angular/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/angular" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="framework-card" data-framework="svelte">
+                <div class="framework-icon">
+                    <div class="framework-fallback">S</div>
+                </div>
+                
+                <h4>Svelte</h4>
+                <p class="framework-description">A modern frontend framework</p>
+                
+                <div class="framework-meta">
+                    <span class="framework-category">Framework</span>
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/svelte/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/svelte" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="framework-card" data-framework="preact">
+                <div class="framework-icon">
+                    <div class="framework-fallback">P</div>
+                </div>
+                
+                <h4>Preact</h4>
+                <p class="framework-description">A modern frontend framework</p>
+                
+                <div class="framework-meta">
+                    <span class="framework-category">Framework</span>
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/preact/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/preact" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="framework-card" data-framework="solid">
+                <div class="framework-icon">
+                    <div class="framework-fallback">S</div>
+                </div>
+                
+                <h4>Solid.js</h4>
+                <p class="framework-description">A modern frontend framework</p>
+                
+                <div class="framework-meta">
+                    <span class="framework-category">Framework</span>
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/solid/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/solid" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="framework-card" data-framework="qwik">
+                <div class="framework-icon">
+                    <div class="framework-fallback">Q</div>
+                </div>
+                
+                <h4>Qwik</h4>
+                <p class="framework-description">A modern frontend framework</p>
+                
+                <div class="framework-meta">
+                    <span class="framework-category">Framework</span>
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/qwik/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/qwik" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="framework-card" data-framework="vue">
+                <div class="framework-icon">
+                    <div class="framework-fallback">V</div>
+                </div>
+                
+                <h4>Vue</h4>
+                <p class="framework-description">A modern frontend framework</p>
+                
+                <div class="framework-meta">
+                    <span class="framework-category">Framework</span>
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/vue/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/vue" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="framework-card" data-framework="jquery">
+                <div class="framework-icon">
+                    <div class="framework-fallback">j</div>
+                </div>
+                
+                <h4>jQuery</h4>
+                <p class="framework-description">A modern frontend framework</p>
+                
+                <div class="framework-meta">
+                    <span class="framework-category">Framework</span>
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/jquery/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/jquery" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="framework-card" data-framework="alpine">
+                <div class="framework-icon">
+                    <div class="framework-fallback">A</div>
+                </div>
+                
+                <h4>Alpine.js</h4>
+                <p class="framework-description">A modern frontend framework</p>
+                
+                <div class="framework-meta">
+                    <span class="framework-category">Framework</span>
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/alpine/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/alpine" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="framework-card" data-framework="lit">
+                <div class="framework-icon">
+                    <div class="framework-fallback">L</div>
+                </div>
+                
+                <h4>Lit</h4>
+                <p class="framework-description">A modern frontend framework</p>
+                
+                <div class="framework-meta">
+                    <span class="framework-category">Framework</span>
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/lit/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/lit" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="framework-card" data-framework="vanjs">
+                <div class="framework-icon">
+                    <div class="framework-fallback">V</div>
+                </div>
+                
+                <h4>VanJS</h4>
+                <p class="framework-description">A modern frontend framework</p>
+                
+                <div class="framework-meta">
+                    <span class="framework-category">Framework</span>
+                </div>
+                
+                <div class="framework-actions">
+                    <a href="/vanjs/app" class="btn btn-primary">
+                        <span>Try App</span>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                        </svg>
+                    </a>
+                    <a href="/vanjs" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="features">
+        <div class="features-content">
+            <h3>What's Included</h3>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">⚡</div>
+                    <h4>Performance Testing</h4>
+                    <p>Lighthouse audits, bundle analysis, and runtime performance metrics</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h4>Bundle Analysis</h4>
+                    <p>Compare JavaScript and CSS bundle sizes across frameworks</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔍</div>
+                    <h4>Source Code</h4>
+                    <p>Identical weather app implemented in each framework for fair comparison</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🛠️</div>
+                    <h4>Development Experience</h4>
+                    <p>Build times, development server startup, and tooling comparison</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+    </main>
+    
+    <footer class="main-footer">
+        <div class="footer-content">
+            <p>&copy; 2024 Frontend Framework Comparison. Open source project.</p>
+            <div class="footer-links">
+                <a href="https://github.com/anthropics/weather-front" target="_blank">GitHub</a>
+                <a href="https://github.com/anthropics/weather-front/issues" target="_blank">Issues</a>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
 </body>
 </html>
