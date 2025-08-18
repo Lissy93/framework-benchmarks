@@ -7,7 +7,7 @@
 <div class="framework-page" style="--fw-color: {{ framework.meta.color or '#3498db' }};">
     <div class="framework-grid">
         <!-- Hero Section -->
-        <div class="framework-hero">
+        <article class="framework-hero">
             <img class="hero-icon" 
                  src="https://cdn.simpleicons.org/{{ framework.meta.iconName or framework.id }}"
                  alt="{{ framework.meta.emoji or '🔧' }}"
@@ -16,9 +16,24 @@
             
             <div class="hero-content">
                 <h2>{{ framework.name or framework.displayName or framework.id.title() }}</h2>
-                <p class="hero-tagline">{{ framework.meta.description or "A modern frontend framework for building fast web applications" }}</p>
+                <p class="hero-tagline">{{ framework.meta.description or "A web frontend framework" }}</p>
+                <!-- <p class="her-subtagline">{{ framework.meta.longDescription }}</p> -->
+            
+            {% if framework.meta and (framework.meta.website or framework.meta.github) %}
+            <div class="resource-links">
+                {% if framework.meta.website %}
+                <a href="{{ framework.meta.website }}" target="_blank" class="resource-link" title="{{ framework.name }} Official Website">Website</a>
+                {% endif %}
+                {% if framework.meta.github %}
+                <a href="{{ framework.meta.github }}" target="_blank" class="resource-link" title="{{ framework.name }} Sourcecode">GitHub</a>
+                {% endif %}
+                {% if framework.meta.docs %}
+                <a href="{{ framework.meta.docs }}" target="_blank" class="resource-link"  title="{{ framework.name }} Documentation">Docs</a>
+                {% endif %}
             </div>
-        </div>
+            {% endif %}
+            </div>
+        </article>
         
         <!-- Action Cards -->
         <div class="framework-actions">
@@ -26,18 +41,93 @@
                 <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17L17 7M17 7H7M17 7V17"/>
                 </svg>
-                <span>Try Weather App</span>
+                <div>
+                    <h4>Demo</h4>
+                    <span>View {{framework.name}} Weather App</span>
+                </div>
             </a>
-            <a href="/{{ framework.id }}/source" class="action-card">
+            <a href="https://github.com/Lissy93/weather-front/tree/main/apps/{{ framework.id }}" class="action-card">
                 <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M16 18L22 12L16 6M8 6L2 12L8 18"/>
                 </svg>
-                <span>View Source</span>
+                <div>
+                    <h4>GitHub</h4>
+                    <span>View {{framework.name}} Weather App Source</span>
+                </div>
             </a>
         </div>
+
+        <article class="framework-status">
+            <h3>Status</h3>
+            <ul class="status-list">
+                <li title="Lint checks for {{ framework.name }}">
+                    <span class="tech-key">Lint</span>
+                    <img class="badge" src="https://https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/lint-{{framework.id}}.svg" />
+                </li>
+                <li title="Build and deployment status for {{ framework.name }}">
+                    <span class="tech-key">Build</span>
+                    <img class="badge" src="https://https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/build-{{framework.id}}.svg" />
+                </li>
+                <li title="Unit and integration tests for {{ framework.name }}">
+                    <span class="tech-key">Test</span>
+                    <img class="badge" src="https://https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/test-{{framework.id}}.svg" />
+                    <!--  -->
+                </li>
+            </ul>
+        </article>
+
+        <article class="framework-links">
+            <h3>Links</h3>
+            <ul class="links-list">
+                <li><a href="https://github.com/lissy93/weather-front">View on GitHub</a></li>
+                <li><a href="/{{ framework.id }}/app/">{{framework.name}} App Demo</a></li>
+                <li><a href="https://github.com/Lissy93/weather-front/tree/main/apps/{{ framework.id }}">{{framework.name}} App Source</a></li>
+                <li><a href="https://github.com/Lissy93/weather-front/blob/main/.github/CONTRIBUTING.md">Contributing</a></li>
+                <li><a href="https://github.com/Lissy93/weather-front/blob/main/LICENSE">License</a></li>
+                <li><a href="https://as93.net">More Apps</a></li>
+            </ul>
+        </article>
+
+        <article class="app-requirements-section">
+            <h3>App Requirements</h3>
+            <p>
+                The purpose of this project, was to build the same identical app in <i>every</i> frontend framework, in order to benchmark and compare their performance.
+                As such, each app is built to meet identical requirements, which are then verified with the test suite.
+            </p>
+            <div class="requirement-group">
+                <div>
+                    <h4>Technical Requirements</h4>
+                    <ul>
+                        <li>Binding user input and validation</li>
+                        <li>Fetching external data asynchronously</li>
+                        <li>Basic state management of components</li>
+                        <li>Handling fallback views (loading, errors)</li>
+                        <li>Using browser features (location, storage, etc)</li>
+                        <li>Logic blocks, for iterative content and conditionals</li>
+                        <li>Lifecycle methods (mounting, updating, unmounting)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Feature Requirements</h4>
+                    <ul>
+                        <li>🌦️ Live weather conditions</li>
+                        <li>📅 7-day weather forecast</li>
+                        <li>🔍 City search functionality</li>
+                        <li>📍 Geolocation support</li>
+                        <li>💾 Persistent location storage</li>
+                        <li>📱 Responsive design</li>
+                        <li>♿ Accessible interface</li>
+                        <li>🎨 Multi-theme support</li>
+                        <li>🧪 Fully unit tested</li>
+                        <li>🌐 Internationalized</li>
+                    </ul>
+                </div>
+                <img class="screenshot" src="https://i.ibb.co/ymGkLnMY/weather-front.png" />
+            </div>
+        </article>
         
         <!-- Stats Grid -->
-        <div class="framework-stats">
+        <!-- <div class="framework-stats">
             <div class="stat-card">
                 <div class="stat-value">95</div>
                 <div class="stat-label">Performance</div>
@@ -50,53 +140,81 @@
                 <div class="stat-value">2.1s</div>
                 <div class="stat-label">Build Time</div>
             </div>
-        </div>
+        </div> -->
         
         <!-- Tech Details -->
-        <div class="framework-tech">
-            <h3>Technical Details</h3>
+        <article class="framework-tech">
+            <h3>Usage Instructions</h3>
+            <p>
+                First, follow the <a href="https://github.com/Lissy93/weather-front?tab=readme-ov-file#usage">repo setup instructions</a>
+                Then cd into 'apps/react' and and use the following commands:
+            </p>
+
             <ul class="tech-list">
-                <li>
+                <li title="{{ framework.build.buildCommand }}">
                     <span class="tech-key">Build Command</span>
-                    <span class="tech-value">{{ framework.build.buildCommand or "npm run build" }}</span>
+                    <span class="tech-value">npm run build</span>
                 </li>
-                <li>
+                <li title="{{framework.build.devCommand}}">
                     <span class="tech-key">Dev Command</span>
-                    <span class="tech-value">{{ framework.build.devCommand or "npm run dev" }}</span>
+                    <span class="tech-value">npm run dev</span>
                 </li>
-                <li>
+                <li title="{{framework.build.testCommand}}">
                     <span class="tech-key">Test Command</span>
-                    <span class="tech-value">{{ framework.build.testCommand or "npm test" }}</span>
+                    <span class="tech-value">npm run test</span>
                 </li>
-                <li>
-                    <span class="tech-key">Build Dir</span>
-                    <span class="tech-value">{{ framework.buildDir or "dist" }}</span>
+                <li title="Lint all {{ framework.build.lintFiles | join(', ') }} files">
+                    <span class="tech-key">Lint Command</span>
+                    <span class="tech-value" title="{{framework.build.testCommand}}">npm run lint</span>
                 </li>
-                {% if framework.build.lintFiles %}
-                <li>
-                    <span class="tech-key">Lint Files</span>
-                    <span class="tech-value">{{ framework.build.lintFiles | join(', ') }}</span>
+                <li title="Serves the built output from {{ framework.buildDir or "dist" }}">
+                    <span class="tech-key">Start</span>
+                    <span class="tech-value">npm start</span>
                 </li>
-                {% endif %}
             </ul>
-        </div>
+            <small>
+                For troubleshooting, use <code>npm run verify</code> from the root of the project.
+            </small>
+        </article>
+
+        
+        <article class="framework-example-app">
+            <h3>Real-world App</h3>
+            {% if framework.exampleRealApp.logo %}
+            Since the weather app is very simple, and doesn't show of the full features of a framework,
+            it may be helpful to see a more practical implementation of a {{ framework.name }} app. So, checkout:
+            <div class="example-app-info">
+                <a href="{{ framework.exampleRealApp.repo }}" target="_blank">
+                    <img src="{{ framework.exampleRealApp.logo }}" alt="{{ framework.exampleRealApp.title }} Logo" width="64" />
+                </a>
+                <div>
+                    <h4>{{framework.exampleRealApp.title}}</h4>
+                    <p>{{framework.exampleRealApp.longDescription or framework.exampleRealApp.description}}</p>
+                    <p class="example-app-links">
+                        <a href="{{ framework.exampleRealApp.website }}">Website</a>
+                        •
+                        <a href="{{ framework.exampleRealApp.repo }}">GitHub</a>
+                    </p>
+                </div>
+            <div>
+            {% else %}
+            <div>Coming soon...</div>
+            {% endif %}
+        </article>
         
         <!-- About Section -->
-        <div class="framework-about">
-            <h3>About {{ framework.name or framework.id.title() }}</h3>
-            <p>{{ framework.meta.description or (framework.name + " is a modern frontend framework that helps developers build fast, scalable web applications. This weather app demonstrates its capabilities in a real-world scenario.") }}</p>
-            
-            {% if framework.meta and (framework.meta.website or framework.meta.github) %}
-            <div class="resource-links">
-                {% if framework.meta.website %}
-                <a href="{{ framework.meta.website }}" target="_blank" class="resource-link">Website</a>
-                {% endif %}
-                {% if framework.meta.github %}
-                <a href="{{ framework.meta.github }}" target="_blank" class="resource-link">GitHub</a>
-                {% endif %}
+        <article class="framework-video">
+            <h3>Intro to {{ framework.name or framework.id.title() }}</h3>
+            <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/{{framework.meta.video}}" 
+                title="YouTube video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
             </div>
-            {% endif %}
-        </div>
+        </article>
         
         <!-- Navigation -->
         <div class="framework-nav">

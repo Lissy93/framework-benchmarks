@@ -126,6 +126,7 @@ Git, Node (LTS or v22+), Python (3.10) and uv installed
 git clone git@github.com:Lissy93/weather-front.git
 cd weather-front
 npm install
+pip install -r scripts/requirements.txt
 npm run setup
 ```
 

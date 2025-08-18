@@ -78,7 +78,7 @@
           },
           "meta": {
             "type": "object",
-            "required": ["emoji", "iconName", "website", "github", "color", "accentColor"],
+            "required": ["emoji", "iconName", "website", "docs", "github", "color", "accentColor", "logo", "description", "longDescription", "video"],
             "properties": {
               "emoji": {
                 "type": "string",
@@ -94,6 +94,11 @@
                 "type": "string",
                 "format": "uri",
                 "description": "Official framework website"
+              },
+              "docs": {
+                "type": "string",
+                "pattern": "^(https?://.+|)$",
+                "description": "Documentation URL (can be empty)"
               },
               "github": {
                 "type": "string",
@@ -112,7 +117,22 @@
               },
               "logo": {
                 "type": "string",
+                "pattern": "^(https?://.+|)$",
                 "description": "Logo URL (can be empty)"
+              },
+              "description": {
+                "type": "string",
+                "maxLength": 80,
+                "description": "Short description (max 80 characters)"
+              },
+              "longDescription": {
+                "type": "string",
+                "description": "Longer description sentence about what makes the framework unique"
+              },
+              "video": {
+                "type": "string",
+                "pattern": "^(https?://.+|)$",
+                "description": "Video URL (can be empty)"
               }
             },
             "additionalProperties": false
