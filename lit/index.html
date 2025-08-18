@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lit - Frontend Framework Comparison</title>
+    <title>Lit - Framework Benchmarks</title>
     <meta name="description" content="Learn about Lit, explore the weather app implementation, and view performance metrics.">
     
     <!-- Favicon -->
@@ -14,123 +14,266 @@
 <link rel="stylesheet" href="static/css/framework.css">
     
     <!-- Meta tags for social sharing -->
-    <meta property="og:title" content="Frontend Framework Comparison">
+    <meta property="og:title" content="Framework Benchmarks">
     <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
-    <header class="main-header">
+    <header>
         <nav class="navigation">
             <a href="/" class="nav-logo">
-                <h1>Frontend Framework Comparison</h1>
+                <div class="site-name">
+                    <h1>Framework Benchmarks</h1>
+                    <p>Comparing every frontend framework</p>
+                </div>
             </a>
+            <div class="nav-center">
+
+            </div>
             <div class="nav-links">
                 <a href="/" class="nav-link">Home</a>
-                <a href="https://github.com/anthropics/weather-front" class="nav-link" target="_blank">GitHub</a>
+                <a href="https://github.com/lissy93/weather-front" class="nav-link" target="_blank">GitHub</a>
             </div>
         </nav>
     </header>
     
     <main class="main-content">
-<div class="framework-page">
-    <section class="framework-header">
-        <div class="framework-hero">
-            <div class="framework-icon-large">
-                <div class="framework-fallback-large">L</div>
-            </div>
+<div class="framework-page" style="--fw-color: #324fff;">
+    <div class="framework-grid">
+        <!-- Hero Section -->
+        <article class="framework-hero">
+            <img class="hero-icon" 
+                 src="https://cdn.simpleicons.org/lit"
+                 alt="🔥"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">L</div>
             
-            <div class="framework-info">
+            <div class="hero-content">
                 <h2>Lit</h2>
-                <p class="framework-tagline">A modern frontend framework</p>
-                
-                <div class="framework-meta-large">
-                </div>
-                
-                <div class="framework-actions-large">
-                    <a href="/lit/app" class="btn btn-primary btn-large">
-                        <span>Try Weather App</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M7 17L17 7M17 7H7M17 7V17"/>
-                        </svg>
-                    </a>
-                    <a href="/lit/source" class="btn btn-secondary btn-large">
-                        <span>View Source Code</span>
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M16 18L22 12L16 6M8 6L2 12L8 18"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    
-    <section class="framework-details">
-        <div class="details-grid">
-            <div class="detail-section">
-                <h3>About Lit</h3>
-                <div class="detail-content">
-                    <p>Lit is a modern frontend framework that helps developers build fast, scalable web applications. This weather app demonstrates its capabilities in a real-world scenario.</p>
-                    
-                    <h4>Official Resources</h4>
-                    <ul>
-                        <li><strong>Website:</strong> <a href="https://lit.dev/" target="_blank">https://lit.dev/</a></li>
-                        <li><strong>GitHub:</strong> <a href="https://github.com/lit/lit" target="_blank">https://github.com/lit/lit</a></li>
-                    </ul>
-                </div>
-            </div>
+                <p class="hero-tagline">Web Components library built on standard APIs with efficient updates</p>
+                <!-- <p class="her-subtagline">Simple library for building web components with declarative templates.</p> -->
             
-            <div class="detail-section">
-                <h3>Implementation Details</h3>
-                <div class="detail-content">
-                    <h4>Build Configuration</h4>
+            <div class="resource-links">
+                <a href="https://lit.dev/" target="_blank" class="resource-link" title="Lit Official Website">Website</a>
+                <a href="https://github.com/lit/lit" target="_blank" class="resource-link" title="Lit Sourcecode">GitHub</a>
+                <a href="https://lit.dev/docs/" target="_blank" class="resource-link"  title="Lit Documentation">Docs</a>
+            </div>
+            </div>
+        </article>
+        
+        <!-- Action Cards -->
+        <div class="framework-actions">
+            <a href="/lit/app/" class="action-card action-primary">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                </svg>
+                <div>
+                    <h4>Demo</h4>
+                    <span>View Lit Weather App</span>
+                </div>
+            </a>
+            <a href="https://github.com/Lissy93/weather-front/tree/main/apps/lit" class="action-card">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 18L22 12L16 6M8 6L2 12L8 18"/>
+                </svg>
+                <div>
+                    <h4>GitHub</h4>
+                    <span>View Lit Weather App Source</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="group-header group-header-app">
+            <h2>About the Lit Weather Front App</h2>
+        </div>
+
+        <article class="framework-status">
+            <h3>Status</h3>
+            <ul class="status-list">
+                <li title="Lint checks for Lit">
+                    <span class="tech-key">Lint</span>
+                    <img class="badge" src="https://https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/lint-lit.svg" />
+                </li>
+                <li title="Build and deployment status for Lit">
+                    <span class="tech-key">Build</span>
+                    <img class="badge" src="https://https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/build-lit.svg" />
+                </li>
+                <li title="Unit and integration tests for Lit">
+                    <span class="tech-key">Test</span>
+                    <img class="badge" src="https://https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/test-lit.svg" />
+                </li>
+            </ul>
+        </article>
+
+        <article class="framework-links">
+            <h3>Links</h3>
+            <ul class="links-list">
+                <li><a href="https://github.com/lissy93/weather-front">View on GitHub</a></li>
+                <li><a href="/lit/app/">Lit App Demo</a></li>
+                <li><a href="https://github.com/Lissy93/weather-front/tree/main/apps/lit">Lit App Source</a></li>
+                <li><a href="https://github.com/Lissy93/weather-front/blob/main/.github/CONTRIBUTING.md">Contributing</a></li>
+                <li><a href="https://github.com/Lissy93/weather-front/blob/main/LICENSE">License</a></li>
+                <li><a href="https://as93.net">More Apps</a></li>
+            </ul>
+        </article>
+
+        <!-- Tech Details -->
+        <article class="framework-tech">
+            <h3>Usage Instructions</h3>
+            <p>
+                First, follow the <a href="https://github.com/Lissy93/weather-front?tab=readme-ov-file#usage">repo setup instructions</a>
+                Then cd into 'apps/lit' and and use the following commands:
+            </p>
+
+            <ul class="tech-list">
+                <li title="vite --port 3000">
+                    <span class="tech-key">Dev Command</span>
+                    <span class="tech-value">npm run dev</span>
+                </li>
+                <li title="playwright test --config=tests/config/playwright-lit.config.js">
+                    <span class="tech-key">Test Command</span>
+                    <span class="tech-value">npm run test</span>
+                </li>
+                <li title="Lint all js files">
+                    <span class="tech-key">Lint Command</span>
+                    <span class="tech-value" title="playwright test --config=tests/config/playwright-lit.config.js">npm run lint</span>
+                </li>
+                <li title="vite build">
+                    <span class="tech-key">Build Command</span>
+                    <span class="tech-value">npm run build</span>
+                </li>
+                <li title="Serves the built output from dist">
+                    <span class="tech-key">Start</span>
+                    <span class="tech-value">npm start</span>
+                </li>
+            </ul>
+            <small>
+                For troubleshooting, use <code>npm run verify</code> from the root of the project.
+            </small>
+        </article>
+
+
+        <article class="app-requirements-section">
+            <h3>App Requirements</h3>
+            <p>
+                The purpose of this project, was to build the same identical app in <i>every</i> frontend framework, in order to benchmark and compare their performance.
+                As such, each app is built to meet identical requirements, which are then verified with the test suite.
+            </p>
+            <div class="requirement-group">
+                <div>
+                    <h4>Technical Requirements</h4>
                     <ul>
-                        <li><strong>Build Command:</strong> <code>vite build</code></li>
-                        <li><strong>Build Directory:</strong> <code>dist</code></li>
-                        <li><strong>Has Node Modules:</strong> Yes</li>
-                    </ul>
-                    
-                    <h4>Development</h4>
-                    <ul>
-                        <li><strong>Dev Command:</strong> <code>vite --port 3000</code></li>
-                        <li><strong>Test Command:</strong> <code>playwright test --config=tests/config/playwright-lit.config.js</code></li>
-                        <li><strong>Lint Files:</strong> js</li>
+                        <li>Binding user input and validation</li>
+                        <li>Fetching external data asynchronously</li>
+                        <li>Basic state management of components</li>
+                        <li>Handling fallback views (loading, errors)</li>
+                        <li>Using browser features (location, storage, etc)</li>
+                        <li>Logic blocks, for iterative content and conditionals</li>
+                        <li>Lifecycle methods (mounting, updating, unmounting)</li>
                     </ul>
                 </div>
+                <div>
+                    <h4>Feature Requirements</h4>
+                    <ul>
+                        <li>🌦️ Live weather conditions</li>
+                        <li>📅 7-day weather forecast</li>
+                        <li>🔍 City search functionality</li>
+                        <li>📍 Geolocation support</li>
+                        <li>💾 Persistent location storage</li>
+                        <li>📱 Responsive design</li>
+                        <li>♿ Accessible interface</li>
+                        <li>🎨 Multi-theme support</li>
+                        <li>🧪 Fully unit tested</li>
+                        <li>🌐 Internationalized</li>
+                    </ul>
+                </div>
+                <img class="screenshot" src="https://i.ibb.co/ymGkLnMY/weather-front.png" />
             </div>
-        </div>
-    </section>
+        </article>
+        
+        <!-- Stats Grid -->
+        <!-- <div class="framework-stats">
+            <div class="stat-card">
+                <div class="stat-value">95</div>
+                <div class="stat-label">Performance</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">42kb</div>
+                <div class="stat-label">Bundle Size</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">2.1s</div>
+                <div class="stat-label">Build Time</div>
+            </div>
+        </div> -->
     
-    <section class="framework-navigation">
-        <div class="nav-grid">
-            <a href="/alpine" class="nav-item nav-prev">
+        <div class="group-header group-header-info">
+            <h2>About Lit</h2>
+        </div>
+        <article class="framework-example-app">
+            <h3>Real-world App</h3>
+            Since the weather app is very simple, and doesn't show of the full features of a framework,
+            it may be helpful to see a more practical implementation of a Lit app. So, checkout:
+            <div class="example-app-info">
+                <a href="https://github.com/Lissy93/email-comparison" target="_blank">
+                    <img src="https://storage.googleapis.com/as93-screenshots/project-logos/email-comparison.png" alt="Email Comparison Logo" width="64" />
+                </a>
+                <div>
+                    <h4>Email Comparison</h4>
+                    <p>An objective comparison of privacy-respecting email providers</p>
+                    <p class="example-app-links">
+                        <a href="https://email-comparison.as93.net/">Website</a>
+                        •
+                        <a href="https://github.com/Lissy93/email-comparison">GitHub</a>
+                    </p>
+                </div>
+            <div>
+        </article>
+        
+        <!-- About Section -->
+        <article class="framework-video">
+            <h3>Intro to Lit</h3>
+            <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/Jy0dMy2qDMo" 
+                title="YouTube video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
+            </div>
+        </article>
+        
+        <!-- Navigation -->
+        <div class="framework-nav">
+            <a href="/alpine/" class="nav-card">
                 <div class="nav-label">Previous</div>
                 <div class="nav-title">Alpine.js</div>
             </a>
             
-            <a href="/" class="nav-item nav-home">
-                <div class="nav-label">All Frameworks</div>
-                <div class="nav-title">Back to Homepage</div>
+            <a href="/" class="nav-card">
+                <div class="nav-label">Home</div>
+                <div class="nav-title">All Frameworks</div>
             </a>
             
-            <a href="/vanjs" class="nav-item nav-next">
+            <a href="/vanjs/" class="nav-card">
                 <div class="nav-label">Next</div>
                 <div class="nav-title">VanJS</div>
             </a>
         </div>
-    </section>
+    </div>
 </div>
     </main>
     
-    <footer class="main-footer">
-        <div class="footer-content">
-            <p>&copy; 2024 Frontend Framework Comparison. Open source project.</p>
-            <div class="footer-links">
-                <a href="https://github.com/anthropics/weather-front" target="_blank">GitHub</a>
-                <a href="https://github.com/anthropics/weather-front/issues" target="_blank">Issues</a>
-            </div>
-        </div>
+    <footer>
+        <i>Free and open source, forever</i>
+        <p>
+            <a href="https://github.com/lissy93/weather-front">lissy93/weather-front</a>
+            Licensed under
+            <a href="https://github.com/Lissy93/weather-front/blob/main/LICENSE">MIT</a>
+             • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
+        </p>
     </footer>
     
     <!-- JavaScript -->
