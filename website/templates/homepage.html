@@ -30,7 +30,10 @@
     <p>Use these URLs for automated performance testing:</p>
     <ul class="url-list">
         {% for framework in frameworks %}
-        <li>{{ config.baseUrl or 'http://localhost:3000' }}/{{ framework.id }}/app/</li>
+        <li style="--fw-color: {{ framework.meta.color or '#3498db' }};">
+            <h4>{{ framework.name }}</h4>
+            <code>{{ config.baseUrl or 'http://localhost:3000' }}/{{ framework.id }}/app?mock=true</code>
+        </li>
         {% endfor %}
     </ul>
     <a href="/health" class="health-link">🔍 View Server Health Check</a>
