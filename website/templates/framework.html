@@ -57,6 +57,10 @@
             </a>
         </div>
 
+        <div class="group-header group-header-app">
+            <h2>About the {{framework.name}} Weather Front App</h2>
+        </div>
+
         <article class="framework-status">
             <h3>Status</h3>
             <ul class="status-list">
@@ -71,7 +75,6 @@
                 <li title="Unit and integration tests for {{ framework.name }}">
                     <span class="tech-key">Test</span>
                     <img class="badge" src="https://https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/test-{{framework.id}}.svg" />
-                    <!--  -->
                 </li>
             </ul>
         </article>
@@ -87,6 +90,42 @@
                 <li><a href="https://as93.net">More Apps</a></li>
             </ul>
         </article>
+
+        <!-- Tech Details -->
+        <article class="framework-tech">
+            <h3>Usage Instructions</h3>
+            <p>
+                First, follow the <a href="https://github.com/Lissy93/weather-front?tab=readme-ov-file#usage">repo setup instructions</a>
+                Then cd into 'apps/{{framework.id}}' and and use the following commands:
+            </p>
+
+            <ul class="tech-list">
+                <li title="{{framework.build.devCommand}}">
+                    <span class="tech-key">Dev Command</span>
+                    <span class="tech-value">npm run dev</span>
+                </li>
+                <li title="{{framework.build.testCommand}}">
+                    <span class="tech-key">Test Command</span>
+                    <span class="tech-value">npm run test</span>
+                </li>
+                <li title="Lint all {{ framework.build.lintFiles | join(', ') }} files">
+                    <span class="tech-key">Lint Command</span>
+                    <span class="tech-value" title="{{framework.build.testCommand}}">npm run lint</span>
+                </li>
+                <li title="{{ framework.build.buildCommand }}">
+                    <span class="tech-key">Build Command</span>
+                    <span class="tech-value">npm run build</span>
+                </li>
+                <li title="Serves the built output from {{ framework.buildDir or "dist" }}">
+                    <span class="tech-key">Start</span>
+                    <span class="tech-value">npm start</span>
+                </li>
+            </ul>
+            <small>
+                For troubleshooting, use <code>npm run verify</code> from the root of the project.
+            </small>
+        </article>
+
 
         <article class="app-requirements-section">
             <h3>App Requirements</h3>
@@ -141,43 +180,10 @@
                 <div class="stat-label">Build Time</div>
             </div>
         </div> -->
-        
-        <!-- Tech Details -->
-        <article class="framework-tech">
-            <h3>Usage Instructions</h3>
-            <p>
-                First, follow the <a href="https://github.com/Lissy93/weather-front?tab=readme-ov-file#usage">repo setup instructions</a>
-                Then cd into 'apps/react' and and use the following commands:
-            </p>
-
-            <ul class="tech-list">
-                <li title="{{ framework.build.buildCommand }}">
-                    <span class="tech-key">Build Command</span>
-                    <span class="tech-value">npm run build</span>
-                </li>
-                <li title="{{framework.build.devCommand}}">
-                    <span class="tech-key">Dev Command</span>
-                    <span class="tech-value">npm run dev</span>
-                </li>
-                <li title="{{framework.build.testCommand}}">
-                    <span class="tech-key">Test Command</span>
-                    <span class="tech-value">npm run test</span>
-                </li>
-                <li title="Lint all {{ framework.build.lintFiles | join(', ') }} files">
-                    <span class="tech-key">Lint Command</span>
-                    <span class="tech-value" title="{{framework.build.testCommand}}">npm run lint</span>
-                </li>
-                <li title="Serves the built output from {{ framework.buildDir or "dist" }}">
-                    <span class="tech-key">Start</span>
-                    <span class="tech-value">npm start</span>
-                </li>
-            </ul>
-            <small>
-                For troubleshooting, use <code>npm run verify</code> from the root of the project.
-            </small>
-        </article>
-
-        
+    
+        <div class="group-header group-header-info">
+            <h2>About {{framework.name}}</h2>
+        </div>
         <article class="framework-example-app">
             <h3>Real-world App</h3>
             {% if framework.exampleRealApp.logo %}

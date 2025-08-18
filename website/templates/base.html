@@ -20,14 +20,20 @@
     <meta name="twitter:card" content="summary_large_image">
 </head>
 <body>
-    <header class="main-header">
+    <header>
         <nav class="navigation">
             <a href="/" class="nav-logo">
-                <h1>{{ config.website.title }}</h1>
+                <div class="site-name">
+                    <h1>{{ config.website.title }}</h1>
+                    <p>Comparing every frontend framework</p>
+                </div>
             </a>
+            <div class="nav-center">
+
+            </div>
             <div class="nav-links">
                 <a href="/" class="nav-link{% if page_type == 'homepage' %} active{% endif %}">Home</a>
-                <a href="https://github.com/anthropics/weather-front" class="nav-link" target="_blank">GitHub</a>
+                <a href="https://github.com/lissy93/weather-front" class="nav-link" target="_blank">GitHub</a>
             </div>
         </nav>
     </header>
@@ -36,14 +42,14 @@
         {% block content %}{% endblock %}
     </main>
     
-    <footer class="main-footer">
-        <div class="footer-content">
-            <p>&copy; 2024 Frontend Framework Comparison. Open source project.</p>
-            <div class="footer-links">
-                <a href="https://github.com/anthropics/weather-front" target="_blank">GitHub</a>
-                <a href="https://github.com/anthropics/weather-front/issues" target="_blank">Issues</a>
-            </div>
-        </div>
+    <footer>
+        <i>Free and open source, forever</i>
+        <p>
+            <a href="https://github.com/lissy93/weather-front">lissy93/weather-front</a>
+            Licensed under
+            <a href="https://github.com/Lissy93/weather-front/blob/main/LICENSE">MIT</a>
+             • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
+        </p>
     </footer>
     
     <!-- JavaScript -->
