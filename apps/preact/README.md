@@ -10,9 +10,8 @@
 <!-- start_usage -->
 <!-- end_usage -->
 
-<!-- start_framework_specific -->
 ## Preact Implementation
-
+<!-- start_framework_specific -->
 If you love React but hate the bundle size, Preact is your best friend. It's essentially React, but 3KB instead of 40KB. Same hooks, same JSX, same mental model - just way more efficient. You can literally take a React component, change the import from `react` to `preact`, and it'll work.
 
 For our weather app, switching from React to Preact required basically zero changes. The `useWeatherData` custom hook works identically, functional components behave the same, and `useState` does exactly what you'd expect. But the compiled bundle is drastically smaller and noticeably faster.

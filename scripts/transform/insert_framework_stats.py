@@ -102,6 +102,12 @@ def build_table(frws: list[dict], stats_by_id: dict[str, dict]) -> str:
         lines.append("| " + " | ".join(row) + " |")
     return "\n".join(lines)
 
+def build_logo_links(frws: list[dict], base_url: str = "https://framework-benchmarks.as93.net") -> str:
+    """generate framework logo links block"""
+    links = [f'<a href="{base_url}/{f["id"]}/"><img width="48" src="{f.get("meta",{}).get("logo","")}" /></a>' 
+             for f in frws if f.get("id") and f.get("meta",{}).get("logo")]
+    return f'<p align="center">\n    {chr(10).join(f"    {link}" for link in links)}\n</p>'
+
 def replace_between(text: str, start: str, end: str, block: str) -> str:
     """replace text between markers (markers preserved)"""
     pattern = re.compile(rf"({re.escape(start)})(.*)({re.escape(end)})", re.DOTALL)
@@ -128,6 +134,7 @@ def main(readme_path: str | None):
 
     frws = read_json(frames_p).get("frameworks", [])
     table = build_table(frws, stats_by_id)
+    logos = build_logo_links(frws)
 
     with open(readme_p, "r", encoding="utf-8") as f:
         readme_txt = f.read()
@@ -137,6 +144,12 @@ def main(readme_path: str | None):
         "<!-- start_framework_stats -->",
         "<!-- end_framework_stats -->",
         table,
+    )
+    new_txt = replace_between(
+        new_txt,
+        "<!-- start_framework_list -->",
+        "<!-- end_framework_list -->",
+        logos,
     )
 
     with open(readme_p, "w", encoding="utf-8") as f:

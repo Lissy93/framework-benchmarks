@@ -10,14 +10,13 @@
 <!-- start_usage -->
 <!-- end_usage -->
 
-<!-- start_framework_specific -->
 ## Lit Implementation
+<!-- start_framework_specific -->
+Lit can feel like stepping back into the old React class component days, but actually the cohesion to web standards makes Lit pretty... lit. It's built around Web Components, which is both its greatest strength and biggest frustration. Everything is properly encapsulated and framework-agnostic, but the developer experience feels surprisingly verbose for 2025.
 
-Lit feels like stepping back into the old React class component days, but with web standards. It's built around Web Components, which is both its greatest strength and biggest frustration. Everything is properly encapsulated and framework-agnostic, but the developer experience feels surprisingly verbose for 2024.
+The weird expression syntax has caught me out a lot. Want to bind a property? Use `.value="${this.temp}"`. A boolean attribute? `?disabled="${this.loading}"`. An event listener? `@click="${this.handleClick}"`. It's functional once you memorize the symbols, but it breaks the flow when you're trying to think about business logic.
 
-The weird expression syntax caught me constantly. Want to bind a property? Use `.value="${this.temp}"`. A boolean attribute? `?disabled="${this.loading}"`. An event listener? `@click="${this.handleClick}"`. It's functional once you memorize the symbols, but it breaks the flow when you're trying to think about business logic.
-
-Class-based components feel outdated after years of hooks and functional patterns. Creating a simple weather display requires extending `LitElement`, defining `@property` decorators, implementing `render()`, and handling lifecycle methods manually. It works, but feels like unnecessary ceremony.
+Class-based components can feel outdated after years of hooks and functional patterns. Creating a simple weather display requires extending `LitElement`, defining `@property` decorators, implementing `render()`, and handling lifecycle methods manually. It works, but feels like unnecessary ceremony.
 
 ### Notable files
 - `src/weather-app.js` - Main application as a custom element

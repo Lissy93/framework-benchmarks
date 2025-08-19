@@ -36,28 +36,24 @@ So, without further ado, let's see how every framework weathers the storm! ⛈�
 
 ---
 
-## Summary
+## Frameworks Covered
 
-### Frameworks Covered
-- ✅ Alpine.js
-- ✅ Angular
-- ✅ jQuery
-- ✅ Lit
-- ✅ Preact
-- ✅ Qwik
-- ✅ React
-- ✅ Solid
-- ✅ Svelte
-- ✅ Van.js
-- ✅ Vanilla JS
-- ✅ Vue
-- Aurelia
-- Marko
-- Nue
-- Rax
-- Riot.js
-- Ember
-- Backbone
+<!-- start_framework_list -->
+<p align="center">
+        <a href="https://framework-benchmarks.as93.net/vanilla/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/javascript.png" /></a>
+    <a href="https://framework-benchmarks.as93.net/react/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/react.png" /></a>
+    <a href="https://framework-benchmarks.as93.net/angular/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/angular.png" /></a>
+    <a href="https://framework-benchmarks.as93.net/svelte/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/svelte.png" /></a>
+    <a href="https://framework-benchmarks.as93.net/preact/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/preact.png" /></a>
+    <a href="https://framework-benchmarks.as93.net/solid/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/solid.png" /></a>
+    <a href="https://framework-benchmarks.as93.net/qwik/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/qwik.png" /></a>
+    <a href="https://framework-benchmarks.as93.net/vue/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vue.png" /></a>
+    <a href="https://framework-benchmarks.as93.net/jquery/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/jquery.png" /></a>
+    <a href="https://framework-benchmarks.as93.net/alpine/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/alpine.png" /></a>
+    <a href="https://framework-benchmarks.as93.net/lit/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/lit.png" /></a>
+    <a href="https://framework-benchmarks.as93.net/vanjs/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vanjs.png" /></a>
+</p>
+<!-- end_framework_list -->
 
 ---
 
@@ -244,17 +240,17 @@ Each app gets built and tested to ensure that it is functional, compliant with t
 <!-- start_framework_stats -->
 | Framework | Stars | Downloads | Size | Contributors | Age | Last updated | License |
 |---|---|---|---|---|---|---|---|
-| <a href="https://github.com/facebook/react"><img src="https://react.dev/android-chrome-192x192.png" alt="⚛️" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**React**](https://github.com/facebook/react) | 238.2k | 178.7M | 1071.4 MB | 1.9k | 12.2y | 12 hours ago | MIT |
-| <a href="https://github.com/angular/angular"><img src="https://angular.io/assets/images/logos/angular/angular.png" alt="🅰️" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Angular**](https://github.com/angular/angular) | 98.5k | 16.2M | 549.2 MB | 2.5k | 10.9y | 3 hours ago | MIT |
-| <a href="https://github.com/sveltejs/svelte"><img src="https://svelte.dev/svelte-logo.png" alt="🔥" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Svelte**](https://github.com/sveltejs/svelte) | 83.8k | 8.2M | 113.2 MB | 855 | 8.8y | 19 hours ago | MIT |
-| <a href="https://github.com/preactjs/preact"><img src="https://preactjs.com/assets/app-icon.png" alt="💜" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Preact**](https://github.com/preactjs/preact) | 37.9k | 29.4M | 17.5 MB | 364 | 9.9y | 2 days ago | MIT |
-| <a href="https://github.com/solidjs/solid"><img src="https://www.solidjs.com/img/logo/with-text/logo.png" alt="🚀" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Solid.js**](https://github.com/solidjs/solid) | 34.1k | 3M | 13.7 MB | 176 | 7.3y | 6 days ago | MIT |
-| <a href="https://github.com/BuilderIO/qwik"><img src="https://qwik.builder.io/logos/qwik-logo.svg" alt="⚡" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Qwik**](https://github.com/BuilderIO/qwik) | 21.6k | 107k | 57.1 MB | 613 | 4.5y | 1 day ago | MIT |
-| <a href="https://github.com/vuejs/core"><img src="https://vuejs.org/logo.svg" alt="💚" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Vue 3**](https://github.com/vuejs/core) | 51.3k | 27.9M | 36.0 MB | 559 | 6.9y | 3 weeks ago | MIT |
-| <a href="https://github.com/jquery/jquery"><img src="https://jquery.com/jquery-wp-content/themes/jquery/images/logo-jquery.png" alt="💙" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**jQuery**](https://github.com/jquery/jquery) | 59.5k | 65.1M | 34.3 MB | 343 | 19.4y | 15 hours ago | MIT |
-| <a href="https://github.com/alpinejs/alpine"><img src="https://alpinejs.dev/alpine_long.svg" alt="🏔️" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Alpine.js**](https://github.com/alpinejs/alpine) | 30.2k | 1.2M | 9.0 MB | 291 | 5.7y | 1 month ago | MIT |
-| <a href="https://github.com/lit/lit"><img src="https://lit.dev/images/logo.svg" alt="🔥" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Lit**](https://github.com/lit/lit) | 20.1k | 14M | 58.4 MB | 202 | 8.1y | 2 weeks ago | BSD-3-Clause |
-| <a href="https://github.com/vanjs-org/van"><img src="https://vanjs.org/logo.svg" alt="🚐" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**VanJS**](https://github.com/vanjs-org/van) | 4.2k | 6.4k | 3.6 MB | 24 | 2.3y | 2 weeks ago | MIT |
+| <a href="https://github.com/facebook/react"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/react.png" alt="⚛️" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**React**](https://github.com/facebook/react) | 238.2k | 178.7M | 1070.5 MB | 1.9k | 12.2y | 18 hours ago | MIT |
+| <a href="https://github.com/angular/angular"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/angular.png" alt="🅰️" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Angular**](https://github.com/angular/angular) | 98.5k | 16.2M | 549.5 MB | 2.5k | 10.9y | 9 hours ago | MIT |
+| <a href="https://github.com/sveltejs/svelte"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/svelte.png" alt="🔥" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Svelte**](https://github.com/sveltejs/svelte) | 83.8k | 8.2M | 113.2 MB | 855 | 8.8y | 1 day ago | MIT |
+| <a href="https://github.com/preactjs/preact"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/preact.png" alt="💜" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Preact**](https://github.com/preactjs/preact) | 37.9k | 29.4M | 17.5 MB | 364 | 9.9y | 2 days ago | MIT |
+| <a href="https://github.com/solidjs/solid"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/solid.png" alt="🚀" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Solid.js**](https://github.com/solidjs/solid) | 34.1k | 3M | 13.7 MB | 176 | 7.3y | 6 days ago | MIT |
+| <a href="https://github.com/QwikDev/qwik"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/qwik.png" alt="⚡" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Qwik**](https://github.com/QwikDev/qwik) | 21.6k | 107k | 57.1 MB | 613 | 4.5y | 2 hours ago | MIT |
+| <a href="https://github.com/vuejs/core"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vue.png" alt="💚" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Vue 3**](https://github.com/vuejs/core) | 51.3k | 27.9M | 36.0 MB | 559 | 6.9y | 3 weeks ago | MIT |
+| <a href="https://github.com/jquery/jquery"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/jquery.png" alt="💙" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**jQuery**](https://github.com/jquery/jquery) | 59.5k | 65.1M | 34.3 MB | 343 | 19.4y | 22 hours ago | MIT |
+| <a href="https://github.com/alpinejs/alpine"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/alpine.png" alt="🏔️" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Alpine.js**](https://github.com/alpinejs/alpine) | 30.2k | 1.2M | 9.0 MB | 291 | 5.7y | 1 month ago | MIT |
+| <a href="https://github.com/lit/lit"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/lit.png" alt="🔥" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**Lit**](https://github.com/lit/lit) | 20.1k | 14M | 58.4 MB | 202 | 8.1y | 2 weeks ago | BSD-3-Clause |
+| <a href="https://github.com/vanjs-org/van"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vanjs.png" alt="🚐" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a> [**VanJS**](https://github.com/vanjs-org/van) | 4.2k | 6.4k | 3.6 MB | 24 | 2.3y | 2 weeks ago | MIT |
 <!-- end_framework_stats -->
 
 ---

@@ -10,9 +10,9 @@
 <!-- start_usage -->
 <!-- end_usage -->
 
-<!-- start_framework_specific -->
 ## jQuery Implementation
 
+<!-- start_framework_specific -->
 Let's be honest - building a modern app with jQuery in 2024 feels like showing up to a Formula 1 race with a vintage car. It'll get you there, but everyone will wonder what the f*ck you are on. Still, jQuery powered the web for over a decade, and is still actually very widley used (thanks WordPress), so it's worth understanding what made it so dominant. Nowadays pertty much everything jQuery could do, is implemented into ES6+ natively, so there's little point in jQuery (unless u r supporting IE11).
 
 The TL;DR of jQuery's magic was always in the simplicity. `$('#weather-display').html(weatherHtml)` just *works*. No virtual DOM, no component lifecycle, no build process - just select elements and manipulate them. The method chaining is genuinely elegant: `$('.forecast-item').addClass('active').fadeIn(300)` reads like English.

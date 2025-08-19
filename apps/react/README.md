@@ -10,9 +10,8 @@
 <!-- start_usage -->
 <!-- end_usage -->
 
-<!-- start_framework_specific -->
 ## React Implementation
-
+<!-- start_framework_specific -->
 React is everywhere, powering millions of websites and used by every major tech company. It's been around for over 12 years, and both React and its tooling are incredibly mature. There's a reason it became the default choice for so many teams - the ecosystem is massive, jobs are plentiful, and you can build basically anything.
 
 But it's not perfect. Our weather app showcases both React's strengths and frustrations. The component model is elegant, `useState` and `useEffect` work fine for simple state, and the custom `useWeatherData` hook abstracts the weather logic nicely. But you're constantly thinking about re-renders, dependency arrays, and manual memoization.

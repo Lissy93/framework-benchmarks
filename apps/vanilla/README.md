@@ -10,9 +10,9 @@
 <!-- start_usage -->
 <!-- end_usage -->
 
-<!-- start_framework_specific -->
 ## Vanilla JavaScript Implementation
 
+<!-- start_framework_specific -->
 This implementation uses pure JavaScript without any frameworks or build tools, representing the baseline web platform approach.
 
 <!-- end_framework_specific -->

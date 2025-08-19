@@ -3,87 +3,87 @@ const { defineConfig, devices } = require('@playwright/test');
 function createConfig(framework) {
   const configs = {
     vanilla: {
-      baseURL: 'http://localhost:3000/apps/vanilla?mock=true',
+      baseURL: 'http://localhost:3000/?mock=true',
       webServer: {
         command: 'npm run dev:vanilla',
-        url: 'http://localhost:3000?mock=true',
+        url: 'http://localhost:3000/',
       }
     },
     react: {
-      baseURL: 'http://localhost:3000?mock=true',
+      baseURL: 'http://localhost:3000/?mock=true',
       webServer: {
         command: 'npm run dev:react',
-        url: 'http://localhost:3000?mock=true',
+        url: 'http://localhost:3000/',
       }
     },
     angular: {
-      baseURL: 'http://localhost:3000?mock=true',
+      baseURL: 'http://localhost:3000/?mock=true',
       webServer: {
         command: 'npm run dev:angular',
-        url: 'http://localhost:3000?mock=true',
+        url: 'http://localhost:3000/',
       }
     },
     svelte: {
-      baseURL: 'http://localhost:3000?mock=true',
+      baseURL: 'http://localhost:3000/?mock=true',
       webServer: {
         command: 'npm run dev:svelte',
-        url: 'http://localhost:3000?mock=true',
+        url: 'http://localhost:3000/',
       }
     },
     preact: {
-      baseURL: 'http://localhost:3000?mock=true',
+      baseURL: 'http://localhost:3000/?mock=true',
       webServer: {
         command: 'npm run dev:preact',
-        url: 'http://localhost:3000?mock=true',
+        url: 'http://localhost:3000/',
       }
     },
     solid: {
-      baseURL: 'http://localhost:3000?mock=true',
+      baseURL: 'http://localhost:3000/?mock=true',
       webServer: {
         command: 'npm run dev:solid',
-        url: 'http://localhost:3000?mock=true',
+        url: 'http://localhost:3000/',
       }
     },
     qwik: {
-      baseURL: 'http://localhost:3000?mock=true',
+      baseURL: 'http://localhost:3000/?mock=true',
       webServer: {
         command: 'npm run dev:qwik',
-        url: 'http://localhost:3000?mock=true',
+        url: 'http://localhost:3000/',
       }
     },
     vue: {
-      baseURL: 'http://localhost:3000?mock=true',
+      baseURL: 'http://localhost:3000/?mock=true',
       webServer: {
         command: 'npm run dev:vue',
-        url: 'http://localhost:3000?mock=true',
+        url: 'http://localhost:3000/',
       }
     },
     jquery: {
-      baseURL: 'http://localhost:3000?mock=true',
+      baseURL: 'http://localhost:3000/?mock=true',
       webServer: {
         command: 'npm run dev:jquery',
-        url: 'http://localhost:3000?mock=true',
+        url: 'http://localhost:3000/',
       }
     },
     alpine: {
-      baseURL: 'http://localhost:3000/apps/alpine?mock=true',
+      baseURL: 'http://localhost:3000/?mock=true',
       webServer: {
         command: 'npm run dev:alpine',
-        url: 'http://localhost:3000?mock=true',
+        url: 'http://localhost:3000/',
       }
     },
     lit: {
-      baseURL: 'http://localhost:3000?mock=true',
+      baseURL: 'http://localhost:3000/?mock=true',
       webServer: {
         command: 'npm run dev:lit',
-        url: 'http://localhost:3000?mock=true',
+        url: 'http://localhost:3000/',
       }
     },
     vanjs: {
-      baseURL: 'http://localhost:3000?mock=true',
+      baseURL: 'http://localhost:3000/?mock=true',
       webServer: {
         command: 'npm run dev:vanjs',
-        url: 'http://localhost:3000?mock=true',
+        url: 'http://localhost:3000/',
       }
     }
   };

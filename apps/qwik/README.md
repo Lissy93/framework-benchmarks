@@ -10,9 +10,8 @@
 <!-- start_usage -->
 <!-- end_usage -->
 
-<!-- start_framework_specific -->
 ## Qwik Implementation
-
+<!-- start_framework_specific -->
 Qwik is kinda wild. It completely rethinks how web apps work by doing something called "resumability" - your page loads instantly with zero JavaScript, then individual components wake up only when you interact with them. It's like having a webpage that's asleep until you poke it.
 
 The secret is those `$` symbols everywhere. `component$()`, `useTask$()`, `onClick$()` - these aren't just weird syntax, they're lazy loading boundaries. Each `$` tells Qwik "this code can be loaded later when needed." So clicking a button doesn't load the entire app, it just loads that specific button's handler.

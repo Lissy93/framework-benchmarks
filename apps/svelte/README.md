@@ -10,9 +10,8 @@
 <!-- start_usage -->
 <!-- end_usage -->
 
-<!-- start_framework_specific -->
 ## Svelte Implementation
-
+<!-- start_framework_specific -->
 Svelte is just *fun*. There's something magical about writing `count += 1` and having the UI automatically update. No `useState`, no `useEffect`, no `ref()` - just assign to a variable and it reacts. This is how UI frameworks should work.
 
 Unlike React or Vue, Svelte doesn't ship a runtime. Your components get compiled into highly optimized vanilla JavaScript at build time. The result? Tiny bundles, blazing fast performance, and surprisingly readable compiled output. Our weather app compiles down to around 15KB, which is frankly ridiculous for a full-featured application.

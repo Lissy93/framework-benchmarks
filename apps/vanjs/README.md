@@ -10,9 +10,8 @@
 <!-- start_usage -->
 <!-- end_usage -->
 
-<!-- start_framework_specific -->
 ## VanJS Implementation
-
+<!-- start_framework_specific -->
 VanJS is impressively tiny - just 1KB of runtime with zero dependencies. It's basically "what if we took the reactive parts of modern frameworks and stripped away everything else?" The result is surprisingly elegant for simple applications, but you'll quickly bump into its limitations.
 
 The functional approach is refreshing after dealing with classes and complex component lifecycles. `van.state(initialValue)` creates reactive state, `van.tags.div()` creates DOM elements, and everything just works. Our weather app's temperature display is literally `van.tags.span(temperature)` - when `temperature` changes, the DOM updates automatically.

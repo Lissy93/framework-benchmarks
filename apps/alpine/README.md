@@ -10,9 +10,9 @@
 <!-- start_usage -->
 <!-- end_usage -->
 
-<!-- start_framework_specific -->
 ## Alpine Implementation
 
+<!-- start_framework_specific -->
 Alpine.js is like jQuery had a baby with Vue and decided to live directly in your HTML. It's refreshingly simple - you sprinkle a few `x-` attributes into your markup and suddenly you have reactive behavior. No build tools, no bundlers, no complexity. Just add a script tag and start building.
 
 The approach feels intuitive once you get it. `x-data` sets up your reactive state, `x-show` handles conditional rendering, and `x-for` loops through arrays. Our weather app's forecast list is just `<div x-for="day in forecast">` - no components, no imports, no ceremony.

@@ -80,14 +80,14 @@ test.describe('Weather App - Core Functionality', () => {
   });
 
   test('should display initial loading state', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('');
     
     // NOTE: This won't actually work, because Chromium hasn't got location permissions yet
     // await expect(page.locator('[data-testid="loading"]')).toBeVisible({ timeout: 5000 });
   });
 
   test('should display weather data after loading', async ({ page }) => {
-    await page.goto('/?mock=true');
+    await page.goto('');
     
     // Wait for weather data to load
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
@@ -124,7 +124,7 @@ test.describe('Weather App - Core Functionality', () => {
   });
 
   test('should allow city search', async ({ page }) => {
-    await page.goto('/?mock=true');
+    await page.goto('');
     
     // Wait for initial load
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
@@ -152,7 +152,7 @@ test.describe('Weather App - Core Functionality', () => {
   });
 
   test('should persist location in localStorage', async ({ page }) => {
-    await page.goto('/?mock=true');
+    await page.goto('');
     
     // Search for a city
     await page.locator('[data-testid="search-input"]').fill('London');
@@ -210,7 +210,7 @@ test.describe('Weather App - Core Functionality', () => {
   });
 
   test('should display all weather details', async ({ page }) => {
-    await page.goto('/?mock=true');
+    await page.goto('');
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
     
     // Check current weather details
@@ -227,7 +227,7 @@ test.describe('Weather App - Core Functionality', () => {
   test('should be responsive', async ({ page }) => {
     // Test mobile viewport
     await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto('/?mock=true');
+    await page.goto('');
     
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
     
@@ -237,7 +237,7 @@ test.describe('Weather App - Core Functionality', () => {
   });
 
   test('should have proper accessibility', async ({ page }) => {
-    await page.goto('/?mock=true');
+    await page.goto('');
     await expect(page.locator('[data-testid="current-weather"]')).toBeVisible();
     
     // Check for proper heading structure

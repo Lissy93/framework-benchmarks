@@ -10,9 +10,9 @@
 <!-- start_usage -->
 <!-- end_usage -->
 
-<!-- start_framework_specific -->
 ## Angular Implementation
 
+<!-- start_framework_specific -->
 Angular isn't the cool kid anymore, but it's incredibly solid and ships with absolutely everything you need. TypeScript from day one, dependency injection, forms, HTTP client, routing, testing utilities - it's all there, officially maintained and deeply integrated. No need to cobble together a stack from random npm packages.
 
 For our weather app, Angular did kinda feel like using a sledgehammer to crack a nut. Using the newer standalone components (no more `NgModule` boilerplate!) made things cleaner, but I was still writing a lot more code than I needed in Svelte or Vue. That said, everything does just works, and the TypeScript integration is phenomenal.
