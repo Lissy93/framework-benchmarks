@@ -6,6 +6,21 @@ from pathlib import Path
 from typing import Dict, List, Any, Optional
 from collections import defaultdict
 
+# Import averaging functions from TSV module to stay DRY
+from benchmark_results_tsv import (
+    get_all_files_by_type, average_benchmark_results, 
+    safe_average, safe_round
+)
+
+def convert_tsv_to_json_format(tsv_data: Dict[str, Any], benchmark_type: str) -> Dict[str, Any]:
+    """Convert flat TSV format to nested JSON format."""
+    if benchmark_type == "lighthouse":
+        return {
+            "raw_metrics": {k: tsv_data[k] for k in ["fcp", "lcp", "speed_index", "cls", "tbt"] if k in tsv_data},
+            "scores": {k: tsv_data[k] for k in ["performance", "accessibility", "best_practices", "seo"] if k in tsv_data}
+        }
+    return tsv_data  # Return flat structure for other types
+
 def extract_build_time_metrics(result: Dict[str, Any]) -> Dict[str, Any]:
     """Extract build time metrics with proper structure."""
     data = result.get("data", {})
@@ -105,7 +120,7 @@ def get_latest_file_by_type(directory: Path, benchmark_type: str) -> Optional[Pa
     # Sort by timestamp in filename (YYYYMMDD_HHMMSS)
     return max(files, key=lambda f: f.stem.split('_')[-1])
 
-def create_json_from_results(results_dir: Path, output_file: Path) -> None:
+def create_json_from_results(results_dir: Path, output_file: Path, use_average: bool = False) -> None:
     """Create structured JSON file from latest benchmark results."""
     # Get latest results by finding the most recent date directory
     date_dirs = [d for d in results_dir.iterdir() if d.is_dir() and d.name.count('-') == 2]
@@ -125,38 +140,67 @@ def create_json_from_results(results_dir: Path, output_file: Path) -> None:
     # Define benchmark types to process
     benchmark_types = ["build_time", "bundle_size", "dev_server", "lighthouse", "resource_usage", "source_analysis"]
     
-    # Process each benchmark type using the latest file
+    # Process each benchmark type
     for benchmark_type in benchmark_types:
-        latest_file = get_latest_file_by_type(latest_dir, benchmark_type)
-        if not latest_file:
-            continue
-            
-        with open(latest_file) as f:
-            benchmark_data = json.load(f)
-        
         metadata["benchmarks_included"].append(benchmark_type)
         
-        for result in benchmark_data.get("results", []):
-            framework = result.get("framework")
-            if not framework:
+        if use_average:
+            # Get all files and average results
+            all_files = get_all_files_by_type(latest_dir, benchmark_type)
+            if not all_files:
                 continue
             
-            if framework not in frameworks_data:
-                frameworks_data[framework] = {}
+            results_list = []
+            for file_path in all_files:
+                try:
+                    with open(file_path) as f:
+                        results_list.append(json.load(f))
+                except (json.JSONDecodeError, IOError):
+                    continue
             
-            # Extract data based on benchmark type
-            if benchmark_type == "build_time":
-                frameworks_data[framework]["build_time"] = extract_build_time_metrics(result)
-            elif benchmark_type == "bundle_size":
-                frameworks_data[framework]["bundle_size"] = extract_bundle_size_metrics(result)
-            elif benchmark_type == "dev_server":
-                frameworks_data[framework]["dev_server"] = extract_dev_server_metrics(result)
-            elif benchmark_type == "lighthouse":
-                frameworks_data[framework]["lighthouse"] = extract_lighthouse_metrics(result)
-            elif benchmark_type == "resource_usage":
-                frameworks_data[framework]["resource_usage"] = extract_resource_usage_metrics(result)
-            elif benchmark_type == "source_analysis":
-                frameworks_data[framework]["source_analysis"] = extract_source_analysis_metrics(result)
+            if not results_list:
+                continue
+            
+            # Reuse TSV averaging logic and convert to JSON format
+            averaged_results = average_benchmark_results(results_list, benchmark_type)
+            
+            for framework, avg_data in averaged_results.items():
+                if framework not in frameworks_data:
+                    frameworks_data[framework] = {}
+                
+                # Convert flat TSV format to nested JSON format
+                frameworks_data[framework][benchmark_type] = convert_tsv_to_json_format(avg_data, benchmark_type)
+                
+        else:
+            # Use latest file only (existing logic)
+            latest_file = get_latest_file_by_type(latest_dir, benchmark_type)
+            if not latest_file:
+                continue
+                
+            with open(latest_file) as f:
+                benchmark_data = json.load(f)
+            
+            for result in benchmark_data.get("results", []):
+                framework = result.get("framework")
+                if not framework:
+                    continue
+                
+                if framework not in frameworks_data:
+                    frameworks_data[framework] = {}
+                
+                # Extract data based on benchmark type
+                if benchmark_type == "build_time":
+                    frameworks_data[framework]["build_time"] = extract_build_time_metrics(result)
+                elif benchmark_type == "bundle_size":
+                    frameworks_data[framework]["bundle_size"] = extract_bundle_size_metrics(result)
+                elif benchmark_type == "dev_server":
+                    frameworks_data[framework]["dev_server"] = extract_dev_server_metrics(result)
+                elif benchmark_type == "lighthouse":
+                    frameworks_data[framework]["lighthouse"] = extract_lighthouse_metrics(result)
+                elif benchmark_type == "resource_usage":
+                    frameworks_data[framework]["resource_usage"] = extract_resource_usage_metrics(result)
+                elif benchmark_type == "source_analysis":
+                    frameworks_data[framework]["source_analysis"] = extract_source_analysis_metrics(result)
     
     # Create final output structure
     output_data = {

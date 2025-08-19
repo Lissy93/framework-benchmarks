@@ -1,0 +1,99 @@
+name: 📄 Update readme
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * *" # 06:00 UTC daily
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+          cache-dependency-path: "scripts/requirements.txt"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r scripts/requirements.txt
+
+      # 1) Fetch framework stats (uses token for GitHub/NPM requests)
+      - name: Fetch framework stats
+        id: fetch
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PYTHONPATH: ${{ github.workspace }}:${{ github.workspace }}/scripts
+        run: |
+          python scripts/transform/fetch_framework_stats.py
+
+      # 2) Insert stats table into README
+      - name: Insert stats table
+        id: insert_table
+        continue-on-error: true
+        run: |
+          python scripts/transform/insert_framework_stats.py
+
+      # 3) Insert status badges into README
+      - name: Insert status badges
+        id: insert_statuses
+        continue-on-error: true
+        run: |
+          python scripts/transform/insert_statuses.py
+
+      # 4) Update project READMEs
+      - name: Build app READMEs
+        id: build_readmes
+        continue-on-error: true
+        run: |
+          python scripts/transform/build_app_readme.py
+
+      - name: Commit & push changes (if any)
+        if: always()
+        env:
+          TOKEN: ${{ secrets.BOT_TOKEN != '' && secrets.BOT_TOKEN || secrets.GITHUB_TOKEN }}
+          GIT_AUTHOR_NAME: liss-bot
+          GIT_AUTHOR_EMAIL: alicia-gh-bot@mail.as93.net
+        run: |
+          git config user.name  "$GIT_AUTHOR_NAME"
+          git config user.email "$GIT_AUTHOR_EMAIL"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "chore: update framework stats and READMEs [skip ci]"
+          git remote set-url origin "https://x-access-token:${TOKEN}@github.com/${{ github.repository }}.git"
+          git push origin HEAD:main
+
+      - name: Summary
+        if: always()
+        run: |
+          fetch="${{ steps.fetch.conclusion }}"
+          insert_table="${{ steps.insert_table.conclusion }}"
+          insert_statuses="${{ steps.insert_statuses.conclusion }}"
+          build_readmes="${{ steps.build_readmes.conclusion }}"
+
+          line() {
+            if [ "$1" = "success" ]; then echo "- ✅ $2"; else echo "- ❌ $2"; fi
+          }
+
+          {
+            line "$fetch"           "Fetched framework stats"
+            line "$insert_table"    "Inserted stats table into readme"
+            line "$insert_statuses" "Inserted status badges into readme"
+            line "$build_readmes"   "Updated project readmes"
+          } >> "$GITHUB_STEP_SUMMARY"

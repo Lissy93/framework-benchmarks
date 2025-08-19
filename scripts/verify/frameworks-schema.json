@@ -105,6 +105,11 @@
                 "pattern": "^(https://github\\.com/.+|)$",
                 "description": "GitHub repository URL"
               },
+              "npmPackage": {
+                "type": "string",
+                "pattern": "^(@[a-z0-9-~][a-z0-9-._~]*/)?[a-z0-9-~][a-z0-9-._~]*$",
+                "description": "NPM package name (supports scoped packages like @angular/core)"
+              },
               "color": {
                 "type": "string",
                 "pattern": "^#[0-9A-Fa-f]{6}$",

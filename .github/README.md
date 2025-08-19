@@ -217,11 +217,16 @@ Note that the project commands get generated automatically by the [`generate_scr
 Each app gets built and tested to ensure that it is functional, compliant with the spec, and (reasonably) well coded. Below is the current status of each, but for complete details you can see the [Workflow Logs](https://github.com/Lissy93/weather-front/actions) via GitHub Actions. 
 
 <!-- start_all_status -->
+
 <!-- end_all_status -->
 
 ---
 
 ## Results
+
+<!-- start_framework_stats -->
+
+<!-- end_framework_stats -->
 
 ---
 

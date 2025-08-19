@@ -52,7 +52,9 @@ def get_latest_results_info(results_dir: Path) -> dict:
               default='both', help='Output format(s)')
 @click.option('--results-dir', '-r', type=click.Path(exists=True, path_type=Path),
               help='Benchmark results directory (default: benchmark-results)')
-def main(output_dir: Optional[Path], format: str, results_dir: Optional[Path]):
+@click.option('--average', is_flag=True, default=False,
+              help='Average results across multiple executions (ignores missing/zero values)')
+def main(output_dir: Optional[Path], format: str, results_dir: Optional[Path], average: bool):
     """Transform benchmark results into manageable TSV and JSON formats."""
     
     show_header("Benchmark Results Transformer", "Converting raw benchmark data to analysis-ready formats")
@@ -74,8 +76,10 @@ def main(output_dir: Optional[Path], format: str, results_dir: Optional[Path]):
     latest_info = get_latest_results_info(results_dir)
     
     # Display summary
+    mode_text = "📊 [bold]Mode:[/bold] Averaging multiple executions" if average else "📊 [bold]Mode:[/bold] Using latest execution"
     info_panel = Panel.fit(
-        f"📊 [bold]Latest Results:[/bold] {latest_info['date']}\n"
+        f"{mode_text}\n"
+        f"📅 [bold]Latest Results:[/bold] {latest_info['date']}\n"
         f"📁 [bold]Files Found:[/bold] {latest_info['total_files']}\n"
         f"🔧 [bold]Benchmarks:[/bold] {', '.join(set(latest_info['benchmark_types']))}\n"
         f"📂 [bold]Output:[/bold] {output_dir}",
@@ -100,7 +104,7 @@ def main(output_dir: Optional[Path], format: str, results_dir: Optional[Path]):
             task = progress.add_task("🔄 Generating TSV format...", total=None)
             try:
                 tsv_file = output_dir / f"benchmark_results_{latest_info['date']}.tsv"
-                create_tsv_from_results(results_dir, tsv_file)
+                create_tsv_from_results(results_dir, tsv_file, use_average=average)
                 progress.update(task, description="✅ TSV format generated")
                 console.print(f"📄 TSV file: [bold]{tsv_file}[/bold]")
                 success_count += 1
@@ -112,7 +116,7 @@ def main(output_dir: Optional[Path], format: str, results_dir: Optional[Path]):
             task = progress.add_task("🔄 Generating JSON format...", total=None)
             try:
                 json_file = output_dir / f"benchmark_results_{latest_info['date']}.json"
-                create_json_from_results(results_dir, json_file)
+                create_json_from_results(results_dir, json_file, use_average=average)
                 progress.update(task, description="✅ JSON format generated")
                 console.print(f"📄 JSON file: [bold]{json_file}[/bold]")
                 success_count += 1
