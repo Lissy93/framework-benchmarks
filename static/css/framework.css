@@ -5,37 +5,45 @@
   padding: 0 20px;
 }
 
-/* Grid System - CSS Custom Properties for easy maintenance */
+/* Grid System - Dynamic layout using named grid areas */
 .framework-grid {
-  --grid-cols: 12;
   --grid-gap: 1rem;
-  --row-height: 120px;
   
   display: grid;
-  grid-template-columns: repeat(var(--grid-cols), 1fr);
-  grid-template-rows: repeat(10, auto);
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-areas:
+    "hero hero hero hero hero hero hero actions actions actions actions actions"
+    "hero hero hero hero hero hero hero actions actions actions actions actions"
+    "app-header app-header app-header app-header app-header app-header app-header app-header app-header app-header app-header app-header"
+    "status status status status status tech tech tech tech tech tech tech"
+    "links links links links links tech tech tech tech tech tech tech"
+    "links links links links links tech tech tech tech tech tech tech"
+    "requirements requirements requirements requirements requirements requirements requirements requirements requirements requirements requirements requirements"
+    "requirements requirements requirements requirements requirements requirements requirements requirements requirements requirements requirements requirements"
+    "info-header info-header info-header info-header info-header info-header info-header info-header info-header info-header info-header info-header"
+    "stats stats stats stats stats stats stats stats stats stats stats stats"
+    "example example example example example example video video video video video video"
+    "example example example example example example video video video video video video"
+    "nav nav nav nav nav nav nav nav nav nav nav nav";
   
   gap: var(--grid-gap);
   margin: 2rem auto;
   max-width: 64rem;
 }
 
-/* Grid Areas - Centralized positioning */
-/* grid-row-start / grid-column-start / grid-row-end / grid-column-end */
-.framework-hero { grid-area: 1 / 1 / 3 / 8; }
-.framework-actions { grid-area: 1 / 8 / 3 / 13; }
-
-.group-header-app { grid-area: 3 / 1 / span 1 / span 12; }
-.framework-status { grid-area: 4 / 1 / span 1 / span 5; }
-.framework-links { grid-area: 5 / 1 / span 2 / span 5; }
-.framework-tech { grid-area: 4 / 6 / span 3 / span 7; }
-.app-requirements-section { grid-area: 7 / 1 / span 2 / span 12; }
-
-.group-header-info { grid-area: 9 / 1 / span 1 / span 12; }
-.framework-example-app { grid-area: 10 / 1 / span 2 / 7; }
-.framework-video { grid-area: 10 / 7 / span 2 / span 6; }
-
-.framework-nav { grid-area: 12 / 1 / span 1 / span 12; }
+/* Grid Areas - Named areas for easy maintenance */
+.framework-hero { grid-area: hero; }
+.framework-actions { grid-area: actions; }
+.group-header-app { grid-area: app-header; }
+.framework-status { grid-area: status; }
+.framework-links { grid-area: links; }
+.framework-tech { grid-area: tech; }
+.app-requirements-section { grid-area: requirements; }
+.group-header-info { grid-area: info-header; }
+.framework-stats { grid-area: stats; }
+.framework-example-app { grid-area: example; }
+.framework-video { grid-area: video; }
+.framework-nav { grid-area: nav; }
 
 /* Base Card Styles */
 article,
@@ -197,20 +205,39 @@ h4 {
 /* Stats */
 .framework-stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: calc(var(--grid-gap) * 0.75);
 }
 
 .stat-card {
   text-align: center;
   padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
-.stat-value {
-  font-size: 2rem;
+.stat-primary {
+  font-size: 1.8rem;
   font-weight: bold;
   color: var(--fw-color, var(--primary-color, #3498db));
-  margin: 0.5rem 0;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.stat-secondary {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.stat-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-color);
+  margin: 0;
+  text-transform: capitalize;
 }
 
 /* Lists */
@@ -392,27 +419,27 @@ h4 {
 /* Tablet: Clean 6-column grid */
 @media (max-width: 1024px) {
   .framework-grid {
-    --grid-cols: 6;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-areas:
+      "hero hero hero hero hero hero"
+      "hero hero hero hero hero hero"
+      "actions actions actions actions actions actions"
+      "app-header app-header app-header app-header app-header app-header"
+      "status status status tech tech tech"
+      "links links links tech tech tech"
+      "links links links tech tech tech"
+      "requirements requirements requirements requirements requirements requirements"
+      "requirements requirements requirements requirements requirements requirements"
+      "info-header info-header info-header info-header info-header info-header"
+      "stats stats stats stats stats stats"
+      "example example example video video video"
+      "example example example video video video"
+      "nav nav nav nav nav nav";
   }
-  
-  /* Tablet layout with section headers */
-  .framework-hero { grid-area: 1 / 1 / 3 / 7; }
-  .framework-actions { 
-    grid-area: 3 / 1 / 4 / 7; 
-    flex-direction: row; 
+
+  .framework-actions {
+    flex-direction: row;
   }
-  
-  .group-header-app { grid-area: 4 / 1 / 5 / 7; }
-  .framework-status { grid-area: 5 / 1 / 6 / 4; }
-  .framework-links { grid-area: 6 / 1 / 7 / 4; }
-  .framework-tech { grid-area: 5 / 4 / 8 / 7; }
-  .app-requirements-section { grid-area: 8 / 1 / 10 / 7; }
-  
-  .group-header-info { grid-area: 10 / 1 / 11 / 7; }
-  .framework-example-app { grid-area: 11 / 1 / 13 / 4; }
-  .framework-video { grid-area: 11 / 4 / 13 / 7; }
-  
-  .framework-nav { grid-area: 13 / 1 / 14 / 7; }
 
   .requirement-group {
     flex-wrap: wrap;

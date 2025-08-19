@@ -10,6 +10,12 @@
   --primary-color: #6762ff;
 }
 
+::selection {
+  background: var(--fw-color, var(--primary-color, #6762ff));
+  color: var(--card-bg);
+}
+
+
 * {
   box-sizing: border-box;
 }
