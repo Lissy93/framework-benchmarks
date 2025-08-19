@@ -14,6 +14,9 @@
   grid-template-areas:
     "hero hero hero hero hero hero hero actions actions actions actions actions"
     "hero hero hero hero hero hero hero actions actions actions actions actions"
+    "results-header results-header results-header results-header results-header results-header results-header results-header results-header results-header results-header results-header"
+    "results results results results results results results results results results results results"
+    "detailed-results detailed-results detailed-results detailed-results detailed-results detailed-results detailed-results detailed-results detailed-results detailed-results detailed-results detailed-results"
     "app-header app-header app-header app-header app-header app-header app-header app-header app-header app-header app-header app-header"
     "status status status status status tech tech tech tech tech tech tech"
     "links links links links links tech tech tech tech tech tech tech"
@@ -36,6 +39,9 @@
 /* Grid Areas - Named areas for easy maintenance */
 .framework-hero { grid-area: hero; }
 .framework-actions { grid-area: actions; }
+.group-header-results { grid-area: results-header; }
+.framework-results-summary { grid-area: results; }
+.detailed-results { grid-area: detailed-results; }
 .group-header-app { grid-area: app-header; }
 .framework-status { grid-area: status; }
 .framework-links { grid-area: links; }
@@ -380,6 +386,127 @@ h4 {
   height: 100%;
 }
 
+/* Results Summary */
+.framework-results-summary {
+  padding: 1.5rem;
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1rem;
+}
+
+.result-card {
+  background: var(--secondary-bg, #f8f9fa);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.result-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.result-card h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.result-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: var(--fw-color, var(--primary-color, #3498db));
+  margin: 0.25rem 0;
+  line-height: 1.2;
+}
+
+.result-detail {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* Detailed Results Cards */
+.detailed-results {
+  display: grid;
+  grid-template-columns: 3fr 3fr 3fr;
+  gap: 1rem;
+  margin-top: 1rem;
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    /* .performance-card {
+      grid-column: 1 / -1;
+    } */
+  }
+}
+
+.results-detail-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius, 16px);
+  padding: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.results-detail-card h4 {
+  margin: 0 0 1rem 0;
+  color: var(--text-color);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.metrics-grid {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.metrics-grid-4 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.metrics-grid-5 {
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+
+/* Reuse result-card styles for metric items */
+.metric-item {
+  background: var(--secondary-bg, #f8f9fa);
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  text-align: center;
+  transition: all 0.3s ease;
+}
+
+.metric-item:hover {
+  transform: translateY(-1px);
+}
+
+.metric-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.metric-value {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--fw-color, var(--primary-color, #3498db));
+  line-height: 1.2;
+}
+
 /* Navigation */
 .framework-nav {
   display: grid;
@@ -427,6 +554,9 @@ h4 {
       "hero hero hero hero hero hero"
       "hero hero hero hero hero hero"
       "actions actions actions actions actions actions"
+      "results-header results-header results-header results-header results-header results-header"
+      "results results results results results results"
+      "detailed-results detailed-results detailed-results detailed-results detailed-results detailed-results"
       "app-header app-header app-header app-header app-header app-header"
       "status status status tech tech tech"
       "links links links tech tech tech"
@@ -473,6 +603,38 @@ h4 {
   .app-requirements-section .screenshot {
     width: 100%;
     max-width: 300px;
+  }
+  
+  .results-grid {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.75rem;
+  }
+  
+  .result-card {
+    padding: 0.75rem;
+  }
+  
+  .result-value {
+    font-size: 1.5rem;
+  }
+  
+  .detailed-results {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .metrics-grid-4,
+  .metrics-grid-5 {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+  }
+  
+  .metric-item {
+    padding: 0.5rem;
+  }
+  
+  .metric-value {
+    font-size: 1rem;
   }
 }
 

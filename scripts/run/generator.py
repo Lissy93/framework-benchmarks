@@ -166,6 +166,22 @@ class WebsiteGenerator:
         except (json.JSONDecodeError, IOError):
             return None
     
+    def load_framework_results_summary(self, framework_id: str) -> Optional[Dict[str, Any]]:
+        """Load framework results summary data."""
+        results_file = self.static_dir / "results-summary.json"
+        if not results_file.exists():
+            return None
+        
+        try:
+            with open(results_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            # Get results for this framework
+            frameworks = data.get('frameworks', {})
+            return frameworks.get(framework_id)
+        except (json.JSONDecodeError, IOError):
+            return None
+    
     def render_homepage(self) -> str:
         """Render the homepage template."""
         template = self.env.get_template('homepage.html')
@@ -184,6 +200,7 @@ class WebsiteGenerator:
         navigation = self.get_framework_navigation(framework_id)
         framework_stats = self.load_framework_stats(framework_id)
         framework_commentary = self.load_framework_commentary(framework_id)
+        framework_results = self.load_framework_results_summary(framework_id)
         
         template = self.env.get_template('framework.html')
         return template.render(
@@ -191,6 +208,7 @@ class WebsiteGenerator:
             framework=framework,
             framework_stats=framework_stats,
             framework_commentary=framework_commentary,
+            framework_results=framework_results,
             prev_framework=navigation['prev'],
             next_framework=navigation['next'],
             page_type='framework'

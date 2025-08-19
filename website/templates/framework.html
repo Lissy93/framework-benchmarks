@@ -57,6 +57,135 @@
             </a>
         </div>
 
+        <div class="group-header group-header-results">
+            <h2>Results Summary</h2>
+        </div>
+
+        <!-- Results Summary -->
+        {% if framework_results %}
+        <article class="framework-results-summary">
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Performance</h4>
+                    <div class="result-value">{{ framework_results.lighthouse.scores.performance }}%</div>
+                    <div class="result-detail">Lighthouse Score</div>
+                </div>
+                <div class="result-card">
+                    <h4>Bundle Size</h4>
+                    <div class="result-value">{{ (framework_results.bundle_size.total_gzipped / 1024) | round(1) }}KB</div>
+                    <div class="result-detail">Gzipped</div>
+                </div>
+                <div class="result-card">
+                    <h4>Build Time</h4>
+                    <div class="result-value">
+                        {% if framework_results.build_time.build_time_ms > 0 %}
+                            {{ (framework_results.build_time.build_time_ms / 1000) | round(1) }}s
+                        {% else %}
+                            0s
+                        {% endif %}
+                    </div>
+                    <div class="result-detail">Average</div>
+                </div>
+                <div class="result-card">
+                    <h4>Load Time</h4>
+                    <div class="result-value">
+                        {% if framework_results.lighthouse.raw_metrics.lcp >= 1000 %}
+                            {{ "%.1f"|format(framework_results.lighthouse.raw_metrics.lcp / 1000) }}s
+                        {% else %}
+                            {{ framework_results.lighthouse.raw_metrics.lcp|round(0)|int }}ms
+                        {% endif %}
+                    </div>
+                    <div class="result-detail">LCP</div>
+                </div>
+                <div class="result-card">
+                    <h4>Complexity</h4>
+                    <div class="result-value">{{ framework_results.source_analysis.cyclomatic_complexity }}</div>
+                    <div class="result-detail">Cyclomatic</div>
+                </div>
+            </div>
+        </article>
+        {% endif %}
+        
+        <!-- Detailed Results Cards -->
+        {% if framework_results %}
+        <div class="detailed-results">
+            <!-- Performance Metrics Card -->
+            <article class="results-detail-card performance-card">
+                <h4>Performance Metrics</h4>
+                <div class="metrics-grid metrics-grid-5">
+                    <div class="metric-item">
+                        <div class="metric-label">CLS</div>
+                        <div class="metric-value">{{ "%.4f"|format(framework_results.lighthouse.raw_metrics.cls) }}</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">FCP</div>
+                        <div class="metric-value">{{ (framework_results.lighthouse.raw_metrics.fcp)|round(0)|int }}ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">LCP</div>
+                        <div class="metric-value">{{ (framework_results.lighthouse.raw_metrics.lcp)|round(0)|int }}ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">TBT</div>
+                        <div class="metric-value">{{ framework_results.lighthouse.raw_metrics.tbt }}ms</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Bundle Analysis Card -->
+            <article class="results-detail-card bundle-card">
+                <h4>Bundle Analysis</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Compression</div>
+                        <div class="metric-value">{{ "%.1f"|format(framework_results.bundle_size.compression_ratio) }}x</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">File Count</div>
+                        <div class="metric-value">{{ framework_results.bundle_size.file_count }}</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">JS %</div>
+                        <div class="metric-value">{{ "%.1f"|format(framework_results.bundle_size.js_percentage) }}%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Total Size</div>
+                        <div class="metric-value">{{ "%.1f"|format(framework_results.bundle_size.total_size / 1024) }}KB</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Build Info Card -->
+            <article class="results-detail-card build-card">
+                <h4>Build Info</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Build Time</div>
+                        <div class="metric-value">
+                            {% if framework_results.build_time.build_time_ms > 0 %}
+                                {{ "%.1f"|format(framework_results.build_time.build_time_ms / 1000) }}s
+                            {% else %}
+                                0s
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Output Size</div>
+                        <div class="metric-value">{{ "%.1f"|format(framework_results.build_time.output_size_mb) }}MB</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">HMR Time</div>
+                        <div class="metric-value">{{ framework_results.dev_server.hmr_avg_time_ms }}ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Dev Startup</div>
+                        <div class="metric-value">{{ "%.1f"|format(framework_results.dev_server.startup_time_ms / 1000) }}s</div>
+                    </div>
+                </div>
+            </article>
+        </div>
+        {% endif %}
+
         <div class="group-header group-header-app">
             <h2>About the {{framework.name}} Weather Front App</h2>
         </div>
@@ -218,7 +347,7 @@
                         <a href="{{ framework.exampleRealApp.repo }}">GitHub</a>
                     </p>
                 </div>
-            <div>
+            </div>
             {% else %}
             <div>Coming soon...</div>
             {% endif %}
