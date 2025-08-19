@@ -1,0 +1,148 @@
+name: 🔄 Transform Results
+
+on:
+  workflow_run:
+    workflows: ["📈 Benchmark"]
+    types: [completed]
+    branches: [main, master]
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  NODE_VERSION: '20'
+  PYTHON_VERSION: '3.11'
+
+jobs:
+  transform-results:
+    name: Transform & Commit Results
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == 'success'
+    
+    steps:
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+
+      - name: 📦 Install Python Dependencies
+        run: |
+          pip install -r scripts/requirements.txt
+
+      - name: 📥 Download Benchmark Results
+        uses: actions/download-artifact@v4
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+          pattern: benchmark-results-*
+          path: ./downloaded-artifacts
+
+      - name: 🔍 Verify Downloaded Artifacts
+        run: |
+          echo "📂 Downloaded artifacts structure:"
+          find ./downloaded-artifacts -type f -name "*.json" | head -20 || echo "No JSON files found"
+          
+          if [ ! -d "./downloaded-artifacts" ] || [ -z "$(find ./downloaded-artifacts -name "*.json" -type f)" ]; then
+            echo "❌ No benchmark results found in artifacts"
+            exit 1
+          fi
+          
+          echo "✅ Found benchmark results"
+
+      - name: 🗂️ Prepare Benchmark Results Directory
+        run: |
+          # Create benchmark-results directory structure
+          mkdir -p benchmark-results
+          
+          # Find and copy the benchmark results from artifacts
+          artifact_dir=$(find ./downloaded-artifacts -name "benchmark-results-*" -type d | head -1)
+          if [ -n "$artifact_dir" ]; then
+            echo "📂 Copying results from: $artifact_dir"
+            cp -r "$artifact_dir"/* benchmark-results/ 2>/dev/null || {
+              # Try alternative structure
+              find "$artifact_dir" -name "*.json" -exec cp {} benchmark-results/ \; 2>/dev/null || true
+            }
+          else
+            echo "❌ Could not find benchmark results in artifacts"
+            exit 1
+          fi
+          
+          echo "📊 Final benchmark-results structure:"
+          find benchmark-results -type f -name "*.json" | head -10
+
+      - name: 🔄 Transform Results
+        run: |
+          echo "🔄 Transforming benchmark results..."
+          
+          # Ensure results directory exists
+          mkdir -p results
+          
+          # Set PYTHONPATH for our transform scripts
+          export PYTHONPATH="$PWD:$PWD/scripts"
+          
+          # Transform results with averaging (since benchmarks might run multiple executions)
+          python scripts/transform/benchmark_results.py \
+            --format both \
+            --average \
+            --results-dir benchmark-results \
+            --output-dir results
+          
+          # Rename files to standard names
+          if [ -f "results/benchmark_results_"*.tsv ]; then
+            cp results/benchmark_results_*.tsv results/summary.tsv
+            echo "✅ Created results/summary.tsv"
+          fi
+          
+          if [ -f "results/benchmark_results_"*.json ]; then
+            cp results/benchmark_results_*.json results/summary.json
+            echo "✅ Created results/summary.json"
+          fi
+          
+          echo "📊 Generated files:"
+          ls -la results/
+
+      - name: 📊 Generate Results Summary
+        run: |
+          echo "## 🔄 Benchmark Results Transformation" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ✅ Success" >> $GITHUB_STEP_SUMMARY
+          echo "- **Timestamp**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Source**: Workflow run #${{ github.event.workflow_run.run_number }}" >> $GITHUB_STEP_SUMMARY
+          
+      - name: 📝 Commit Results
+        run: |
+          set -e
+          git config user.name "liss-bot"
+          git config user.email "alicia-gh-bot@mail.as93.net"
+
+          # Only commit if there are changes
+          git add results/ || true
+          if git diff --cached --quiet; then
+            echo "ℹ️ No changes to commit."
+            echo "skip_commit=true" >> $GITHUB_ENV
+          else
+            commit_msg="chore(results): update benchmark summaries from run #${{ github.event.workflow_run.run_number }}"
+            git commit -m "$commit_msg"
+            echo "✅ Results committed"
+          fi
+
+      - name: 🚀 Push Changes
+        if: env.skip_commit != 'true'
+        run: |
+          git push
+          echo "✅ Changes pushed to repository"
+
+      - name: 🧹 Cleanup
+        if: always()
+        run: |
+          echo "🧹 Cleaning up temporary files..."
+          rm -rf ./downloaded-artifacts benchmark-results
+          echo "✅ Cleanup complete"

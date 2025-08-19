@@ -12,6 +12,12 @@ C = Console()
 GH_TOK = os.getenv("GITHUB_TOKEN") or os.getenv("GH_TOKEN")
 HEAD = {"Accept":"application/vnd.github+json"}
 if GH_TOK: HEAD["Authorization"]=f"Bearer {GH_TOK}"
+
+HEAD.update({
+    "X-GitHub-Api-Version": "2022-11-28",
+    "User-Agent": "as93_frontend-benchmarks"
+})
+
 SESS = requests.Session(); SESS.headers.update(HEAD)
 
 def find_root() -> Path:
@@ -66,7 +72,7 @@ def kb_to_mb(kb: int|None) -> float|None:
 # ---------- data fetchers ----------
 
 def fetch_repo(owner: str, repo: str) -> dict|None:
-    """get core repo info (incl. watchers/subscribers & open issues/PRs)"""
+    """get core repo info (incl. watchers/subscribers)"""
     d = gh_api(f"/repos/{owner}/{repo}")
     if not isinstance(d,dict): return None
     lic = (d.get("license") or {}).get("spdx_id") or (d.get("license") or {}).get("name")
@@ -74,11 +80,11 @@ def fetch_repo(owner: str, repo: str) -> dict|None:
         "stars": d.get("stargazers_count"),
         "size_mb": kb_to_mb(d.get("size")),
         "license": lic,
+        "language": d.get("language"),
         "default_branch": d.get("default_branch") or "main",
         "repo_created": d.get("created_at"),
         "repo_pushed": d.get("pushed_at"),
         "subscribers": d.get("subscribers_count"),
-        "open_issues_prs": d.get("open_issues_count"),
         "forks": d.get("forks_count"),
     }
 
@@ -106,7 +112,7 @@ def fetch_npm_meta(pkg: str) -> tuple[str|None,str|None]:
         return None, None
 
 def fetch_contributors(owner: str, repo: str) -> dict|None:
-    """get contributors and top author share"""
+    """get contributors, top author share and name"""
     items, page = [], 1
     while True:
         r = get(f"https://api.github.com/repos/{owner}/{repo}/contributors",
@@ -118,9 +124,78 @@ def fetch_contributors(owner: str, repo: str) -> dict|None:
         if page >= last_page(r.headers.get("Link")): break
         page += 1
     if not items: return None
+    
+    # Find top contributor
+    top_contributor = max(items, key=lambda x: x.get("contributions", 0)) if items else None
+    top_commits = top_contributor.get("contributions", 0) if top_contributor else 0
+    top_name = top_contributor.get("login") if top_contributor else None
+    
     commits = [int(c.get("contributions",0)) for c in items if isinstance(c,dict)]
-    total = sum(commits) or 0; top = max(commits) if commits else 0
-    return {"contributors": len(items), "commits": total, "top_author_pct": round((top/total)*100,1) if total else None}
+    total = sum(commits) or 0
+    
+    return {
+        "contributors": len(items), 
+        "commits": total, 
+        "top_author_pct": round((top_commits/total)*100,1) if total else None,
+        "top_author_name": top_name
+    }
+
+def fetch_issues_prs(owner: str, repo: str) -> dict:
+    """get separate counts for open/closed issues and PRs"""
+    # Get open issues (excludes PRs)
+    open_issues_r = get(f"https://api.github.com/search/issues", {
+        "q": f"repo:{owner}/{repo} is:issue is:open",
+        "per_page": 1
+    })
+    open_issues = 0
+    if open_issues_r and open_issues_r.ok:
+        try:
+            open_issues = open_issues_r.json().get("total_count", 0)
+        except Exception:
+            pass
+    
+    # Get closed issues
+    closed_issues_r = get(f"https://api.github.com/search/issues", {
+        "q": f"repo:{owner}/{repo} is:issue is:closed",
+        "per_page": 1
+    })
+    closed_issues = 0
+    if closed_issues_r and closed_issues_r.ok:
+        try:
+            closed_issues = closed_issues_r.json().get("total_count", 0)
+        except Exception:
+            pass
+    
+    # Get open PRs
+    open_prs_r = get(f"https://api.github.com/search/issues", {
+        "q": f"repo:{owner}/{repo} is:pr is:open",
+        "per_page": 1
+    })
+    open_prs = 0
+    if open_prs_r and open_prs_r.ok:
+        try:
+            open_prs = open_prs_r.json().get("total_count", 0)
+        except Exception:
+            pass
+    
+    # Get closed PRs
+    closed_prs_r = get(f"https://api.github.com/search/issues", {
+        "q": f"repo:{owner}/{repo} is:pr is:closed",
+        "per_page": 1
+    })
+    closed_prs = 0
+    if closed_prs_r and closed_prs_r.ok:
+        try:
+            closed_prs = closed_prs_r.json().get("total_count", 0)
+        except Exception:
+            pass
+    
+    return {
+        "open_issues": open_issues,
+        "closed_issues": closed_issues,
+        "open_prs": open_prs,
+        "closed_prs": closed_prs
+    }
 
 def fetch_first_last_commit(owner: str, repo: str, branch: str) -> tuple[str|None,str|None]:
     """get first and last commit dates on branch"""
@@ -154,15 +229,18 @@ def collect_for(fr: dict, prog: Progress|None=None, task_id: int|None=None) -> d
     info = fetch_repo(o,r) or {}; step(f"{fr.get('name')}: repo")
     dls, rels, npm_ver, npm_ver_date = downloads_for(fr, rep); step(f"{fr.get('name')}: downloads")
     contrib = fetch_contributors(o,r) or {}; step(f"{fr.get('name')}: contributors")
+    issues_prs = fetch_issues_prs(o,r) or {}; step(f"{fr.get('name')}: issues/PRs")
     first, last = fetch_first_last_commit(o,r, info.get("default_branch") or "main"); step(f"{fr.get('name')}: commits")
     return {
         "id": fr.get("id"), "name": fr.get("name"), "repo": f"{o}/{r}",
         "stars": info.get("stars"), "downloads": dls, "size_mb": info.get("size_mb"),
-        "license": info.get("license"), "contributors": contrib.get("contributors"),
-        "top_author_pct": contrib.get("top_author_pct"), "first_commit": first, "last_commit": last,
+        "license": info.get("license"), "language": info.get("language"),
+        "contributors": contrib.get("contributors"), "top_author_pct": contrib.get("top_author_pct"),
+        "top_author_name": contrib.get("top_author_name"), "first_commit": first, "last_commit": last,
         "forks": info.get("forks"), "subscribers": info.get("subscribers"),
-        "open_issues_prs": info.get("open_issues_prs"), "release_count": rels,
-        "npm_latest": npm_ver, "npm_latest_date": npm_ver_date
+        "open_issues": issues_prs.get("open_issues"), "closed_issues": issues_prs.get("closed_issues"),
+        "open_prs": issues_prs.get("open_prs"), "closed_prs": issues_prs.get("closed_prs"),
+        "release_count": rels, "npm_latest": npm_ver, "npm_latest_date": npm_ver_date
     }
 
 # ---------- CLI ----------
@@ -196,7 +274,7 @@ def main(out_path: str|None):
         transient=True,
     ) as prog:
         for f in fw:
-            tid = prog.add_task(f"{f.get('name','(unknown)')}", total=4)
+            tid = prog.add_task(f"{f.get('name','(unknown)')}", total=5)
             try:
                 rows.append(collect_for(f, prog, tid))
             except Exception as e:
@@ -213,7 +291,7 @@ def main(out_path: str|None):
         C.print(f"[red]Failed to write output:[/] {e}")
 
     t = Table(title="Framework Stats", show_lines=False)
-    for col in ("ID","Repo","Stars","DLs","MB","License","Contribs","#1 %","Open","Subs","NPM v","First Commit","Last Commit"):
+    for col in ("ID","Repo","Stars","DLs","MB","Lang","License","Contribs","Top Author","#1 %","Issues","PRs","Subs","NPM v","First","Last"):
         t.add_column(col, overflow="fold")
     for r in rows:
         t.add_row(
@@ -222,14 +300,17 @@ def main(out_path: str|None):
             str(r.get("stars") or "—"),
             str(r.get("downloads") if r.get("downloads") is not None else "—"),
             str(r.get("size_mb") or "—"),
+            str(r.get("language") or "—"),
             str(r.get("license") or "—"),
             str(r.get("contributors") or "—"),
+            str(r.get("top_author_name") or "—"),
             (f"{r.get('top_author_pct')}%" if r.get("top_author_pct") is not None else "—"),
-            str(r.get("open_issues_prs") if r.get("open_issues_prs") is not None else "—"),
+            f"{r.get('open_issues') or 0}/{r.get('closed_issues') or 0}",
+            f"{r.get('open_prs') or 0}/{r.get('closed_prs') or 0}",
             str(r.get("subscribers") if r.get("subscribers") is not None else "—"),
             str(r.get("npm_latest") or "—"),
-            str(r.get("first_commit") or "—"),
-            str(r.get("last_commit") or "—"),
+            str(r.get("first_commit") or "—")[:10] if r.get("first_commit") else "—",
+            str(r.get("last_commit") or "—")[:10] if r.get("last_commit") else "—",
         )
     C.print(t)
 

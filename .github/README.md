@@ -3,7 +3,8 @@
 	<i>The same weather app built in 10 different frontend frameworks</i><br>
     For automated cross-framework web performance benchmarking
   <br>
-  <b>📊 <a href="https://frontend-framework-benchmarks.as93.net">Results</a></b>
+	<a href="https://framework-benchmarks.as93.net"><img width="96" src="https://storage.googleapis.com/as93-screenshots/project-logos/framework-benchmarks.png" /></a><br>
+  <b>📊 <a href="https://framework-benchmarks.as93.net">Results</a></b>
 </p>
 
 ### Intro
@@ -237,6 +238,8 @@ Each app gets built and tested to ensure that it is functional, compliant with t
 ---
 
 ## Results
+
+### Community Info
 
 <!-- start_framework_stats -->
 | Framework | Stars | Downloads | Size | Contributors | Age | Last updated | License |

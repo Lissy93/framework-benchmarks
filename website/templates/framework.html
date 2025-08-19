@@ -184,6 +184,12 @@
         <div class="group-header group-header-info">
             <h2>About {{framework.name}}</h2>
         </div>
+
+        <!-- Framework Stats -->
+        <div class="framework-stats" id="framework-stats-container">
+            <!-- Stats will be populated by JavaScript -->
+        </div>
+
         <article class="framework-example-app">
             <h3>Real-world App</h3>
             {% if framework.exampleRealApp.logo %}
@@ -253,4 +259,105 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="/static/css/framework.css">
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load and display framework stats
+    fetch('/static/framework-stats.json')
+        .then(response => response.json())
+        .then(data => {
+            const frameworkId = '{{ framework.id }}';
+            const frameworkData = data.items.find(item => item.id === frameworkId);
+            
+            if (frameworkData) {
+                displayFrameworkStats(frameworkData);
+            } else {
+                // Hide stats section if no data available
+                document.getElementById('framework-stats-container').style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading framework stats:', error);
+            document.getElementById('framework-stats-container').style.display = 'none';
+        });
+});
+
+function displayFrameworkStats(data) {
+    const container = document.getElementById('framework-stats-container');
+    
+    // Helper functions
+    const formatNumber = (num) => {
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+        return num?.toLocaleString() || '0';
+    };
+    
+    const formatAge = (dateStr) => {
+        if (!dateStr) return 'Unknown';
+        const date = new Date(dateStr);
+        const now = new Date();
+        const years = Math.floor((now - date) / (1000 * 60 * 60 * 24 * 365));
+        const months = Math.floor(((now - date) % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+        
+        if (years > 0) {
+            return months > 0 ? `${years}y ${months}m` : `${years}y`;
+        } else if (months > 0) {
+            return `${months}m`;
+        } else {
+            const days = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+            return `${days}d`;
+        }
+    };
+    
+    const formatDate = (dateStr) => {
+        if (!dateStr) return 'Unknown';
+        return new Date(dateStr).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short'
+        });
+    };
+    
+    // Create stats cards
+    const statsCards = [
+        {
+            label: 'Stars',
+            primary: formatNumber(data.stars),
+            secondary: `${formatNumber(data.forks)} forks`
+        },
+        {
+            label: 'Contributors',
+            primary: formatNumber(data.contributors),
+            secondary: `${data.top_author_pct}% by <a target="_blank" href="https://github.com/${data.top_author_name}">@${data.top_author_name}</a>`
+        },
+        {
+            label: 'Age',
+            primary: formatAge(data.first_commit),
+            secondary: `Last update ${formatDate(data.last_commit)}`
+        },
+        {
+            label: 'Downloads',
+            primary: data.downloads ? formatNumber(data.downloads) : 'N/A',
+            secondary: data.npm_latest ? `v${data.npm_latest} • ${formatDate(data.npm_latest_date)}` : 'No NPM package'
+        },
+        {
+            label: 'Open Issues',
+            primary: formatNumber(data.open_issues),
+            secondary: `${data.closed_issues} closed issues`
+        }
+    ];
+    
+    // Generate HTML
+    const statsHTML = statsCards.map(stat => `
+        <div class="stat-card card card-small">
+            <h4 class="stat-label">${stat.label}</h4>
+            <div class="stat-primary">${stat.primary}</div>
+            <div class="stat-secondary">${stat.secondary}</div>
+        </div>
+    `).join('');
+    
+    container.innerHTML = statsHTML;
+}
+</script>
 {% endblock %}

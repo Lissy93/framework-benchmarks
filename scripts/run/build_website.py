@@ -120,6 +120,56 @@ class StaticWebsiteBuilder:
             if static_output.exists():
                 shutil.rmtree(static_output)
             shutil.copytree(static_dir, static_output)
+        
+        # Copy framework stats if available
+        framework_stats_source = self.root_dir / "results" / "framework-stats.json"
+        if framework_stats_source.exists():
+            try:
+                # Copy to output directory
+                framework_stats_dest = static_output / "framework-stats.json"
+                shutil.copy2(framework_stats_source, framework_stats_dest)
+                
+                # Also copy to development website/static directory
+                dev_static_dir = self.root_dir / "website" / "static"
+                if dev_static_dir.exists():
+                    dev_framework_stats_dest = dev_static_dir / "framework-stats.json"
+                    shutil.copy2(framework_stats_source, dev_framework_stats_dest)
+                    console.print(f"[green]✓ Framework stats copied:[/green] {framework_stats_source.name} → static/ and website/static/")
+                else:
+                    console.print(f"[green]✓ Framework stats copied:[/green] {framework_stats_source.name} → static/")
+            except Exception as e:
+                console.print(f"[red]✗ Failed to copy framework stats:[/red] {e}")
+        else:
+            console.print(f"[yellow]⚠ Framework stats not found:[/yellow] {framework_stats_source}")
+        
+        # Copy latest benchmark results if available
+        results_dir = self.root_dir / "results"
+        if results_dir.exists():
+            # Find the most recent benchmark results JSON file
+            benchmark_files = list(results_dir.glob("benchmark_results_*.json"))
+            if benchmark_files:
+                try:
+                    # Sort by modification time and get the latest
+                    latest_benchmark = max(benchmark_files, key=lambda x: x.stat().st_mtime)
+                    
+                    # Copy to output directory
+                    benchmark_dest = static_output / "results-summary.json"
+                    shutil.copy2(latest_benchmark, benchmark_dest)
+                    
+                    # Also copy to development website/static directory
+                    dev_static_dir = self.root_dir / "website" / "static"
+                    if dev_static_dir.exists():
+                        dev_benchmark_dest = dev_static_dir / "results-summary.json"
+                        shutil.copy2(latest_benchmark, dev_benchmark_dest)
+                        console.print(f"[green]✓ Benchmark results copied:[/green] {latest_benchmark.name} → static/ and website/static/")
+                    else:
+                        console.print(f"[green]✓ Benchmark results copied:[/green] {latest_benchmark.name} → static/")
+                except Exception as e:
+                    console.print(f"[red]✗ Failed to copy benchmark results:[/red] {e}")
+            else:
+                console.print(f"[yellow]⚠ No benchmark results found in:[/yellow] {results_dir}")
+        else:
+            console.print(f"[yellow]⚠ Results directory not found:[/yellow] {results_dir}")
     
     def _copy_project_assets(self) -> None:
         """Copy project assets directory to the output directory root."""
