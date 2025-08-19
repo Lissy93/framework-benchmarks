@@ -1,34 +1,37 @@
-# Weather App - VanJS
+<!-- start_header --> 
+<!-- end_header -->
 
-A modern weather application built with [VanJS](https://vanjs.org/) - an ultra-lightweight reactive UI framework with no dependencies.
+<!-- start_about -->
+<!-- end_about -->
 
-## Features
+<!-- start_status -->
+<!-- end_status -->
 
-- 🌦️ Current weather conditions
-- 📅 7-day weather forecast  
-- 🔍 City search functionality
-- 📱 Responsive design
-- ♿ Accessible interface
-- 🎨 Modern, clean UI
-- 💾 Persistent location storage
-- 📍 Geolocation support
+<!-- start_usage -->
+<!-- end_usage -->
 
-## VanJS Features Used
+<!-- start_framework_specific -->
+## VanJS Implementation
 
-- **Reactive State**: `van.state()` for reactive data management
-- **DOM Generation**: `van.tags` for creating DOM elements
-- **Reactive Binding**: Automatic UI updates when state changes
-- **Derived State**: Computed values that update automatically
-- **Event Handling**: Direct event binding on DOM elements
-- **Conditional Rendering**: Dynamic content based on state
-- **Component Functions**: Reusable component functions
-- **Ultra-Lightweight**: ~1KB runtime with zero dependencies
+VanJS is impressively tiny - just 1KB of runtime with zero dependencies. It's basically "what if we took the reactive parts of modern frameworks and stripped away everything else?" The result is surprisingly elegant for simple applications, but you'll quickly bump into its limitations.
 
-## Development
+The functional approach is refreshing after dealing with classes and complex component lifecycles. `van.state(initialValue)` creates reactive state, `van.tags.div()` creates DOM elements, and everything just works. Our weather app's temperature display is literally `van.tags.span(temperature)` - when `temperature` changes, the DOM updates automatically.
 
-```bash
-npm install   # Install dependencies
-npm run dev   # Start development server on http://localhost:3000
-```
+But the simplicity comes with trade-offs. There's no component abstraction beyond functions, no templating system, no event system. You're essentially building a reactive version of vanilla DOM manipulation. It works for basic interactivity but gets unwieldy fast.
 
-VanJS provides a reactive programming model with minimal overhead and maximum simplicity - perfect for building efficient, maintainable web applications.
+### Notable files
+- `src/main.js` - Application logic with VanJS state and DOM creation
+- `src/weather-service.js` - API calls that update VanJS reactive state
+- `src/weather-utils.js` - Utility functions for data processing
+- `index.html` - Minimal HTML with VanJS script tag
+
+The DOM creation syntax is functional but verbose: `van.tags.div({class: "weather-card"}, van.tags.h2("Weather"))`. Coming from JSX or template languages, it feels like writing assembly code. You'll miss the declarative nature of modern frameworks.
+
+VanJS works well for simple enhancements where you need just a touch of reactivity without the framework overhead. I've used it for mini apps, like [raid-calculator](https://github.com/lissy93/raid-calculator). But for anything substantial, you'll spend more time fighting the limitations than building features. It's an interesting experiment in minimalism, but modern frameworks exist for good reasons.
+<!-- end_framework_specific -->
+
+<!-- start_real_world_app -->
+<!-- end_real_world_app -->
+
+<!-- start_license -->
+<!-- end_license -->

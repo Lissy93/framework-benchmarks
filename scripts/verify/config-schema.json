@@ -5,6 +5,11 @@
   "type": "object",
   "required": ["directories", "buildTools", "testing", "linting", "requirements", "ui", "scripts", "mockData", "benchmarks", "website", "miscScripts"],
   "properties": {
+    "baseUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Base URL for the application"
+    },
     "directories": {
       "type": "object",
       "required": ["appDir", "testConfigDir", "scriptsDir", "assetsDir", "nodeModulesDir", "websiteDir", "templatesDir", "staticDir"],

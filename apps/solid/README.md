@@ -1,90 +1,37 @@
-# Weather App - Solid.js
+<!-- start_header --> 
+<!-- end_header -->
 
-A modern weather application built with Solid.js, providing real-time weather information with a clean and responsive interface.
+<!-- start_about -->
+<!-- end_about -->
 
-## Features
+<!-- start_status -->
+<!-- end_status -->
 
-- **Current Weather**: Real-time weather conditions for any city
-- **7-Day Forecast**: Extended weather forecast with detailed daily information
-- **Location Services**: Automatic location detection with fallback options
-- **Responsive Design**: Works seamlessly across desktop and mobile devices
-- **Accessibility**: Full keyboard navigation and screen reader support
-- **Offline-First**: Graceful handling of network issues
-- **Test Coverage**: Comprehensive end-to-end testing with Playwright
+<!-- start_usage -->
+<!-- end_usage -->
 
-## Quick Start
+<!-- start_framework_specific -->
+## Solid Implementation
 
-### Installation
+Solid feels like React, but *actually* reactive. It looks like JSX, but underneath it's magic. While React re-renders entire component trees, Solid surgically updates only the exact DOM nodes that need to change. The result is performance that makes other frameworks look sluggish.
 
-```bash
-# Install dependencies
-npm install
-```
+The mental shift from React is subtle but profound. Instead of thinking about re-renders and memoization, you think about signals and reactivity. `createSignal` returns a getter and setter - call `temperature()` to read, `setTemperature(25)` to update, and everything that depends on it automatically updates.
 
-### Development
+Our weather app showcases this, as the temperature display, the weather icon, the styling - they all react independently when the weather data changes. No `useEffect`, no dependency arrays, no `useMemo` - just pure reactive programming that actually works.
 
-```bash
-# Start development server
-npm run dev
-```
+### Notable files
+- `src/App.jsx` - Main component using Solid's reactive primitives
+- `src/stores/weatherStore.js` - Global state with `createStore`
+- `src/services/WeatherService.js` - API integration with `createResource`
+- `src/components/` - Reactive components that update precisely
 
-The application will be available at `http://localhost:3000`
+The JSX looks familiar, but `<Show>` and `<For>` components replace your typical `{condition && <div>}` patterns. These aren't just syntactic sugar - they're compiled into efficient conditional rendering that only updates when necessary.
 
-### Testing
+`createResource` handles async data elegantly, giving you loading states, error handling, and refetching without the usual ceremony. For our simple weather app, we didn't need Solid's more advanced features like stores or effects, but for something complex, the fine-grained reactivity becomes essential.
+<!-- end_framework_specific -->
 
-```bash
-# Run end-to-end tests
-npm test
-```
+<!-- start_real_world_app -->
+<!-- end_real_world_app -->
 
-### Production Build
-
-```bash
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-## Architecture
-
-The application follows modern Solid.js patterns:
-
-- **Signals**: Reactive state management with fine-grained updates
-- **Components**: Functional components with JSX and reactive primitives
-- **Services**: Abstracted weather API service with mock data support
-- **Utils**: Shared utilities for weather data formatting
-- **Testing**: Playwright tests for complete user journey validation
-
-## Dependencies
-
-- **Solid.js** (^1.8.0): Declarative, efficient, and flexible JavaScript library
-- **Vite** (^5.2.0): Next generation frontend tooling
-- **Playwright** (^1.40.0): End-to-end testing framework
-
-## Project Structure
-
-```
-src/
-├── components/          # Solid.js components
-│   ├── CurrentWeather.jsx
-│   ├── Forecast.jsx
-│   ├── ForecastItem.jsx
-│   ├── LoadingState.jsx
-│   ├── ErrorState.jsx
-│   ├── SearchForm.jsx
-│   └── WeatherContent.jsx
-├── stores/              # State management
-│   └── weatherStore.js
-├── services/            # API services
-│   └── WeatherService.js
-├── utils/               # Utility functions
-│   └── WeatherUtils.js
-├── App.jsx             # Main app component
-└── index.jsx           # App entry point
-```
-
-## License
-
-MIT License - see LICENSE file for details
+<!-- start_license -->
+<!-- end_license -->

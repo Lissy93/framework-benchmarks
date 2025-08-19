@@ -1,90 +1,37 @@
-# Weather App - Preact
+<!-- start_header --> 
+<!-- end_header -->
 
-A modern weather application built with Preact, providing real-time weather information with a clean and responsive interface.
+<!-- start_about -->
+<!-- end_about -->
 
-## Features
+<!-- start_status -->
+<!-- end_status -->
 
-- **Current Weather**: Real-time weather conditions for any city
-- **7-Day Forecast**: Extended weather forecast with detailed daily information
-- **Location Services**: Automatic location detection with fallback options
-- **Responsive Design**: Works seamlessly across desktop and mobile devices
-- **Accessibility**: Full keyboard navigation and screen reader support
-- **Offline-First**: Graceful handling of network issues
-- **Test Coverage**: Comprehensive end-to-end testing with Playwright
+<!-- start_usage -->
+<!-- end_usage -->
 
-## Quick Start
+<!-- start_framework_specific -->
+## Preact Implementation
 
-### Installation
+If you love React but hate the bundle size, Preact is your best friend. It's essentially React, but 3KB instead of 40KB. Same hooks, same JSX, same mental model - just way more efficient. You can literally take a React component, change the import from `react` to `preact`, and it'll work.
 
-```bash
-# Install dependencies
-npm install
-```
+For our weather app, switching from React to Preact required basically zero changes. The `useWeatherData` custom hook works identically, functional components behave the same, and `useState` does exactly what you'd expect. But the compiled bundle is drastically smaller and noticeably faster.
 
-### Development
+Preact's secret sauce is smart optimizations under the hood. It skips unnecessary work that React's virtual DOM usually does, and includes automatic component memoization that you'd have to add manually in React with `memo()`. The reconciliation algorithm is also more direct, making updates snappier.
 
-```bash
-# Start development server
-npm run dev
-```
+### Notable files
+- `src/App.jsx` - Main component with familiar React-style hooks
+- `src/hooks/useWeatherData.js` - Custom hook for weather state and API calls
+- `src/components/` - Standard functional components with hooks
+- `src/services/WeatherService.js` - API service using native fetch
 
-The application will be available at `http://localhost:3000`
+The developer experience is identical to React. Hot refresh works perfectly, the dev tools are solid, and you can use most React libraries via `preact/compat`. Really, the only difference is your bundle analyzer will make you smile.
 
-### Testing
+I didn't need Preact's router or state management libraries for this simple app, but they follow the same lightweight philosophy. For anything bigger, you'd probably reach for the React ecosystem anyway via the compat layer.
+<!-- end_framework_specific -->
 
-```bash
-# Run end-to-end tests
-npm test
-```
+<!-- start_real_world_app -->
+<!-- end_real_world_app -->
 
-### Production Build
-
-```bash
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-```
-
-## Architecture
-
-The application follows modern Preact patterns:
-
-- **Hooks**: Custom `useWeatherData` hook for state management
-- **Components**: Modular, reusable components with clear separation of concerns
-- **Services**: Abstracted weather API service with mock data support
-- **Utils**: Shared utilities for weather data formatting
-- **Testing**: Playwright tests for complete user journey validation
-
-## Dependencies
-
-- **Preact** (^10.19.0): Fast 3KB alternative to React
-- **Vite** (^5.2.0): Next generation frontend tooling
-- **Playwright** (^1.40.0): End-to-end testing framework
-
-## Project Structure
-
-```
-src/
-├── components/          # Preact components
-│   ├── CurrentWeather.jsx
-│   ├── Forecast.jsx
-│   ├── ForecastItem.jsx
-│   ├── LoadingState.jsx
-│   ├── ErrorState.jsx
-│   ├── SearchForm.jsx
-│   └── WeatherContent.jsx
-├── hooks/              # Custom hooks
-│   └── useWeatherData.js
-├── services/           # API services
-│   └── WeatherService.js
-├── utils/              # Utility functions
-│   └── WeatherUtils.js
-├── App.jsx            # Main app component
-└── main.jsx           # App entry point
-```
-
-## License
-
-MIT License - see LICENSE file for details
+<!-- start_license -->
+<!-- end_license -->
