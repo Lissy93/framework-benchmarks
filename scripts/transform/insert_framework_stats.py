@@ -70,7 +70,7 @@ def fmt_size_mb(mb: float | None) -> str:
 def md_first_cell(name: str, logo: str | None, gh: str | None, emoji: str | None) -> str:
     """build first cell with small logo + linked name to GitHub"""
     if not gh: gh = "#"
-    img = f'<a href="{gh}"><img src="{logo}" alt="{emoji}" width="20" height="20" style="vertical-align:middle;margin-right:6px;border-radius:4px"></a>' if logo else ""
+    img = f'<a href="{gh}"><img src="{logo}" alt="{emoji}" width="16"></a>' if logo else ""
     return f'{img} [**{name}**]({gh})'
 
 def build_table(frws: list[dict], stats_by_id: dict[str, dict]) -> str:
@@ -106,7 +106,8 @@ def build_logo_links(frws: list[dict], base_url: str = "https://framework-benchm
     """generate framework logo links block"""
     links = [f'<a href="{base_url}/{f["id"]}/"><img width="48" src="{f.get("meta",{}).get("logo","")}" /></a>' 
              for f in frws if f.get("id") and f.get("meta",{}).get("logo")]
-    return f'<p align="center">\n    {chr(10).join(f"    {link}" for link in links)}\n</p>'
+    note = "<br><sub>Click a framework to view info, test/lint/build/etc statuses, and to preview the demo app</sub>"
+    return f'<p align="center">\n    {chr(10).join(f"    {link}" for link in links)}\n{note}</p>'
 
 def replace_between(text: str, start: str, end: str, block: str) -> str:
     """replace text between markers (markers preserved)"""

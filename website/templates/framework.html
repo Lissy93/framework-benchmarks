@@ -164,6 +164,16 @@
                 <img class="screenshot" src="https://i.ibb.co/ymGkLnMY/weather-front.png" />
             </div>
         </article>
+
+        <!-- Framework Commentary -->
+        {% if framework_commentary %}
+        <article class="framework-commentary-section">
+            <h3>About how we used {{framework.name}} for this implementation</h3>
+            <div class="framework-commentary">
+                {{ framework_commentary | safe }}
+            </div>
+        </article>
+        {% endif %}
         
         <!-- Stats Grid -->
         <!-- <div class="framework-stats">

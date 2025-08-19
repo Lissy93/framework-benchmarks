@@ -11,6 +11,7 @@ from typing import Dict, List, Any, Optional, Union
 from urllib.parse import urljoin
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+import markdown
 import sys
 
 # Add parent directory to path for imports  
@@ -142,6 +143,29 @@ class WebsiteGenerator:
         
         return stats if stats else None
     
+    def load_framework_commentary(self, framework_id: str) -> Optional[str]:
+        """Load and convert framework commentary from markdown to HTML."""
+        commentary_file = self.static_dir / "framework-commentary.json"
+        if not commentary_file.exists():
+            return None
+        
+        try:
+            with open(commentary_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            
+            # Find commentary for this framework
+            for item in data.get('items', []):
+                if item.get('id') == framework_id:
+                    commentary_md = item.get('commentary')
+                    if commentary_md:
+                        # Convert markdown to HTML
+                        md = markdown.Markdown(extensions=['extra', 'codehilite'])
+                        return md.convert(commentary_md)
+            
+            return None
+        except (json.JSONDecodeError, IOError):
+            return None
+    
     def render_homepage(self) -> str:
         """Render the homepage template."""
         template = self.env.get_template('homepage.html')
@@ -159,12 +183,14 @@ class WebsiteGenerator:
         
         navigation = self.get_framework_navigation(framework_id)
         framework_stats = self.load_framework_stats(framework_id)
+        framework_commentary = self.load_framework_commentary(framework_id)
         
         template = self.env.get_template('framework.html')
         return template.render(
             config=self.config,
             framework=framework,
             framework_stats=framework_stats,
+            framework_commentary=framework_commentary,
             prev_framework=navigation['prev'],
             next_framework=navigation['next'],
             page_type='framework'
