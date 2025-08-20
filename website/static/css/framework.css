@@ -1,3 +1,7 @@
+/* =============================================================================
+   FRAMEWORK PAGE STYLES
+   ========================================================================== */
+
 /* Framework Page Layout */
 .framework-page {
   max-width: var(--max-width);
@@ -23,12 +27,13 @@
     "links links links links links tech tech tech tech tech tech tech"
     "requirements requirements requirements requirements requirements requirements requirements requirements requirements requirements requirements requirements"
     "requirements requirements requirements requirements requirements requirements requirements requirements requirements requirements requirements requirements"
-    "commentary commentary commentary commentary commentary commentary commentary commentary commentary commentary commentary commentary"
-    "commentary commentary commentary commentary commentary commentary commentary commentary commentary commentary commentary commentary"
+    "implementation implementation implementation implementation implementation implementation implementation implementation implementation implementation implementation implementation"
+    "implementation implementation implementation implementation implementation implementation implementation implementation implementation implementation implementation implementation"
     "info-header info-header info-header info-header info-header info-header info-header info-header info-header info-header info-header info-header"
     "stats stats stats stats stats stats stats stats stats stats stats stats"
     "example example example example example example video video video video video video"
     "example example example example example example video video video video video video"
+    "about-section about-section about-section about-section about-section about-section about-section about-section about-section about-section about-section about-section"
     "nav nav nav nav nav nav nav nav nav nav nav nav";
   
   gap: var(--grid-gap);
@@ -47,12 +52,17 @@
 .framework-links { grid-area: links; }
 .framework-tech { grid-area: tech; }
 .app-requirements-section { grid-area: requirements; }
-.framework-commentary-section { grid-area: commentary; }
+.framework-implementation-section { grid-area: implementation; }
 .group-header-info { grid-area: info-header; }
 .framework-stats { grid-area: stats; }
 .framework-example-app { grid-area: example; }
 .framework-video { grid-area: video; }
+.framework-about-section { grid-area: about-section; }
 .framework-nav { grid-area: nav; }
+
+/* =============================================================================
+   SHARED COMPONENTS
+   ========================================================================== */
 
 /* Base Card Styles */
 article,
@@ -136,6 +146,10 @@ h4 {
   transform: translateY(-2px);
   box-shadow: var(--shadow-hover, 0 8px 25px rgba(0,0,0,0.15));
 }
+
+/* =============================================================================
+   SPECIFIC COMPONENTS
+   ========================================================================== */
 
 /* Hero Section */
 .framework-hero {
@@ -397,6 +411,7 @@ h4 {
   gap: 1rem;
 }
 
+/* Summary result cards */
 .result-card {
   background: var(--secondary-bg, #f8f9fa);
   border-radius: 0.75rem;
@@ -436,16 +451,8 @@ h4 {
 /* Detailed Results Cards */
 .detailed-results {
   display: grid;
-  grid-template-columns: 3fr 3fr 3fr;
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 1rem;
-  margin-top: 1rem;
-  @media (max-width: 1024px) {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    /* .performance-card {
-      grid-column: 1 / -1;
-    } */
-  }
 }
 
 .results-detail-card {
@@ -478,7 +485,7 @@ h4 {
 }
 
 
-/* Reuse result-card styles for metric items */
+/* Detailed metric items - smaller version of metric cards */
 .metric-item {
   background: var(--secondary-bg, #f8f9fa);
   border-radius: 0.5rem;
@@ -544,7 +551,9 @@ h4 {
   font-size: 0.9rem;
 }
 
-/* Responsive Design */
+/* =============================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
 
 /* Tablet: Clean 6-column grid */
 @media (max-width: 1024px) {
@@ -579,6 +588,15 @@ h4 {
   .requirement-group {
     flex-wrap: wrap;
     justify-content: center;
+  }
+
+  .detailed-results {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .detailed-results .performance-card {
+    grid-column: 1 / -1;
   }
 }
 

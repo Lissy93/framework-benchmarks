@@ -143,11 +143,11 @@ class WebsiteGenerator:
         
         return stats if stats else None
     
-    def load_framework_commentary(self, framework_id: str) -> Optional[str]:
+    def load_framework_commentary(self, framework_id: str) -> Dict[str, Optional[str]]:
         """Load and convert framework commentary from markdown to HTML."""
         commentary_file = self.static_dir / "framework-commentary.json"
         if not commentary_file.exists():
-            return None
+            return {"implementation": None, "about": None}
         
         try:
             with open(commentary_file, 'r', encoding='utf-8') as f:
@@ -156,15 +156,25 @@ class WebsiteGenerator:
             # Find commentary for this framework
             for item in data.get('items', []):
                 if item.get('id') == framework_id:
-                    commentary_md = item.get('commentary')
-                    if commentary_md:
-                        # Convert markdown to HTML
+                    result = {"implementation": None, "about": None}
+                    
+                    # Convert implementation markdown to HTML
+                    implementation_md = item.get('implementation')
+                    if implementation_md:
                         md = markdown.Markdown(extensions=['extra', 'codehilite'])
-                        return md.convert(commentary_md)
+                        result["implementation"] = md.convert(implementation_md)
+                    
+                    # Convert about markdown to HTML
+                    about_md = item.get('about')
+                    if about_md:
+                        md = markdown.Markdown(extensions=['extra', 'codehilite'])
+                        result["about"] = md.convert(about_md)
+                    
+                    return result
             
-            return None
+            return {"implementation": None, "about": None}
         except (json.JSONDecodeError, IOError):
-            return None
+            return {"implementation": None, "about": None}
     
     def load_framework_results_summary(self, framework_id: str) -> Optional[Dict[str, Any]]:
         """Load framework results summary data."""

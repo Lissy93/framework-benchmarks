@@ -14,24 +14,15 @@
 <!-- end_header -->
 
 <!-- start_about -->
+Sometimes the best framework is no framework. Vanilla JavaScript forces you to understand what's actually happening under the hood of all those fancy abstractions. No magic, no build steps, no dependency hell - just the web platform as intended.
 
-## About
+For our weather app, vanilla JS is surprisingly capable. `fetch()` handles API calls, `document.querySelector()` finds elements, and `addEventListener()` manages interactions. Modern browser APIs like `localStorage`, `geolocation`, and CSS custom properties give you most of what you need without any external dependencies.
 
-<img align="right" src="/assets/screenshot.png" width="400">
+The challenge is organization and state management. Without a framework's structure, you're responsible for everything - keeping the DOM in sync with data, organizing code sensibly, and avoiding spaghetti. Our weather app uses a simple pub/sub pattern and functional organization, but it requires discipline.
 
-This is a simple weather app, built in [Vanilla JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) (as well as also [10 other frontend frameworks](/)) in order to review, compare and benchmark frontend web frameworks.
+The performance is excellent since there's no framework overhead, and the bundle size is minimal. Everything loads fast, and you're not shipping someone else's code to your users. For simple applications or when performance is critical, vanilla JS can be the right choice.
 
-- 🌦️ Live weather conditions
-- 📅 7-day weather forecast
-- 🔍 City search functionality
-- 📍 Geolocation support
-- 💾 Persistent location storage
-- 📱 Responsive design
-- ♿ Accessible interface
-- 🎨 Multi-theme support
-- 🧪 Fully unit tested
-- 🌐 Internationalized
-
+But you'll miss the conveniences of modern frameworks - automatic updates, component organization, and developer experience. What takes one line in React might take ten in vanilla JS. It's a trade-off between control and convenience.
 <!-- end_about -->
 
 <!-- start_status -->
@@ -67,9 +58,13 @@ For troubleshooting, use `npm run verify` from the root of the project.
 ## Vanilla JavaScript Implementation
 
 <!-- start_framework_specific -->
-This implementation uses pure JavaScript without any frameworks or build tools, representing the baseline web platform approach.
-
+### Notable files
+- `src/main.js` - Application initialization and DOM manipulation
+- `src/weather-service.js` - API calls using native fetch
+- `src/weather-utils.js` - Utility functions for data processing
+- `index.html` - Pure HTML structure without framework dependencies
 <!-- end_framework_specific -->
+
 
 <!-- start_real_world_app -->
 

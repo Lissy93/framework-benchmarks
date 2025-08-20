@@ -23,8 +23,8 @@ from generator import WebsiteGenerator
 console = Console()
 
 
-def extract_framework_commentary(framework_id: str, root_dir: Path) -> Optional[str]:
-    """Extract framework-specific commentary from README.md between markers."""
+def extract_framework_implementation(framework_id: str, root_dir: Path) -> Optional[str]:
+    """Extract framework-specific implementation details from README.md between markers."""
     readme_path = root_dir / "apps" / framework_id / "README.md"
     
     if not readme_path.exists():
@@ -36,6 +36,31 @@ def extract_framework_commentary(framework_id: str, root_dir: Path) -> Optional[
         
         match = re.search(
             r'<!-- start_framework_specific -->(.*?)<!-- end_framework_specific -->',
+            content, 
+            re.DOTALL
+        )
+        
+        if match:
+            return match.group(1).strip()
+        return None
+        
+    except Exception:
+        return None
+
+
+def extract_framework_about(framework_id: str, root_dir: Path) -> Optional[str]:
+    """Extract framework thoughts/about section from README.md between markers."""
+    readme_path = root_dir / "apps" / framework_id / "README.md"
+    
+    if not readme_path.exists():
+        return None
+        
+    try:
+        with open(readme_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        match = re.search(
+            r'<!-- start_about -->(.*?)<!-- end_about -->',
             content, 
             re.DOTALL
         )
@@ -115,12 +140,14 @@ def generate_framework_commentary(frameworks: List[Dict], root_dir: Path, static
         if not framework_id:
             continue
             
-        commentary = extract_framework_commentary(framework_id, root_dir)
+        implementation = extract_framework_implementation(framework_id, root_dir)
+        about = extract_framework_about(framework_id, root_dir)
         
         commentary_data["items"].append({
             "id": framework_id,
             "name": framework.get("name", framework_id.title()),
-            "commentary": commentary
+            "implementation": implementation,
+            "about": about
         })
     
     dev_static = root_dir / "website" / "static"
@@ -140,8 +167,9 @@ def generate_framework_commentary(frameworks: List[Dict], root_dir: Path, static
         else:
             locations = "static/"
             
-        found_count = sum(1 for item in commentary_data["items"] if item["commentary"])
-        console.print(f"[green]✓ Framework commentary generated:[/green] {found_count}/{len(frameworks)} frameworks → {locations}")
+        implementation_count = sum(1 for item in commentary_data["items"] if item["implementation"])
+        about_count = sum(1 for item in commentary_data["items"] if item["about"])
+        console.print(f"[green]✓ Framework commentary generated:[/green] {implementation_count}/{len(frameworks)} implementations, {about_count}/{len(frameworks)} about sections → {locations}")
         
     except Exception as e:
         console.print(f"[red]✗ Failed to generate framework commentary:[/red] {e}")

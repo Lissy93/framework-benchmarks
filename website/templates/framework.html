@@ -294,15 +294,16 @@
             </div>
         </article>
 
-        <!-- Framework Commentary -->
-        {% if framework_commentary %}
-        <article class="framework-commentary-section">
-            <h3>About how we used {{framework.name}} for this implementation</h3>
-            <div class="framework-commentary">
-                {{ framework_commentary | safe }}
+        <!-- Framework Implementation -->
+        {% if framework_commentary.implementation %}
+        <article class="framework-implementation-section">
+            <h3>{{framework.name}} Implementation</h3>
+            <div class="framework-implementation">
+                {{ framework_commentary.implementation | safe }}
             </div>
         </article>
         {% endif %}
+
         
         <!-- Stats Grid -->
         <!-- <div class="framework-stats">
@@ -366,6 +367,16 @@
             </iframe>
             </div>
         </article>
+        
+        <!-- About Framework Section -->
+        {% if framework_commentary.about %}
+        <article class="framework-about-section">
+            <h3>About {{framework.name}}</h3>
+            <div class="framework-about">
+                {{ framework_commentary.about | safe }}
+            </div>
+        </article>
+        {% endif %}
         
         <!-- Navigation -->
         <div class="framework-nav">
