@@ -42,39 +42,75 @@
 <!-- Charts Section -->
 <section class="charts-section">
     <h2>📊 Framework Performance Charts</h2>
+    
+    <!-- Framework Toggle Controls -->
+    <div class="framework-toggles">
+        <div class="toggle-header">
+            <h3>🎛️ Framework Visibility</h3>
+            <div class="toggle-controls">
+                <button id="selectAll" class="toggle-btn">Select All</button>
+                <button id="deselectAll" class="toggle-btn">Deselect All</button>
+            </div>
+        </div>
+        <div class="framework-checkboxes">
+            {% for framework in frameworks %}
+            <label class="framework-checkbox" style="--fw-color: {{ framework.meta.color or '#3498db' }};">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-{{ framework.id }}" 
+                       data-framework="{{ framework.id }}"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">{{ framework.name or framework.displayName or framework.id.title() }}</span>
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+    
     <div class="charts-grid">
         <div class="chart-container">
-            <canvas id="performanceRadar"></canvas>
+            <div class="chart-outer"><canvas id="performanceRadar"></canvas></div>
+            <p>Illustrates overall summary, toggle frameworks on/off to view<br>(higher = better)</p>
         </div>
         <div class="chart-container">
-            <canvas id="bundleSizeComparison"></canvas>
+            <div class="chart-outer"><canvas id="performanceQuadrant"></canvas></div>
+            <p>Bundle and Performance Relationship<br>(higher performance = better, lower bundle = better)</p>
         </div>
         <div class="chart-container">
-            <canvas id="loadTimeline"></canvas>
+            <div class="chart-outer"><canvas id="sourceAnalysis"></canvas></div>
+            <p>Source code size and complexity<br>(lower = better)</p>
         </div>
         <div class="chart-container">
-            <canvas id="resourceConsumption"></canvas>
+            <div class="chart-outer"><canvas id="bundleSizeComparison"></canvas></div>
+            <p>Total and compressed bundle size<br>(lower size = better)</p>
         </div>
         <div class="chart-container">
-            <canvas id="buildEfficiencyScatter"></canvas>
+            <div class="chart-outer"><canvas id="lighthouseRadial"></canvas></div>
+            <p>Lighthouse performance scores<br>(higher = better, baseline at 80%)</p>
         </div>
         <div class="chart-container">
-            <canvas id="performanceQuadrant"></canvas>
+            <div class="chart-outer"><canvas id="loadTimeline"></canvas></div>
+            <p>Loading performance metrics over time<br>(lower times = better)</p>
         </div>
         <div class="chart-container">
-            <canvas id="lighthouseRadial"></canvas>
+            <div class="chart-outer"><canvas id="resourceConsumption"></canvas></div>
+            <p>CPU and memory usage during testing<br>(lower usage = better)</p>
         </div>
         <div class="chart-container">
-            <canvas id="sourceAnalysis"></canvas>
+            <div class="chart-outer"><canvas id="buildEfficiencyScatter"></canvas></div>
+            <p>Build time vs bundle size relationship<br>(faster builds + smaller bundles = better)</p>
         </div>
         <div class="chart-container">
-            <canvas id="projectSizePie"></canvas>
+            <div class="chart-outer"><canvas id="projectSizePie"></canvas></div>
+            <p>Distribution of framework bundle sizes<br>(smaller slices = more efficient)</p>
         </div>
         <div class="chart-container">
-            <canvas id="maintainabilityTreemap"></canvas>
+            <div class="chart-outer"><canvas id="maintainabilityTreemap"></canvas></div>
+            <p>Code maintainability by lines of code<br>(rectangle size = code volume)</p>
         </div>
         <div class="chart-container">
-            <canvas id="buildTimeDonut"></canvas>
+            <div class="chart-outer"><canvas id="buildTimeDonut"></canvas></div>
+            <p>Build time distribution across frameworks<br>(smaller slices = faster builds)</p>
         </div>
     </div>
 </section>
@@ -82,58 +118,13 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for_static('css/homepage.css') }}">
-<style>
-.charts-section {
-    margin: 2rem 0;
-    padding: 2rem;
-    border-radius: 12px;
-}
-
-.charts-section h2 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: var(--text-primary, #2c3e50);
-}
-
-.charts-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-}
-
-.chart-container {
-    background: white;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    height: 400px;
-    position: relative;
-}
-
-.chart-container canvas {
-    width: 100% !important;
-    height: 100% !important;
-}
-
-@media (max-width: 768px) {
-    .charts-grid {
-        grid-template-columns: 1fr;
-        gap: 1rem;
-    }
-    
-    .chart-container {
-        height: 300px;
-        padding: 0.5rem;
-    }
-}
-</style>
+<link rel="stylesheet" href="{{ url_for_static('css/chart-stuff.css') }}">
 {% endblock %}
 
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@3.1.0/dist/chartjs-chart-treemap.min.js"></script>
+<script src="{{ url_for_static('js/charts.js') }}"></script>
 
 <script>
 // Chart configurations loaded from server
@@ -141,128 +132,7 @@ const chartConfigs = {{ chart_configs | tojson }};
 
 // Initialize charts when page loads
 document.addEventListener('DOMContentLoaded', function() {
-    // Performance Radar Chart
-    if (chartConfigs.performance_radar) {
-        const radarCtx = document.getElementById('performanceRadar').getContext('2d');
-        new Chart(radarCtx, chartConfigs.performance_radar);
-    }
-    
-    // Bundle Size Comparison Chart
-    if (chartConfigs.bundle_size_comparison) {
-        const bundleCtx = document.getElementById('bundleSizeComparison').getContext('2d');
-        new Chart(bundleCtx, chartConfigs.bundle_size_comparison);
-    }
-    
-    // Load Timeline Chart
-    if (chartConfigs.load_timeline) {
-        const timelineCtx = document.getElementById('loadTimeline').getContext('2d');
-        new Chart(timelineCtx, chartConfigs.load_timeline);
-    }
-    
-    // Resource Consumption Chart
-    if (chartConfigs.resource_consumption) {
-        const resourceCtx = document.getElementById('resourceConsumption').getContext('2d');
-        new Chart(resourceCtx, chartConfigs.resource_consumption);
-    }
-    
-    // Build Efficiency Scatter Chart
-    if (chartConfigs.build_efficiency_scatter) {
-        const scatterCtx = document.getElementById('buildEfficiencyScatter').getContext('2d');
-        const scatterConfig = {...chartConfigs.build_efficiency_scatter};
-        
-        // Add custom tooltip formatter
-        scatterConfig.options.plugins.tooltip.callbacks = {
-            title: function(ctx) {
-                return ctx[0].dataset.label;
-            },
-            label: function(ctx) {
-                const data = ctx.raw;
-                return [
-                    `Build Time: ${data.buildTime.toFixed(2)}s`,
-                    `Bundle Size: ${data.bundleSize.toFixed(1)} KB (gzipped)`,
-                    `Compression: ${data.compression.toFixed(1)}x`
-                ];
-            }
-        };
-        
-        new Chart(scatterCtx, scatterConfig);
-    }
-    
-    // Performance Quadrant Chart
-    if (chartConfigs.performance_quadrant) {
-        const quadrantCtx = document.getElementById('performanceQuadrant').getContext('2d');
-        const quadrantConfig = {...chartConfigs.performance_quadrant};
-        
-        // Add custom tooltip formatter
-        quadrantConfig.options.plugins.tooltip.callbacks = {
-            title: function(ctx) {
-                return ctx[0].dataset.label;
-            },
-            label: function(ctx) {
-                const data = ctx.raw;
-                return [
-                    `Performance Score: ${data.performance}`,
-                    `Bundle Size: ${data.bundleSize.toFixed(1)} KB (gzipped)`
-                ];
-            }
-        };
-        
-        new Chart(quadrantCtx, quadrantConfig);
-    }
-    
-    // Lighthouse Radial Chart
-    if (chartConfigs.lighthouse_radial) {
-        const lighthouseCtx = document.getElementById('lighthouseRadial').getContext('2d');
-        new Chart(lighthouseCtx, chartConfigs.lighthouse_radial);
-    }
-    
-    // Source Analysis Chart
-    if (chartConfigs.source_analysis) {
-        const sourceCtx = document.getElementById('sourceAnalysis').getContext('2d');
-        new Chart(sourceCtx, chartConfigs.source_analysis);
-    }
-    
-    // Project Size Pie Chart
-    if (chartConfigs.project_size_pie) {
-        const pieCtx = document.getElementById('projectSizePie').getContext('2d');
-        const pieConfig = {...chartConfigs.project_size_pie};
-        
-        // Add custom tooltip formatter
-        pieConfig.options.plugins.tooltip.callbacks = {
-            label: function(ctx) {
-                const label = ctx.label || '';
-                const value = ctx.parsed;
-                const percentage = ((value / ctx.dataset.data.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
-                return `${label}: ${value.toFixed(1)} KB (${percentage}%)`;
-            }
-        };
-        
-        new Chart(pieCtx, pieConfig);
-    }
-    
-    // Maintainability Treemap Chart
-    if (chartConfigs.maintainability_treemap) {
-        const treemapCtx = document.getElementById('maintainabilityTreemap').getContext('2d');
-        new Chart(treemapCtx, chartConfigs.maintainability_treemap);
-    }
-    
-    // Build Time Donut Chart
-    if (chartConfigs.build_time_donut) {
-        const donutCtx = document.getElementById('buildTimeDonut').getContext('2d');
-        const donutConfig = {...chartConfigs.build_time_donut};
-        
-        // Add custom tooltip formatter
-        donutConfig.options.plugins.tooltip.callbacks = {
-            label: function(ctx) {
-                const label = ctx.label || '';
-                const value = ctx.parsed;
-                const percentage = ((value / ctx.dataset.data.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
-                return `${label}: ${value.toFixed(2)}s (${percentage}%)`;
-            }
-        };
-        
-        new Chart(donutCtx, donutConfig);
-    }
+    initializeCharts(chartConfigs);
 });
 </script>
 {% endblock %}

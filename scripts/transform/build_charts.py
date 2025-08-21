@@ -261,7 +261,7 @@ def create_build_efficiency_scatter(data: Dict[str, Any]) -> Dict[str, Any]:
     config['data']['datasets'] = datasets
     config['options']['plugins']['title'] = {
         'display': True,
-        'text': 'Build Efficiency: Time vs Bundle Size (dot size = compression ratio)',
+        'text': 'Build Efficiency: Time vs Bundle Size',
         'font': {'size': FONT_SIZE_TITLE, 'family': FONT_FAMILY}
     }
     
@@ -315,7 +315,7 @@ def create_performance_radar(data: Dict[str, Any]) -> Dict[str, Any]:
     config['data']['datasets'] = datasets
     config['options']['plugins']['title'] = {
         'display': True,
-        'text': 'Performance Overview Radar',
+        'text': 'Performance Overview',
         'font': {'size': FONT_SIZE_TITLE, 'family': FONT_FAMILY}
     }
     config['options']['scales'] = {
@@ -373,7 +373,7 @@ def create_load_timeline_chart(data: Dict[str, Any]) -> Dict[str, Any]:
     config['data']['datasets'] = datasets
     config['options']['plugins']['title'] = {
         'display': True,
-        'text': 'Loading Performance Timeline',
+        'text': 'Loading Performance',
         'font': {'size': FONT_SIZE_TITLE, 'family': FONT_FAMILY}
     }
     config['options']['scales']['y']['title'] = {
@@ -657,7 +657,7 @@ def create_bundle_size_comparison(data: Dict[str, Any]) -> Dict[str, Any]:
     }
     config['options']['plugins']['title'] = {
         'display': True,
-        'text': 'Bundle Size Comparison with Compression Ratios',
+        'text': 'Bundle Size and Comparison',
         'font': {'size': FONT_SIZE_TITLE, 'family': FONT_FAMILY}
     }
     
@@ -727,7 +727,7 @@ def create_performance_quadrant_chart(data: Dict[str, Any]) -> Dict[str, Any]:
     config['data']['datasets'] = datasets
     config['options']['plugins']['title'] = {
         'display': True,
-        'text': 'Performance vs Bundle Size Quadrant',
+        'text': 'Performance vs Bundle Size',
         'font': {'size': FONT_SIZE_TITLE, 'family': FONT_FAMILY}
     }
     
