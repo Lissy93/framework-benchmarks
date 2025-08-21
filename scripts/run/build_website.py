@@ -128,6 +128,41 @@ def copy_benchmark_results(root_dir: Path, static_output: Path) -> None:
         console.print(f"[red]✗ Failed to copy benchmark results[/red]")
 
 
+def generate_chart_configs(root_dir: Path, static_output: Path) -> None:
+    """Generate Chart.js configurations using the build_charts.py script."""
+    from pathlib import Path
+    import subprocess
+    
+    script_path = root_dir / "scripts" / "transform" / "build_charts.py"
+    if not script_path.exists():
+        console.print(f"[yellow]⚠ Chart generation script not found:[/yellow] {script_path}")
+        return
+    
+    try:
+        # Run the chart generation script
+        result = subprocess.run([
+            "python", str(script_path)
+        ], cwd=str(root_dir), capture_output=True, text=True, timeout=60)
+        
+        if result.returncode == 0:
+            # Copy chart configs to dev static if needed
+            chart_configs_source = static_output / "chart-configs.json"
+            dev_static = root_dir / "website" / "static"
+            
+            if chart_configs_source.exists() and dev_static.exists():
+                chart_configs_dev = dev_static / "chart-configs.json"
+                shutil.copy2(chart_configs_source, chart_configs_dev)
+                
+            console.print(f"[green]✓ Chart configurations generated successfully[/green]")
+        else:
+            console.print(f"[red]✗ Chart generation failed:[/red] {result.stderr}")
+            
+    except subprocess.TimeoutExpired:
+        console.print(f"[red]✗ Chart generation timed out[/red]")
+    except Exception as e:
+        console.print(f"[red]✗ Chart generation error:[/red] {e}")
+
+
 def generate_framework_commentary(frameworks: List[Dict], root_dir: Path, static_output: Path) -> None:
     """Generate framework commentary JSON file from README.md files."""
     commentary_data = {
@@ -207,6 +242,7 @@ def copy_static_assets(root_dir: Path, config: Dict, output_dir: Path) -> None:
     # Copy data files using helper functions
     copy_framework_stats(root_dir, static_output)
     copy_benchmark_results(root_dir, static_output)
+    generate_chart_configs(root_dir, static_output)
 
 
 def copy_project_assets(root_dir: Path, config: Dict, output_dir: Path) -> None:

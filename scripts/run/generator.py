@@ -192,12 +192,29 @@ class WebsiteGenerator:
         except (json.JSONDecodeError, IOError):
             return None
     
+    def load_chart_configs(self) -> Dict[str, Any]:
+        """Load chart configurations for homepage display."""
+        chart_configs_file = self.static_dir / "chart-configs.json"
+        if not chart_configs_file.exists():
+            return {}
+        
+        try:
+            with open(chart_configs_file, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+            return data.get('charts', {})
+        except (json.JSONDecodeError, IOError):
+            return {}
+    
     def render_homepage(self) -> str:
         """Render the homepage template."""
+        # Load chart configurations
+        chart_configs = self.load_chart_configs()
+        
         template = self.env.get_template('homepage.html')
         return template.render(
             config=self.config,
             frameworks=self.frameworks_list,
+            chart_configs=chart_configs,
             page_type='homepage'
         )
     
