@@ -14,15 +14,24 @@
 <!-- end_header -->
 
 <!-- start_about -->
-Qwik is kinda wild. It completely rethinks how web apps work by doing something called "resumability" - your page loads instantly with zero JavaScript, then individual components wake up only when you interact with them. It's like having a webpage that's asleep until you poke it.
 
-The secret is those `$` symbols everywhere. `component$()`, `useTask$()`, `onClick$()` - these aren't just weird syntax, they're lazy loading boundaries. Each `$` tells Qwik "this code can be loaded later when needed." So clicking a button doesn't load the entire app, it just loads that specific button's handler.
+## About
 
-For our weather app, this means the initial page render is lightning fast - just HTML and CSS. Search for a city, and only *then* does the search logic get loaded. Click to expand a forecast day, and only the expansion code gets fetched. It's incremental interactivity taken to its logical extreme.
+<img align="right" src="/assets/screenshot.png" width="400">
 
-The state management feels familiar but with superpowers. Qwik stores automatically serialize to HTML, so when components resume, they pick up exactly where they left off. No hydration mismatch, no loading spinners, just seamless continuation. For that reason, I used Qwik to build the interactive stuff on my [Digital Defense](https://digital-defense.io/) website.
+This is a simple weather app, built in [Qwik](https://qwik.builder.io/) (as well as also [10 other frontend frameworks](/)) in order to review, compare and benchmark frontend web frameworks.
 
-The trade-off is developer complexity - all those `$` symbols take getting used to, and debugging can be tricky when code loads on-demand. But for performance-critical apps, especially content-heavy sites, Qwik's approach is genuinely revolutionary. Your Core Web Vitals scores will thank you.
+- 🌦️ Live weather conditions
+- 📅 7-day weather forecast
+- 🔍 City search functionality
+- 📍 Geolocation support
+- 💾 Persistent location storage
+- 📱 Responsive design
+- ♿ Accessible interface
+- 🎨 Multi-theme support
+- 🧪 Fully unit tested
+- 🌐 Internationalized
+
 <!-- end_about -->
 
 <!-- start_status -->
