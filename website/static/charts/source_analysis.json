@@ -1,0 +1,171 @@
+{
+  "type": "bar",
+  "data": {
+    "labels": [
+      "Lit",
+      "Angular",
+      "Preact",
+      "Solid",
+      "React",
+      "Qwik",
+      "Svelte",
+      "Vanilla",
+      "Vanjs",
+      "Alpine",
+      "Vue",
+      "Jquery"
+    ],
+    "datasets": [
+      {
+        "label": "Logical Lines",
+        "data": [
+          955,
+          474,
+          461,
+          458,
+          438,
+          414,
+          405,
+          426,
+          388,
+          299,
+          217,
+          287
+        ],
+        "backgroundColor": "rgba(59, 130, 246, 0.8)",
+        "borderColor": "rgba(59, 130, 246, 1)",
+        "borderWidth": 1
+      },
+      {
+        "label": "Files Count (\ufffd10)",
+        "data": [
+          80,
+          130,
+          120,
+          120,
+          130,
+          160,
+          120,
+          30,
+          30,
+          30,
+          110,
+          30
+        ],
+        "backgroundColor": "rgba(16, 185, 129, 0.8)",
+        "borderColor": "rgba(16, 185, 129, 1)",
+        "borderWidth": 1
+      },
+      {
+        "label": "Cyclomatic Complexity",
+        "data": [
+          84,
+          85,
+          101,
+          98,
+          90,
+          83,
+          101,
+          74,
+          76,
+          68,
+          57,
+          45
+        ],
+        "backgroundColor": "rgba(245, 101, 101, 0.8)",
+        "borderColor": "rgba(245, 101, 101, 1)",
+        "borderWidth": 1
+      }
+    ]
+  },
+  "options": {
+    "responsive": true,
+    "maintainAspectRatio": false,
+    "interaction": {
+      "intersect": false,
+      "mode": "index"
+    },
+    "plugins": {
+      "legend": {
+        "display": true,
+        "position": "top",
+        "labels": {
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 11
+          },
+          "padding": 20,
+          "usePointStyle": true
+        }
+      },
+      "tooltip": {
+        "backgroundColor": "rgba(0, 0, 0, 0.8)",
+        "titleFont": {
+          "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+          "size": 12
+        },
+        "bodyFont": {
+          "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+          "size": 12
+        },
+        "cornerRadius": 8,
+        "displayColors": true
+      },
+      "title": {
+        "display": true,
+        "text": "Source Code Analysis",
+        "font": {
+          "size": 16,
+          "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif"
+        }
+      }
+    },
+    "scales": {
+      "x": {
+        "type": "category",
+        "grid": {
+          "display": false
+        },
+        "ticks": {
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 12
+          }
+        },
+        "stacked": true
+      },
+      "y": {
+        "type": "linear",
+        "beginAtZero": true,
+        "grid": {
+          "color": "rgba(0, 0, 0, 0.1)",
+          "drawOnChartArea": true
+        },
+        "ticks": {
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 12
+          }
+        },
+        "stacked": true,
+        "title": {
+          "display": true,
+          "text": "Count",
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 12,
+            "weight": "bold"
+          }
+        }
+      }
+    },
+    "layout": {
+      "padding": {
+        "top": 10,
+        "right": 10,
+        "bottom": 10,
+        "left": 10
+      }
+    }
+  }
+}
