@@ -196,6 +196,7 @@ class WebsiteGenerator:
         """Load chart configurations for homepage display."""
         chart_configs_file = self.static_dir / "chart-configs.json"
         if not chart_configs_file.exists():
+            print(f"⚠️ Warning: Chart configs file not found at {chart_configs_file}")
             return {}
         
         try:
