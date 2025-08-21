@@ -30,7 +30,6 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
-    
 </head>
 <body>
     <header>
@@ -95,6 +94,119 @@
                     <span>View Preact Weather App Source</span>
                 </div>
             </a>
+        </div>
+
+        <div class="group-header group-header-results">
+            <h2>Results Summary</h2>
+        </div>
+
+        <!-- Results Summary -->
+        <article class="framework-results-summary">
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Performance</h4>
+                    <div class="result-value">100%</div>
+                    <div class="result-detail">Lighthouse Score</div>
+                </div>
+                <div class="result-card">
+                    <h4>Bundle Size</h4>
+                    <div class="result-value">9.9KB</div>
+                    <div class="result-detail">Gzipped</div>
+                </div>
+                <div class="result-card">
+                    <h4>Build Time</h4>
+                    <div class="result-value">
+                            0.5s
+                    </div>
+                    <div class="result-detail">Average</div>
+                </div>
+                <div class="result-card">
+                    <h4>Load Time</h4>
+                    <div class="result-value">
+                            1.5s
+                    </div>
+                    <div class="result-detail">LCP</div>
+                </div>
+                <div class="result-card">
+                    <h4>Complexity</h4>
+                    <div class="result-value">101</div>
+                    <div class="result-detail">Cyclomatic</div>
+                </div>
+            </div>
+        </article>
+        
+        <!-- Detailed Results Cards -->
+        <div class="detailed-results">
+            <!-- Performance Metrics Card -->
+            <article class="results-detail-card performance-card">
+                <h4>Performance Metrics</h4>
+                <div class="metrics-grid metrics-grid-5">
+                    <div class="metric-item">
+                        <div class="metric-label">CLS</div>
+                        <div class="metric-value">0.0001</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">FCP</div>
+                        <div class="metric-value">1368ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">LCP</div>
+                        <div class="metric-value">1523ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">TBT</div>
+                        <div class="metric-value">0ms</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Bundle Analysis Card -->
+            <article class="results-detail-card bundle-card">
+                <h4>Bundle Analysis</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Compression</div>
+                        <div class="metric-value">2.7x</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">File Count</div>
+                        <div class="metric-value">1</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">JS %</div>
+                        <div class="metric-value">100.0%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Total Size</div>
+                        <div class="metric-value">27.0KB</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Build Info Card -->
+            <article class="results-detail-card build-card">
+                <h4>Build Info</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Build Time</div>
+                        <div class="metric-value">
+                                0.5s
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Output Size</div>
+                        <div class="metric-value">1.8MB</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">HMR Time</div>
+                        <div class="metric-value">107ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Dev Startup</div>
+                        <div class="metric-value">1.1s</div>
+                    </div>
+                </div>
+            </article>
         </div>
 
         <div class="group-header group-header-app">
@@ -204,6 +316,21 @@
                 <img class="screenshot" src="https://i.ibb.co/ymGkLnMY/weather-front.png" />
             </div>
         </article>
+
+        <!-- Framework Implementation -->
+        <article class="framework-implementation-section">
+            <h3>Preact Implementation</h3>
+            <div class="framework-implementation">
+                <h3>Notable files</h3>
+<ul>
+<li><code>src/App.jsx</code> - Main component with familiar React-style hooks</li>
+<li><code>src/hooks/useWeatherData.js</code> - Custom hook for weather state and API calls</li>
+<li><code>src/components/</code> - Standard functional components with hooks</li>
+<li><code>src/services/WeatherService.js</code> - API service using native fetch</li>
+</ul>
+            </div>
+        </article>
+
         
         <!-- Stats Grid -->
         <!-- <div class="framework-stats">
@@ -246,6 +373,18 @@
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen>
             </iframe>
+            </div>
+        </article>
+        
+        <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About Preact</h3>
+            <div class="framework-about">
+                <p>If you love React but hate the bundle size, Preact is your best friend. It's essentially React, but 3KB instead of 40KB. Same hooks, same JSX, same mental model - just way more efficient. You can literally take a React component, change the import from <code>react</code> to <code>preact</code>, and it'll work.</p>
+<p>For our weather app, switching from React to Preact required basically zero changes. The <code>useWeatherData</code> custom hook works identically, functional components behave the same, and <code>useState</code> does exactly what you'd expect. But the compiled bundle is drastically smaller and noticeably faster.</p>
+<p>Preact's secret sauce is smart optimizations under the hood. It skips unnecessary work that React's virtual DOM usually does, and includes automatic component memoization that you'd have to add manually in React with <code>memo()</code>. The reconciliation algorithm is also more direct, making updates snappier.</p>
+<p>The developer experience is identical to React. Hot refresh works perfectly, the dev tools are solid, and you can use most React libraries via <code>preact/compat</code>. Really, the only difference is your bundle analyzer will make you smile.</p>
+<p>I didn't need Preact's router or state management libraries for this simple app, but they follow the same lightweight philosophy. For anything bigger, you'd probably reach for the React ecosystem anyway via the compat layer.</p>
             </div>
         </article>
         

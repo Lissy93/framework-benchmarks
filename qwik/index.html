@@ -30,7 +30,6 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
-    
 </head>
 <body>
     <header>
@@ -95,6 +94,119 @@
                     <span>View Qwik Weather App Source</span>
                 </div>
             </a>
+        </div>
+
+        <div class="group-header group-header-results">
+            <h2>Results Summary</h2>
+        </div>
+
+        <!-- Results Summary -->
+        <article class="framework-results-summary">
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Performance</h4>
+                    <div class="result-value">94.85%</div>
+                    <div class="result-detail">Lighthouse Score</div>
+                </div>
+                <div class="result-card">
+                    <h4>Bundle Size</h4>
+                    <div class="result-value">67.5KB</div>
+                    <div class="result-detail">Gzipped</div>
+                </div>
+                <div class="result-card">
+                    <h4>Build Time</h4>
+                    <div class="result-value">
+                            0.8s
+                    </div>
+                    <div class="result-detail">Average</div>
+                </div>
+                <div class="result-card">
+                    <h4>Load Time</h4>
+                    <div class="result-value">
+                            2.1s
+                    </div>
+                    <div class="result-detail">LCP</div>
+                </div>
+                <div class="result-card">
+                    <h4>Complexity</h4>
+                    <div class="result-value">83</div>
+                    <div class="result-detail">Cyclomatic</div>
+                </div>
+            </div>
+        </article>
+        
+        <!-- Detailed Results Cards -->
+        <div class="detailed-results">
+            <!-- Performance Metrics Card -->
+            <article class="results-detail-card performance-card">
+                <h4>Performance Metrics</h4>
+                <div class="metrics-grid metrics-grid-5">
+                    <div class="metric-item">
+                        <div class="metric-label">CLS</div>
+                        <div class="metric-value">0.1639</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">FCP</div>
+                        <div class="metric-value">1445ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">LCP</div>
+                        <div class="metric-value">2122ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">TBT</div>
+                        <div class="metric-value">0ms</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Bundle Analysis Card -->
+            <article class="results-detail-card bundle-card">
+                <h4>Bundle Analysis</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Compression</div>
+                        <div class="metric-value">2.6x</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">File Count</div>
+                        <div class="metric-value">26</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">JS %</div>
+                        <div class="metric-value">100.0%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Total Size</div>
+                        <div class="metric-value">177.7KB</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Build Info Card -->
+            <article class="results-detail-card build-card">
+                <h4>Build Info</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Build Time</div>
+                        <div class="metric-value">
+                                0.8s
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Output Size</div>
+                        <div class="metric-value">1.9MB</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">HMR Time</div>
+                        <div class="metric-value">107ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Dev Startup</div>
+                        <div class="metric-value">1.1s</div>
+                    </div>
+                </div>
+            </article>
         </div>
 
         <div class="group-header group-header-app">
@@ -204,6 +316,21 @@
                 <img class="screenshot" src="https://i.ibb.co/ymGkLnMY/weather-front.png" />
             </div>
         </article>
+
+        <!-- Framework Implementation -->
+        <article class="framework-implementation-section">
+            <h3>Qwik Implementation</h3>
+            <div class="framework-implementation">
+                <h3>Notable files</h3>
+<ul>
+<li><code>src/App.tsx</code> - Main component with resumable state</li>
+<li><code>src/stores/weatherStore.ts</code> - Qwik stores that serialize automatically  </li>
+<li><code>src/services/WeatherService.ts</code> - API calls with progressive loading</li>
+<li><code>src/components/</code> - Components that wake up on demand</li>
+</ul>
+            </div>
+        </article>
+
         
         <!-- Stats Grid -->
         <!-- <div class="framework-stats">
@@ -247,7 +374,7 @@
                         <a href="https://github.com/Lissy93/personal-security-checklist">GitHub</a>
                     </p>
                 </div>
-            <div>
+            </div>
         </article>
         
         <!-- About Section -->
@@ -261,6 +388,18 @@
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen>
             </iframe>
+            </div>
+        </article>
+        
+        <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About Qwik</h3>
+            <div class="framework-about">
+                <p>Qwik is kinda wild. It completely rethinks how web apps work by doing something called "resumability" - your page loads instantly with zero JavaScript, then individual components wake up only when you interact with them. It's like having a webpage that's asleep until you poke it.</p>
+<p>The secret is those <code>$</code> symbols everywhere. <code>component$()</code>, <code>useTask$()</code>, <code>onClick$()</code> - these aren't just weird syntax, they're lazy loading boundaries. Each <code>$</code> tells Qwik "this code can be loaded later when needed." So clicking a button doesn't load the entire app, it just loads that specific button's handler.</p>
+<p>For our weather app, this means the initial page render is lightning fast - just HTML and CSS. Search for a city, and only <em>then</em> does the search logic get loaded. Click to expand a forecast day, and only the expansion code gets fetched. It's incremental interactivity taken to its logical extreme.</p>
+<p>The state management feels familiar but with superpowers. Qwik stores automatically serialize to HTML, so when components resume, they pick up exactly where they left off. No hydration mismatch, no loading spinners, just seamless continuation. For that reason, I used Qwik to build the interactive stuff on my <a href="https://digital-defense.io/">Digital Defense</a> website.</p>
+<p>The trade-off is developer complexity - all those <code>$</code> symbols take getting used to, and debugging can be tricky when code loads on-demand. But for performance-critical apps, especially content-heavy sites, Qwik's approach is genuinely revolutionary. Your Core Web Vitals scores will thank you.</p>
             </div>
         </article>
         

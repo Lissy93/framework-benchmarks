@@ -30,7 +30,6 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
-    
 </head>
 <body>
     <header>
@@ -95,6 +94,119 @@
                     <span>View jQuery Weather App Source</span>
                 </div>
             </a>
+        </div>
+
+        <div class="group-header group-header-results">
+            <h2>Results Summary</h2>
+        </div>
+
+        <!-- Results Summary -->
+        <article class="framework-results-summary">
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Performance</h4>
+                    <div class="result-value">92%</div>
+                    <div class="result-detail">Lighthouse Score</div>
+                </div>
+                <div class="result-card">
+                    <h4>Bundle Size</h4>
+                    <div class="result-value">33.9KB</div>
+                    <div class="result-detail">Gzipped</div>
+                </div>
+                <div class="result-card">
+                    <h4>Build Time</h4>
+                    <div class="result-value">
+                            0.7s
+                    </div>
+                    <div class="result-detail">Average</div>
+                </div>
+                <div class="result-card">
+                    <h4>Load Time</h4>
+                    <div class="result-value">
+                            2.0s
+                    </div>
+                    <div class="result-detail">LCP</div>
+                </div>
+                <div class="result-card">
+                    <h4>Complexity</h4>
+                    <div class="result-value">45</div>
+                    <div class="result-detail">Cyclomatic</div>
+                </div>
+            </div>
+        </article>
+        
+        <!-- Detailed Results Cards -->
+        <div class="detailed-results">
+            <!-- Performance Metrics Card -->
+            <article class="results-detail-card performance-card">
+                <h4>Performance Metrics</h4>
+                <div class="metrics-grid metrics-grid-5">
+                    <div class="metric-item">
+                        <div class="metric-label">CLS</div>
+                        <div class="metric-value">0.1457</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">FCP</div>
+                        <div class="metric-value">1812ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">LCP</div>
+                        <div class="metric-value">1976ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">TBT</div>
+                        <div class="metric-value">0ms</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Bundle Analysis Card -->
+            <article class="results-detail-card bundle-card">
+                <h4>Bundle Analysis</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Compression</div>
+                        <div class="metric-value">2.9x</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">File Count</div>
+                        <div class="metric-value">1</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">JS %</div>
+                        <div class="metric-value">99.5%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Total Size</div>
+                        <div class="metric-value">97.7KB</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Build Info Card -->
+            <article class="results-detail-card build-card">
+                <h4>Build Info</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Build Time</div>
+                        <div class="metric-value">
+                                0.7s
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Output Size</div>
+                        <div class="metric-value">1.9MB</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">HMR Time</div>
+                        <div class="metric-value">103.5ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Dev Startup</div>
+                        <div class="metric-value">1.0s</div>
+                    </div>
+                </div>
+            </article>
         </div>
 
         <div class="group-header group-header-app">
@@ -204,6 +316,21 @@
                 <img class="screenshot" src="https://i.ibb.co/ymGkLnMY/weather-front.png" />
             </div>
         </article>
+
+        <!-- Framework Implementation -->
+        <article class="framework-implementation-section">
+            <h3>jQuery Implementation</h3>
+            <div class="framework-implementation">
+                <h3>Notable files</h3>
+<ul>
+<li><code>src/main.js</code> - Application initialization and jQuery setup</li>
+<li><code>src/components/weather-ui.js</code> - Manual DOM management and event handling</li>
+<li><code>src/services/weather-service.js</code> - API calls with <code>$.ajax()</code></li>
+<li><code>index.html</code> - Plain HTML structure with jQuery CDN</li>
+</ul>
+            </div>
+        </article>
+
         
         <!-- Stats Grid -->
         <!-- <div class="framework-stats">
@@ -246,6 +373,18 @@
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen>
             </iframe>
+            </div>
+        </article>
+        
+        <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About jQuery</h3>
+            <div class="framework-about">
+                <p>Let's be honest - building a modern app with jQuery in 2024 feels like showing up to a Formula 1 race with a vintage car. It'll get you there, but everyone will wonder what the f*ck you are on. Still, jQuery powered the web for over a decade, and is still actually very widley used (thanks WordPress), so it's worth understanding what made it so dominant. Nowadays pertty much everything jQuery could do, is implemented into ES6+ natively, so there's little point in jQuery (unless u r supporting IE11).</p>
+<p>The TL;DR of jQuery's magic was always in the simplicity. <code>$('#weather-display').html(weatherHtml)</code> just <em>works</em>. No virtual DOM, no component lifecycle, no build process - just select elements and manipulate them. The method chaining is genuinely elegant: <code>$('.forecast-item').addClass('active').fadeIn(300)</code> reads like English.</p>
+<p>For our weather app, jQuery actually handles the basic functionality fine. Event delegation with <code>$(document).on('click', '.forecast-toggle', handler)</code> works perfectly, and <code>$.ajax()</code> fetches weather data without fuss. But you quickly realize you're manually managing everything React or Vue handles automatically - state updates, DOM synchronization, component organization.</p>
+<p>The imperative style becomes tedious fast. Want to update the temperature display? Manually find the element and change its text. Need to show/hide loading states? Manually toggle CSS classes. It works, but you'll write 3x more code than you would in Svelte.</p>
+<p>jQuery still has its place for simple enhancements to static sites, but for anything interactive, modern frameworks or even vanilla JS, are just better. The ecosystem and community have largely moved on, and you'll spend more time fighting against jQuery's limitations than building features.</p>
             </div>
         </article>
         

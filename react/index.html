@@ -30,7 +30,6 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
-    
 </head>
 <body>
     <header>
@@ -95,6 +94,119 @@
                     <span>View React Weather App Source</span>
                 </div>
             </a>
+        </div>
+
+        <div class="group-header group-header-results">
+            <h2>Results Summary</h2>
+        </div>
+
+        <!-- Results Summary -->
+        <article class="framework-results-summary">
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Performance</h4>
+                    <div class="result-value">97%</div>
+                    <div class="result-detail">Lighthouse Score</div>
+                </div>
+                <div class="result-card">
+                    <h4>Bundle Size</h4>
+                    <div class="result-value">49.1KB</div>
+                    <div class="result-detail">Gzipped</div>
+                </div>
+                <div class="result-card">
+                    <h4>Build Time</h4>
+                    <div class="result-value">
+                            0.8s
+                    </div>
+                    <div class="result-detail">Average</div>
+                </div>
+                <div class="result-card">
+                    <h4>Load Time</h4>
+                    <div class="result-value">
+                            2.3s
+                    </div>
+                    <div class="result-detail">LCP</div>
+                </div>
+                <div class="result-card">
+                    <h4>Complexity</h4>
+                    <div class="result-value">90</div>
+                    <div class="result-detail">Cyclomatic</div>
+                </div>
+            </div>
+        </article>
+        
+        <!-- Detailed Results Cards -->
+        <div class="detailed-results">
+            <!-- Performance Metrics Card -->
+            <article class="results-detail-card performance-card">
+                <h4>Performance Metrics</h4>
+                <div class="metrics-grid metrics-grid-5">
+                    <div class="metric-item">
+                        <div class="metric-label">CLS</div>
+                        <div class="metric-value">0.0001</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">FCP</div>
+                        <div class="metric-value">1959ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">LCP</div>
+                        <div class="metric-value">2263ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">TBT</div>
+                        <div class="metric-value">0ms</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Bundle Analysis Card -->
+            <article class="results-detail-card bundle-card">
+                <h4>Bundle Analysis</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Compression</div>
+                        <div class="metric-value">3.1x</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">File Count</div>
+                        <div class="metric-value">1</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">JS %</div>
+                        <div class="metric-value">100.0%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Total Size</div>
+                        <div class="metric-value">154.8KB</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Build Info Card -->
+            <article class="results-detail-card build-card">
+                <h4>Build Info</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Build Time</div>
+                        <div class="metric-value">
+                                0.8s
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Output Size</div>
+                        <div class="metric-value">1.9MB</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">HMR Time</div>
+                        <div class="metric-value">104.5ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Dev Startup</div>
+                        <div class="metric-value">1.0s</div>
+                    </div>
+                </div>
+            </article>
         </div>
 
         <div class="group-header group-header-app">
@@ -204,6 +316,21 @@
                 <img class="screenshot" src="https://i.ibb.co/ymGkLnMY/weather-front.png" />
             </div>
         </article>
+
+        <!-- Framework Implementation -->
+        <article class="framework-implementation-section">
+            <h3>React Implementation</h3>
+            <div class="framework-implementation">
+                <h3>Notable files</h3>
+<ul>
+<li><code>src/App.jsx</code> - Main component with hooks-based state management</li>
+<li><code>src/hooks/useWeatherData.js</code> - Custom hook for weather logic and API calls</li>
+<li><code>src/components/ErrorBoundary.jsx</code> - Error boundary for crash protection</li>
+<li><code>src/components/</code> - Modular functional components</li>
+</ul>
+            </div>
+        </article>
+
         
         <!-- Stats Grid -->
         <!-- <div class="framework-stats">
@@ -247,7 +374,7 @@
                         <a href="https://github.com/Lissy93/web-check">GitHub</a>
                     </p>
                 </div>
-            <div>
+            </div>
         </article>
         
         <!-- About Section -->
@@ -264,12 +391,21 @@
             </div>
         </article>
         
+        <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About React</h3>
+            <div class="framework-about">
+                <p>React is everywhere, powering millions of websites and used by every major tech company. It's been around for over 12 years, and both React and its tooling are incredibly mature. There's a reason it became the default choice for so many teams - the ecosystem is massive, jobs are plentiful, and you can build basically anything.</p>
+<p>But it's not perfect. Our weather app showcases both React's strengths and frustrations. The component model is elegant, <code>useState</code> and <code>useEffect</code> work fine for simple state, and the custom <code>useWeatherData</code> hook abstracts the weather logic nicely. But you're constantly thinking about re-renders, dependency arrays, and manual memoization.</p>
+<p>The virtual DOM adds overhead that other frameworks avoid entirely. Need to optimize performance? Time to sprinkle <code>React.memo</code>, <code>useCallback</code>, and <code>useMemo</code> everywhere. Coming from Svelte or Solid, all this manual work feels tedious. But the developer tooling is exceptional and the community support is unmatched.</p>
+<p>The JSX syntax is familiar once you get used to the quirks - <code>className</code> instead of <code>class</code>, self-closing tags, and JavaScript expressions in curly braces. Controlled components with <code>value</code> and <code>onChange</code> work well for forms, though they're more verbose than Vue's <code>v-model</code>.</p>
+<p>React really shines for complex applications where the ecosystem matters. We didn't need Redux, React Query, or code splitting for this simple weather app, but for something like <a href="https://github.com/lissy93/web-check">Web Check</a>, these tools become essential. The flexibility to choose your own architecture is both React's blessing and curse.</p>
+            </div>
+        </article>
+        
         <!-- Navigation -->
         <div class="framework-nav">
-            <a href="/vanilla/" class="nav-card">
-                <div class="nav-label">Previous</div>
-                <div class="nav-title">Vanilla JS</div>
-            </a>
+            <div></div>
             
             <a href="/" class="nav-card">
                 <div class="nav-label">Home</div>

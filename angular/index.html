@@ -30,7 +30,6 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
-    
 </head>
 <body>
     <header>
@@ -95,6 +94,119 @@
                     <span>View Angular Weather App Source</span>
                 </div>
             </a>
+        </div>
+
+        <div class="group-header group-header-results">
+            <h2>Results Summary</h2>
+        </div>
+
+        <!-- Results Summary -->
+        <article class="framework-results-summary">
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Performance</h4>
+                    <div class="result-value">95%</div>
+                    <div class="result-detail">Lighthouse Score</div>
+                </div>
+                <div class="result-card">
+                    <h4>Bundle Size</h4>
+                    <div class="result-value">72.8KB</div>
+                    <div class="result-detail">Gzipped</div>
+                </div>
+                <div class="result-card">
+                    <h4>Build Time</h4>
+                    <div class="result-value">
+                            10.3s
+                    </div>
+                    <div class="result-detail">Average</div>
+                </div>
+                <div class="result-card">
+                    <h4>Load Time</h4>
+                    <div class="result-value">
+                            2.6s
+                    </div>
+                    <div class="result-detail">LCP</div>
+                </div>
+                <div class="result-card">
+                    <h4>Complexity</h4>
+                    <div class="result-value">85</div>
+                    <div class="result-detail">Cyclomatic</div>
+                </div>
+            </div>
+        </article>
+        
+        <!-- Detailed Results Cards -->
+        <div class="detailed-results">
+            <!-- Performance Metrics Card -->
+            <article class="results-detail-card performance-card">
+                <h4>Performance Metrics</h4>
+                <div class="metrics-grid metrics-grid-5">
+                    <div class="metric-item">
+                        <div class="metric-label">CLS</div>
+                        <div class="metric-value">0.0001</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">FCP</div>
+                        <div class="metric-value">2108ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">LCP</div>
+                        <div class="metric-value">2612ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">TBT</div>
+                        <div class="metric-value">2ms</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Bundle Analysis Card -->
+            <article class="results-detail-card bundle-card">
+                <h4>Bundle Analysis</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Compression</div>
+                        <div class="metric-value">3.2x</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">File Count</div>
+                        <div class="metric-value">3</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">JS %</div>
+                        <div class="metric-value">92.8%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Total Size</div>
+                        <div class="metric-value">233.4KB</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Build Info Card -->
+            <article class="results-detail-card build-card">
+                <h4>Build Info</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Build Time</div>
+                        <div class="metric-value">
+                                10.3s
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Output Size</div>
+                        <div class="metric-value">2.0MB</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">HMR Time</div>
+                        <div class="metric-value">153.5ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Dev Startup</div>
+                        <div class="metric-value">6.1s</div>
+                    </div>
+                </div>
+            </article>
         </div>
 
         <div class="group-header group-header-app">
@@ -204,6 +316,22 @@
                 <img class="screenshot" src="https://i.ibb.co/ymGkLnMY/weather-front.png" />
             </div>
         </article>
+
+        <!-- Framework Implementation -->
+        <article class="framework-implementation-section">
+            <h3>Angular Implementation</h3>
+            <div class="framework-implementation">
+                <h3>Notable files</h3>
+<ul>
+<li><code>src/app/app.component.ts</code> - Root component with weather state management</li>
+<li><code>src/app/services/weather.service.ts</code> - Injectable service using Angular's HttpClient</li>
+<li><code>src/app/services/weather-state.service.ts</code> - Centralized state with RxJS observables</li>
+<li><code>src/app/components/</code> - Standalone components for weather display</li>
+<li><code>src/app/types/weather.types.ts</code> - TypeScript interfaces for type safety</li>
+</ul>
+            </div>
+        </article>
+
         
         <!-- Stats Grid -->
         <!-- <div class="framework-stats">
@@ -247,7 +375,7 @@
                         <a href="https://github.com/Lissy93/domain-locker">GitHub</a>
                     </p>
                 </div>
-            <div>
+            </div>
         </article>
         
         <!-- About Section -->
@@ -261,6 +389,18 @@
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen>
             </iframe>
+            </div>
+        </article>
+        
+        <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About Angular</h3>
+            <div class="framework-about">
+                <p>Angular isn't the cool kid anymore, but it's incredibly solid and ships with absolutely everything you need. TypeScript from day one, dependency injection, forms, HTTP client, routing, testing utilities - it's all there, officially maintained and deeply integrated. No need to cobble together a stack from random npm packages.</p>
+<p>For our weather app, Angular did kinda feel like using a sledgehammer to crack a nut. Using the newer standalone components (no more <code>NgModule</code> boilerplate!) made things cleaner, but I was still writing a lot more code than I needed in Svelte or Vue. That said, everything does just works, and the TypeScript integration is phenomenal.</p>
+<p>The dependency injection system was quite nice for having <code>WeatherService</code> automatically injected into components. And RxJS observables handle all the async weather data very nicley, though they do add a learning curve if you're not familiar with reactive programming.</p>
+<p>Angular's template syntax with <code>*ngIf</code>, <code>*ngFor</code>, and <code>(click)</code> feels natural once you get used to it. Change detection just works without thinking about it (unlike React where you're constantly memoizing things).</p>
+<p>For a simple weather app, we really didn't need any of Angular's big or flagship features (like guards, resolvers, or lazy loading). But I recently build <a href="https://github.com/lissy93/domain-locker">Domain Locker</a> using Angular, and it was a great fit for the complexity of that project, As the structure, type safety, and tooling made it easy to manage a large codebase with multiple features.</p>
             </div>
         </article>
         

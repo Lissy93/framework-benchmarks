@@ -10,6 +10,53 @@
     <!-- CSS -->
     <link rel="stylesheet" href="/static/css/main.css">
 <link rel="stylesheet" href="static/css/homepage.css">
+<style>
+.charts-section {
+    margin: 2rem 0;
+    padding: 2rem;
+    border-radius: 12px;
+}
+
+.charts-section h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-primary, #2c3e50);
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.chart-container {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    height: 400px;
+    position: relative;
+}
+
+.chart-container canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .chart-container {
+        height: 300px;
+        padding: 0.5rem;
+    }
+}
+</style>
     
      <!-- Twitter -->
     <meta property="og:type" content="website">
@@ -30,7 +77,6 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
-    
 </head>
 <body>
     <header>
@@ -54,21 +100,12 @@
     <main class="main-content">
 <section class="hero">
     <div class="hero-content">
-        <p class="subtitle">Select a framework to test performance and functionality</p>
+        <p class="subtitle">Select a framework to view stats, status, demo the output and more</p>
     </div>
 </section>
 
 <section class="frameworks-grid">
     <div class="grid">
-        <a href="/vanilla/" class="framework-card" style="--fw-color: #F7DF1E;" data-framework="vanilla">
-            <img class="framework-icon" 
-                 width="64" 
-                 src="https://cdn.simpleicons.org/javascript"
-                 alt="🧪"
-                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-            <div class="framework-fallback" style="display: none;">V</div>
-            <div class="framework-name">Vanilla JS</div>
-        </a>
         <a href="/react/" class="framework-card" style="--fw-color: #61DAFB;" data-framework="react">
             <img class="framework-icon" 
                  width="64" 
@@ -168,6 +205,15 @@
             <div class="framework-fallback" style="display: none;">V</div>
             <div class="framework-name">VanJS</div>
         </a>
+        <a href="/vanilla/" class="framework-card" style="--fw-color: #F7DF1E;" data-framework="vanilla">
+            <img class="framework-icon" 
+                 width="64" 
+                 src="https://cdn.simpleicons.org/javascript"
+                 alt="🧪"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">V</div>
+            <div class="framework-name">Vanilla JS</div>
+        </a>
     </div>
 </section>
 
@@ -175,10 +221,6 @@
     <h3>📊 Performance Testing URLs</h3>
     <p>Use these URLs for automated performance testing:</p>
     <ul class="url-list">
-        <li style="--fw-color: #F7DF1E;">
-            <h4>Vanilla JS</h4>
-            <code>http://localhost:3000/vanilla/app?mock=true</code>
-        </li>
         <li style="--fw-color: #61DAFB;">
             <h4>React</h4>
             <code>http://localhost:3000/react/app?mock=true</code>
@@ -223,8 +265,52 @@
             <h4>VanJS</h4>
             <code>http://localhost:3000/vanjs/app?mock=true</code>
         </li>
+        <li style="--fw-color: #F7DF1E;">
+            <h4>Vanilla JS</h4>
+            <code>http://localhost:3000/vanilla/app?mock=true</code>
+        </li>
     </ul>
     <a href="/health" class="health-link">🔍 View Server Health Check</a>
+</section>
+
+<!-- Charts Section -->
+<section class="charts-section">
+    <h2>📊 Framework Performance Charts</h2>
+    <div class="charts-grid">
+        <div class="chart-container">
+            <canvas id="performanceRadar"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="bundleSizeComparison"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="loadTimeline"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="resourceConsumption"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="buildEfficiencyScatter"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="performanceQuadrant"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="lighthouseRadial"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="sourceAnalysis"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="projectSizePie"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="maintainabilityTreemap"></canvas>
+        </div>
+        <div class="chart-container">
+            <canvas id="buildTimeDonut"></canvas>
+        </div>
+    </div>
 </section>
     </main>
     
@@ -239,5 +325,138 @@
     </footer>
     
     <!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@3.1.0/dist/chartjs-chart-treemap.min.js"></script>
+
+<script>
+// Chart configurations loaded from server
+const chartConfigs = {};
+
+// Initialize charts when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    // Performance Radar Chart
+    if (chartConfigs.performance_radar) {
+        const radarCtx = document.getElementById('performanceRadar').getContext('2d');
+        new Chart(radarCtx, chartConfigs.performance_radar);
+    }
+    
+    // Bundle Size Comparison Chart
+    if (chartConfigs.bundle_size_comparison) {
+        const bundleCtx = document.getElementById('bundleSizeComparison').getContext('2d');
+        new Chart(bundleCtx, chartConfigs.bundle_size_comparison);
+    }
+    
+    // Load Timeline Chart
+    if (chartConfigs.load_timeline) {
+        const timelineCtx = document.getElementById('loadTimeline').getContext('2d');
+        new Chart(timelineCtx, chartConfigs.load_timeline);
+    }
+    
+    // Resource Consumption Chart
+    if (chartConfigs.resource_consumption) {
+        const resourceCtx = document.getElementById('resourceConsumption').getContext('2d');
+        new Chart(resourceCtx, chartConfigs.resource_consumption);
+    }
+    
+    // Build Efficiency Scatter Chart
+    if (chartConfigs.build_efficiency_scatter) {
+        const scatterCtx = document.getElementById('buildEfficiencyScatter').getContext('2d');
+        const scatterConfig = {...chartConfigs.build_efficiency_scatter};
+        
+        // Add custom tooltip formatter
+        scatterConfig.options.plugins.tooltip.callbacks = {
+            title: function(ctx) {
+                return ctx[0].dataset.label;
+            },
+            label: function(ctx) {
+                const data = ctx.raw;
+                return [
+                    `Build Time: ${data.buildTime.toFixed(2)}s`,
+                    `Bundle Size: ${data.bundleSize.toFixed(1)} KB (gzipped)`,
+                    `Compression: ${data.compression.toFixed(1)}x`
+                ];
+            }
+        };
+        
+        new Chart(scatterCtx, scatterConfig);
+    }
+    
+    // Performance Quadrant Chart
+    if (chartConfigs.performance_quadrant) {
+        const quadrantCtx = document.getElementById('performanceQuadrant').getContext('2d');
+        const quadrantConfig = {...chartConfigs.performance_quadrant};
+        
+        // Add custom tooltip formatter
+        quadrantConfig.options.plugins.tooltip.callbacks = {
+            title: function(ctx) {
+                return ctx[0].dataset.label;
+            },
+            label: function(ctx) {
+                const data = ctx.raw;
+                return [
+                    `Performance Score: ${data.performance}`,
+                    `Bundle Size: ${data.bundleSize.toFixed(1)} KB (gzipped)`
+                ];
+            }
+        };
+        
+        new Chart(quadrantCtx, quadrantConfig);
+    }
+    
+    // Lighthouse Radial Chart
+    if (chartConfigs.lighthouse_radial) {
+        const lighthouseCtx = document.getElementById('lighthouseRadial').getContext('2d');
+        new Chart(lighthouseCtx, chartConfigs.lighthouse_radial);
+    }
+    
+    // Source Analysis Chart
+    if (chartConfigs.source_analysis) {
+        const sourceCtx = document.getElementById('sourceAnalysis').getContext('2d');
+        new Chart(sourceCtx, chartConfigs.source_analysis);
+    }
+    
+    // Project Size Pie Chart
+    if (chartConfigs.project_size_pie) {
+        const pieCtx = document.getElementById('projectSizePie').getContext('2d');
+        const pieConfig = {...chartConfigs.project_size_pie};
+        
+        // Add custom tooltip formatter
+        pieConfig.options.plugins.tooltip.callbacks = {
+            label: function(ctx) {
+                const label = ctx.label || '';
+                const value = ctx.parsed;
+                const percentage = ((value / ctx.dataset.data.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
+                return `${label}: ${value.toFixed(1)} KB (${percentage}%)`;
+            }
+        };
+        
+        new Chart(pieCtx, pieConfig);
+    }
+    
+    // Maintainability Treemap Chart
+    if (chartConfigs.maintainability_treemap) {
+        const treemapCtx = document.getElementById('maintainabilityTreemap').getContext('2d');
+        new Chart(treemapCtx, chartConfigs.maintainability_treemap);
+    }
+    
+    // Build Time Donut Chart
+    if (chartConfigs.build_time_donut) {
+        const donutCtx = document.getElementById('buildTimeDonut').getContext('2d');
+        const donutConfig = {...chartConfigs.build_time_donut};
+        
+        // Add custom tooltip formatter
+        donutConfig.options.plugins.tooltip.callbacks = {
+            label: function(ctx) {
+                const label = ctx.label || '';
+                const value = ctx.parsed;
+                const percentage = ((value / ctx.dataset.data.reduce((a, b) => a + b, 0)) * 100).toFixed(1);
+                return `${label}: ${value.toFixed(2)}s (${percentage}%)`;
+            }
+        };
+        
+        new Chart(donutCtx, donutConfig);
+    }
+});
+</script>
 </body>
 </html>

@@ -30,7 +30,6 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
-    
 </head>
 <body>
     <header>
@@ -95,6 +94,119 @@
                     <span>View Vanilla JS Weather App Source</span>
                 </div>
             </a>
+        </div>
+
+        <div class="group-header group-header-results">
+            <h2>Results Summary</h2>
+        </div>
+
+        <!-- Results Summary -->
+        <article class="framework-results-summary">
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Performance</h4>
+                    <div class="result-value">97%</div>
+                    <div class="result-detail">Lighthouse Score</div>
+                </div>
+                <div class="result-card">
+                    <h4>Bundle Size</h4>
+                    <div class="result-value">10.7KB</div>
+                    <div class="result-detail">Gzipped</div>
+                </div>
+                <div class="result-card">
+                    <h4>Build Time</h4>
+                    <div class="result-value">
+                            0s
+                    </div>
+                    <div class="result-detail">Average</div>
+                </div>
+                <div class="result-card">
+                    <h4>Load Time</h4>
+                    <div class="result-value">
+                            1.4s
+                    </div>
+                    <div class="result-detail">LCP</div>
+                </div>
+                <div class="result-card">
+                    <h4>Complexity</h4>
+                    <div class="result-value">74</div>
+                    <div class="result-detail">Cyclomatic</div>
+                </div>
+            </div>
+        </article>
+        
+        <!-- Detailed Results Cards -->
+        <div class="detailed-results">
+            <!-- Performance Metrics Card -->
+            <article class="results-detail-card performance-card">
+                <h4>Performance Metrics</h4>
+                <div class="metrics-grid metrics-grid-5">
+                    <div class="metric-item">
+                        <div class="metric-label">CLS</div>
+                        <div class="metric-value">0.1458</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">FCP</div>
+                        <div class="metric-value">1215ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">LCP</div>
+                        <div class="metric-value">1368ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">TBT</div>
+                        <div class="metric-value">0ms</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Bundle Analysis Card -->
+            <article class="results-detail-card bundle-card">
+                <h4>Bundle Analysis</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Compression</div>
+                        <div class="metric-value">3.8x</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">File Count</div>
+                        <div class="metric-value">6</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">JS %</div>
+                        <div class="metric-value">100.0%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Total Size</div>
+                        <div class="metric-value">40.6KB</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Build Info Card -->
+            <article class="results-detail-card build-card">
+                <h4>Build Info</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Build Time</div>
+                        <div class="metric-value">
+                                0s
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Output Size</div>
+                        <div class="metric-value">0.0MB</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">HMR Time</div>
+                        <div class="metric-value">0ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Dev Startup</div>
+                        <div class="metric-value">0.0s</div>
+                    </div>
+                </div>
+            </article>
         </div>
 
         <div class="group-header group-header-app">
@@ -204,6 +316,21 @@
                 <img class="screenshot" src="https://i.ibb.co/ymGkLnMY/weather-front.png" />
             </div>
         </article>
+
+        <!-- Framework Implementation -->
+        <article class="framework-implementation-section">
+            <h3>Vanilla JS Implementation</h3>
+            <div class="framework-implementation">
+                <h3>Notable files</h3>
+<ul>
+<li><code>src/main.js</code> - Application initialization and DOM manipulation</li>
+<li><code>src/weather-service.js</code> - API calls using native fetch</li>
+<li><code>src/weather-utils.js</code> - Utility functions for data processing</li>
+<li><code>index.html</code> - Pure HTML structure without framework dependencies</li>
+</ul>
+            </div>
+        </article>
+
         
         <!-- Stats Grid -->
         <!-- <div class="framework-stats">
@@ -249,19 +376,31 @@
             </div>
         </article>
         
+        <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About Vanilla JS</h3>
+            <div class="framework-about">
+                <p>Sometimes the best framework is no framework. Vanilla JavaScript forces you to understand what's actually happening under the hood of all those fancy abstractions. No magic, no build steps, no dependency hell - just the web platform as intended.</p>
+<p>For our weather app, vanilla JS is surprisingly capable. <code>fetch()</code> handles API calls, <code>document.querySelector()</code> finds elements, and <code>addEventListener()</code> manages interactions. Modern browser APIs like <code>localStorage</code>, <code>geolocation</code>, and CSS custom properties give you most of what you need without any external dependencies.</p>
+<p>The challenge is organization and state management. Without a framework's structure, you're responsible for everything - keeping the DOM in sync with data, organizing code sensibly, and avoiding spaghetti. Our weather app uses a simple pub/sub pattern and functional organization, but it requires discipline.</p>
+<p>The performance is excellent since there's no framework overhead, and the bundle size is minimal. Everything loads fast, and you're not shipping someone else's code to your users. For simple applications or when performance is critical, vanilla JS can be the right choice.</p>
+<p>But you'll miss the conveniences of modern frameworks - automatic updates, component organization, and developer experience. What takes one line in React might take ten in vanilla JS. It's a trade-off between control and convenience.</p>
+            </div>
+        </article>
+        
         <!-- Navigation -->
         <div class="framework-nav">
-            <div></div>
+            <a href="/vanjs/" class="nav-card">
+                <div class="nav-label">Previous</div>
+                <div class="nav-title">VanJS</div>
+            </a>
             
             <a href="/" class="nav-card">
                 <div class="nav-label">Home</div>
                 <div class="nav-title">All Frameworks</div>
             </a>
             
-            <a href="/react/" class="nav-card">
-                <div class="nav-label">Next</div>
-                <div class="nav-title">React</div>
-            </a>
+            <div></div>
         </div>
     </div>
 </div>
