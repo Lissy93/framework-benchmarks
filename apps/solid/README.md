@@ -14,15 +14,24 @@
 <!-- end_header -->
 
 <!-- start_about -->
-Solid feels like React, but *actually* reactive. It looks like JSX, but underneath it's magic. While React re-renders entire component trees, Solid surgically updates only the exact DOM nodes that need to change. The result is performance that makes other frameworks look sluggish.
 
-The mental shift from React is subtle but profound. Instead of thinking about re-renders and memoization, you think about signals and reactivity. `createSignal` returns a getter and setter - call `temperature()` to read, `setTemperature(25)` to update, and everything that depends on it automatically updates.
+## About
 
-Our weather app showcases this, as the temperature display, the weather icon, the styling - they all react independently when the weather data changes. No `useEffect`, no dependency arrays, no `useMemo` - just pure reactive programming that actually works.
+<img align="right" src="/assets/screenshot.png" width="400">
 
-The JSX looks familiar, but `<Show>` and `<For>` components replace your typical `{condition && <div>}` patterns. These aren't just syntactic sugar - they're compiled into efficient conditional rendering that only updates when necessary.
+This is a simple weather app, built in [Solid.js](https://www.solidjs.com/) (as well as also [10 other frontend frameworks](/)) in order to review, compare and benchmark frontend web frameworks.
 
-`createResource` handles async data elegantly, giving you loading states, error handling, and refetching without the usual ceremony. For our simple weather app, we didn't need Solid's more advanced features like stores or effects, but for something complex, the fine-grained reactivity becomes essential.
+- 🌦️ Live weather conditions
+- 📅 7-day weather forecast
+- 🔍 City search functionality
+- 📍 Geolocation support
+- 💾 Persistent location storage
+- 📱 Responsive design
+- ♿ Accessible interface
+- 🎨 Multi-theme support
+- 🧪 Fully unit tested
+- 🌐 Internationalized
+
 <!-- end_about -->
 
 <!-- start_status -->

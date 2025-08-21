@@ -14,15 +14,24 @@
 <!-- end_header -->
 
 <!-- start_about -->
-Sometimes the best framework is no framework. Vanilla JavaScript forces you to understand what's actually happening under the hood of all those fancy abstractions. No magic, no build steps, no dependency hell - just the web platform as intended.
 
-For our weather app, vanilla JS is surprisingly capable. `fetch()` handles API calls, `document.querySelector()` finds elements, and `addEventListener()` manages interactions. Modern browser APIs like `localStorage`, `geolocation`, and CSS custom properties give you most of what you need without any external dependencies.
+## About
 
-The challenge is organization and state management. Without a framework's structure, you're responsible for everything - keeping the DOM in sync with data, organizing code sensibly, and avoiding spaghetti. Our weather app uses a simple pub/sub pattern and functional organization, but it requires discipline.
+<img align="right" src="/assets/screenshot.png" width="400">
 
-The performance is excellent since there's no framework overhead, and the bundle size is minimal. Everything loads fast, and you're not shipping someone else's code to your users. For simple applications or when performance is critical, vanilla JS can be the right choice.
+This is a simple weather app, built in [Vanilla JavaScript](https://developer.mozilla.org/en-US/docs/Web/JavaScript) (as well as also [10 other frontend frameworks](/)) in order to review, compare and benchmark frontend web frameworks.
 
-But you'll miss the conveniences of modern frameworks - automatic updates, component organization, and developer experience. What takes one line in React might take ten in vanilla JS. It's a trade-off between control and convenience.
+- 🌦️ Live weather conditions
+- 📅 7-day weather forecast
+- 🔍 City search functionality
+- 📍 Geolocation support
+- 💾 Persistent location storage
+- 📱 Responsive design
+- ♿ Accessible interface
+- 🎨 Multi-theme support
+- 🧪 Fully unit tested
+- 🌐 Internationalized
+
 <!-- end_about -->
 
 <!-- start_status -->
