@@ -508,11 +508,19 @@ def create_lighthouse_radial_chart(data: Dict[str, Any]) -> Dict[str, Any]:
     return config
 
 def create_source_analysis_chart(data: Dict[str, Any]) -> Dict[str, Any]:
-    """Generate stacked bar chart for source analysis metrics."""
+    """Generate horizontal stacked bar chart for source analysis metrics."""
     config = get_base_chart_config('bar')
+    config['options']['indexAxis'] = 'y'  # Make it horizontal
     config['options']['scales'] = get_categorical_scales_config()
-    config['options']['scales']['x']['stacked'] = True
+    
+    # Swap x and y for horizontal orientation
     config['options']['scales']['y']['stacked'] = True
+    config['options']['scales']['x']['stacked'] = True
+    config['options']['scales']['y']['type'] = 'category'
+    config['options']['scales']['y']['grid'] = {'display': False}
+    config['options']['scales']['x']['type'] = 'linear'
+    config['options']['scales']['x']['beginAtZero'] = True
+    config['options']['scales']['x']['grid'] = {'color': 'rgba(0, 0, 0, 0.1)', 'drawOnChartArea': True}
     
     # Collect and sort frameworks by total size (logical lines + files*10 + complexity)
     framework_data_list = []
@@ -531,8 +539,8 @@ def create_source_analysis_chart(data: Dict[str, Any]) -> Dict[str, Any]:
             'total_size': total_size
         })
     
-    # Sort by total size (largest to smallest)
-    framework_data_list.sort(key=lambda x: x['total_size'], reverse=True)
+    # Sort by total size (smallest to largest for horizontal bar chart)
+    framework_data_list.sort(key=lambda x: x['total_size'], reverse=False)
     
     # Extract sorted data
     framework_names = [item['name'] for item in framework_data_list]
@@ -570,7 +578,7 @@ def create_source_analysis_chart(data: Dict[str, Any]) -> Dict[str, Any]:
         'text': 'Source Code Analysis',
         'font': {'size': FONT_SIZE_TITLE, 'family': FONT_FAMILY}
     }
-    config['options']['scales']['y']['title'] = {
+    config['options']['scales']['x']['title'] = {
         'display': True,
         'text': 'Count',
         'font': {

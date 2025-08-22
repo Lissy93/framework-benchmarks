@@ -145,13 +145,22 @@ def generate_chart_configs(root_dir: Path, static_output: Path) -> None:
         ], cwd=str(root_dir), capture_output=True, text=True, timeout=60)
         
         if result.returncode == 0:
-            # Copy chart configs to dev static if needed
-            chart_configs_source = static_output / "chart-configs.json"
+            # Copy chart configs from dev static to output static
             dev_static = root_dir / "website" / "static"
+            chart_configs_dev = dev_static / "chart-configs.json"
+            chart_configs_output = static_output / "chart-configs.json"
             
-            if chart_configs_source.exists() and dev_static.exists():
-                chart_configs_dev = dev_static / "chart-configs.json"
-                shutil.copy2(chart_configs_source, chart_configs_dev)
+            if chart_configs_dev.exists():
+                shutil.copy2(chart_configs_dev, chart_configs_output)
+                
+            # Also copy individual chart files
+            dev_charts_dir = dev_static / "charts"
+            output_charts_dir = static_output / "charts"
+            
+            if dev_charts_dir.exists():
+                if output_charts_dir.exists():
+                    shutil.rmtree(output_charts_dir)
+                shutil.copytree(dev_charts_dir, output_charts_dir)
                 
             console.print(f"[green]✓ Chart configurations generated successfully[/green]")
         else:
