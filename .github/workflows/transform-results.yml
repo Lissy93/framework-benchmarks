@@ -4,7 +4,7 @@ on:
   workflow_run:
     workflows: ["📈 Benchmark"]
     types: [completed]
-    branches: [main, master]
+    branches: [main]
 
 permissions:
   contents: write
@@ -94,18 +94,7 @@ jobs:
             --average \
             --results-dir benchmark-results \
             --output-dir results
-          
-          # Rename files to standard names
-          if [ -f "results/benchmark_results_"*.tsv ]; then
-            cp results/benchmark_results_*.tsv results/summary.tsv
-            echo "✅ Created results/summary.tsv"
-          fi
-          
-          if [ -f "results/benchmark_results_"*.json ]; then
-            cp results/benchmark_results_*.json results/summary.json
-            echo "✅ Created results/summary.json"
-          fi
-          
+
           echo "📊 Generated files:"
           ls -la results/
 

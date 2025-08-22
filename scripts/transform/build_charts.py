@@ -844,13 +844,17 @@ def create_build_time_donut(data: Dict[str, Any]) -> Dict[str, Any]:
 
 def load_results_data(results_dir: Path) -> Dict[str, Any]:
     """Load benchmark results from JSON file."""
+    summary_file = results_dir / 'summary.json'
+    if summary_file.exists():
+        with open(summary_file, 'r') as f:
+            return json.load(f)
+    
+    # Fallback to timestamped files if summary doesn't exist
     results_files = list(results_dir.glob('benchmark_results_*.json'))
     if not results_files:
         raise FileNotFoundError("No benchmark results found")
     
-    # Use the most recent results file
     latest_file = max(results_files, key=lambda x: x.stat().st_mtime)
-    
     with open(latest_file, 'r') as f:
         return json.load(f)
 

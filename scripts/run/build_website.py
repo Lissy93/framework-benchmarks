@@ -106,21 +106,30 @@ def copy_framework_stats(root_dir: Path, static_output: Path) -> None:
 
 
 def copy_benchmark_results(root_dir: Path, static_output: Path) -> None:
-    """Copy latest benchmark results JSON file to static directories."""
+    """Copy benchmark results JSON file to static directories."""
     results_dir = root_dir / "results"
     dev_static = root_dir / "website" / "static"
     
     if not results_dir.exists():
         console.print(f"[yellow]⚠ Results directory not found:[/yellow] {results_dir}")
         return
-        
+    
+    summary_file = results_dir / "summary.json"
+    if summary_file.exists():
+        if copy_file_to_locations(summary_file, "results-summary.json", static_output, dev_static):
+            locations = "static/ and website/static/" if dev_static.exists() else "static/"
+            console.print(f"[green]✓ Benchmark results copied:[/green] summary.json → {locations}")
+        else:
+            console.print(f"[red]✗ Failed to copy benchmark results[/red]")
+        return
+    
+    # Fallback to timestamped files if summary doesn't exist
     benchmark_files = list(results_dir.glob("benchmark_results_*.json"))
     if not benchmark_files:
         console.print(f"[yellow]⚠ No benchmark results found in:[/yellow] {results_dir}")
         return
         
     latest = max(benchmark_files, key=lambda x: x.stat().st_mtime)
-    
     if copy_file_to_locations(latest, "results-summary.json", static_output, dev_static):
         locations = "static/ and website/static/" if dev_static.exists() else "static/"
         console.print(f"[green]✓ Benchmark results copied:[/green] {latest.name} → {locations}")

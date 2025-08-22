@@ -10,6 +10,17 @@ on:
         type: string
   push:
     branches: [ main ]
+    paths:
+      - 'apps/**'
+      - 'results/**'
+      - 'website/**'
+      - 'frameworks.json'
+      - 'config.json'
+  workflow_run:
+    workflows: ["🔄 Transform Results"]
+    types: [completed]
+    branches: [main]
+
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}

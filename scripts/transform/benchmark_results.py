@@ -103,7 +103,7 @@ def main(output_dir: Optional[Path], format: str, results_dir: Optional[Path], a
         if format in ['tsv', 'both']:
             task = progress.add_task("🔄 Generating TSV format...", total=None)
             try:
-                tsv_file = output_dir / f"benchmark_results_{latest_info['date']}.tsv"
+                tsv_file = output_dir / "summary.tsv"
                 create_tsv_from_results(results_dir, tsv_file, use_average=average)
                 progress.update(task, description="✅ TSV format generated")
                 console.print(f"📄 TSV file: [bold]{tsv_file}[/bold]")
@@ -115,7 +115,7 @@ def main(output_dir: Optional[Path], format: str, results_dir: Optional[Path], a
         if format in ['json', 'both']:
             task = progress.add_task("🔄 Generating JSON format...", total=None)
             try:
-                json_file = output_dir / f"benchmark_results_{latest_info['date']}.json"
+                json_file = output_dir / "summary.json"
                 create_json_from_results(results_dir, json_file, use_average=average)
                 progress.update(task, description="✅ JSON format generated")
                 console.print(f"📄 JSON file: [bold]{json_file}[/bold]")
