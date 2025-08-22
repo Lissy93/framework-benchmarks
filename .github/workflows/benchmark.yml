@@ -101,6 +101,9 @@ jobs:
           echo "Setting up project with npm run setup..."
           npm run setup
 
+      - name: 🏗️ Build All Framework Apps
+        run: npm run build
+
       - name: 🚀 Start Development Server
         run: |
           echo "Starting development server..."
