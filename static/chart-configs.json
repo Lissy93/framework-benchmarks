@@ -1128,35 +1128,35 @@
       "type": "bar",
       "data": {
         "labels": [
-          "Lit",
-          "Angular",
-          "Preact",
-          "Solid",
-          "React",
-          "Qwik",
-          "Svelte",
-          "Vanilla",
-          "Vanjs",
-          "Alpine",
+          "Jquery",
           "Vue",
-          "Jquery"
+          "Alpine",
+          "Vanjs",
+          "Vanilla",
+          "Svelte",
+          "Qwik",
+          "React",
+          "Solid",
+          "Preact",
+          "Angular",
+          "Lit"
         ],
         "datasets": [
           {
             "label": "Logical Lines",
             "data": [
-              955,
-              474,
-              461,
-              458,
-              438,
-              414,
-              405,
-              426,
-              388,
-              299,
+              287,
               217,
-              287
+              299,
+              388,
+              426,
+              405,
+              414,
+              438,
+              458,
+              461,
+              474,
+              955
             ],
             "backgroundColor": "rgba(59, 130, 246, 0.8)",
             "borderColor": "rgba(59, 130, 246, 1)",
@@ -1165,18 +1165,18 @@
           {
             "label": "Files Count (\ufffd10)",
             "data": [
-              80,
-              130,
-              120,
-              120,
-              130,
-              160,
-              120,
-              30,
-              30,
               30,
               110,
-              30
+              30,
+              30,
+              30,
+              120,
+              160,
+              130,
+              120,
+              120,
+              130,
+              80
             ],
             "backgroundColor": "rgba(16, 185, 129, 0.8)",
             "borderColor": "rgba(16, 185, 129, 1)",
@@ -1185,18 +1185,18 @@
           {
             "label": "Cyclomatic Complexity",
             "data": [
-              84,
-              85,
-              101,
-              98,
-              90,
-              83,
-              101,
-              74,
-              76,
-              68,
+              45,
               57,
-              45
+              68,
+              76,
+              74,
+              101,
+              83,
+              90,
+              98,
+              101,
+              85,
+              84
             ],
             "backgroundColor": "rgba(245, 101, 101, 0.8)",
             "borderColor": "rgba(245, 101, 101, 1)",
@@ -1248,21 +1248,7 @@
         },
         "scales": {
           "x": {
-            "type": "category",
-            "grid": {
-              "display": false
-            },
-            "ticks": {
-              "font": {
-                "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
-                "size": 12
-              }
-            },
-            "stacked": true
-          },
-          "y": {
             "type": "linear",
-            "beginAtZero": true,
             "grid": {
               "color": "rgba(0, 0, 0, 0.1)",
               "drawOnChartArea": true
@@ -1274,6 +1260,7 @@
               }
             },
             "stacked": true,
+            "beginAtZero": true,
             "title": {
               "display": true,
               "text": "Count",
@@ -1283,6 +1270,20 @@
                 "weight": "bold"
               }
             }
+          },
+          "y": {
+            "type": "category",
+            "beginAtZero": true,
+            "grid": {
+              "display": false
+            },
+            "ticks": {
+              "font": {
+                "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+                "size": 12
+              }
+            },
+            "stacked": true
           }
         },
         "layout": {
@@ -1292,7 +1293,8 @@
             "bottom": 10,
             "left": 10
           }
-        }
+        },
+        "indexAxis": "y"
       }
     },
     "bundle_size_comparison": {
