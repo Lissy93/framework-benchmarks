@@ -351,7 +351,7 @@ def generate_deployment_files(base_url: str, frameworks: List[Dict], output_dir:
         f.write(sitemap_content)
     
     # Generate _redirects for Netlify
-    redirects_content = "# Netlify redirects\n/*/source  https://github.com/anthropics/weather-front/tree/main/apps/:splat  302\n/*  /404/  404\n"
+    redirects_content = "# Netlify redirects\n/*/source  https://github.com/anthropics/framework-benchmarks/tree/main/apps/:splat  302\n/*  /404/  404\n"
     with open(output_dir / "_redirects", "w") as f:
         f.write(redirects_content)
     
@@ -360,7 +360,7 @@ def generate_deployment_files(base_url: str, frameworks: List[Dict], output_dir:
 RewriteEngine On
 
 # Redirect source code requests to GitHub
-RewriteRule ^([^/]+)/source/?$ https://github.com/anthropics/weather-front/tree/main/apps/$1 [R=302,L]
+RewriteRule ^([^/]+)/source/?$ https://github.com/anthropics/framework-benchmarks/tree/main/apps/$1 [R=302,L]
 
 # Handle 404s
 ErrorDocument 404 /404/index.html

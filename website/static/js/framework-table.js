@@ -5,6 +5,7 @@ class FrameworkTable {
     this.frameworksData = frameworksData;
     this.gridApi = null;
     this.isDark = document.documentElement.classList.contains('dark-theme');
+    this.frameworksData = this.frameworksData.filter(fw => fw?.id !== 'vanilla');
   }
 
   formatNumber(value, type = 'default') {
@@ -61,7 +62,7 @@ class FrameworkTable {
         pinned: 'left',
         cellRenderer: (params) => {
           const framework = params.data;
-          const iconUrl = `https://cdn.simpleicons.org/${framework.id}`;
+          const iconUrl = `https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/${framework.id}.png`;
           return `
             <div class="framework-logo-cell">
               <img src="${iconUrl}" alt="${framework.name}" onerror="this.style.display='none'">

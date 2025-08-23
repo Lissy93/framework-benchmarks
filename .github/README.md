@@ -67,8 +67,8 @@ Git, Node (LTS or v22+), Python (3.10) and uv installed
 ### Setup
 
 ```bash
-git clone git@github.com:Lissy93/weather-front.git
-cd weather-front
+git clone git@github.com:lissy93/framework-benchmarks.git
+cd framework-benchmarks
 npm install
 pip install -r scripts/requirements.txt
 npm run setup
@@ -80,7 +80,7 @@ Or, you can: `cd ./apps/[app-name]` then `npm i` and `npm run dev`
 
 ### Testing
 All apps are tested with the same shared test suite, to ensure they all conform to the same requirements, and are fully functional.
-Tests are dome with [Playwright](https://playwright.dev/docs/intro) and can be found in the [`tests/`](https://github.com/Lissy93/weather-front/tree/main/tests) directory.
+Tests are dome with [Playwright](https://playwright.dev/docs/intro) and can be found in the [`tests/`](https://github.com/lissy93/framework-benchmarks/tree/main/tests) directory.
 
 Either execute tests for all implementations with `npm test`, or just for a specific app with `npm run test:[app]` (e.g. `npm run test:react`).<br>
 You should also verify the lint checks pass, with `npm run lint` or `npm run lint:[app]`.
@@ -92,7 +92,7 @@ Then upload `./apps/[app-name]/dist/` to any web server, CDN or static hosting p
 ### Adding a Framework
 1. Create app directory: `apps/your-framework/` with `package.json`, `vite.config.js`, and a `src/` dir
 2. Build your app (ensuring it meets the [requirements spec](#requirement-spec) above)
-3. Update [`frameworks.json`](https://github.com/Lissy93/weather-front/blob/main/frameworks.json)
+3. Update [`frameworks.json`](https://github.com/lissy93/framework-benchmarks/blob/main/frameworks.json)
 4. Add a test config file in `tests/config/`
 6. Them run `node scripts/setup/generate-scripts.js` and `node scripts/setup/sync-assets.js`
 
@@ -104,7 +104,7 @@ Then upload `./apps/[app-name]/dist/` to any web server, CDN or static hosting p
 ### Directory Structure
 
 ```
-weather-front
+framework-benchmarks
 ├── scripts					# Scripts for managing the app (syncing assets, generating mocks, etc)
 ├── assets					# These are shared across all apps for consistency
 │   ├── icons				# SVG icons, used by all apps
@@ -119,7 +119,7 @@ weather-front
 ```
 
 ### Scripts
-The **[`scripts/`](https://github.com/Lissy93/weather-front/tree/main/scripts)** directory contains
+The **[`scripts/`](https://github.com/lissy93/framework-benchmarks/tree/main/scripts)** directory contains
 everything for managing the project (setup, testing, benchmarking, reporting, etc).
 You can view a list of scripts by running `npm run help`.
 
@@ -127,9 +127,9 @@ You can view a list of scripts by running `npm run help`.
 ### Shared Assets
 To keep things uniform, all apps will share certain assets
 
-- **[`tests/`](https://github.com/Lissy93/weather-front/tree/main/tests)** - Same test suit used for all apps. To ensure each app conforms to the spec and is fully functional
-- **[`assets/`](https://github.com/Lissy93/weather-front/tree/main/assets)** - Same static assets (icons, fonts, styles, meta, etc)
-- **[`assets/styles/`](https://github.com/Lissy93/weather-front/tree/main/assets/styles)** - Same styles for all apps, and theming is done with CSS variables
+- **[`tests/`](https://github.com/lissy93/framework-benchmarks/tree/main/tests)** - Same test suit used for all apps. To ensure each app conforms to the spec and is fully functional
+- **[`assets/`](https://github.com/lissy93/framework-benchmarks/tree/main/assets)** - Same static assets (icons, fonts, styles, meta, etc)
+- **[`assets/styles/`](https://github.com/lissy93/framework-benchmarks/tree/main/assets/styles)** - Same styles for all apps, and theming is done with CSS variables
 
 ### Third Parties
 - **Dependencies**: Beyond their framework code, none of the apps use any additional dependencies, libraries or third-party "stuff"
@@ -146,9 +146,9 @@ To keep things uniform, all apps will share certain assets
 - `npm run start` - Starts the demo server, which serves up all built apps
 - `npm run help` - Displays a list of all available commands
 
-See the [`package.json`](https://github.com/Lissy93/weather-front/blob/main/package.json) for all commands
+See the [`package.json`](https://github.com/lissy93/framework-benchmarks/blob/main/package.json) for all commands
 
-Note that the project commands get generated automatically by the [`generate_scripts.py`](https://github.com/Lissy93/weather-front/blob/main/scripts/setup/generate_scripts.py) script, based on the contents of [`frameworks.json`](https://github.com/Lissy93/weather-front/blob/main/frameworks.json) and [`config.json`](https://github.com/Lissy93/weather-front/blob/main/config.json).
+Note that the project commands get generated automatically by the [`generate_scripts.py`](https://github.com/lissy93/framework-benchmarks/blob/main/scripts/setup/generate_scripts.py) script, based on the contents of [`frameworks.json`](https://github.com/lissy93/framework-benchmarks/blob/main/frameworks.json) and [`config.json`](https://github.com/lissy93/framework-benchmarks/blob/main/config.json).
 
 ---
 
@@ -201,7 +201,7 @@ To compare the frameworks, we need to measure:
 The interface is simple, but must be identical arcorss all apps. As validated by the snapshots in the tests.<br>
 The screenshots will all look like this:
 
-<img src="https://i.ibb.co/ymGkLnMY/weather-front.png" width="400" />
+<img src="https://i.ibb.co/ymGkLnMY/framework-benchmarks.png" width="400" />
 
 ---
 
@@ -211,24 +211,24 @@ The screenshots will all look like this:
 
 ## Status
 
-Each app gets built and tested to ensure that it is functional, compliant with the spec, and (reasonably) well coded. Below is the current status of each, but for complete details you can see the [Workflow Logs](https://github.com/Lissy93/weather-front/actions) via GitHub Actions. 
+Each app gets built and tested to ensure that it is functional, compliant with the spec, and (reasonably) well coded. Below is the current status of each, but for complete details you can see the [Workflow Logs](https://github.com/lissy93/framework-benchmarks/actions) via GitHub Actions. 
 
 <!-- start_all_status -->
 
 | App | Build | Test | Lint |
 |---|---|---|---|
-| <a href="https://github.com/Lissy93/weather-front/tree/main/apps/react"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/react.png" width="16" /> React</a> | ![React Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/build-react.svg) | ![React Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/test-react.svg) | ![React Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/lint-react.svg) |
-| <a href="https://github.com/Lissy93/weather-front/tree/main/apps/angular"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/angular.png" width="16" /> Angular</a> | ![Angular Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/build-angular.svg) | ![Angular Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/test-angular.svg) | ![Angular Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/lint-angular.svg) |
-| <a href="https://github.com/Lissy93/weather-front/tree/main/apps/svelte"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/svelte.png" width="16" /> Svelte</a> | ![Svelte Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/build-svelte.svg) | ![Svelte Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/test-svelte.svg) | ![Svelte Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/lint-svelte.svg) |
-| <a href="https://github.com/Lissy93/weather-front/tree/main/apps/preact"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/preact.png" width="16" /> Preact</a> | ![Preact Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/build-preact.svg) | ![Preact Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/test-preact.svg) | ![Preact Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/lint-preact.svg) |
-| <a href="https://github.com/Lissy93/weather-front/tree/main/apps/solid"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/solid.png" width="16" /> Solid.js</a> | ![Solid.js Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/build-solid.svg) | ![Solid.js Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/test-solid.svg) | ![Solid.js Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/lint-solid.svg) |
-| <a href="https://github.com/Lissy93/weather-front/tree/main/apps/qwik"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/qwik.png" width="16" /> Qwik</a> | ![Qwik Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/build-qwik.svg) | ![Qwik Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/test-qwik.svg) | ![Qwik Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/lint-qwik.svg) |
-| <a href="https://github.com/Lissy93/weather-front/tree/main/apps/vue"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vue.png" width="16" /> Vue 3</a> | ![Vue 3 Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/build-vue.svg) | ![Vue 3 Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/test-vue.svg) | ![Vue 3 Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/lint-vue.svg) |
-| <a href="https://github.com/Lissy93/weather-front/tree/main/apps/jquery"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/jquery.png" width="16" /> jQuery</a> | ![jQuery Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/build-jquery.svg) | ![jQuery Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/test-jquery.svg) | ![jQuery Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/lint-jquery.svg) |
-| <a href="https://github.com/Lissy93/weather-front/tree/main/apps/alpine"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/alpine.png" width="16" /> Alpine.js</a> | ![Alpine.js Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/build-alpine.svg) | ![Alpine.js Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/test-alpine.svg) | ![Alpine.js Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/lint-alpine.svg) |
-| <a href="https://github.com/Lissy93/weather-front/tree/main/apps/lit"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/lit.png" width="16" /> Lit</a> | ![Lit Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/build-lit.svg) | ![Lit Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/test-lit.svg) | ![Lit Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/lint-lit.svg) |
-| <a href="https://github.com/Lissy93/weather-front/tree/main/apps/vanjs"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vanjs.png" width="16" /> VanJS</a> | ![VanJS Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/build-vanjs.svg) | ![VanJS Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/test-vanjs.svg) | ![VanJS Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/lint-vanjs.svg) |
-| <a href="https://github.com/Lissy93/weather-front/tree/main/apps/vanilla"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/javascript.png" width="16" /> Vanilla JavaScript</a> | ![Vanilla JavaScript Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/build-vanilla.svg) | ![Vanilla JavaScript Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/test-vanilla.svg) | ![Vanilla JavaScript Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/badges/lint-vanilla.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/react"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/react.png" width="16" /> React</a> | ![React Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-react.svg) | ![React Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-react.svg) | ![React Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-react.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/angular"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/angular.png" width="16" /> Angular</a> | ![Angular Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-angular.svg) | ![Angular Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-angular.svg) | ![Angular Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-angular.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/svelte"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/svelte.png" width="16" /> Svelte</a> | ![Svelte Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-svelte.svg) | ![Svelte Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-svelte.svg) | ![Svelte Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-svelte.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/preact"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/preact.png" width="16" /> Preact</a> | ![Preact Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-preact.svg) | ![Preact Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-preact.svg) | ![Preact Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-preact.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/solid"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/solid.png" width="16" /> Solid.js</a> | ![Solid.js Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-solid.svg) | ![Solid.js Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-solid.svg) | ![Solid.js Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-solid.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/qwik"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/qwik.png" width="16" /> Qwik</a> | ![Qwik Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-qwik.svg) | ![Qwik Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-qwik.svg) | ![Qwik Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-qwik.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vue"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vue.png" width="16" /> Vue 3</a> | ![Vue 3 Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-vue.svg) | ![Vue 3 Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-vue.svg) | ![Vue 3 Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-vue.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/jquery"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/jquery.png" width="16" /> jQuery</a> | ![jQuery Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-jquery.svg) | ![jQuery Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-jquery.svg) | ![jQuery Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-jquery.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/alpine"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/alpine.png" width="16" /> Alpine.js</a> | ![Alpine.js Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-alpine.svg) | ![Alpine.js Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-alpine.svg) | ![Alpine.js Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-alpine.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/lit"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/lit.png" width="16" /> Lit</a> | ![Lit Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-lit.svg) | ![Lit Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-lit.svg) | ![Lit Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-lit.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vanjs"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vanjs.png" width="16" /> VanJS</a> | ![VanJS Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-vanjs.svg) | ![VanJS Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-vanjs.svg) | ![VanJS Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-vanjs.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vanilla"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/javascript.png" width="16" /> Vanilla JavaScript</a> | ![Vanilla JavaScript Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-vanilla.svg) | ![Vanilla JavaScript Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-vanilla.svg) | ![Vanilla JavaScript Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-vanilla.svg) |
 <!-- end_all_status -->
 
 ---
@@ -285,19 +285,19 @@ So, in order to let each one shine, I have I have built real-world apps in each 
 
 ### Contributors
 
-![Contributors](https://readme-contribs.as93.net/contributors/lissy93/weather-front?avatarSize=80&perRow=10)
+![Contributors](https://readme-contribs.as93.net/contributors/lissy93/framework-benchmarks?avatarSize=80&perRow=10)
 
 
 ### Stargzers
 
-![Stargazers](https://readme-contribs.as93.net/stargazers/lissy93/weather-front?perRow=16&limit=64)
+![Stargazers](https://readme-contribs.as93.net/stargazers/lissy93/framework-benchmarks?perRow=16&limit=64)
 
 ---
 
 ## License
 
 
-> _**[Lissy93/Weather-Front](https://github.com/Lissy93/weather-front)** is licensed under [MIT](https://github.com/Lissy93/weather-front/blob/HEAD/LICENSE) © [Alicia Sykes](https://aliciasykes.com) 2025._<br>
+> _**[lissy93/framework-benchmarks](https://github.com/lissy93/framework-benchmarks)** is licensed under [MIT](https://github.com/lissy93/framework-benchmarks/blob/HEAD/LICENSE) © [Alicia Sykes](https://aliciasykes.com) 2025._<br>
 > <sup align="right">For information, see <a href="https://tldrlegal.com/license/mit-license">TLDR Legal > MIT</a></sup>
 
 <details>

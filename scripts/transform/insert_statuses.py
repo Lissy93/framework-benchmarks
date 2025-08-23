@@ -6,7 +6,7 @@ from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
 # Constants
-REPO_URL = "https://github.com/Lissy93/weather-front"
+REPO_URL = "https://github.com/lissy93/framework-benchmarks"
 BADGES_BRANCH = "badges"
 README_PATH = Path(".github/README.md")
 FRAMEWORKS_JSON = "frameworks.json"
@@ -40,9 +40,9 @@ def generate_status_table(frameworks: List[Dict]) -> str:
         app_link = f'<a href="{REPO_URL}/tree/main/apps/{fw_dir}">{icon} {fw_name}</a>'
         
         # Badge URLs
-        build_badge = f"![{fw_name} Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/{BADGES_BRANCH}/build-{fw_id}.svg)"
-        test_badge = f"![{fw_name} Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/{BADGES_BRANCH}/test-{fw_id}.svg)"
-        lint_badge = f"![{fw_name} Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/{BADGES_BRANCH}/lint-{fw_id}.svg)"
+        build_badge = f"![{fw_name} Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/{BADGES_BRANCH}/build-{fw_id}.svg)"
+        test_badge = f"![{fw_name} Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/{BADGES_BRANCH}/test-{fw_id}.svg)"
+        lint_badge = f"![{fw_name} Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/{BADGES_BRANCH}/lint-{fw_id}.svg)"
         
         table += f"| {app_link} | {build_badge} | {test_badge} | {lint_badge} |\n"
     

@@ -241,6 +241,6 @@ If tests fail or you need help:
 1. Check this README
 2. Review test output and screenshots
 3. Run tests in debug mode
-4. Check [GitHub Issues](https://github.com/Lissy93/weather-front/issues)
+4. Check [GitHub Issues](https://github.com/lissy93/framework-benchmarks/issues)
 
 **Happy Testing! 🎉**

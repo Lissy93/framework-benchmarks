@@ -5,7 +5,7 @@
 }
 
 .stats-table-container {
-  height: 600px;
+  height: 640px;
   width: 100%;
   border-radius: 8px;
   overflow: hidden;
@@ -55,7 +55,6 @@
 
 .framework-logo-cell img {
   width: 24px;
-  height: 24px;
   border-radius: 4px;
   flex-shrink: 0;
 }
@@ -97,6 +96,9 @@
   background: rgba(0, 0, 0, 0.1);
   border-radius: 3px;
   position: relative;
+  @media (max-width: 1024px) {
+    display: none;
+  }
 }
 
 .progress-text {

@@ -1,5 +1,4 @@
-
-
+# Troubleshooting
 
 ### "Unable to connect to Chrome"
 - Ensure Chrome/Chromium is installed
