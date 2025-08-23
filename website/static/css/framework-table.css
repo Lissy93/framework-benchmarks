@@ -62,7 +62,7 @@
 
 .framework-name {
   font-weight: 600;
-  font-size: 15px;
+  font-size: 18px;
 }
 
 /* Number formatting */
@@ -188,4 +188,49 @@
 /* Header tooltips */
 .ag-header-cell-text {
   font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .framework-stats {
+    margin: 2rem auto;
+    padding: 0;
+    overflow-x: auto;
+  }
+  
+  .stats-table-container {
+    height: 400px;
+    min-width: 800px;
+    border-radius: 0;
+  }
+  
+  .ag-theme-alpine,
+  .ag-theme-alpine-dark {
+    --ag-font-size: 11px;
+    --ag-header-height: 36px;
+    --ag-row-height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .framework-stats {
+    position: relative;
+  }
+  
+  .stats-table-container {
+    display: none;
+  }
+  
+  .framework-stats::after {
+    content: '📱 Community stats table is hidden on mobile devices. View on desktop or tablet for full statistics.';
+    display: block;
+    text-align: center;
+    padding: 2rem 1rem;
+    background: var(--card-bg, white);
+    border: 1px solid var(--card-border, #e2e8f0);
+    border-radius: var(--border-radius, 0.75rem);
+    color: var(--text-muted, #718096);
+    font-size: 0.9rem;
+    margin: 0 1rem;
+    line-height: 1.5;
+  }
 }
