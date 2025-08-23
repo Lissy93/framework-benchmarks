@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/static/css/main.css">
 <link rel="stylesheet" href="static/css/homepage.css">
 <link rel="stylesheet" href="static/css/chart-stuff.css">
+<link rel="stylesheet" href="static/css/framework-table.css">
     
      <!-- Twitter -->
     <meta property="og:type" content="website">
@@ -52,12 +53,375 @@
     </header>
     
     <main class="main-content">
+
 <section class="hero">
-    <div class="hero-content">
-        <p class="subtitle">Select a framework to view stats, status, demo the output and more</p>
+    <div class="hero-left">
+        <h1>Framework Benchmarks</h1>
+        <p class="subtitle">The same app, built in <i>every</i> frontend web framework, and then benchmarked</p>
+        <div class="hero-buttons">
+            <a class="primary-cta" href="https://github.com/lissy93/weather-front" target="_blank">GitHub</a>
+            <a class="secondary-cta" href="#framework-results">Results</a>
+            <a class="secondary-cta" href="#framework-stats">Stats</a>
+            <a class="secondary-cta" href="#framework-apps">Apps</a>
+            <a class="secondary-cta" href="#framework-stats">Docs</a>
+        </div>
+    </div>
+    <div class="lil-grid">
+        <a
+            href="/react/"
+            class="framework-card"
+            style="--fw-color: #61DAFB;"
+            data-framework="react"
+            title="React"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/react"
+                 alt="⚛️"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">R</div>
+        </a>
+        <a
+            href="/angular/"
+            class="framework-card"
+            style="--fw-color: #DD0031;"
+            data-framework="angular"
+            title="Angular"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/angular"
+                 alt="🅰️"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">A</div>
+        </a>
+        <a
+            href="/svelte/"
+            class="framework-card"
+            style="--fw-color: #ff3e00;"
+            data-framework="svelte"
+            title="Svelte"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/svelte"
+                 alt="🔥"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">S</div>
+        </a>
+        <a
+            href="/preact/"
+            class="framework-card"
+            style="--fw-color: #673AB8;"
+            data-framework="preact"
+            title="Preact"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/preact"
+                 alt="💜"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">P</div>
+        </a>
+        <a
+            href="/solid/"
+            class="framework-card"
+            style="--fw-color: #2C4F7C;"
+            data-framework="solid"
+            title="Solid.js"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/solid"
+                 alt="🚀"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">S</div>
+        </a>
+        <a
+            href="/qwik/"
+            class="framework-card"
+            style="--fw-color: #ac7ef4;"
+            data-framework="qwik"
+            title="Qwik"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/qwik"
+                 alt="⚡"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">Q</div>
+        </a>
+        <a
+            href="/vue/"
+            class="framework-card"
+            style="--fw-color: #4FC08D;"
+            data-framework="vue"
+            title="Vue"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/vuedotjs"
+                 alt="💚"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">V</div>
+        </a>
+        <a
+            href="/jquery/"
+            class="framework-card"
+            style="--fw-color: #0769AD;"
+            data-framework="jquery"
+            title="jQuery"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/jquery"
+                 alt="💙"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">j</div>
+        </a>
+        <a
+            href="/alpine/"
+            class="framework-card"
+            style="--fw-color: #8BC0D0;"
+            data-framework="alpine"
+            title="Alpine.js"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/alpinedotjs"
+                 alt="🏔️"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">A</div>
+        </a>
+        <a
+            href="/lit/"
+            class="framework-card"
+            style="--fw-color: #324fff;"
+            data-framework="lit"
+            title="Lit"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/lit"
+                 alt="🔥"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">L</div>
+        </a>
+        <a
+            href="/vanjs/"
+            class="framework-card"
+            style="--fw-color: #F44336;"
+            data-framework="vanjs"
+            title="VanJS"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/vitess"
+                 alt="🚐"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">V</div>
+        </a>
+        <a
+            href="/vanilla/"
+            class="framework-card"
+            style="--fw-color: #F7DF1E;"
+            data-framework="vanilla"
+            title="Vanilla JS"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/javascript"
+                 alt="🧪"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">V</div>
+        </a>
+    </div>
+    
+</section>
+
+<!-- Charts Section -->
+<h2 id="framework-results">Results Summary</h2>
+<section class="charts-section">
+    <!-- Framework Toggle Controls -->
+    <div class="framework-toggles">
+        <div class="toggle-header">
+            <h3>🎛️ Framework Visibility</h3>
+            <div class="toggle-controls">
+                <button id="selectAll" class="toggle-btn">Select All</button>
+                <button id="deselectAll" class="toggle-btn">Deselect All</button>
+            </div>
+        </div>
+        <div class="framework-checkboxes">
+            <label class="framework-checkbox" style="--fw-color: #61DAFB;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-react" 
+                       data-framework="react"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">React</span>
+            </label>
+            <label class="framework-checkbox" style="--fw-color: #DD0031;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-angular" 
+                       data-framework="angular"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">Angular</span>
+            </label>
+            <label class="framework-checkbox" style="--fw-color: #ff3e00;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-svelte" 
+                       data-framework="svelte"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">Svelte</span>
+            </label>
+            <label class="framework-checkbox" style="--fw-color: #673AB8;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-preact" 
+                       data-framework="preact"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">Preact</span>
+            </label>
+            <label class="framework-checkbox" style="--fw-color: #2C4F7C;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-solid" 
+                       data-framework="solid"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">Solid.js</span>
+            </label>
+            <label class="framework-checkbox" style="--fw-color: #ac7ef4;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-qwik" 
+                       data-framework="qwik"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">Qwik</span>
+            </label>
+            <label class="framework-checkbox" style="--fw-color: #4FC08D;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-vue" 
+                       data-framework="vue"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">Vue</span>
+            </label>
+            <label class="framework-checkbox" style="--fw-color: #0769AD;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-jquery" 
+                       data-framework="jquery"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">jQuery</span>
+            </label>
+            <label class="framework-checkbox" style="--fw-color: #8BC0D0;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-alpine" 
+                       data-framework="alpine"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">Alpine.js</span>
+            </label>
+            <label class="framework-checkbox" style="--fw-color: #324fff;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-lit" 
+                       data-framework="lit"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">Lit</span>
+            </label>
+            <label class="framework-checkbox" style="--fw-color: #F44336;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-vanjs" 
+                       data-framework="vanjs"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">VanJS</span>
+            </label>
+            <label class="framework-checkbox" style="--fw-color: #F7DF1E;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-vanilla" 
+                       data-framework="vanilla"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">Vanilla JS</span>
+            </label>
+        </div>
+    </div>
+    
+    <div class="charts-grid">
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="performanceRadar"></canvas></div>
+            <p>Illustrates overall summary, toggle frameworks on/off to view<br>(higher = better)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="performanceQuadrant"></canvas></div>
+            <p>Bundle and Performance Relationship<br>(higher performance = better, lower bundle = better)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="sourceAnalysis"></canvas></div>
+            <p>Source code size and complexity<br>(lower = better)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="bundleSizeComparison"></canvas></div>
+            <p>Total and compressed bundle size<br>(lower size = better)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="lighthouseRadial"></canvas></div>
+            <p>Lighthouse performance scores<br>(higher = better, baseline at 80%)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="loadTimeline"></canvas></div>
+            <p>Loading performance metrics over time<br>(lower times = better)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="resourceConsumption"></canvas></div>
+            <p>CPU and memory usage during testing<br>(lower usage = better)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="buildEfficiencyScatter"></canvas></div>
+            <p>Build time vs bundle size relationship<br>(faster builds + smaller bundles = better)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="projectSizePie"></canvas></div>
+            <p>Distribution of framework bundle sizes<br>(smaller slices = more efficient)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="buildTimeDonut"></canvas></div>
+            <p>Build time distribution across frameworks<br>(smaller slices = faster builds)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="devServerPerformance"></canvas></div>
+            <p>Development server startup and HMR times<br>(shorter bars = better developer experience)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="productionBuildEfficiency"></canvas></div>
+            <p>Production build time vs output size<br>(bottom-left = optimal: fast builds + small output)</p>
+        </div>
     </div>
 </section>
 
+<h2 id="framework-stats">Community Stats</h2>
+<section class="framework-stats">
+    <div id="framework-stats-grid"></div>
+</section>
+
+
+<h2 id="framework-apps">Frameworks</h2>
 <section class="frameworks-grid">
     <div class="grid">
         <a href="/react/" class="framework-card" style="--fw-color: #61DAFB;" data-framework="react">
@@ -226,179 +590,6 @@
     </ul>
     <a href="/health" class="health-link">🔍 View Server Health Check</a>
 </section>
-
-<!-- Charts Section -->
-<section class="charts-section">
-    <h2>📊 Framework Performance Charts</h2>
-    
-    <!-- Framework Toggle Controls -->
-    <div class="framework-toggles">
-        <div class="toggle-header">
-            <h3>🎛️ Framework Visibility</h3>
-            <div class="toggle-controls">
-                <button id="selectAll" class="toggle-btn">Select All</button>
-                <button id="deselectAll" class="toggle-btn">Deselect All</button>
-            </div>
-        </div>
-        <div class="framework-checkboxes">
-            <label class="framework-checkbox" style="--fw-color: #61DAFB;">
-                <input type="checkbox" 
-                       class="framework-toggle" 
-                       id="toggle-react" 
-                       data-framework="react"
-                       checked>
-                <span class="checkbox-indicator"></span>
-                <span class="framework-label">React</span>
-            </label>
-            <label class="framework-checkbox" style="--fw-color: #DD0031;">
-                <input type="checkbox" 
-                       class="framework-toggle" 
-                       id="toggle-angular" 
-                       data-framework="angular"
-                       checked>
-                <span class="checkbox-indicator"></span>
-                <span class="framework-label">Angular</span>
-            </label>
-            <label class="framework-checkbox" style="--fw-color: #ff3e00;">
-                <input type="checkbox" 
-                       class="framework-toggle" 
-                       id="toggle-svelte" 
-                       data-framework="svelte"
-                       checked>
-                <span class="checkbox-indicator"></span>
-                <span class="framework-label">Svelte</span>
-            </label>
-            <label class="framework-checkbox" style="--fw-color: #673AB8;">
-                <input type="checkbox" 
-                       class="framework-toggle" 
-                       id="toggle-preact" 
-                       data-framework="preact"
-                       checked>
-                <span class="checkbox-indicator"></span>
-                <span class="framework-label">Preact</span>
-            </label>
-            <label class="framework-checkbox" style="--fw-color: #2C4F7C;">
-                <input type="checkbox" 
-                       class="framework-toggle" 
-                       id="toggle-solid" 
-                       data-framework="solid"
-                       checked>
-                <span class="checkbox-indicator"></span>
-                <span class="framework-label">Solid.js</span>
-            </label>
-            <label class="framework-checkbox" style="--fw-color: #ac7ef4;">
-                <input type="checkbox" 
-                       class="framework-toggle" 
-                       id="toggle-qwik" 
-                       data-framework="qwik"
-                       checked>
-                <span class="checkbox-indicator"></span>
-                <span class="framework-label">Qwik</span>
-            </label>
-            <label class="framework-checkbox" style="--fw-color: #4FC08D;">
-                <input type="checkbox" 
-                       class="framework-toggle" 
-                       id="toggle-vue" 
-                       data-framework="vue"
-                       checked>
-                <span class="checkbox-indicator"></span>
-                <span class="framework-label">Vue</span>
-            </label>
-            <label class="framework-checkbox" style="--fw-color: #0769AD;">
-                <input type="checkbox" 
-                       class="framework-toggle" 
-                       id="toggle-jquery" 
-                       data-framework="jquery"
-                       checked>
-                <span class="checkbox-indicator"></span>
-                <span class="framework-label">jQuery</span>
-            </label>
-            <label class="framework-checkbox" style="--fw-color: #8BC0D0;">
-                <input type="checkbox" 
-                       class="framework-toggle" 
-                       id="toggle-alpine" 
-                       data-framework="alpine"
-                       checked>
-                <span class="checkbox-indicator"></span>
-                <span class="framework-label">Alpine.js</span>
-            </label>
-            <label class="framework-checkbox" style="--fw-color: #324fff;">
-                <input type="checkbox" 
-                       class="framework-toggle" 
-                       id="toggle-lit" 
-                       data-framework="lit"
-                       checked>
-                <span class="checkbox-indicator"></span>
-                <span class="framework-label">Lit</span>
-            </label>
-            <label class="framework-checkbox" style="--fw-color: #F44336;">
-                <input type="checkbox" 
-                       class="framework-toggle" 
-                       id="toggle-vanjs" 
-                       data-framework="vanjs"
-                       checked>
-                <span class="checkbox-indicator"></span>
-                <span class="framework-label">VanJS</span>
-            </label>
-            <label class="framework-checkbox" style="--fw-color: #F7DF1E;">
-                <input type="checkbox" 
-                       class="framework-toggle" 
-                       id="toggle-vanilla" 
-                       data-framework="vanilla"
-                       checked>
-                <span class="checkbox-indicator"></span>
-                <span class="framework-label">Vanilla JS</span>
-            </label>
-        </div>
-    </div>
-    
-    <div class="charts-grid">
-        <div class="chart-container">
-            <div class="chart-outer"><canvas id="performanceRadar"></canvas></div>
-            <p>Illustrates overall summary, toggle frameworks on/off to view<br>(higher = better)</p>
-        </div>
-        <div class="chart-container">
-            <div class="chart-outer"><canvas id="performanceQuadrant"></canvas></div>
-            <p>Bundle and Performance Relationship<br>(higher performance = better, lower bundle = better)</p>
-        </div>
-        <div class="chart-container">
-            <div class="chart-outer"><canvas id="sourceAnalysis"></canvas></div>
-            <p>Source code size and complexity<br>(lower = better)</p>
-        </div>
-        <div class="chart-container">
-            <div class="chart-outer"><canvas id="bundleSizeComparison"></canvas></div>
-            <p>Total and compressed bundle size<br>(lower size = better)</p>
-        </div>
-        <div class="chart-container">
-            <div class="chart-outer"><canvas id="lighthouseRadial"></canvas></div>
-            <p>Lighthouse performance scores<br>(higher = better, baseline at 80%)</p>
-        </div>
-        <div class="chart-container">
-            <div class="chart-outer"><canvas id="loadTimeline"></canvas></div>
-            <p>Loading performance metrics over time<br>(lower times = better)</p>
-        </div>
-        <div class="chart-container">
-            <div class="chart-outer"><canvas id="resourceConsumption"></canvas></div>
-            <p>CPU and memory usage during testing<br>(lower usage = better)</p>
-        </div>
-        <div class="chart-container">
-            <div class="chart-outer"><canvas id="buildEfficiencyScatter"></canvas></div>
-            <p>Build time vs bundle size relationship<br>(faster builds + smaller bundles = better)</p>
-        </div>
-        <div class="chart-container">
-            <div class="chart-outer"><canvas id="projectSizePie"></canvas></div>
-            <p>Distribution of framework bundle sizes<br>(smaller slices = more efficient)</p>
-        </div>
-        <div class="chart-container">
-            <div class="chart-outer"><canvas id="maintainabilityTreemap"></canvas></div>
-            <p>Code maintainability by lines of code<br>(rectangle size = code volume)</p>
-        </div>
-        <div class="chart-container">
-            <div class="chart-outer"><canvas id="buildTimeDonut"></canvas></div>
-            <p>Build time distribution across frameworks<br>(smaller slices = faster builds)</p>
-        </div>
-    </div>
-</section>
     </main>
     
     <footer>
@@ -413,8 +604,9 @@
     
     <!-- JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@3.1.0/dist/chartjs-chart-treemap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@32/dist/ag-grid-community.min.js"></script>
 <script src="static/js/charts.js"></script>
+<script src="static/js/framework-table.js"></script>
 
 <script>
 // Chart configurations loaded from server
