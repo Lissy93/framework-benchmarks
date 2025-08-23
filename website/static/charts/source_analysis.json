@@ -123,18 +123,12 @@
     "scales": {
       "x": {
         "type": "linear",
+        "beginAtZero": true,
+        "stacked": true,
         "grid": {
           "color": "rgba(0, 0, 0, 0.1)",
           "drawOnChartArea": true
         },
-        "ticks": {
-          "font": {
-            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
-            "size": 12
-          }
-        },
-        "stacked": true,
-        "beginAtZero": true,
         "title": {
           "display": true,
           "text": "Count",
@@ -147,17 +141,10 @@
       },
       "y": {
         "type": "category",
-        "beginAtZero": true,
+        "stacked": true,
         "grid": {
           "display": false
-        },
-        "ticks": {
-          "font": {
-            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
-            "size": 12
-          }
-        },
-        "stacked": true
+        }
       }
     },
     "layout": {
