@@ -235,6 +235,16 @@ Each app gets built and tested to ensure that it is functional, compliant with t
 
 ## Results
 
+A summary of results can be viewed in [`summary.tsv`](https://github.com/Lissy93/framework-benchmarks/blob/main/results/summary.tsv).<br>
+Full, detailed results can be found in the [`results`](https://github.com/Lissy93/framework-benchmarks/tree/results) branch,
+or attached as an artifact in the GitHub Actions benchmarking workflow runs.
+For slightly more interactive reports, you can view the website at [framework-benchmarks.as93.net](https://framework-benchmarks.as93.net),
+and also view a stats on a per-framework basis.
+
+### Summary
+<!-- start_summary_charts -->
+<!-- end_summary_charts -->
+
 ### Community Info
 
 <!-- start_framework_stats -->

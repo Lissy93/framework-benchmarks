@@ -7,6 +7,8 @@ Generates interactive charts for website and QuickChart.io embedding.
 import json
 import math
 import os
+import urllib.parse
+import requests
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 
@@ -68,6 +70,16 @@ BUNDLE_SIZE_THRESHOLDS = {
     'medium': 200,
     'large': 500
 }
+
+# QuickChart.io configuration
+QUICKCHART_DEFAULT_WIDTH = 400
+QUICKCHART_DEFAULT_HEIGHT = 400
+QUICKCHART_CREATE_URL = 'https://quickchart.io/chart/create'
+QUICKCHART_BASE_URL = 'https://quickchart.io/chart'
+
+# Chart scale configuration
+LIGHTHOUSE_MIN_SCALE = 80  # Start Lighthouse charts at 80 instead of 0
+PERFORMANCE_MIN_SCALE = 80  # Start performance charts at 80 instead of 0
 
 # =============================================================================
 # UTILITY FUNCTIONS
@@ -512,7 +524,7 @@ def create_lighthouse_radial_chart(data: Dict[str, Any]) -> Dict[str, Any]:
     config['options']['scales'] = {
         'r': {
             'beginAtZero': False,
-            'min': 80,
+            'min': LIGHTHOUSE_MIN_SCALE,
             'max': 100,
             'ticks': {
                 'stepSize': 5
@@ -526,16 +538,35 @@ def create_source_analysis_chart(data: Dict[str, Any]) -> Dict[str, Any]:
     """Generate horizontal stacked bar chart for source analysis metrics."""
     config = get_base_chart_config('bar')
     config['options']['indexAxis'] = 'y'  # Make it horizontal
-    config['options']['scales'] = get_categorical_scales_config()
     
-    # Swap x and y for horizontal orientation
-    config['options']['scales']['y']['stacked'] = True
-    config['options']['scales']['x']['stacked'] = True
-    config['options']['scales']['y']['type'] = 'category'
-    config['options']['scales']['y']['grid'] = {'display': False}
-    config['options']['scales']['x']['type'] = 'linear'
-    config['options']['scales']['x']['beginAtZero'] = True
-    config['options']['scales']['x']['grid'] = {'color': 'rgba(0, 0, 0, 0.1)', 'drawOnChartArea': True}
+    # Configure horizontal scales
+    config['options']['scales'] = {
+        'x': {
+            'type': 'linear',
+            'beginAtZero': True,
+            'stacked': True,
+            'grid': {
+                'color': GRID_COLOR,
+                'drawOnChartArea': True
+            },
+            'title': {
+                'display': True,
+                'text': 'Count',
+                'font': {
+                    'family': FONT_FAMILY,
+                    'size': FONT_SIZE_LABEL,
+                    'weight': 'bold'
+                }
+            }
+        },
+        'y': {
+            'type': 'category',
+            'stacked': True,
+            'grid': {
+                'display': False
+            }
+        }
+    }
     
     # Collect and sort frameworks by total size (logical lines + files*10 + complexity)
     framework_data_list = []
@@ -725,8 +756,15 @@ def create_performance_quadrant_chart(data: Dict[str, Any]) -> Dict[str, Any]:
     # Override interaction mode for scatter plot
     config['options']['interaction']['mode'] = 'point'
     
+    # Calculate min/max values for better scaling
+    performance_scores = [fw_data['lighthouse']['scores']['performance'] for fw_data in data['frameworks'].values()]
+    min_performance = min(performance_scores)
+    y_axis_min = max(PERFORMANCE_MIN_SCALE, min_performance - 5)
+    
     config['options']['scales']['x']['title']['text'] = 'Bundle Size (KB, gzipped)'
     config['options']['scales']['y']['title']['text'] = 'Performance Score'
+    config['options']['scales']['y']['min'] = y_axis_min
+    config['options']['scales']['y']['max'] = 100
     
     datasets = []
     for framework_id, framework_data in data['frameworks'].items():
@@ -983,6 +1021,81 @@ def generate_all_charts(results_dir: Path) -> Dict[str, Dict[str, Any]]:
     
     return charts
 
+# =============================================================================
+# QUICKCHART.IO URL GENERATION
+# =============================================================================
+
+def create_quickchart_url(chart_config, width=QUICKCHART_DEFAULT_WIDTH, height=QUICKCHART_DEFAULT_HEIGHT, use_short_url=True):
+    payload = {'chart': chart_config, 'v': '3', 'width': width, 'height': height, 'backgroundColor': 'white'}
+    if use_short_url:
+        try:
+            r = requests.post(QUICKCHART_CREATE_URL, json=payload, timeout=10)
+            if r.ok and 'url' in r.json():
+                return r.json()['url']
+        except Exception as e:
+            print(f"Warning: Short URL generation failed, using regular URL: {e}")
+    config_json = json.dumps(chart_config, separators=(',', ':'))
+    encoded = urllib.parse.quote(config_json)
+    return f"{QUICKCHART_BASE_URL}?v=3&c={encoded}&w={width}&h={height}&bkg=white"
+
+
+def get_summary_charts(charts):
+    cfgs = [
+        ('performance_radar', 'Performance Overview'),
+        ('performance_quadrant', 'Performance vs Bundle Size'),
+        ('source_analysis', 'Source Code Analysis'),
+        ('bundle_size_comparison', 'Bundle Size and Comparison'),
+        ('lighthouse_radial', 'Lighthouse Performance Scores'),
+        ('load_timeline', 'Loading Performance'),
+        ('project_size_pie', 'Project Size Distribution'),
+        ('dev_server_performance', 'Development Server Performance'),
+        ('build_time_donut', 'Build Time Distribution'),
+    ]
+    return [
+        {'title': t, 'url': create_quickchart_url(charts[cid]), 'chart_id': cid}
+        for cid, t in cfgs if cid in charts
+    ]
+
+def generate_readme_charts_markdown(summary_charts):
+    """Generate markdown content for README chart section."""
+    imgs = '\n'.join(f'  <img src="{c["url"]}" width="256" title="{c["title"]}" alt="{c["title"]}" />' for c in summary_charts)
+    return f'<p align="center">\n{imgs}\n</p>'
+
+def update_readme_with_charts(readme_path: Path, summary_charts: List[Dict[str, str]]) -> None:
+    """Update README.md with generated chart URLs."""
+    if not readme_path.exists():
+        print(f"README not found at {readme_path}")
+        return
+    
+    with open(readme_path, 'r') as f:
+        content = f.read()
+    
+    # Generate new chart content
+    chart_markdown = generate_readme_charts_markdown(summary_charts)
+    print(f" Generated chart markdown: {len(chart_markdown)} characters")
+    
+    # Replace content between markers
+    start_marker = "<!-- start_summary_charts -->"
+    end_marker = "<!-- end_summary_charts -->"
+    
+    start_idx = content.find(start_marker)
+    end_idx = content.find(end_marker)
+    print(f" Searching for markers: start_idx={start_idx}, end_idx={end_idx}")
+    
+    if start_idx != -1 and end_idx != -1:
+        new_content = (
+            content[:start_idx + len(start_marker)] +
+            "\n" + chart_markdown + "\n" +
+            content[end_idx:]
+        )
+        
+        with open(readme_path, 'w') as f:
+            f.write(new_content)
+        
+        print(f" Updated README with {len(summary_charts)} chart images")
+    else:
+        print(" Warning: Chart markers not found in README")
+
 def main():
     """Main function to generate and save chart configurations."""
     script_dir = Path(__file__).parent
@@ -1016,7 +1129,32 @@ def main():
         json.dump(combined_config, f, indent=2)
     
     print(f" All chart configurations saved to {output_dir}")
-    print(f"=� Generated {len(charts)} chart types")
+    print(f"=📊 Generated {len(charts)} chart types")
+    
+    # Now run QuickChart.io integration
+    try:
+        print(" Running QuickChart.io integration...")
+        readme_path = script_dir.parent.parent / ".github" / "README.md"
+        summary_charts = get_summary_charts(charts)
+        
+        # Save chart URLs to a file
+        chart_urls_file = output_dir / "chart-urls.json"
+        chart_urls_data = {
+            "generated_at": "2025-08-19T23:55:00Z",
+            "summary_charts": summary_charts
+        }
+        
+        with open(chart_urls_file, "w") as f:
+            json.dump(chart_urls_data, f, indent=2)
+        
+        # Update README with chart images
+        update_readme_with_charts(readme_path, summary_charts)
+        
+        print(f" Generated {len(summary_charts)} QuickChart.io URLs")
+    except Exception as e:
+        print(f" Error in QuickChart.io integration: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == '__main__':
     main()

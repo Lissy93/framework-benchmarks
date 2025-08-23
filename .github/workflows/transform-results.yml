@@ -102,7 +102,7 @@ jobs:
         run: |
           echo "📊 Generating Chart.js configurations..."
           python scripts/transform/build_charts.py
-          echo "✅ Chart configurations generated"
+          echo "✅ Chart configurations and README charts generated"
 
       - name: 📊 Generate Results Summary
         run: |
@@ -119,7 +119,7 @@ jobs:
           git config user.email "alicia-gh-bot@mail.as93.net"
 
           # Only commit if there are changes
-          git add results/ website/static/chart*.json website/static/charts/ || true
+          git add results/ website/static/chart*.json website/static/charts/ .github/README.md || true
           if git diff --cached --quiet; then
             echo "ℹ️ No changes to commit."
             echo "skip_commit=true" >> $GITHUB_ENV
