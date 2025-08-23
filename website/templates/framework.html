@@ -224,8 +224,9 @@
         <article class="framework-tech">
             <h3>Usage Instructions</h3>
             <p>
-                First, follow the <a href="https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage">repo setup instructions</a>
-                Then cd into 'apps/{{framework.id}}' and and use the following commands:
+                First, follow the <a target="_blank" href="https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage">repo setup instructions</a>.<br>
+                Then cd into <a target="_blank" href="https://github.com/Lissy93/framework-benchmarks/tree/main/apps/{{framework.id}}">./apps/{{framework.id}}/</a>
+                and and use the following commands:
             </p>
 
             <ul class="tech-list">
@@ -374,6 +375,16 @@
             <h3>About {{framework.name}}</h3>
             <div class="framework-about">
                 {{ framework_commentary.about | safe }}
+            </div>
+        </article>
+        {% endif %}
+        
+        <!-- My pointless thoughts on this pointless framework -->
+        {% if framework_commentary.thoughts %}
+        <article class="framework-thoughts-section">
+            <h3>My thoughts on {{framework.name}}</h3>
+            <div class="framework-about">
+                {{ framework_commentary.thoughts | safe }}
             </div>
         </article>
         {% endif %}

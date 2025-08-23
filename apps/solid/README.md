@@ -67,13 +67,28 @@ For troubleshooting, use `npm run verify` from the root of the project.
 ## Solid Implementation
 
 <!-- start_framework_specific -->
-### Notable files
 - `src/App.jsx` - Main component using Solid's reactive primitives
 - `src/stores/weatherStore.js` - Global state with `createStore`
 - `src/services/WeatherService.js` - API integration with `createResource`
 - `src/components/` - Reactive components that update precisely
 <!-- end_framework_specific -->
 
+## About Solid
+<!-- start_framework_description -->
+<!-- end_framework_description -->
+
+## My Thoughts on Solid
+<!-- start_my_thoughts -->
+Solid feels like React, but *actually* reactive. It looks like JSX, but underneath it's magic. While React re-renders entire component trees, Solid surgically updates only the exact DOM nodes that need to change. The result is performance that makes other frameworks look sluggish.
+
+The mental shift from React is subtle but profound. Instead of thinking about re-renders and memoization, you think about signals and reactivity. `createSignal` returns a getter and setter - call `temperature()` to read, `setTemperature(25)` to update, and everything that depends on it automatically updates.
+
+Our weather app showcases this, as the temperature display, the weather icon, the styling - they all react independently when the weather data changes. No `useEffect`, no dependency arrays, no `useMemo` - just pure reactive programming that actually works.
+
+The JSX looks familiar, but `<Show>` and `<For>` components replace your typical `{condition && <div>}` patterns. These aren't just syntactic sugar - they're compiled into efficient conditional rendering that only updates when necessary.
+
+`createResource` handles async data elegantly, giving you loading states, error handling, and refetching without the usual ceremony. For our simple weather app, we didn't need Solid's more advanced features like stores or effects, but for something complex, the fine-grained reactivity becomes essential.
+<!-- end_my_thoughts -->
 
 <!-- start_real_world_app -->
 

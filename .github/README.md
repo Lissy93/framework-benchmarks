@@ -243,6 +243,17 @@ and also view a stats on a per-framework basis.
 
 ### Summary
 <!-- start_summary_charts -->
+<p align="center">
+  <img src="https://quickchart.io/chart/render/zf-85dfe535-3ea7-4c4a-9554-307757861557" width="256" title="Performance Overview" alt="Performance Overview" />
+  <img src="https://quickchart.io/chart/render/zf-92fedb2e-bcb9-4bfb-a392-1b2b89e5ad57" width="256" title="Performance vs Bundle Size" alt="Performance vs Bundle Size" />
+  <img src="https://quickchart.io/chart/render/zf-9d34d4b4-825f-42c0-aab4-3607419c8814" width="256" title="Source Code Analysis" alt="Source Code Analysis" />
+  <img src="https://quickchart.io/chart/render/zf-fd31c140-b4b5-488a-9ad8-bf8f3eb473c6" width="256" title="Bundle Size and Comparison" alt="Bundle Size and Comparison" />
+  <img src="https://quickchart.io/chart/render/zf-66ec5a45-c051-4b73-91d6-a5ee75bb7219" width="256" title="Lighthouse Performance Scores" alt="Lighthouse Performance Scores" />
+  <img src="https://quickchart.io/chart/render/zf-c4cf2cc0-682b-40a2-8455-4fc69687991c" width="256" title="Loading Performance" alt="Loading Performance" />
+  <img src="https://quickchart.io/chart/render/zf-1d8d3d98-1254-4793-8b4a-87e8f89ea0a8" width="256" title="Project Size Distribution" alt="Project Size Distribution" />
+  <img src="https://quickchart.io/chart/render/zf-be2960b4-d6af-4384-823e-204c9723bbf6" width="256" title="Development Server Performance" alt="Development Server Performance" />
+  <img src="https://quickchart.io/chart/render/zf-5fd77b17-f5b5-47ff-b584-ed0b3519b204" width="256" title="Build Time Distribution" alt="Build Time Distribution" />
+</p>
 <!-- end_summary_charts -->
 
 ### Community Info
