@@ -82,9 +82,9 @@ function updateChartVisibility() {
             if (chartName === 'performanceRadar' || 
                 chartName === 'buildEfficiencyScatter' || 
                 chartName === 'performanceQuadrant' ||
-                chartName === 'maintainabilityTreemap') {
+                chartName === 'productionBuildEfficiency') {
                 
-                // Charts with individual datasets per framework (radar, scatter, polar, treemap)
+                // Charts with individual datasets per framework (radar, scatter, polar)
                 chart.data.datasets.forEach((dataset, index) => {
                     const frameworkName = dataset.label.toLowerCase();
                     const isVisible = Array.from(visibleFrameworks).some(fw => 
@@ -305,12 +305,6 @@ function initializeCharts(chartConfigs) {
         };
     }
     
-    // Maintainability Treemap Chart
-    if (chartConfigs.maintainability_treemap) {
-        const treemapCtx = document.getElementById('maintainabilityTreemap').getContext('2d');
-        chartInstances.maintainabilityTreemap = new Chart(treemapCtx, chartConfigs.maintainability_treemap);
-        storeOriginalChartData('maintainabilityTreemap', chartInstances.maintainabilityTreemap);
-    }
     
     // Build Time Donut Chart
     if (chartConfigs.build_time_donut) {
@@ -336,5 +330,31 @@ function initializeCharts(chartConfigs) {
             backgroundColor: [...donutConfig.data.datasets[0].backgroundColor],
             borderColor: [...donutConfig.data.datasets[0].borderColor]
         };
+    }
+    
+    // Dev Server Performance Chart
+    if (chartConfigs.dev_server_performance) {
+        const devServerCtx = document.getElementById('devServerPerformance').getContext('2d');
+        chartInstances.devServerPerformance = new Chart(devServerCtx, chartConfigs.dev_server_performance);
+        storeOriginalChartData('devServerPerformance', chartInstances.devServerPerformance);
+    }
+    
+    // Production Build Efficiency Chart
+    if (chartConfigs.production_build_efficiency) {
+        const prodBuildCtx = document.getElementById('productionBuildEfficiency').getContext('2d');
+        const prodBuildConfig = {...chartConfigs.production_build_efficiency};
+        
+        // Add custom tooltip formatter
+        prodBuildConfig.options.plugins.tooltip.callbacks = {
+            title: function(ctx) {
+                return ctx[0].dataset.label || 'Framework';
+            },
+            label: function(ctx) {
+                return `Build: ${ctx.parsed.x.toFixed(1)}s, Output: ${ctx.parsed.y}MB`;
+            }
+        };
+        
+        chartInstances.productionBuildEfficiency = new Chart(prodBuildCtx, prodBuildConfig);
+        storeOriginalChartData('productionBuildEfficiency', chartInstances.productionBuildEfficiency);
     }
 }

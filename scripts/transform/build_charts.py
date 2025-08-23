@@ -343,7 +343,22 @@ def create_load_timeline_chart(data: Dict[str, Any]) -> Dict[str, Any]:
         ('CLS', 'cls', 'Cumulative Layout Shift (x1000)')
     ]
     
-    framework_names = list(data['frameworks'].keys())
+    # Calculate total performance values for each framework to sort by
+    framework_totals = []
+    for framework_id, framework_data in data['frameworks'].items():
+        total = 0
+        for metric_name, metric_key, description in metrics:
+            value = framework_data['lighthouse']['raw_metrics'][metric_key]
+            # Scale CLS for visibility (same as in display)
+            if metric_key == 'cls':
+                value *= 1000
+            total += value
+        framework_totals.append((framework_id, total))
+    
+    # Sort frameworks by total performance (smallest to largest)
+    framework_totals.sort(key=lambda x: x[1])
+    framework_names = [fw[0] for fw in framework_totals]
+    
     datasets = []
     
     for metric_name, metric_key, description in metrics:
@@ -768,42 +783,6 @@ def create_performance_quadrant_chart(data: Dict[str, Any]) -> Dict[str, Any]:
     
     return config
 
-def create_maintainability_treemap(data: Dict[str, Any]) -> Dict[str, Any]:
-    """Generate treemap showing maintainability metrics."""
-    config = get_base_chart_config('treemap')
-    
-    tree_data = []
-    colors = []
-    for framework_id, framework_data in data['frameworks'].items():
-        source = framework_data['source_analysis']
-        tree_data.append({
-            'value': source['logical_lines'],  # Use logical lines as the primary value
-            'maintainability': source['maintainability_index'],
-            'label': framework_id.title(),
-            'framework': framework_id
-        })
-        colors.append(get_framework_color(framework_id, ALPHA_SEMI))
-    
-    config['data'] = {
-        'datasets': [{
-            'label': 'Maintainability',
-            'tree': tree_data,  # Use 'tree' property instead of 'data'
-            'key': 'value',     # Specify which property contains the numeric value
-            'backgroundColor': colors,
-            'borderColor': [get_framework_color(fw, ALPHA_SOLID) for fw in data['frameworks'].keys()],
-            'borderWidth': 2,
-            'spacing': 0.5
-        }]
-    }
-    
-    config['options']['plugins']['title'] = {
-        'display': True,
-        'text': 'Code Maintainability Treemap (size = lines of code)',
-        'font': {'size': FONT_SIZE_TITLE, 'family': FONT_FAMILY}
-    }
-    
-    return config
-
 def create_build_time_donut(data: Dict[str, Any]) -> Dict[str, Any]:
     """Generate donut chart for build times."""
     config = get_base_chart_config('doughnut')
@@ -835,6 +814,131 @@ def create_build_time_donut(data: Dict[str, Any]) -> Dict[str, Any]:
         'text': 'Build Time Distribution (seconds)',
         'font': {'size': FONT_SIZE_TITLE, 'family': FONT_FAMILY}
     }
+    
+    return config
+
+# =============================================================================
+# DEVELOPER EXPERIENCE CHARTS
+# =============================================================================
+
+def create_dev_server_performance_chart(data: Dict[str, Any]) -> Dict[str, Any]:
+    """Generate dev server performance chart showing startup time and HMR speed."""
+    config = get_base_chart_config('bar')
+    config['options']['indexAxis'] = 'y'  # Horizontal bars
+    
+    # For horizontal bars, x should be linear (values) and y should be categorical (labels)
+    config['options']['scales'] = {
+        'x': {
+            'type': 'linear',
+            'beginAtZero': True,
+            'grid': {
+                'color': GRID_COLOR,
+                'drawOnChartArea': True
+            },
+            'ticks': {
+                'font': {
+                    'family': FONT_FAMILY,
+                    'size': FONT_SIZE_LABEL
+                }
+            }
+        },
+        'y': {
+            'type': 'category',
+            'grid': {
+                'display': False
+            },
+            'ticks': {
+                'font': {
+                    'family': FONT_FAMILY,
+                    'size': FONT_SIZE_LABEL
+                }
+            }
+        }
+    }
+    
+    framework_names = []
+    startup_times = []
+    hmr_times = []
+    
+    frameworks_data = data.get('frameworks', {})
+    for framework_id, framework_data in frameworks_data.items():
+        dev_server = framework_data.get('dev_server', {})
+        startup_ms = dev_server.get('startup_time_ms', 0)
+        hmr_ms = dev_server.get('hmr_avg_time_ms', 0)
+        
+        # Skip frameworks with no dev server data
+        if startup_ms > 0 or hmr_ms > 0:
+            framework_names.append(framework_id.title())
+            startup_times.append(startup_ms)
+            hmr_times.append(hmr_ms)
+    
+    config['data'] = {
+        'labels': framework_names,
+        'datasets': [
+            {
+                'label': 'Startup Time (ms)',
+                'data': startup_times,
+                'backgroundColor': [get_framework_color(name.lower(), ALPHA_SEMI) for name in framework_names],
+                'borderColor': [get_framework_color(name.lower(), ALPHA_SOLID) for name in framework_names],
+                'borderWidth': 1
+            },
+            {
+                'label': 'HMR Time (ms)',
+                'data': hmr_times,
+                'backgroundColor': [get_framework_color(name.lower(), ALPHA_LIGHT) for name in framework_names],
+                'borderColor': [get_framework_color(name.lower(), ALPHA_SOLID) for name in framework_names],
+                'borderWidth': 1
+            }
+        ]
+    }
+    
+    config['options']['plugins']['title'] = {
+        'display': True,
+        'text': 'Development Server Performance',
+        'font': {'size': FONT_SIZE_TITLE}
+    }
+    config['options']['scales']['x']['title'] = {'display': True, 'text': 'Time (milliseconds)'}
+    config['options']['scales']['y']['title'] = {'display': True, 'text': 'Framework'}
+    
+    return config
+
+def create_build_efficiency_chart(data: Dict[str, Any]) -> Dict[str, Any]:
+    """Generate production build efficiency scatter chart: build time vs output size."""
+    config = get_base_chart_config('scatter')
+    config['options']['scales'] = get_xy_scales_config()
+    
+    datasets = []
+    frameworks_data = data.get('frameworks', {})
+    
+    for framework_id, framework_data in frameworks_data.items():
+        build_data = framework_data.get('build_time', {})
+        build_ms = build_data.get('build_time_ms', 0)
+        output_mb = build_data.get('output_size_mb', 0)
+        
+        # Skip frameworks with no build data
+        if build_ms > 0 and output_mb > 0:
+            datasets.append({
+                'label': framework_id.title(),
+                'data': [{
+                    'x': build_ms / 1000,  # Convert to seconds
+                    'y': output_mb
+                }],
+                'backgroundColor': get_framework_color(framework_id, ALPHA_SEMI),
+                'borderColor': get_framework_color(framework_id, ALPHA_SOLID),
+                'borderWidth': 2,
+                'pointRadius': 8,
+                'pointHoverRadius': 10
+            })
+    
+    config['data'] = {'datasets': datasets}
+    
+    config['options']['plugins']['title'] = {
+        'display': True,
+        'text': 'Production Build Efficiency',
+        'font': {'size': FONT_SIZE_TITLE}
+    }
+    config['options']['scales']['x']['title'] = {'display': True, 'text': 'Build Time (seconds)'}
+    config['options']['scales']['y']['title'] = {'display': True, 'text': 'Output Size (MB)'}
     
     return config
 
@@ -872,8 +976,9 @@ def generate_all_charts(results_dir: Path) -> Dict[str, Dict[str, Any]]:
         'bundle_size_comparison': create_bundle_size_comparison(data),
         'project_size_pie': create_project_size_pie(data),
         'performance_quadrant': create_performance_quadrant_chart(data),
-        'maintainability_treemap': create_maintainability_treemap(data),
-        'build_time_donut': create_build_time_donut(data)
+        'build_time_donut': create_build_time_donut(data),
+        'dev_server_performance': create_dev_server_performance_chart(data),
+        'production_build_efficiency': create_build_efficiency_chart(data)
     }
     
     return charts

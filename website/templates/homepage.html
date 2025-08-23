@@ -102,19 +102,23 @@
             <p>Distribution of framework bundle sizes<br>(smaller slices = more efficient)</p>
         </div>
         <div class="chart-container">
-            <div class="chart-outer"><canvas id="maintainabilityTreemap"></canvas></div>
-            <p>Code maintainability by lines of code<br>(rectangle size = code volume)</p>
-        </div>
-        <div class="chart-container">
             <div class="chart-outer"><canvas id="buildTimeDonut"></canvas></div>
             <p>Build time distribution across frameworks<br>(smaller slices = faster builds)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="devServerPerformance"></canvas></div>
+            <p>Development server startup and HMR times<br>(shorter bars = better developer experience)</p>
+        </div>
+        <div class="chart-container">
+            <div class="chart-outer"><canvas id="productionBuildEfficiency"></canvas></div>
+            <p>Production build time vs output size<br>(bottom-left = optimal: fast builds + small output)</p>
         </div>
     </div>
 </section>
 
 <h2 id="framework-stats">Community Stats</h2>
 <section class="framework-stats">
-    <!-- TODO: Insert ag-grid, showing data from website/static/framework-stats.json -->
+    <div id="framework-stats-grid"></div>
 </section>
 
 
@@ -153,12 +157,14 @@
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for_static('css/homepage.css') }}">
 <link rel="stylesheet" href="{{ url_for_static('css/chart-stuff.css') }}">
+<link rel="stylesheet" href="{{ url_for_static('css/framework-table.css') }}">
 {% endblock %}
 
 {% block extra_js %}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chartjs-chart-treemap@3.1.0/dist/chartjs-chart-treemap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ag-grid-community@32/dist/ag-grid-community.min.js"></script>
 <script src="{{ url_for_static('js/charts.js') }}"></script>
+<script src="{{ url_for_static('js/framework-table.js') }}"></script>
 
 <script>
 // Chart configurations loaded from server
