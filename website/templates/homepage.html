@@ -3,46 +3,43 @@
 {% block title %}{{ config.website.title }} - Compare Frontend Frameworks{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <div class="hero-content">
-        <p class="subtitle">Select a framework to view stats, status, demo the output and more</p>
-    </div>
-</section>
 
-<section class="frameworks-grid">
-    <div class="grid">
+<section class="hero">
+    <div class="hero-left">
+        <h1>Framework Benchmarks</h1>
+        <p class="subtitle">The same app, built in <i>every</i> frontend web framework, and then benchmarked</p>
+        <div class="hero-buttons">
+            <a class="primary-cta" href="https://github.com/lissy93/weather-front" target="_blank">GitHub</a>
+            <a class="secondary-cta" href="#framework-results">Results</a>
+            <a class="secondary-cta" href="#framework-stats">Stats</a>
+            <a class="secondary-cta" href="#framework-apps">Apps</a>
+            <a class="secondary-cta" href="#framework-stats">Docs</a>
+        </div>
+    </div>
+    <div class="lil-grid">
         {% for framework in frameworks %}
-        <a href="/{{ framework.id }}/" class="framework-card" style="--fw-color: {{ framework.meta.color or '#3498db' }};" data-framework="{{ framework.id }}">
+        <a
+            href="/{{ framework.id }}/"
+            class="framework-card"
+            style="--fw-color: {{ framework.meta.color or '#3498db' }};"
+            data-framework="{{ framework.id }}"
+            title="{{ framework.name or framework.displayName or framework.id.title() }}"
+        >
             <img class="framework-icon" 
-                 width="64" 
+                 width="32" 
                  src="https://cdn.simpleicons.org/{{ framework.meta.iconName or framework.id }}"
                  alt="{{ framework.meta.emoji or '🔧' }}"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <div class="framework-fallback" style="display: none;">{{ (framework.name or framework.id)[0] }}</div>
-            <div class="framework-name">{{ framework.name or framework.displayName or framework.id.title() }}</div>
         </a>
         {% endfor %}
     </div>
-</section>
-
-<section class="info-section">
-    <h3>📊 Performance Testing URLs</h3>
-    <p>Use these URLs for automated performance testing:</p>
-    <ul class="url-list">
-        {% for framework in frameworks %}
-        <li style="--fw-color: {{ framework.meta.color or '#3498db' }};">
-            <h4>{{ framework.name }}</h4>
-            <code>{{ config.baseUrl or 'http://localhost:3000' }}/{{ framework.id }}/app?mock=true</code>
-        </li>
-        {% endfor %}
-    </ul>
-    <a href="/health" class="health-link">🔍 View Server Health Check</a>
+    
 </section>
 
 <!-- Charts Section -->
+<h2 id="framework-results">Results Summary</h2>
 <section class="charts-section">
-    <h2>📊 Framework Performance Charts</h2>
-    
     <!-- Framework Toggle Controls -->
     <div class="framework-toggles">
         <div class="toggle-header">
@@ -113,6 +110,43 @@
             <p>Build time distribution across frameworks<br>(smaller slices = faster builds)</p>
         </div>
     </div>
+</section>
+
+<h2 id="framework-stats">Community Stats</h2>
+<section class="framework-stats">
+    <!-- TODO: Insert ag-grid, showing data from website/static/framework-stats.json -->
+</section>
+
+
+<h2 id="framework-apps">Frameworks</h2>
+<section class="frameworks-grid">
+    <div class="grid">
+        {% for framework in frameworks %}
+        <a href="/{{ framework.id }}/" class="framework-card" style="--fw-color: {{ framework.meta.color or '#3498db' }};" data-framework="{{ framework.id }}">
+            <img class="framework-icon" 
+                 width="64" 
+                 src="https://cdn.simpleicons.org/{{ framework.meta.iconName or framework.id }}"
+                 alt="{{ framework.meta.emoji or '🔧' }}"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">{{ (framework.name or framework.id)[0] }}</div>
+            <div class="framework-name">{{ framework.name or framework.displayName or framework.id.title() }}</div>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="info-section">
+    <h3>📊 Performance Testing URLs</h3>
+    <p>Use these URLs for automated performance testing:</p>
+    <ul class="url-list">
+        {% for framework in frameworks %}
+        <li style="--fw-color: {{ framework.meta.color or '#3498db' }};">
+            <h4>{{ framework.name }}</h4>
+            <code>{{ config.baseUrl or 'http://localhost:3000' }}/{{ framework.id }}/app?mock=true</code>
+        </li>
+        {% endfor %}
+    </ul>
+    <a href="/health" class="health-link">🔍 View Server Health Check</a>
 </section>
 {% endblock %}
 
