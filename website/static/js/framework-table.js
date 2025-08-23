@@ -136,10 +136,7 @@ class FrameworkTable {
         type: 'numericColumn',
         cellRenderer: (params) => {
           const open = params.value || 0;
-          const closed = params.data.closed_issues || 0;
-          const total = open + closed;
-          const openPct = total > 0 ? (open / total) * 100 : 0;
-          const color = openPct > 20 ? '#f44336' : openPct > 10 ? '#ff9800' : '#4caf50';
+          const color = open > 400 ? '#f44336' : open > 200 ? '#ff9800' : '#4caf50';
           return `<span class="number-cell" style="color: ${color}">${open}</span>`;
         },
         sortable: true,
