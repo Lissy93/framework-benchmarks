@@ -75,6 +75,17 @@ jobs:
             exit 1
           fi
           
+          # Read workflow context to determine if we should skip main branch commit
+          if [ -f "benchmark-results/workflow-context.json" ]; then
+            SKIP_COMMIT=$(python3 -c "import json; print(json.load(open('benchmark-results/workflow-context.json')).get('skip_commit', 'false'))" 2>/dev/null || echo "false")
+            echo "SKIP_MAIN_COMMIT=$SKIP_COMMIT" >> $GITHUB_ENV
+            echo "📋 Workflow context: skip_commit=$SKIP_COMMIT"
+            rm benchmark-results/workflow-context.json  # Clean up
+          else
+            echo "SKIP_MAIN_COMMIT=false" >> $GITHUB_ENV
+            echo "📋 No workflow context found, defaulting to commit to main branch"
+          fi
+          
           echo "📊 Final benchmark-results structure:"
           find benchmark-results -type f -name "*.json" | head -10
 
@@ -116,6 +127,7 @@ jobs:
           echo "- **Status**: ✅ Success" >> $GITHUB_STEP_SUMMARY
           echo "- **Timestamp**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
           echo "- **Source**: Workflow run #${{ github.event.workflow_run.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Main Branch Commit**: $([ "$SKIP_MAIN_COMMIT" = "true" ] && echo "⏭️ Skipped" || echo "✅ Updated")" >> $GITHUB_STEP_SUMMARY
 
       - name: 📝 Commit to Results Branch
         run: |
@@ -161,15 +173,19 @@ jobs:
             echo "ℹ️ No changes to commit to results branch"
           fi
           
-          # Return to main workspace and update main branch
+          # Return to main workspace and conditionally update main branch
           cd "$CURRENT_DIR"
-          git add results/ website/static/chart*.json website/static/charts/ .github/README.md || true
-          if ! git diff --cached --quiet; then
-            git commit -m "chore(results): update benchmark summaries from run #${{ github.event.workflow_run.run_number }}"
-            git push
-            echo "✅ Main branch updated"
+          if [ "$SKIP_MAIN_COMMIT" = "true" ]; then
+            echo "⏭️ Skipping main branch commit (skip_commit=true)"
           else
-            echo "ℹ️ No changes to commit to main branch"
+            git add results/ website/static/chart*.json website/static/charts/ .github/README.md || true
+            if ! git diff --cached --quiet; then
+              git commit -m "chore(results): update benchmark summaries from run #${{ github.event.workflow_run.run_number }}"
+              git push
+              echo "✅ Main branch updated"
+            else
+              echo "ℹ️ No changes to commit to main branch"
+            fi
           fi
 
       - name: 🧹 Cleanup
