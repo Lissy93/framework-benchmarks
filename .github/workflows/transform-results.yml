@@ -104,6 +104,11 @@ jobs:
           python scripts/transform/build_charts.py
           echo "✅ Chart configurations and README charts generated"
 
+      - name: 📊 Generate Framework Stats
+        run: |
+          echo "📊 Generating framework stats..."
+          python scripts/transform/fetch_framework_stats.py || echo "⚠️ Framework stats generation failed"
+
       - name: 📊 Generate Results Summary
         run: |
           echo "## 🔄 Benchmark Results Transformation" >> $GITHUB_STEP_SUMMARY
@@ -111,33 +116,65 @@ jobs:
           echo "- **Status**: ✅ Success" >> $GITHUB_STEP_SUMMARY
           echo "- **Timestamp**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
           echo "- **Source**: Workflow run #${{ github.event.workflow_run.run_number }}" >> $GITHUB_STEP_SUMMARY
-          
-      - name: 📝 Commit Results
+
+      - name: 📝 Commit to Results Branch
         run: |
           set -e
+          TIMESTAMP=$(date -u '+%Y%m%d_%H%M%S')
+          CURRENT_DIR=$(pwd)
+          
           git config user.name "liss-bot"
           git config user.email "alicia-gh-bot@mail.as93.net"
-
-          # Only commit if there are changes
-          git add results/ website/static/chart*.json website/static/charts/ .github/README.md || true
-          if git diff --cached --quiet; then
-            echo "ℹ️ No changes to commit."
-            echo "skip_commit=true" >> $GITHUB_ENV
+          
+          # Create temporary directory for results branch
+          mkdir -p /tmp/results-branch
+          cd /tmp/results-branch
+          
+          # Initialize or fetch results branch
+          git init
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git fetch origin results:results 2>/dev/null && git checkout results || {
+            git checkout --orphan results
+            git rm -rf . 2>/dev/null || true
+          }
+          
+          # Set up directory structure
+          mkdir -p raw summary charts stats
+          
+          # Copy files from main workspace
+          [ -d "$CURRENT_DIR/benchmark-results" ] && cp -r "$CURRENT_DIR/benchmark-results"/* raw/ 2>/dev/null || true
+          [ -f "$CURRENT_DIR/results/summary.json" ] && cp "$CURRENT_DIR/results/summary.json" summary/summary-${TIMESTAMP}.json
+          [ -f "$CURRENT_DIR/results/summary.tsv" ] && cp "$CURRENT_DIR/results/summary.tsv" summary/summary-${TIMESTAMP}.tsv
+          [ -f "$CURRENT_DIR/results/summary.json" ] && cp "$CURRENT_DIR/results/summary.json" summary/summary.json
+          [ -f "$CURRENT_DIR/results/summary.tsv" ] && cp "$CURRENT_DIR/results/summary.tsv" summary/summary.tsv
+          [ -d "$CURRENT_DIR/website/static/charts" ] && cp -r "$CURRENT_DIR/website/static/charts"/* charts/ 2>/dev/null || true
+          [ -f "$CURRENT_DIR/results/framework-stats.json" ] && cp "$CURRENT_DIR/results/framework-stats.json" stats/stats-${TIMESTAMP}.json
+          [ -f "$CURRENT_DIR/results/framework-stats.json" ] && cp "$CURRENT_DIR/results/framework-stats.json" stats/framework-stats.json
+          
+          # Commit and push if there are changes
+          git add . || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: update results from run #${{ github.event.workflow_run.run_number }} [${TIMESTAMP}]"
+            git push origin results
+            echo "✅ Results committed to results branch"
           else
-            commit_msg="chore(results): update benchmark summaries from run #${{ github.event.workflow_run.run_number }}"
-            git commit -m "$commit_msg"
-            echo "✅ Results committed"
+            echo "ℹ️ No changes to commit to results branch"
           fi
-
-      - name: 🚀 Push Changes
-        if: env.skip_commit != 'true'
-        run: |
-          git push
-          echo "✅ Changes pushed to repository"
+          
+          # Return to main workspace and update main branch
+          cd "$CURRENT_DIR"
+          git add results/ website/static/chart*.json website/static/charts/ .github/README.md || true
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(results): update benchmark summaries from run #${{ github.event.workflow_run.run_number }}"
+            git push
+            echo "✅ Main branch updated"
+          else
+            echo "ℹ️ No changes to commit to main branch"
+          fi
 
       - name: 🧹 Cleanup
         if: always()
         run: |
           echo "🧹 Cleaning up temporary files..."
-          rm -rf ./downloaded-artifacts benchmark-results
+          rm -rf ./downloaded-artifacts benchmark-results /tmp/results-branch
           echo "✅ Cleanup complete"
