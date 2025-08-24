@@ -5,12 +5,13 @@ Generates interactive charts for website and QuickChart.io embedding.
 """
 
 import json
-import math
-import os
 import urllib.parse
 import requests
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Dict, List, Any
+from rich.console import Console
+from rich.progress import track
+from rich import print as rprint
 
 # =============================================================================
 # GLOBAL CHART CONFIGURATION CONSTANTS
@@ -31,6 +32,16 @@ FRAMEWORK_COLORS = {
     'jquery': '#0769AD',
     'vanjs': '#FF6B35'
 }
+
+# Color mappings for specific chart metrics
+METRIC_COLORS = {
+    'FCP': 'react',
+    'LCP': 'angular', 
+    'Speed Index': 'vue',
+    'CLS': 'svelte'
+}
+
+console = Console()
 
 # Transparency levels
 ALPHA_SOLID = 1.0
@@ -57,19 +68,6 @@ CHART_WIDTH = 800
 CHART_HEIGHT = 600
 CHART_HEIGHT_SMALL = 400
 
-# Performance thresholds for color coding
-PERFORMANCE_THRESHOLDS = {
-    'good': 90,
-    'needs_improvement': 50,
-    'poor': 0
-}
-
-# Bundle size categories (KB)
-BUNDLE_SIZE_THRESHOLDS = {
-    'small': 50,
-    'medium': 200,
-    'large': 500
-}
 
 # QuickChart.io configuration
 QUICKCHART_DEFAULT_WIDTH = 400
@@ -95,21 +93,18 @@ def get_framework_color(framework_id: str, alpha: float = ALPHA_SOLID) -> str:
     b = int(hex_color[4:6], 16)
     return f'rgba({r}, {g}, {b}, {alpha})'
 
-def kb_to_mb(kb_value: float) -> float:
-    """Convert kilobytes to megabytes."""
-    return kb_value / 1024
-
 def ms_to_seconds(ms_value: float) -> float:
     """Convert milliseconds to seconds."""
     return ms_value / 1000
 
-def safe_divide(numerator: float, denominator: float, default: float = 0) -> float:
-    """Safely divide two numbers, return default if denominator is zero."""
-    return numerator / denominator if denominator != 0 else default
+def get_framework_colors_for_keys(framework_keys: List[str], alpha: float = ALPHA_SEMI) -> List[str]:
+    """Get list of framework colors for given keys."""
+    return [get_framework_color(fw, alpha) for fw in framework_keys]
 
-def normalize_score(value: float, max_value: float = 100) -> float:
-    """Normalize a score to 0-100 range."""
-    return min(max(value, 0), max_value)
+def get_metric_color(metric_name: str) -> str:
+    """Get color for a specific metric based on mapping."""
+    framework = METRIC_COLORS.get(metric_name, 'react')
+    return get_framework_color(framework)
 
 # =============================================================================
 # BASE CHART CONFIG BUILDERS
@@ -385,12 +380,8 @@ def create_load_timeline_chart(data: Dict[str, Any]) -> Dict[str, Any]:
         datasets.append({
             'label': metric_name,
             'data': metric_data,
-            'borderColor': get_framework_color('react' if metric_name == 'FCP' else 
-                                             'angular' if metric_name == 'LCP' else
-                                             'vue' if metric_name == 'Speed Index' else 'svelte'),
-            'backgroundColor': get_framework_color('react' if metric_name == 'FCP' else 
-                                                 'angular' if metric_name == 'LCP' else
-                                                 'vue' if metric_name == 'Speed Index' else 'svelte', ALPHA_FAINT),
+            'borderColor': get_metric_color(metric_name),
+            'backgroundColor': get_framework_color(METRIC_COLORS.get(metric_name, 'react'), ALPHA_FAINT),
             'borderWidth': 3,
             'fill': False,
             'tension': 0.1
@@ -434,16 +425,16 @@ def create_resource_consumption_chart(data: Dict[str, Any]) -> Dict[str, Any]:
         {
             'label': 'Average CPU Usage (%)',
             'data': cpu_data,
-            'backgroundColor': [get_framework_color(fw, ALPHA_SEMI) for fw in data['frameworks'].keys()],
-            'borderColor': [get_framework_color(fw, ALPHA_SOLID) for fw in data['frameworks'].keys()],
+            'backgroundColor': get_framework_colors_for_keys(list(data['frameworks'].keys()), ALPHA_SEMI),
+            'borderColor': get_framework_colors_for_keys(list(data['frameworks'].keys()), ALPHA_SOLID),
             'borderWidth': 2,
             'yAxisID': 'y'
         },
         {
             'label': 'Memory Usage (MB)',
             'data': memory_data,
-            'backgroundColor': [get_framework_color(fw, ALPHA_LIGHT) for fw in data['frameworks'].keys()],
-            'borderColor': [get_framework_color(fw, ALPHA_SOLID) for fw in data['frameworks'].keys()],
+            'backgroundColor': get_framework_colors_for_keys(list(data['frameworks'].keys()), ALPHA_LIGHT),
+            'borderColor': get_framework_colors_for_keys(list(data['frameworks'].keys()), ALPHA_SOLID),
             'borderWidth': 2,
             'yAxisID': 'y1'
         }
@@ -509,8 +500,8 @@ def create_lighthouse_radial_chart(data: Dict[str, Any]) -> Dict[str, Any]:
             {
                 'label': 'Performance',
                 'data': performance_scores,
-                'backgroundColor': [get_framework_color(fw, ALPHA_SEMI) for fw in data['frameworks'].keys()],
-                'borderColor': [get_framework_color(fw, ALPHA_SOLID) for fw in data['frameworks'].keys()],
+                'backgroundColor': get_framework_colors_for_keys(list(data['frameworks'].keys()), ALPHA_SEMI),
+                'borderColor': get_framework_colors_for_keys(list(data['frameworks'].keys()), ALPHA_SOLID),
                 'borderWidth': 2
             }
         ]
@@ -604,7 +595,7 @@ def create_source_analysis_chart(data: Dict[str, Any]) -> Dict[str, Any]:
             'borderWidth': 1
         },
         {
-            'label': 'Files Count (�10)',
+            'label': 'Files Count (×10)',
             'data': [x * 10 for x in files_count],
             'backgroundColor': 'rgba(16, 185, 129, 0.8)',
             'borderColor': 'rgba(16, 185, 129, 1)',
@@ -658,16 +649,16 @@ def create_bundle_size_comparison(data: Dict[str, Any]) -> Dict[str, Any]:
         {
             'label': 'Total Size (KB)',
             'data': total_size,
-            'backgroundColor': [get_framework_color(fw, ALPHA_LIGHT) for fw in data['frameworks'].keys()],
-            'borderColor': [get_framework_color(fw, ALPHA_SOLID) for fw in data['frameworks'].keys()],
+            'backgroundColor': get_framework_colors_for_keys(list(data['frameworks'].keys()), ALPHA_LIGHT),
+            'borderColor': get_framework_colors_for_keys(list(data['frameworks'].keys()), ALPHA_SOLID),
             'borderWidth': 2,
             'yAxisID': 'y'
         },
         {
             'label': 'Gzipped Size (KB)',
             'data': gzipped_size,
-            'backgroundColor': [get_framework_color(fw, ALPHA_SEMI) for fw in data['frameworks'].keys()],
-            'borderColor': [get_framework_color(fw, ALPHA_SOLID) for fw in data['frameworks'].keys()],
+            'backgroundColor': get_framework_colors_for_keys(list(data['frameworks'].keys()), ALPHA_SEMI),
+            'borderColor': get_framework_colors_for_keys(list(data['frameworks'].keys()), ALPHA_SOLID),
             'borderWidth': 2,
             'yAxisID': 'y'
         },
@@ -735,7 +726,7 @@ def create_project_size_pie(data: Dict[str, Any]) -> Dict[str, Any]:
         'datasets': [{
             'data': sizes,
             'backgroundColor': colors,
-            'borderColor': [get_framework_color(fw, ALPHA_SOLID) for fw in data['frameworks'].keys()],
+            'borderColor': get_framework_colors_for_keys(list(data['frameworks'].keys()), ALPHA_SOLID),
             'borderWidth': 2
         }]
     }
@@ -916,15 +907,15 @@ def create_dev_server_performance_chart(data: Dict[str, Any]) -> Dict[str, Any]:
             {
                 'label': 'Startup Time (ms)',
                 'data': startup_times,
-                'backgroundColor': [get_framework_color(name.lower(), ALPHA_SEMI) for name in framework_names],
-                'borderColor': [get_framework_color(name.lower(), ALPHA_SOLID) for name in framework_names],
+                'backgroundColor': get_framework_colors_for_keys([name.lower() for name in framework_names], ALPHA_SEMI),
+                'borderColor': get_framework_colors_for_keys([name.lower() for name in framework_names], ALPHA_SOLID),
                 'borderWidth': 1
             },
             {
                 'label': 'HMR Time (ms)',
                 'data': hmr_times,
-                'backgroundColor': [get_framework_color(name.lower(), ALPHA_LIGHT) for name in framework_names],
-                'borderColor': [get_framework_color(name.lower(), ALPHA_SOLID) for name in framework_names],
+                'backgroundColor': get_framework_colors_for_keys([name.lower() for name in framework_names], ALPHA_LIGHT),
+                'borderColor': get_framework_colors_for_keys([name.lower() for name in framework_names], ALPHA_SOLID),
                 'borderWidth': 1
             }
         ]
@@ -1033,7 +1024,7 @@ def create_quickchart_url(chart_config, width=QUICKCHART_DEFAULT_WIDTH, height=Q
             if r.ok and 'url' in r.json():
                 return r.json()['url']
         except Exception as e:
-            print(f"Warning: Short URL generation failed, using regular URL: {e}")
+            console.print(f"[yellow]Warning: Short URL generation failed, using regular URL: {e}[/yellow]")
     config_json = json.dumps(chart_config, separators=(',', ':'))
     encoded = urllib.parse.quote(config_json)
     return f"{QUICKCHART_BASE_URL}?v=3&c={encoded}&w={width}&h={height}&bkg=white"
@@ -1064,7 +1055,7 @@ def generate_readme_charts_markdown(summary_charts):
 def update_readme_with_charts(readme_path: Path, summary_charts: List[Dict[str, str]]) -> None:
     """Update README.md with generated chart URLs."""
     if not readme_path.exists():
-        print(f"README not found at {readme_path}")
+        console.print(f"[red]README not found at {readme_path}[/red]")
         return
     
     with open(readme_path, 'r') as f:
@@ -1072,7 +1063,7 @@ def update_readme_with_charts(readme_path: Path, summary_charts: List[Dict[str, 
     
     # Generate new chart content
     chart_markdown = generate_readme_charts_markdown(summary_charts)
-    print(f" Generated chart markdown: {len(chart_markdown)} characters")
+    console.print(f" Generated chart markdown: [green]{len(chart_markdown)}[/green] characters")
     
     # Replace content between markers
     start_marker = "<!-- start_summary_charts -->"
@@ -1080,7 +1071,7 @@ def update_readme_with_charts(readme_path: Path, summary_charts: List[Dict[str, 
     
     start_idx = content.find(start_marker)
     end_idx = content.find(end_marker)
-    print(f" Searching for markers: start_idx={start_idx}, end_idx={end_idx}")
+    console.print(f" Searching for markers: start_idx=[cyan]{start_idx}[/cyan], end_idx=[cyan]{end_idx}[/cyan]")
     
     if start_idx != -1 and end_idx != -1:
         new_content = (
@@ -1092,9 +1083,9 @@ def update_readme_with_charts(readme_path: Path, summary_charts: List[Dict[str, 
         with open(readme_path, 'w') as f:
             f.write(new_content)
         
-        print(f" Updated README with {len(summary_charts)} chart images")
+        console.print(f" [green]Updated README with {len(summary_charts)} chart images[/green]")
     else:
-        print(" Warning: Chart markers not found in README")
+        console.print(" [yellow]Warning: Chart markers not found in README[/yellow]")
 
 def main():
     """Main function to generate and save chart configurations."""
@@ -1105,7 +1096,7 @@ def main():
     if not results_dir.exists():
         raise FileNotFoundError(f"Results directory not found: {results_dir}")
     
-    print("= Generating Chart.js configurations...")
+    print("Generating Chart.js configurations...")
     charts = generate_all_charts(results_dir)
     
     # Save individual chart configs
@@ -1116,7 +1107,7 @@ def main():
         output_file = charts_dir / f'{chart_name}.json'
         with open(output_file, 'w') as f:
             json.dump(chart_config, f, indent=2)
-        print(f" Generated: {chart_name}.json")
+        print(f"Generated: {chart_name}.json")
     
     # Save combined config
     combined_file = output_dir / 'chart-configs.json'
@@ -1128,12 +1119,12 @@ def main():
     with open(combined_file, 'w') as f:
         json.dump(combined_config, f, indent=2)
     
-    print(f" All chart configurations saved to {output_dir}")
-    print(f"=📊 Generated {len(charts)} chart types")
+    print(f"All chart configurations saved to {output_dir}")
+    console.print(f"[bold green]📊 Generated {len(charts)} chart types[/bold green]")
     
     # Now run QuickChart.io integration
     try:
-        print(" Running QuickChart.io integration...")
+        console.print(" [blue]Running QuickChart.io integration...[/blue]")
         readme_path = script_dir.parent.parent / ".github" / "README.md"
         summary_charts = get_summary_charts(charts)
         
@@ -1150,9 +1141,9 @@ def main():
         # Update README with chart images
         update_readme_with_charts(readme_path, summary_charts)
         
-        print(f" Generated {len(summary_charts)} QuickChart.io URLs")
+        console.print(f" [green]Generated {len(summary_charts)} QuickChart.io URLs[/green]")
     except Exception as e:
-        print(f" Error in QuickChart.io integration: {e}")
+        console.print(f" [red]Error in QuickChart.io integration: {e}[/red]")
         import traceback
         traceback.print_exc()
 

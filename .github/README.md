@@ -18,11 +18,11 @@ So, without further ado, let's see how every framework weathers the storm! ⛈�
 2. Because I have no life, and like building the same thing 10 times
 
 #### What does _best_ mean?
-- Smallest bundle size
-- Fastest load time, and best performance metrics
-- Lowest CPU & memory usage and resource consumption
-- Least verbose, complex and repetitive code
-- Shortest compile time and HMR latency
+- Smallest bundle size and best compression
+- Fastest load time _(FCP, LCP, TTI, TTFB, etc)_
+- Lowest resource consumption _(CPU & memory usage, etc)_
+- Most maintainable _(least verbose, complex and repetitive code)_
+- Quickest build time _(prod compile, dev server HMR latency, etc)_
 
 #### Contents
 - [Frameworks Covered](#frameworks-covered)
@@ -32,6 +32,7 @@ So, without further ado, let's see how every framework weathers the storm! ⛈�
 - [Benchmarking](#benchmarking)
 - [Results](#results)
 - [Real-world Applications](#side-note)
+- [Status](#status)
 - [Attributions and License](#attributions)
 
 ---
@@ -209,30 +210,6 @@ The screenshots will all look like this:
 
 ---
 
-## Status
-
-Each app gets built and tested to ensure that it is functional, compliant with the spec, and (reasonably) well coded. Below is the current status of each, but for complete details you can see the [Workflow Logs](https://github.com/lissy93/framework-benchmarks/actions) via GitHub Actions. 
-
-<!-- start_all_status -->
-
-| App | Build | Test | Lint |
-|---|---|---|---|
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/react"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/react.png" width="16" /> React</a> | ![React Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-react.svg) | ![React Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-react.svg) | ![React Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-react.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/angular"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/angular.png" width="16" /> Angular</a> | ![Angular Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-angular.svg) | ![Angular Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-angular.svg) | ![Angular Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-angular.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/svelte"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/svelte.png" width="16" /> Svelte</a> | ![Svelte Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-svelte.svg) | ![Svelte Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-svelte.svg) | ![Svelte Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-svelte.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/preact"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/preact.png" width="16" /> Preact</a> | ![Preact Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-preact.svg) | ![Preact Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-preact.svg) | ![Preact Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-preact.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/solid"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/solid.png" width="16" /> Solid.js</a> | ![Solid.js Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-solid.svg) | ![Solid.js Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-solid.svg) | ![Solid.js Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-solid.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/qwik"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/qwik.png" width="16" /> Qwik</a> | ![Qwik Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-qwik.svg) | ![Qwik Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-qwik.svg) | ![Qwik Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-qwik.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vue"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vue.png" width="16" /> Vue 3</a> | ![Vue 3 Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-vue.svg) | ![Vue 3 Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-vue.svg) | ![Vue 3 Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-vue.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/jquery"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/jquery.png" width="16" /> jQuery</a> | ![jQuery Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-jquery.svg) | ![jQuery Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-jquery.svg) | ![jQuery Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-jquery.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/alpine"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/alpine.png" width="16" /> Alpine.js</a> | ![Alpine.js Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-alpine.svg) | ![Alpine.js Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-alpine.svg) | ![Alpine.js Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-alpine.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/lit"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/lit.png" width="16" /> Lit</a> | ![Lit Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-lit.svg) | ![Lit Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-lit.svg) | ![Lit Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-lit.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vanjs"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vanjs.png" width="16" /> VanJS</a> | ![VanJS Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-vanjs.svg) | ![VanJS Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-vanjs.svg) | ![VanJS Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-vanjs.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vanilla"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/javascript.png" width="16" /> Vanilla JavaScript</a> | ![Vanilla JavaScript Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-vanilla.svg) | ![Vanilla JavaScript Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-vanilla.svg) | ![Vanilla JavaScript Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-vanilla.svg) |
-<!-- end_all_status -->
-
----
-
 ## Results
 
 A summary of results can be viewed in [`summary.tsv`](https://github.com/Lissy93/framework-benchmarks/blob/main/results/summary.tsv).<br>
@@ -244,15 +221,15 @@ and also view a stats on a per-framework basis.
 ### Summary
 <!-- start_summary_charts -->
 <p align="center">
-  <img src="https://quickchart.io/chart/render/zf-85dfe535-3ea7-4c4a-9554-307757861557" width="256" title="Performance Overview" alt="Performance Overview" />
-  <img src="https://quickchart.io/chart/render/zf-92fedb2e-bcb9-4bfb-a392-1b2b89e5ad57" width="256" title="Performance vs Bundle Size" alt="Performance vs Bundle Size" />
-  <img src="https://quickchart.io/chart/render/zf-9d34d4b4-825f-42c0-aab4-3607419c8814" width="256" title="Source Code Analysis" alt="Source Code Analysis" />
-  <img src="https://quickchart.io/chart/render/zf-fd31c140-b4b5-488a-9ad8-bf8f3eb473c6" width="256" title="Bundle Size and Comparison" alt="Bundle Size and Comparison" />
-  <img src="https://quickchart.io/chart/render/zf-66ec5a45-c051-4b73-91d6-a5ee75bb7219" width="256" title="Lighthouse Performance Scores" alt="Lighthouse Performance Scores" />
-  <img src="https://quickchart.io/chart/render/zf-c4cf2cc0-682b-40a2-8455-4fc69687991c" width="256" title="Loading Performance" alt="Loading Performance" />
-  <img src="https://quickchart.io/chart/render/zf-1d8d3d98-1254-4793-8b4a-87e8f89ea0a8" width="256" title="Project Size Distribution" alt="Project Size Distribution" />
-  <img src="https://quickchart.io/chart/render/zf-be2960b4-d6af-4384-823e-204c9723bbf6" width="256" title="Development Server Performance" alt="Development Server Performance" />
-  <img src="https://quickchart.io/chart/render/zf-5fd77b17-f5b5-47ff-b584-ed0b3519b204" width="256" title="Build Time Distribution" alt="Build Time Distribution" />
+  <img src="https://quickchart.io/chart/render/zf-e01765b7-dac6-42d6-a66f-b1b8a4b0c5ca" width="256" title="Performance Overview" alt="Performance Overview" />
+  <img src="https://quickchart.io/chart/render/zf-a70ca70d-c31d-467d-85e7-d42e96d595b9" width="256" title="Performance vs Bundle Size" alt="Performance vs Bundle Size" />
+  <img src="https://quickchart.io/chart/render/zf-e0fce0f2-a29a-4aa6-bced-22f9d58f8c42" width="256" title="Source Code Analysis" alt="Source Code Analysis" />
+  <img src="https://quickchart.io/chart/render/zf-2935e115-9e0f-4a97-a66e-e5810063a504" width="256" title="Bundle Size and Comparison" alt="Bundle Size and Comparison" />
+  <img src="https://quickchart.io/chart/render/zf-8cf53ed0-73ec-42a9-bb90-4123c3b95ac9" width="256" title="Lighthouse Performance Scores" alt="Lighthouse Performance Scores" />
+  <img src="https://quickchart.io/chart/render/zf-7bdef245-e735-4abc-80a7-c9c3ad835763" width="256" title="Loading Performance" alt="Loading Performance" />
+  <img src="https://quickchart.io/chart/render/zf-fd98a8b8-c254-49b1-b6da-22c0dce80842" width="256" title="Project Size Distribution" alt="Project Size Distribution" />
+  <img src="https://quickchart.io/chart/render/zf-0f0c6799-d098-4656-b1c5-060163e0f537" width="256" title="Development Server Performance" alt="Development Server Performance" />
+  <img src="https://quickchart.io/chart/render/zf-0e591295-ad27-4534-b628-28348ed88eca" width="256" title="Build Time Distribution" alt="Build Time Distribution" />
 </p>
 <!-- end_summary_charts -->
 
@@ -295,6 +272,40 @@ So, in order to let each one shine, I have I have built real-world apps in each 
 | [<img src="https://storage.googleapis.com/as93-screenshots/project-screenshots/raid-caclularor.png" width="18" /> RAID Calculator](https://github.com/Lissy93/raid-calculator) - RAID array capacity and fault tolerance | [![Van.js](https://img.shields.io/static/v1?label=&message=Van.js&color=F44336&logo=vitess&logoColor=FFFFFF)](https://vanjs.org/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/raid-calculator)](https://github.com/Lissy93/raid-calculator) | [🌐 raid-calculator](https://raid-calculator.as93.net/) |
 | [<img src="https://github.com/Lissy93/permissionator/blob/main/public/logo.png?raw=true" width="18" /> Permissionator](https://github.com/Lissy93/permissionator) - Generating Linux file permissions | [![Marko](https://img.shields.io/static/v1?label=&message=Marko&color=2596BE&logo=marko&logoColor=FFFFFF)](https://markojs.com/) | [![GitHub Repo stars](https://img.shields.io/github/stars/Lissy93/permissionator)](https://github.com/Lissy93/permissionator) | [🌐 permissionator](https://permissionator.as93.net) |
 
+---
+
+## Status
+
+Each app gets built and tested to ensure that it is functional, compliant with the spec, and (reasonably) well coded. Below is the current status of each, but for complete details you can see the [Workflow Logs](https://github.com/lissy93/framework-benchmarks/actions) via GitHub Actions. 
+
+| Workflow | Status |
+|---|---|
+| **Benchmark**: Executes all app benchmarks | [![📈 Benchmark](https://github.com/Lissy93/framework-benchmarks/actions/workflows/benchmark.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/benchmark.yml) |
+| **Build**: Compiles each app for deployment | [![🔨 Build](https://github.com/Lissy93/framework-benchmarks/actions/workflows/build.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/build.yml) |
+| **Lint**: Ensures lint/consistency checks pass | [![🧼 Lint](https://github.com/Lissy93/framework-benchmarks/actions/workflows/lint.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/lint.yml) |
+| **Mirror**: Syncs repo to Codeberg mirror  | [![🪞 Mirror to Codeberg](https://github.com/Lissy93/framework-benchmarks/actions/workflows/mirror.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/mirror.yml) |
+| **Test**: Runs all unit and integration tests | [![🧪 Test](https://github.com/Lissy93/framework-benchmarks/actions/workflows/test.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/test.yml) |
+| **Transform**: Formats and publishes results | [![🔄 Transform Results](https://github.com/Lissy93/framework-benchmarks/actions/workflows/transform-results.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/transform-results.yml) |
+| **Update readme**: Updates dynamic info in docs | [![📄 Update readme](https://github.com/Lissy93/framework-benchmarks/actions/workflows/update-docs.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/update-docs.yml) |
+
+
+<!-- start_all_status -->
+
+| App | Build | Test | Lint |
+|---|---|---|---|
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/react"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/react.png" width="16" /> React</a> | ![React Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-react.svg) | ![React Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-react.svg) | ![React Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-react.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/angular"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/angular.png" width="16" /> Angular</a> | ![Angular Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-angular.svg) | ![Angular Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-angular.svg) | ![Angular Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-angular.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/svelte"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/svelte.png" width="16" /> Svelte</a> | ![Svelte Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-svelte.svg) | ![Svelte Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-svelte.svg) | ![Svelte Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-svelte.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/preact"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/preact.png" width="16" /> Preact</a> | ![Preact Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-preact.svg) | ![Preact Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-preact.svg) | ![Preact Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-preact.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/solid"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/solid.png" width="16" /> Solid.js</a> | ![Solid.js Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-solid.svg) | ![Solid.js Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-solid.svg) | ![Solid.js Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-solid.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/qwik"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/qwik.png" width="16" /> Qwik</a> | ![Qwik Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-qwik.svg) | ![Qwik Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-qwik.svg) | ![Qwik Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-qwik.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vue"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vue.png" width="16" /> Vue 3</a> | ![Vue 3 Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-vue.svg) | ![Vue 3 Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-vue.svg) | ![Vue 3 Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-vue.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/jquery"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/jquery.png" width="16" /> jQuery</a> | ![jQuery Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-jquery.svg) | ![jQuery Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-jquery.svg) | ![jQuery Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-jquery.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/alpine"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/alpine.png" width="16" /> Alpine.js</a> | ![Alpine.js Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-alpine.svg) | ![Alpine.js Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-alpine.svg) | ![Alpine.js Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-alpine.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/lit"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/lit.png" width="16" /> Lit</a> | ![Lit Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-lit.svg) | ![Lit Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-lit.svg) | ![Lit Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-lit.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vanjs"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vanjs.png" width="16" /> VanJS</a> | ![VanJS Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-vanjs.svg) | ![VanJS Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-vanjs.svg) | ![VanJS Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-vanjs.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vanilla"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/javascript.png" width="16" /> Vanilla JavaScript</a> | ![Vanilla JavaScript Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-vanilla.svg) | ![Vanilla JavaScript Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-vanilla.svg) | ![Vanilla JavaScript Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-vanilla.svg) |
+<!-- end_all_status -->
 
 ---
 
