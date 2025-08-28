@@ -148,48 +148,48 @@ jobs:
         run: |
           set -e
           TIMESTAMP=$(date -u '+%Y%m%d_%H%M%S')
-          CURRENT_DIR=$(pwd)
           
           git config user.name "liss-bot"
           git config user.email "alicia-gh-bot@mail.as93.net"
           
-          # Create temporary directory for results branch
-          mkdir -p /tmp/results-branch
-          cd /tmp/results-branch
-          
-          # Initialize or fetch results branch
-          git init
-          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git fetch origin results:results 2>/dev/null && git checkout results || {
-            git checkout --orphan results
-            git rm -rf . 2>/dev/null || true
-          }
+          # Switch to results branch (similar to badges approach)
+          git fetch origin results:results 2>/dev/null || git checkout --orphan results
+          git checkout results 2>/dev/null || true
+          git pull origin results 2>/dev/null || true
           
           # Set up directory structure
           mkdir -p raw summary charts stats
           
-          # Copy files from main workspace
-          [ -d "$CURRENT_DIR/benchmark-results" ] && cp -r "$CURRENT_DIR/benchmark-results"/* raw/ 2>/dev/null || true
-          [ -f "$CURRENT_DIR/results/summary.json" ] && cp "$CURRENT_DIR/results/summary.json" summary/summary-${TIMESTAMP}.json
-          [ -f "$CURRENT_DIR/results/summary.tsv" ] && cp "$CURRENT_DIR/results/summary.tsv" summary/summary-${TIMESTAMP}.tsv
-          [ -f "$CURRENT_DIR/results/summary.json" ] && cp "$CURRENT_DIR/results/summary.json" summary/summary.json
-          [ -f "$CURRENT_DIR/results/summary.tsv" ] && cp "$CURRENT_DIR/results/summary.tsv" summary/summary.tsv
-          [ -d "$CURRENT_DIR/website/static/charts" ] && cp -r "$CURRENT_DIR/website/static/charts"/* charts/ 2>/dev/null || true
-          [ -f "$CURRENT_DIR/results/framework-stats.json" ] && cp "$CURRENT_DIR/results/framework-stats.json" stats/stats-${TIMESTAMP}.json
-          [ -f "$CURRENT_DIR/results/framework-stats.json" ] && cp "$CURRENT_DIR/results/framework-stats.json" stats/framework-stats.json
+          # Copy files to organized structure
+          [ -d "benchmark-results" ] && cp -r benchmark-results/* raw/ 2>/dev/null || true
+          [ -f "results/summary.json" ] && cp results/summary.json summary/summary-${TIMESTAMP}.json 2>/dev/null || true
+          [ -f "results/summary.tsv" ] && cp results/summary.tsv summary/summary-${TIMESTAMP}.tsv 2>/dev/null || true
+          [ -f "results/summary.json" ] && cp results/summary.json summary/summary.json 2>/dev/null || true
+          [ -f "results/summary.tsv" ] && cp results/summary.tsv summary/summary.tsv 2>/dev/null || true
+          [ -d "website/static/charts" ] && cp -r website/static/charts/* charts/ 2>/dev/null || true
+          [ -f "results/framework-stats.json" ] && cp results/framework-stats.json stats/stats-${TIMESTAMP}.json 2>/dev/null || true
+          [ -f "results/framework-stats.json" ] && cp results/framework-stats.json stats/framework-stats.json 2>/dev/null || true
           
-          # Commit and push if there are changes
-          git add . || true
-          if ! git diff --cached --quiet; then
+          # Commit and push results branch
+          if git add raw/ summary/ charts/ stats/ && ! git diff --staged --quiet; then
             git commit -m "chore: update results from run #${{ github.event.workflow_run.run_number }} [${TIMESTAMP}]"
-            git push origin results
-            echo "✅ Results committed to results branch"
+            if git push origin results; then
+              echo "✅ Results committed to results branch"
+            else
+              echo "⚠️ Failed to push results branch updates"
+            fi
           else
             echo "ℹ️ No changes to commit to results branch"
           fi
+
+      - name: 📝 Commit to Main Branch  
+        run: |
+          git config user.name "liss-bot"
+          git config user.email "alicia-gh-bot@mail.as93.net"
           
-          # Return to main workspace and conditionally update main branch
-          cd "$CURRENT_DIR"
+          # Switch back to main branch
+          git checkout main
+          
           if [ "$COMMIT_TO_MAIN" = "true" ]; then
             git add results/ website/static/chart*.json website/static/charts/ .github/README.md || true
             if ! git diff --cached --quiet; then
