@@ -2,7 +2,7 @@
 <h1 align="center">🚀 Weather Front - Solid.js</h1>
 
 <p align="center">
-  <img width="64" src="https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/main/assets/favicon.png" /><br>
+  <img width="64" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/main/assets/favicon.png" /><br>
   <i>A tiny weather app</i>
   <br>
   <b><a href="/">🚀 Demo</a> ● <a href="https://frontend-framework-benchmarks.as93.net">📊 Results</a></b>
@@ -40,9 +40,9 @@ This is a simple weather app, built in [Solid.js](https://www.solidjs.com/) (as 
 
 | Task | Status |
 |---|---|
-| **Test** - Executes all e2e and unit tests | [![Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/test-solid.svg)](https://github.com/Lissy93/weather-front/actions/workflows/test.yml) |
-| **Lint** - Verifies code style and quality | [![Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/lint-solid.svg)](https://github.com/Lissy93/weather-front/actions/workflows/lint.yml) |
-| **Build** - Builds and deploys the app | [![Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/build-solid.svg)](https://github.com/Lissy93/weather-front/actions/workflows/build.yml) |
+| **Test** - Executes all e2e and unit tests | [![Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-solid.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/test.yml) |
+| **Lint** - Verifies code style and quality | [![Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-solid.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/lint.yml) |
+| **Build** - Builds and deploys the app | [![Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-solid.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/build.yml) |
 
 <!-- end_status -->
 
@@ -50,7 +50,7 @@ This is a simple weather app, built in [Solid.js](https://www.solidjs.com/) (as 
 
 ## Usage
 
-First, follow the [repo setup instructions](https://github.com/Lissy93/weather-front?tab=readme-ov-file#usage). Then `cd apps/solid` and use the following commands:
+First, follow the [repo setup instructions](https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage). Then `cd apps/solid` and use the following commands:
 
 ```bash
 npm run dev    # Start dev server (vite)
@@ -67,13 +67,28 @@ For troubleshooting, use `npm run verify` from the root of the project.
 ## Solid Implementation
 
 <!-- start_framework_specific -->
-### Notable files
 - `src/App.jsx` - Main component using Solid's reactive primitives
 - `src/stores/weatherStore.js` - Global state with `createStore`
 - `src/services/WeatherService.js` - API integration with `createResource`
 - `src/components/` - Reactive components that update precisely
 <!-- end_framework_specific -->
 
+## About Solid
+<!-- start_framework_description -->
+<!-- end_framework_description -->
+
+## My Thoughts on Solid
+<!-- start_my_thoughts -->
+Solid feels like React, but *actually* reactive. It looks like JSX, but underneath it's magic. While React re-renders entire component trees, Solid surgically updates only the exact DOM nodes that need to change. The result is performance that makes other frameworks look sluggish.
+
+The mental shift from React is subtle but profound. Instead of thinking about re-renders and memoization, you think about signals and reactivity. `createSignal` returns a getter and setter - call `temperature()` to read, `setTemperature(25)` to update, and everything that depends on it automatically updates.
+
+Our weather app showcases this, as the temperature display, the weather icon, the styling - they all react independently when the weather data changes. No `useEffect`, no dependency arrays, no `useMemo` - just pure reactive programming that actually works.
+
+The JSX looks familiar, but `<Show>` and `<For>` components replace your typical `{condition && <div>}` patterns. These aren't just syntactic sugar - they're compiled into efficient conditional rendering that only updates when necessary.
+
+`createResource` handles async data elegantly, giving you loading states, error handling, and refetching without the usual ceremony. For our simple weather app, we didn't need Solid's more advanced features like stores or effects, but for something complex, the fine-grained reactivity becomes essential.
+<!-- end_my_thoughts -->
 
 <!-- start_real_world_app -->
 
@@ -93,7 +108,7 @@ Since the weather app is very simple, it may be helpful to see a more practical 
 
 ## License
 
-Weather-Front is licensed under [MIT](https://github.com/Lissy93/weather-front/blob/main/LICENSE) © Alicia Sykes 2025.<br>
-View [Attributions](https://github.com/Lissy93/weather-front?tab=readme-ov-file#attributions) for credits, thanks and contributors.
+Weather-Front is licensed under [MIT](https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE) © Alicia Sykes 2025.<br>
+View [Attributions](https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#attributions) for credits, thanks and contributors.
 
 <!-- end_license -->

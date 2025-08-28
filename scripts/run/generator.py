@@ -169,6 +169,12 @@ class WebsiteGenerator:
                     if about_md:
                         md = markdown.Markdown(extensions=['extra', 'codehilite'])
                         result["about"] = md.convert(about_md)
+
+                    # Convert thoughts markdown to HTML
+                    thoughts_md = item.get('thoughts')
+                    if thoughts_md:
+                        md = markdown.Markdown(extensions=['extra', 'codehilite'])
+                        result["thoughts"] = md.convert(thoughts_md)
                     
                     return result
             

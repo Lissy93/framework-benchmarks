@@ -23,6 +23,13 @@ on:
         required: false
         default: '60'
         type: string
+      skip_commit:
+        description: 'Skip committing results to main branch (results branch will still be updated)'
+        required: false
+        default: false
+        type: boolean
+  schedule:
+    - cron: '30 4 * * *'  # Daily at 04:30 UTC
 
 env:
   NODE_VERSION: '20'
@@ -158,11 +165,19 @@ jobs:
         run: |
           echo "PYTHONPATH=$PWD:$PWD/scripts" >> $GITHUB_ENV
           
+          # Set skip_commit based on event type or manual input
+          if [ "${{ github.event_name }}" = "schedule" ]; then
+            echo "SKIP_COMMIT=true" >> $GITHUB_ENV
+            echo "⏰ Scheduled run - will skip main branch commit"
+          else
+            echo "SKIP_COMMIT=${{ github.event.inputs.skip_commit || 'false' }}" >> $GITHUB_ENV
+            echo "👤 Manual run - skip commit: ${{ github.event.inputs.skip_commit || 'false' }}"
+          fi
+          
           echo "📊 Benchmark Configuration:"
           echo "  Types: ${{ github.event.inputs.benchmark_types || 'all' }}"
           echo "  Frameworks: ${{ github.event.inputs.frameworks || 'all' }}"
           echo "  Executions: ${{ github.event.inputs.executions || '1' }}"
-          echo "  Detailed: ${{ github.event.inputs.detailed_output }}"
 
       - name: 🧪 Run Benchmarks
         run: |
@@ -251,6 +266,11 @@ jobs:
             echo "- **Artifacts**: Debug logs may be available below (if any)" >> $GITHUB_STEP_SUMMARY
           fi
 
+      - name: 📋 Save Workflow Context
+        run: |
+          echo '{"skip_commit": "${{ env.SKIP_COMMIT }}"}' > workflow-context.json
+          cat workflow-context.json
+
       - name: 📤 Upload Benchmark Results
         uses: actions/upload-artifact@v4
         if: always()
@@ -258,6 +278,7 @@ jobs:
           name: benchmark-results-${{ github.run_number }}
           path: |
             benchmark-results/
+            workflow-context.json
             !benchmark-results/**/.gitkeep
           retention-days: 30
           compression-level: 6

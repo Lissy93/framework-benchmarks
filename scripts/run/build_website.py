@@ -49,6 +49,30 @@ def extract_framework_implementation(framework_id: str, root_dir: Path) -> Optio
 
 
 def extract_framework_about(framework_id: str, root_dir: Path) -> Optional[str]:
+    """Extract framework about section from README.md between markers."""
+    readme_path = root_dir / "apps" / framework_id / "README.md"
+    
+    if not readme_path.exists():
+        return None
+        
+    try:
+        with open(readme_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        match = re.search(
+            r'<!-- start_framework_description -->(.*?)<!-- end_framework_description -->',
+            content, 
+            re.DOTALL
+        )
+        
+        if match:
+            return match.group(1).strip()
+        return None
+        
+    except Exception:
+        return None
+
+def extract_framework_thoughts(framework_id: str, root_dir: Path) -> Optional[str]:
     """Extract framework thoughts/about section from README.md between markers."""
     readme_path = root_dir / "apps" / framework_id / "README.md"
     
@@ -60,7 +84,7 @@ def extract_framework_about(framework_id: str, root_dir: Path) -> Optional[str]:
             content = f.read()
         
         match = re.search(
-            r'<!-- start_about -->(.*?)<!-- end_about -->',
+            r'<!-- start_my_thoughts -->(.*?)<!-- end_my_thoughts -->',
             content, 
             re.DOTALL
         )
@@ -195,12 +219,14 @@ def generate_framework_commentary(frameworks: List[Dict], root_dir: Path, static
             
         implementation = extract_framework_implementation(framework_id, root_dir)
         about = extract_framework_about(framework_id, root_dir)
+        thoughts = extract_framework_thoughts(framework_id, root_dir)
         
         commentary_data["items"].append({
             "id": framework_id,
             "name": framework.get("name", framework_id.title()),
             "implementation": implementation,
-            "about": about
+            "about": about,
+            "thoughts": thoughts
         })
     
     dev_static = root_dir / "website" / "static"
@@ -351,7 +377,7 @@ def generate_deployment_files(base_url: str, frameworks: List[Dict], output_dir:
         f.write(sitemap_content)
     
     # Generate _redirects for Netlify
-    redirects_content = "# Netlify redirects\n/*/source  https://github.com/anthropics/weather-front/tree/main/apps/:splat  302\n/*  /404/  404\n"
+    redirects_content = "# Netlify redirects\n/*/source  https://github.com/anthropics/framework-benchmarks/tree/main/apps/:splat  302\n/*  /404/  404\n"
     with open(output_dir / "_redirects", "w") as f:
         f.write(redirects_content)
     
@@ -360,7 +386,7 @@ def generate_deployment_files(base_url: str, frameworks: List[Dict], output_dir:
 RewriteEngine On
 
 # Redirect source code requests to GitHub
-RewriteRule ^([^/]+)/source/?$ https://github.com/anthropics/weather-front/tree/main/apps/$1 [R=302,L]
+RewriteRule ^([^/]+)/source/?$ https://github.com/anthropics/framework-benchmarks/tree/main/apps/$1 [R=302,L]
 
 # Handle 404s
 ErrorDocument 404 /404/index.html

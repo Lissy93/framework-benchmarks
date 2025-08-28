@@ -2,7 +2,7 @@
 <h1 align="center">⚡ Weather Front - Qwik</h1>
 
 <p align="center">
-  <img width="64" src="https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/main/assets/favicon.png" /><br>
+  <img width="64" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/main/assets/favicon.png" /><br>
   <i>A tiny weather app</i>
   <br>
   <b><a href="/">🚀 Demo</a> ● <a href="https://frontend-framework-benchmarks.as93.net">📊 Results</a></b>
@@ -40,9 +40,9 @@ This is a simple weather app, built in [Qwik](https://qwik.builder.io/) (as well
 
 | Task | Status |
 |---|---|
-| **Test** - Executes all e2e and unit tests | [![Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/test-qwik.svg)](https://github.com/Lissy93/weather-front/actions/workflows/test.yml) |
-| **Lint** - Verifies code style and quality | [![Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/lint-qwik.svg)](https://github.com/Lissy93/weather-front/actions/workflows/lint.yml) |
-| **Build** - Builds and deploys the app | [![Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/build-qwik.svg)](https://github.com/Lissy93/weather-front/actions/workflows/build.yml) |
+| **Test** - Executes all e2e and unit tests | [![Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-qwik.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/test.yml) |
+| **Lint** - Verifies code style and quality | [![Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-qwik.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/lint.yml) |
+| **Build** - Builds and deploys the app | [![Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-qwik.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/build.yml) |
 
 <!-- end_status -->
 
@@ -50,7 +50,7 @@ This is a simple weather app, built in [Qwik](https://qwik.builder.io/) (as well
 
 ## Usage
 
-First, follow the [repo setup instructions](https://github.com/Lissy93/weather-front?tab=readme-ov-file#usage). Then `cd apps/qwik` and use the following commands:
+First, follow the [repo setup instructions](https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage). Then `cd apps/qwik` and use the following commands:
 
 ```bash
 npm run dev    # Start dev server (vite --port 3000)
@@ -66,12 +66,28 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## Qwik Implementation
 <!-- start_framework_specific -->
-### Notable files
 - `src/App.tsx` - Main component with resumable state
 - `src/stores/weatherStore.ts` - Qwik stores that serialize automatically  
 - `src/services/WeatherService.ts` - API calls with progressive loading
 - `src/components/` - Components that wake up on demand
 <!-- end_framework_specific -->
+
+## About Qwik
+<!-- start_framework_description -->
+<!-- end_framework_description -->
+
+## My Thoughts on Qwik
+<!-- start_my_thoughts -->
+Qwik is kinda wild. It completely rethinks how web apps work by doing something called "resumability" - your page loads instantly with zero JavaScript, then individual components wake up only when you interact with them. It's like having a webpage that's asleep until you poke it.
+
+The secret is those `$` symbols everywhere. `component$()`, `useTask$()`, `onClick$()` - these aren't just weird syntax, they're lazy loading boundaries. Each `$` tells Qwik "this code can be loaded later when needed." So clicking a button doesn't load the entire app, it just loads that specific button's handler.
+
+For our weather app, this means the initial page render is lightning fast - just HTML and CSS. Search for a city, and only *then* does the search logic get loaded. Click to expand a forecast day, and only the expansion code gets fetched. It's incremental interactivity taken to its logical extreme.
+
+The state management feels familiar but with superpowers. Qwik stores automatically serialize to HTML, so when components resume, they pick up exactly where they left off. No hydration mismatch, no loading spinners, just seamless continuation. For that reason, I used Qwik to build the interactive stuff on my [Digital Defense](https://digital-defense.io/) website.
+
+The trade-off is developer complexity - all those `$` symbols take getting used to, and debugging can be tricky when code loads on-demand. But for performance-critical apps, especially content-heavy sites, Qwik's approach is genuinely revolutionary. Your Core Web Vitals scores will thank you.
+<!-- end_my_thoughts -->
 
 
 <!-- start_real_world_app -->
@@ -92,7 +108,7 @@ Since the weather app is very simple, it may be helpful to see a more practical 
 
 ## License
 
-Weather-Front is licensed under [MIT](https://github.com/Lissy93/weather-front/blob/main/LICENSE) © Alicia Sykes 2025.<br>
-View [Attributions](https://github.com/Lissy93/weather-front?tab=readme-ov-file#attributions) for credits, thanks and contributors.
+Weather-Front is licensed under [MIT](https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE) © Alicia Sykes 2025.<br>
+View [Attributions](https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#attributions) for credits, thanks and contributors.
 
 <!-- end_license -->

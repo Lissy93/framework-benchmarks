@@ -2,7 +2,7 @@
 <h1 align="center">🔥 Weather Front - Lit</h1>
 
 <p align="center">
-  <img width="64" src="https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/main/assets/favicon.png" /><br>
+  <img width="64" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/main/assets/favicon.png" /><br>
   <i>A tiny weather app</i>
   <br>
   <b><a href="/">🚀 Demo</a> ● <a href="https://frontend-framework-benchmarks.as93.net">📊 Results</a></b>
@@ -40,9 +40,9 @@ This is a simple weather app, built in [Lit](https://lit.dev/) (as well as also 
 
 | Task | Status |
 |---|---|
-| **Test** - Executes all e2e and unit tests | [![Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/test-lit.svg)](https://github.com/Lissy93/weather-front/actions/workflows/test.yml) |
-| **Lint** - Verifies code style and quality | [![Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/lint-lit.svg)](https://github.com/Lissy93/weather-front/actions/workflows/lint.yml) |
-| **Build** - Builds and deploys the app | [![Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/build-lit.svg)](https://github.com/Lissy93/weather-front/actions/workflows/build.yml) |
+| **Test** - Executes all e2e and unit tests | [![Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-lit.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/test.yml) |
+| **Lint** - Verifies code style and quality | [![Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-lit.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/lint.yml) |
+| **Build** - Builds and deploys the app | [![Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-lit.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/build.yml) |
 
 <!-- end_status -->
 
@@ -50,7 +50,7 @@ This is a simple weather app, built in [Lit](https://lit.dev/) (as well as also 
 
 ## Usage
 
-First, follow the [repo setup instructions](https://github.com/Lissy93/weather-front?tab=readme-ov-file#usage). Then `cd apps/lit` and use the following commands:
+First, follow the [repo setup instructions](https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage). Then `cd apps/lit` and use the following commands:
 
 ```bash
 npm run dev    # Start dev server (vite --port 3000)
@@ -66,13 +66,28 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## Lit Implementation
 <!-- start_framework_specific -->
-### Notable files
 - `src/weather-app.js` - Main application as a custom element
 - `src/weather-display.js` - Weather data display component
 - `src/weather-forecast.js` - Forecast list with lit-html templates
 - `src/weather-search.js` - Search form component with event binding
 <!-- end_framework_specific -->
 
+## About Lit
+<!-- start_framework_description -->
+<!-- end_framework_description -->
+
+## My Thoughts on Lit
+<!-- start_my_thoughts -->
+Lit can feel like stepping back into the old React class component days, but actually the cohesion to web standards makes Lit pretty... lit. It's built around Web Components, which is both its greatest strength and biggest frustration. Everything is properly encapsulated and framework-agnostic, but the developer experience feels surprisingly verbose for 2025.
+
+The weird expression syntax has caught me out a lot. Want to bind a property? Use `.value="${this.temp}"`. A boolean attribute? `?disabled="${this.loading}"`. An event listener? `@click="${this.handleClick}"`. It's functional once you memorize the symbols, but it breaks the flow when you're trying to think about business logic.
+
+Class-based components can feel outdated after years of hooks and functional patterns. Creating a simple weather display requires extending `LitElement`, defining `@property` decorators, implementing `render()`, and handling lifecycle methods manually. It works, but feels like unnecessary ceremony.
+
+The shadow DOM isolation is cool in theory - your styles can't leak, global CSS can't interfere. But in practice, it creates more problems than it solves. Want to style components consistently? Good luck getting your design system to work across shadow boundaries. Because of this, I really struggled to get the shared weather styles working across the Lit app. If you want to submit a PR to fix this, please do!
+
+But Lit really does shine for design systems and component libraries where you need true framework-agnostic components. I did build [Email Comparison](https://email-comparison.as93.net/) in Lit, but in heindsite, I think that was a mistake!
+<!-- end_my_thoughts -->
 
 <!-- start_real_world_app -->
 
@@ -92,7 +107,7 @@ Since the weather app is very simple, it may be helpful to see a more practical 
 
 ## License
 
-Weather-Front is licensed under [MIT](https://github.com/Lissy93/weather-front/blob/main/LICENSE) © Alicia Sykes 2025.<br>
-View [Attributions](https://github.com/Lissy93/weather-front?tab=readme-ov-file#attributions) for credits, thanks and contributors.
+Weather-Front is licensed under [MIT](https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE) © Alicia Sykes 2025.<br>
+View [Attributions](https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#attributions) for credits, thanks and contributors.
 
 <!-- end_license -->

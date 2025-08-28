@@ -2,7 +2,7 @@
 <h1 align="center">🚐 Weather Front - VanJS</h1>
 
 <p align="center">
-  <img width="64" src="https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/main/assets/favicon.png" /><br>
+  <img width="64" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/main/assets/favicon.png" /><br>
   <i>A tiny weather app</i>
   <br>
   <b><a href="/">🚀 Demo</a> ● <a href="https://frontend-framework-benchmarks.as93.net">📊 Results</a></b>
@@ -40,9 +40,9 @@ This is a simple weather app, built in [VanJS](https://vanjs.org/) (as well as a
 
 | Task | Status |
 |---|---|
-| **Test** - Executes all e2e and unit tests | [![Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/test-vanjs.svg)](https://github.com/Lissy93/weather-front/actions/workflows/test.yml) |
-| **Lint** - Verifies code style and quality | [![Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/lint-vanjs.svg)](https://github.com/Lissy93/weather-front/actions/workflows/lint.yml) |
-| **Build** - Builds and deploys the app | [![Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/build-vanjs.svg)](https://github.com/Lissy93/weather-front/actions/workflows/build.yml) |
+| **Test** - Executes all e2e and unit tests | [![Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-vanjs.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/test.yml) |
+| **Lint** - Verifies code style and quality | [![Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-vanjs.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/lint.yml) |
+| **Build** - Builds and deploys the app | [![Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-vanjs.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/build.yml) |
 
 <!-- end_status -->
 
@@ -50,7 +50,7 @@ This is a simple weather app, built in [VanJS](https://vanjs.org/) (as well as a
 
 ## Usage
 
-First, follow the [repo setup instructions](https://github.com/Lissy93/weather-front?tab=readme-ov-file#usage). Then `cd apps/vanjs` and use the following commands:
+First, follow the [repo setup instructions](https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage). Then `cd apps/vanjs` and use the following commands:
 
 ```bash
 npm run dev    # Start dev server (vite --port 3000)
@@ -66,12 +66,28 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## VanJS Implementation
 <!-- start_framework_specific -->
-### Notable files
 - `src/main.js` - Application logic with VanJS state and DOM creation
 - `src/weather-service.js` - API calls that update VanJS reactive state
 - `src/weather-utils.js` - Utility functions for data processing
 - `index.html` - Minimal HTML with VanJS script tag
 <!-- end_framework_specific -->
+
+## About Van
+<!-- start_framework_description -->
+<!-- end_framework_description -->
+
+## My Thoughts on Van
+<!-- start_my_thoughts -->
+VanJS is impressively tiny - just 1KB of runtime with zero dependencies. It's basically "what if we took the reactive parts of modern frameworks and stripped away everything else?" The result is surprisingly elegant for simple applications, but you'll quickly bump into its limitations.
+
+The functional approach is refreshing after dealing with classes and complex component lifecycles. `van.state(initialValue)` creates reactive state, `van.tags.div()` creates DOM elements, and everything just works. Our weather app's temperature display is literally `van.tags.span(temperature)` - when `temperature` changes, the DOM updates automatically.
+
+But the simplicity comes with trade-offs. There's no component abstraction beyond functions, no templating system, no event system. You're essentially building a reactive version of vanilla DOM manipulation. It works for basic interactivity but gets unwieldy fast.
+
+The DOM creation syntax is functional but verbose: `van.tags.div({class: "weather-card"}, van.tags.h2("Weather"))`. Coming from JSX or template languages, it feels like writing assembly code. You'll miss the declarative nature of modern frameworks.
+
+VanJS works well for simple enhancements where you need just a touch of reactivity without the framework overhead. I've used it for mini apps, like [raid-calculator](https://github.com/lissy93/raid-calculator). But for anything substantial, you'll spend more time fighting the limitations than building features. It's an interesting experiment in minimalism, but modern frameworks exist for good reasons.
+<!-- end_my_thoughts -->
 
 
 <!-- start_real_world_app -->
@@ -92,7 +108,7 @@ Since the weather app is very simple, it may be helpful to see a more practical 
 
 ## License
 
-Weather-Front is licensed under [MIT](https://github.com/Lissy93/weather-front/blob/main/LICENSE) © Alicia Sykes 2025.<br>
-View [Attributions](https://github.com/Lissy93/weather-front?tab=readme-ov-file#attributions) for credits, thanks and contributors.
+Weather-Front is licensed under [MIT](https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE) © Alicia Sykes 2025.<br>
+View [Attributions](https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#attributions) for credits, thanks and contributors.
 
 <!-- end_license -->

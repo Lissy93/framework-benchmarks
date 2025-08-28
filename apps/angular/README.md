@@ -2,7 +2,7 @@
 <h1 align="center">🅰️ Weather Front - Angular</h1>
 
 <p align="center">
-  <img width="64" src="https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/main/assets/favicon.png" /><br>
+  <img width="64" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/main/assets/favicon.png" /><br>
   <i>A tiny weather app</i>
   <br>
   <b><a href="/">🚀 Demo</a> ● <a href="https://frontend-framework-benchmarks.as93.net">📊 Results</a></b>
@@ -40,9 +40,9 @@ This is a simple weather app, built in [Angular](https://angular.io/) (as well a
 
 | Task | Status |
 |---|---|
-| **Test** - Executes all e2e and unit tests | [![Test Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/test-angular.svg)](https://github.com/Lissy93/weather-front/actions/workflows/test.yml) |
-| **Lint** - Verifies code style and quality | [![Lint Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/lint-angular.svg)](https://github.com/Lissy93/weather-front/actions/workflows/lint.yml) |
-| **Build** - Builds and deploys the app | [![Build Status](https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/build-angular.svg)](https://github.com/Lissy93/weather-front/actions/workflows/build.yml) |
+| **Test** - Executes all e2e and unit tests | [![Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-angular.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/test.yml) |
+| **Lint** - Verifies code style and quality | [![Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-angular.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/lint.yml) |
+| **Build** - Builds and deploys the app | [![Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-angular.svg)](https://github.com/lissy93/framework-benchmarks/actions/workflows/build.yml) |
 
 <!-- end_status -->
 
@@ -50,7 +50,7 @@ This is a simple weather app, built in [Angular](https://angular.io/) (as well a
 
 ## Usage
 
-First, follow the [repo setup instructions](https://github.com/Lissy93/weather-front?tab=readme-ov-file#usage). Then `cd apps/angular` and use the following commands:
+First, follow the [repo setup instructions](https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage). Then `cd apps/angular` and use the following commands:
 
 ```bash
 npm run dev    # Start dev server (ng serve --port 3000)
@@ -64,16 +64,31 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 <!-- end_usage -->
 
-## Angular Implementation
+## About Angular
+<!-- start_framework_description -->
+<!-- end_framework_description -->
 
+## Angular Implementation
 <!-- start_framework_specific -->
-### Notable files
 - `src/app/app.component.ts` - Root component with weather state management
 - `src/app/services/weather.service.ts` - Injectable service using Angular's HttpClient
 - `src/app/services/weather-state.service.ts` - Centralized state with RxJS observables
 - `src/app/components/` - Standalone components for weather display
 - `src/app/types/weather.types.ts` - TypeScript interfaces for type safety
 <!-- end_framework_specific -->
+
+## My Thoughts on Angular
+<!-- start_my_thoughts -->
+Angular isn't the cool kid anymore, but it's incredibly solid and ships with absolutely everything you need. TypeScript from day one, dependency injection, forms, HTTP client, routing, testing utilities - it's all there, officially maintained and deeply integrated. No need to cobble together a stack from random npm packages.
+
+For our weather app, Angular did kinda feel like using a sledgehammer to crack a nut. Using the newer standalone components (no more `NgModule` boilerplate!) made things cleaner, but I was still writing a lot more code than I needed in Svelte or Vue. That said, everything does just works, and the TypeScript integration is phenomenal.
+
+The dependency injection system was quite nice for having `WeatherService` automatically injected into components. And RxJS observables handle all the async weather data very nicley, though they do add a learning curve if you're not familiar with reactive programming.
+
+Angular's template syntax with `*ngIf`, `*ngFor`, and `(click)` feels natural once you get used to it. Change detection just works without thinking about it (unlike React where you're constantly memoizing things).
+
+For a simple weather app, we really didn't need any of Angular's big or flagship features (like guards, resolvers, or lazy loading). But I recently build [Domain Locker](https://github.com/lissy93/domain-locker) using Angular, and it was a great fit for the complexity of that project, As the structure, type safety, and tooling made it easy to manage a large codebase with multiple features.
+<!-- end_my_thoughts -->
 
 
 <!-- start_real_world_app -->
@@ -94,7 +109,7 @@ Since the weather app is very simple, it may be helpful to see a more practical 
 
 ## License
 
-Weather-Front is licensed under [MIT](https://github.com/Lissy93/weather-front/blob/main/LICENSE) © Alicia Sykes 2025.<br>
-View [Attributions](https://github.com/Lissy93/weather-front?tab=readme-ov-file#attributions) for credits, thanks and contributors.
+Weather-Front is licensed under [MIT](https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE) © Alicia Sykes 2025.<br>
+View [Attributions](https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#attributions) for credits, thanks and contributors.
 
 <!-- end_license -->
