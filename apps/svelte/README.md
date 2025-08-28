@@ -74,6 +74,12 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## About Svelte
 <!-- start_framework_description -->
+Svelte compiles your code at build time into minimal JS with no runtime framework. 
+That makes it very fast, with tiny bundle sizes. 
+It’s one of the most loved frameworks in surveys like Stack Overflow’s. 
+The syntax is simple and elegant, and it feels closer to writing plain HTML, CSS and JS. 
+The main drawback is a smaller ecosystem compared to React or Vue.
+
 <!-- end_framework_description -->
 
 ## My Thoughts on Svelte

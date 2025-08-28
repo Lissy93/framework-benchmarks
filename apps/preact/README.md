@@ -75,6 +75,11 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## About Preact
 <!-- start_framework_description -->
+Preact is a tiny React alternative that’s API-compatible with React in most cases. 
+It’s known for its speed and small bundle size, making it perfect for performance-sensitive projects. 
+Big names like Uber and Lyft have used it in production. 
+The trade-off is that some advanced React features are missing or behave differently.
+
 <!-- end_framework_description -->
 
 ## My Thoughts on Preact

@@ -53,12 +53,12 @@ def build_framework(framework_id: str, framework_data: dict, app_dir: Path) -> T
 @click.option('--ci', is_flag=True, help='CI mode: exit 1 on build failure, minimal output')
 @click.option('--skip-website', is_flag=True, help='Skip building the website after frameworks')
 @click.option('--static-site', is_flag=True, help='Build frameworks with absolute paths for comparison website')
-def build_all(parallel: bool, framework: str, ci: bool, skip_website: bool, for_comparison: bool):
+def build_all(parallel: bool, framework: str, ci: bool, skip_website: bool, static_site: bool):
     """Build framework applications."""
     show_header("Build Apps", "Compile all framework applications to generate static dist")
 
     # Use comparison build script if requested
-    if for_comparison:
+    if static_site:
         console.print("[bold]Building frameworks for comparison website...[/bold]")
         try:
             comparison_script = Path(__file__).parent / "set-base-hrefs.js"

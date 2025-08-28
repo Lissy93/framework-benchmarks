@@ -75,6 +75,10 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## About jQuery
 <!-- start_framework_description -->
+jQuery was once the king of the web, making DOM manipulation and AJAX simple back when browsers were inconsistent. 
+Most of what it offers is now part of vanilla JS, so it’s largely unnecessary today. 
+Still, it powered much of the modern web and is a big part of web history.
+
 <!-- end_framework_description -->
 
 ## My Thoughts on jQuery

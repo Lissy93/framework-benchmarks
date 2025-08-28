@@ -75,6 +75,11 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## About Solid
 <!-- start_framework_description -->
+Solid looks like React on the surface but skips the virtual DOM, updating the DOM directly with fine-grained reactivity. 
+This makes it blazing fast and efficient. 
+It has a smaller community but a lot of buzz among developers chasing performance. 
+If you like React’s syntax but hate its runtime overhead, Solid is refreshing.
+
 <!-- end_framework_description -->
 
 ## My Thoughts on Solid

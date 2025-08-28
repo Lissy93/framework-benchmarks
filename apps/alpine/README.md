@@ -75,6 +75,10 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## About Alpine
 <!-- start_framework_description -->
+Alpine is a super lightweight framework for adding interactivity directly in HTML using attributes. 
+It feels like Tailwind but for behaviour, making it ideal for simple UI enhancements without a full build setup. 
+Great for quick prototypes or adding sprinkles of interactivity to static sites.
+
 <!-- end_framework_description -->
 
 ## My Thoughts on Alpine

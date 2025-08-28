@@ -74,6 +74,11 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## About Qwik
 <!-- start_framework_description -->
+Qwik is all about instant load times and fine-grained lazy loading. 
+It serialises app state into HTML, letting pages become interactive with almost zero JS upfront. 
+It’s built for the modern web where performance and SEO matter. 
+It feels experimental but it’s pushing interesting ideas around resumability.
+
 <!-- end_framework_description -->
 
 ## My Thoughts on Qwik

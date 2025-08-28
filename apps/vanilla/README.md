@@ -75,6 +75,11 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## About JavaScript
 <!-- start_framework_description -->
+Vanilla JS just means plain JavaScript, using modern ES6+ features like classes, modules, promises and async/await. 
+Most things frameworks used to solve can now be done natively. 
+It’s often the best choice for small projects where adding a framework is overkill. 
+Plus, it ensures you really understand the language itself.
+
 <!-- end_framework_description -->
 
 ## My Thoughts on JavaScript

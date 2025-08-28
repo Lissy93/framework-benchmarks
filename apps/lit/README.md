@@ -74,6 +74,11 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## About Lit
 <!-- start_framework_description -->
+Lit is a framework from Google built around Web Components. 
+It’s minimal, modern and uses standard browser APIs rather than reinventing the wheel. 
+Great when you want reusable components without a massive framework overhead. 
+It’s gaining traction for design systems and apps that need native-feeling components.
+
 <!-- end_framework_description -->
 
 ## My Thoughts on Lit

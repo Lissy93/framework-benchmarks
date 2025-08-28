@@ -74,6 +74,12 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## About React
 <!-- start_framework_description -->
+React is the most popular frontend library, created by Facebook in 2013. 
+It popularised the component model and virtual DOM, changing frontend forever. 
+Its ecosystem is massive, with libraries for everything. 
+The downside is that it’s just a view layer, so you end up wiring lots of pieces together. 
+Still, it runs huge apps like Facebook, Instagram and Netflix.
+
 <!-- end_framework_description -->
 
 ## My Thoughts on React

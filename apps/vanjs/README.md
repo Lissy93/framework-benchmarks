@@ -74,6 +74,11 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## About Van
 <!-- start_framework_description -->
+VanJS is an ultra-tiny library for writing reactive UIs with plain functions. 
+No build step, no virtual DOM, just direct DOM manipulation with reactivity built in. 
+It’s surprisingly powerful for its size and is good for small apps or embedded widgets. 
+Think of it as a modern alternative to jQuery that actually plays nice with modern JS.
+
 <!-- end_framework_description -->
 
 ## My Thoughts on Van

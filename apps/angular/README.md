@@ -66,6 +66,11 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## About Angular
 <!-- start_framework_description -->
+Angular is a full-blown framework from Google, not just a library. 
+It comes with everything out of the box, from routing to forms to testing. 
+Its TypeScript-first approach and structured architecture make it great for large, enterprise apps. 
+The learning curve is steep but it’s incredibly powerful when mastered.
+
 <!-- end_framework_description -->
 
 ## Angular Implementation

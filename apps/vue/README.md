@@ -75,7 +75,10 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## About Vue
 <!-- start_framework_description -->
-TEST123
+Vue was created by Evan You after working on Angular at Google, and it became hugely popular thanks to its simplicity. 
+It mixes the best ideas of Angular and React but with a gentler learning curve. 
+Its ecosystem includes Vue Router and Vuex, and it’s used by Alibaba, Xiaomi and GitLab. 
+Developers love its approachability and elegance.
 <!-- end_framework_description -->
 
 ## My Thoughts on Vue
