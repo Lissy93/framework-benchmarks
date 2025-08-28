@@ -1,23 +1,25 @@
-# Apps
+# Framework Applications
 
-Identical weather applications implemented across 12 different frameworks.
+This project contains the same weather application built using 12 different JavaScript frameworks. Each implementation provides identical functionality but uses the specific patterns and approaches of its framework.
 
-## Framework Implementations
+## Available Frameworks
 
-Each app in `apps/{framework}/` follows the same design and functionality:
+The project includes implementations for:
 
-**React** - Modern hooks and components
-**Vue** - Vue 3 Composition API
-**Svelte** - Compiled reactive framework  
-**Angular** - Full-featured TypeScript framework
-**Qwik** - Resumable framework with SSR
-**Solid.js** - Fine-grained reactivity
-**Preact** - Lightweight React alternative
-**jQuery** - Traditional DOM manipulation
-**Alpine.js** - HTML-first declarative framework
-**Lit** - Web Components with reactive updates
-**VanJS** - Ultra-lightweight vanilla framework
-**Vanilla** - Pure JavaScript implementation
+**React** - Component-based with hooks and modern React patterns
+**Vue** - Built with Vue 3 and the Composition API
+**Svelte** - Compiled framework with reactive statements
+**Angular** - Full TypeScript application with services and components
+**Qwik** - Resumable framework optimized for performance
+**Solid.js** - Fine-grained reactivity without virtual DOM
+**Preact** - Lightweight alternative to React
+**jQuery** - Classic DOM manipulation approach
+**Alpine.js** - Minimal framework with HTML-first approach
+**Lit** - Web Components with efficient updates
+**VanJS** - Ultra-small vanilla framework
+**Vanilla** - Pure JavaScript without any framework
+
+Each app lives in its own directory under `apps/{framework}/` and can be developed, built, and tested independently.
 
 ## Common Features
 

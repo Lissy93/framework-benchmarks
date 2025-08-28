@@ -1,69 +1,92 @@
-# Running
+# Running Applications
 
-Building and serving framework applications.
+This guide covers building framework applications and running them locally or in production.
 
-## Scripts
+## Building Applications
 
-### Building
+To build all framework applications for production:
 
-**Build all:** `scripts/run/build.py`
-- Run: `npm run build` or `npm run build:all`
-- Parallel compilation of all frameworks
-- Progress tracking and error handling
-- Timeout management (2min per framework)
+```bash
+npm run build
+```
 
-**Individual builds:**
+This compiles each framework into optimized production builds. The process runs in parallel and takes a few minutes to complete all frameworks.
+
+You can also build individual frameworks:
+
 ```bash
 npm run build:react
-npm run build:vue  
+npm run build:vue
 npm run build:angular
-# etc...
+npm run build:svelte
+# ... and so on for all frameworks
 ```
 
-**Production builds:** `npm run build -- --for-comparison`
-- Sets correct base paths for deployment
-- Builds website after frameworks complete
-- Used by CI/CD workflows
+Build outputs are saved to each framework's build directory (usually `dist/` or `build/`).
 
-### Serving
+## Running the Server
 
-**Development:** `scripts/run/serve.py`
-- Run: `npm start`
-- Flask server on port 3000
-- Routes all frameworks + static assets
-- Health check endpoint at `/health`
-- Framework selection via `/{framework}/`
+After building, start the production server:
 
-**Individual dev servers:**
 ```bash
-npm run dev:react    # Port 3000
-npm run dev:vue      # Port 3000  
-npm run dev:angular  # Port 3000
-# etc...
+npm start
 ```
 
-### Website Generation
+This starts a Flask server on port 3000 that serves all framework applications and the comparison website. Visit `http://localhost:3000` to see the homepage, or `http://localhost:3000/react` to view a specific framework.
 
-**Static site:** `scripts/run/build_website.py`
-- Run: `python scripts/run/build_website.py`
-- Generates comparison website
-- Framework stats and demos
-- Interactive charts and visualizations
-- CDN-ready static files in `dist-website/`
+The server includes:
+- Framework routing (serves each app at `/{framework}/`)
+- Static asset handling
+- Health check endpoint at `/health`
+- 404 error pages for missing frameworks
 
-**Template engine:** `scripts/run/generator.py`
-- Jinja2-based HTML generation
-- Framework metadata injection
-- Dynamic content rendering
+## Development Mode
 
-## Build Outputs
+For development with hot reloading, you can run individual framework dev servers:
 
-Framework builds in `apps/{framework}/dist/` or `apps/{framework}/build/`
-Website output in `dist-website/`
-Static assets copied to appropriate directories
+```bash
+npm run dev:react     # React development server
+npm run dev:vue       # Vue development server  
+npm run dev:angular   # Angular development server
+# ... etc for all frameworks
+```
 
-## Port Management
+These run on port 3000 and provide framework-specific development features like hot module replacement.
 
-Dev servers use port 3000 by default
-Main serve script handles framework routing
-Individual framework dev servers for debugging only
+To run all dev servers simultaneously:
+
+```bash
+npm run dev:all
+```
+
+## Static Website Generation
+
+The comparison website can be built as a static site for deployment:
+
+```bash
+python scripts/run/build_website.py
+```
+
+This generates a complete static website in `dist-website/` with:
+- Pre-rendered HTML pages for all frameworks
+- Interactive charts and visualizations  
+- All static assets and styles
+- Optimized for CDN deployment
+
+## Common Patterns
+
+**Local development**: Use individual dev servers (`npm run dev:react`) for working on specific frameworks.
+
+**Testing builds**: Use `npm run build` followed by `npm start` to test production builds locally.
+
+**CI/CD deployment**: Use `npm run build` then static website generation for hosting platforms.
+
+## Build Directories
+
+Each framework saves builds to its standard location:
+- React, Vue, Solid, etc: `apps/{framework}/dist/`
+- Angular: `apps/{framework}/dist/weather-app-angular/`
+- Svelte: `apps/{framework}/build/`
+- Vanilla, Alpine: No build step (served directly)
+
+The main server automatically detects and serves from the correct build directory for each framework.

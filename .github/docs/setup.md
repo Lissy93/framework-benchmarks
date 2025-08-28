@@ -1,68 +1,61 @@
 # Setup
 
-Complete project initialization and maintenance.
+This guide covers setting up the project from scratch or maintaining an existing installation.
 
 ## Quick Start
 
 ```bash
+git clone https://github.com/lissy93/framework-benchmarks.git
+cd framework-benchmarks
+npm install
+pip install -r scripts/requirements.txt
 npm run setup
 ```
 
-Runs all setup tasks automatically.
+This runs all setup tasks automatically and prepares the project for development.
 
-## Manual Setup
+## What Setup Does
 
-### Dependencies
-**Script:** `scripts/setup/install_deps.py`
-- Run: `python scripts/setup/install_deps.py`
-- Installs Node.js deps for all 12 frameworks
-- Handles npm/yarn package management  
-- Validates successful installations
-- Shows progress per framework
+The setup process handles four main tasks:
 
-### Assets
-**Script:** `scripts/setup/sync_assets.py`
-- Run: `python scripts/setup/sync_assets.py`
-- Copies shared assets to all frameworks:
-  - Icons and logos
-  - CSS variables and styles
-  - Mock weather data
-  - Design system components
-- Preserves framework-specific customizations
-- Maintains consistent branding
+**Install Dependencies** - Installs Node.js packages for all framework applications. This can take several minutes as it processes each framework individually.
 
-### Mock Data
-**Script:** `scripts/setup/generate_mocks.py`
-- Run: `python scripts/setup/generate_mocks.py`
-- Creates realistic weather API responses
-- Uses configurable seed for reproducible results
-- Generates location-specific patterns
-- Temperature, humidity, wind data
-- Multiple weather conditions
+**Sync Assets** - Copies shared assets (icons, styles, mock data) to all frameworks while preserving framework-specific customizations.
 
-### Scripts
-**Script:** `scripts/setup/generate_scripts.py`  
-- Run: `python scripts/setup/generate_scripts.py`
-- Auto-generates npm scripts in each framework's package.json
-- Creates consistent dev/build/test/lint commands
-- Handles framework-specific variations
-- Updates package.json files automatically
+**Generate Mock Data** - Creates realistic weather API responses for development and testing. Uses a consistent seed for reproducible results.
 
-## Setup Tasks
+**Generate Scripts** - Auto-generates npm scripts in each framework's package.json file, ensuring consistent dev/build/test/lint commands across all applications.
 
-**Complete setup:** All tasks in sequence
-**Selective setup:** Skip tasks with flags:
+## Manual Setup Steps
+
+If you prefer to run setup steps individually:
+
 ```bash
-npm run setup -- --skip-deps --skip-mocks
+# Install dependencies for all frameworks
+python scripts/setup/install_deps.py
+
+# Copy shared assets to all frameworks  
+python scripts/setup/sync_assets.py
+
+# Generate mock weather data
+python scripts/setup/generate_mocks.py
+
+# Update package.json scripts
+python scripts/setup/generate_scripts.py
 ```
 
-**Fresh setup:** Clean install from scratch
-**Maintenance:** Re-run to sync changes
+## Prerequisites
 
-## Directory Structure
+Before running setup, ensure you have:
+- Node.js 18+ and npm
+- Python 3.8+ and pip
+- Git for cloning the repository
 
-After setup:
-- `apps/{framework}/node_modules/` - Dependencies
-- `apps/{framework}/public/` - Shared assets  
-- `apps/{framework}/src/mocks/` - Mock data
-- Updated package.json scripts in each framework
+## Common Issues
+
+**Permission errors** - Use sudo if needed for global npm packages
+**Network timeouts** - Retry setup if npm installs fail
+**Python errors** - Install Python dependencies with `pip install -r scripts/requirements.txt`
+**Disk space** - Each framework needs ~200MB for node_modules
+
+After setup, each framework directory will have its dependencies installed and be ready for development.

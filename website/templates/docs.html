@@ -1,0 +1,167 @@
+{% extends "base.html" %}
+
+{% block title %}Documentation - {{ config.website.title }}{% endblock %}
+{% block description %}Complete documentation for the Framework Benchmarks project{% endblock %}
+
+{% block extra_css %}
+<style>
+.docs-container { max-width: 1200px; margin: 0 auto; }
+.intro { text-align: center; margin-bottom: 1.5rem; }
+.intro h1, .intro p { margin: 0.5rem 0; }
+.docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem; }
+.docs-section { background: var(--card-bg, #fff); border-radius: 12px; padding: 2rem; border: 1px solid var(--border-color, #e5e5e5); margin-bottom: 1rem;  }
+.docs-section p { margin: 0.5rem 0 0 0; }
+.docs-section h2 { margin: 0 0 0.5rem 0; color: var(--primary-color, #6762ff); }
+.docs-links { list-style: conic-gradient; padding-left: 1rem; }
+.docs-links a { text-decoration: none; color: var(--text-color, #333); padding: 0.2rem 0; display: block; border-bottom: 1px solid transparent; transition: all 0.2s; }
+.docs-links a:hover { color: var(--primary-color, #6762ff); border-bottom-color: var(--primary-color, #6762ff); }
+.commands { margin: 1rem 0; }
+.commands pre, pre { margin: 0; white-space: pre-wrap; background: var(--code-bg, #f8f9fa); border-radius: 8px; padding: 0.75rem 1rem; }
+.workflows { background: var(--code-bg, #f8f9fa); border-radius: 8px; padding: 0.5rem 0.75rem; margin-top: 0.5rem; }
+.workflows ul { margin: 0; padding-left: 1rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="docs-container">
+    <div class="intro">
+        <h1>📚 Documentation</h1>
+        <p>Usage instructions for running, editing and building the project and it's apps</p>
+    </div>
+
+    <div class="docs-grid">
+        <div class="docs-section">
+            <h2>Getting Started (From Source)</h2>
+<pre><code>git clone git@github.com:lissy93/framework-benchmarks.git
+cd framework-benchmarks
+npm install
+pip install -r scripts/requirements.txt
+npm run setup
+npm start</code></pre>
+            <p><strong>Requirements:</strong> Node.js 18+, Python 3.8+</p>
+        </div>
+
+        <div class="docs-section">
+            <h2>Getting Started (Docker)</h2>
+            <pre><code>docker run -p 3000:3000 ghcr.io/lissy93/framework-benchmarks:latest</code></pre>
+            <p><strong>Requirements:</strong> Docker</p>
+        </div>
+    </div>
+
+    <div class="docs-grid">
+        <div class="docs-section">
+            <h2>Running Benchmarks (Source)</h2>
+            <pre><code># Run all benchmarks
+npm run benchmark
+
+# Specific types and frameworks
+python scripts/benchmark/main.py all \
+  --type lighthouse,bundle-size \
+  --frameworks react,vue,svelte \
+  --executions 3</code></pre>
+        </div>
+
+        <div class="docs-section">
+            <h2>Running Benchmarks (Docker)</h2>
+            <pre><code># Get container ID
+docker ps
+
+# Run benchmarks
+docker exec -it &lt;container-id&gt; bash -c "
+  cd /app && \
+  CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
+  npm run benchmark"</code></pre>
+        </div>
+    </div>
+
+    <div class="docs-section">
+        <h2>Individual Apps</h2>
+        <p>
+            You can view a list of the apps in the <a href="https://github.com/Lissy93/framework-benchmarks/tree/main/apps">apps/</a> directory.<br>
+            Each app follows the same structure and has the same commands available, but check each app's readme for full usage instructions.<br>
+        </p>
+        <div class="commands">
+            <pre><code>cd apps/[framework] # Navigate to specific app
+npm i               # Install dependencies
+npm run dev         # Start dev server
+npm test            # Run tests
+npm run lint        # Run lint checks
+npm build           # Build for production
+npm start           # Serve built prod app</code></pre>
+
+                <p>
+                    <strong>Note:</strong> Don't forget to run the project setup commands first.<br>
+                    Once built, you can deploy the app to any CDN, static host or web server
+                    by uploading it's source directory.
+                    Or, just use <code>npm start</code> to run it directly</p>
+        </div>
+    </div>
+
+    <div class="docs-section">
+        <h2>Project Commands</h2>
+        <div class="commands">
+            <pre><code>npm run setup         # Install dependencies and setup project
+npm run build         # Build all framework applications  
+npm run dev           # Start development servers
+npm start             # Start production server
+npm test              # Run all tests
+npm run lint          # Run linting
+npm run benchmark     # Run performance benchmarks
+npm run clean         # Clean build artifacts</code></pre>
+        </div>
+    </div>
+
+    <div class="docs-section">
+        <h2>GitHub Actions Workflows</h2>
+        <p>
+            Alteratively, you can use the built-in GitHub Actions workflows to run the app, checks, tests and benchmarks.<br>
+            Just fork the repo, and then head over the the Actions tab, to trigger the workflows.
+        </p>
+        <div class="workflows">
+            <ul>
+                <li>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/build.yml" target="_blank"><strong>build</strong></a>
+                    - Build all framework applications
+                </li>
+                <li>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/test.yml" target="_blank"><strong>test</strong></a>
+                    - Run all unit and integration tests
+                </li>
+                <li>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/lint.yml" target="_blank"><strong>lint</strong></a>
+                    - Run linting checks
+                </li>
+                <li>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/benchmark.yml" target="_blank"><strong>benchmark</strong></a>
+                    - Executes the performance benchmarks
+                </li>
+                <li>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/transform-results.yml" target="_blank"><strong>transform-results</strong></a>
+                    - Process benchmark data and generate charts
+                </li>
+                <li>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/docker.yml" target="_blank"><strong>docker</strong></a>
+                    - Builds and publishes the Docker images
+                </li>
+                <li>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/update-docs.yml" target="_blank"><strong>update-docs</strong></a>
+                    - Update documentation automatically
+                </li>
+                <li>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/mirror.yml" target="_blank"><strong>mirror</strong></a>
+                    - Mirror repository to other platforms
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="docs-section">
+        <h2>Detailed Guides</h2>
+        <ul class="docs-links">
+            {% for page in docs_pages %}
+            <li><a href="/docs/{{ page.name }}/">{{ page.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

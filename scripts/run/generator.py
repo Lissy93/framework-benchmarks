@@ -248,6 +248,51 @@ class WebsiteGenerator:
             page_type='framework'
         )
     
+    def render_docs_index(self) -> str:
+        """Render the docs index page."""
+        docs_pages = self._get_docs_pages()
+        template = self.env.get_template('docs.html')
+        return template.render(
+            config=self.config,
+            docs_pages=docs_pages,
+            page_type='docs'
+        )
+    
+    def render_docs_page(self, page_name: str) -> str:
+        """Render a specific docs page."""
+        docs_dir = self.root_dir / '.github' / 'docs'
+        doc_file = docs_dir / f'{page_name}.md'
+        
+        if not doc_file.exists():
+            return self.render_404()
+        
+        with open(doc_file, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        html_content = markdown.markdown(content, extensions=['tables', 'fenced_code'])
+        
+        template = self.env.get_template('docs-page.html')
+        return template.render(
+            config=self.config,
+            page_name=page_name,
+            page_title=page_name.replace('-', ' ').title(),
+            content=html_content,
+            page_type='docs'
+        )
+    
+    def _get_docs_pages(self) -> List[Dict[str, str]]:
+        """Get list of available docs pages."""
+        docs_dir = self.root_dir / '.github' / 'docs'
+        pages = []
+        
+        if docs_dir.exists():
+            for md_file in sorted(docs_dir.glob('*.md')):
+                name = md_file.stem
+                title = name.replace('-', ' ').title()
+                pages.append({'name': name, 'title': title})
+        
+        return pages
+    
     def render_404(self) -> str:
         """Render the 404 error page."""
         template = self.env.get_template('404.html')
@@ -285,6 +330,11 @@ class WebsiteGenerator:
             framework_id = framework.get('id')
             if framework_id:
                 pages[f'/{framework_id}/'] = self.render_framework_page(framework_id)
+        
+        # Docs pages
+        pages['/docs/'] = self.render_docs_index()
+        for page in self._get_docs_pages():
+            pages[f'/docs/{page["name"]}/'] = self.render_docs_page(page["name"])
         
         # 404 page
         pages['/404/'] = self.render_404()

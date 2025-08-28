@@ -1,103 +1,82 @@
 # Benchmarking
 
-Comprehensive performance analysis comparing frontend frameworks.
+This guide covers running performance benchmarks to compare the different framework implementations.
 
-## Scripts
-
-**Main:** `scripts/benchmark/main.py`
-- Run: `npm run benchmark` or `python scripts/benchmark/main.py`
-- CLI with progress tracking, multi-execution averaging
-- Rich terminal UI with real-time stats
-
-**Individual benchmarks:**
-- `lighthouse.py` - Performance, accessibility, SEO scores
-- `bundle_size.py` - File sizes, compression ratios  
-- `source_analysis.py` - Code complexity, maintainability
-- `build_time.py` - Compilation speed, output size
-- `dev_server.py` - Startup time, HMR speed
-- `resource_monitor.py` - CPU/memory usage
-
-## Usage
+## Quick Start
 
 ```bash
-# Start server first
+# Build all frameworks first
+npm run build
+
+# Start the server
 npm start
 
-# All benchmarks, all frameworks
-npm run benchmark all
+# Run all benchmarks
+npm run benchmark
+```
 
-# Individual benchmark types
-npm run benchmark lighthouse
-npm run benchmark bundle-size
-npm run benchmark source-analysis
-npm run benchmark build-time
-npm run benchmark dev-server
-npm run benchmark resource-usage
+The benchmark process will test all frameworks across multiple performance metrics and generate detailed results.
 
-# Specific frameworks
-npm run benchmark lighthouse -- -f react,vue,svelte
+## Available Benchmarks
 
-# Multiple executions for averaging
-npm run benchmark lighthouse -- --executions 5
+**Lighthouse** - Google's web performance auditing tool that measures performance, accessibility, SEO, and best practices on a 0-100 scale.
 
-# Detailed results with individual scores
-npm run benchmark lighthouse -- --detailed
+**Bundle Size** - Analyzes the file sizes of production builds, including total size, gzipped size, and compression ratios.
 
-# Selective benchmark types (exclude resource-usage for lightweight apps)
-npm run benchmark all -- --type lighthouse,bundle-size,source-analysis
+**Source Analysis** - Examines code complexity, maintainability, and technical debt using metrics like cyclomatic complexity and lines of code.
 
-# Developer experience benchmarks
-npm run benchmark all -- --type dev-server,build-time
+**Build Time** - Measures how long it takes to compile each framework from source to production build.
 
-# Server status check
-npm run benchmark server-check
+**Dev Server** - Tests development experience by measuring dev server startup time and hot module replacement speed.
+
+**Resource Usage** - Monitors CPU and memory consumption during runtime (results may be minimal for simple applications).
+
+## Running Specific Benchmarks
+
+You can run individual benchmark types:
+
+```bash
+npm run benchmark:lighthouse    # Web performance scores
+npm run perf:bundle            # File size analysis
+npm run perf:lighthouse        # Alternative lighthouse command
+```
+
+For more control, use the Python script directly:
+
+```bash
+python scripts/benchmark/main.py all                    # All benchmarks
+python scripts/benchmark/main.py all --executions 3     # Run 3 times and average
+python scripts/benchmark/main.py all --frameworks react,vue,svelte
+python scripts/benchmark/main.py all --type lighthouse,bundle-size
 ```
 
 ## Prerequisites
 
-**Server required:** Lighthouse and resource monitoring need `npm start` running
-**Built frameworks:** Bundle size analysis requires built apps (`npm run build:all`)
-**Chrome/Chromium:** Auto-detected and launched for Lighthouse
-**Node dependencies:** Dev server and build time measurements need `npm install` per framework
+Before running benchmarks:
 
-## Results
+1. **Build frameworks**: Run `npm run build` to create production builds
+2. **Start server**: Run `npm start` to serve the applications  
+3. **Install Chrome**: Lighthouse requires Chrome or Chromium browser
+4. **Python dependencies**: Ensure `pip install -r scripts/requirements.txt` was run
 
-Raw data in `benchmark-results/` with timestamps
-- JSON format for analysis
-- Console output with pass/fail status
-- Multiple execution statistics (min/max/std dev)
-- Averaged results across runs
+## Understanding Results
 
-## Metrics Explained
+Results are saved in `benchmark-results/` with timestamps. The console output shows:
+- Individual scores for each framework
+- Pass/fail status against thresholds  
+- Statistical analysis when using multiple executions
+- Summary comparisons across frameworks
 
-**Lighthouse:** Google's web performance scoring (0-100)
-- Performance, Accessibility, Best Practices, SEO
+**Performance scores** range from 0-100, with higher being better.
+**Bundle sizes** are shown in KB for both raw and gzipped files.
+**Build times** are measured in seconds.
+**Complexity scores** use industry-standard metrics for code maintainability.
 
-**Bundle Size:** File sizes and compression
-- Total/gzipped KB, compression ratio
-- Framework overhead (excludes shared assets)
+## Common Issues
 
-**Source Analysis:** Code complexity metrics
-- Lines of code (physical/logical)
-- Cyclomatic complexity, Halstead metrics
-- Maintainability index (0-100 scale)
+**Server not running** - Ensure `npm start` is active before running Lighthouse benchmarks
+**Chrome not found** - Install Chrome or set Chrome path in environment variables
+**Frameworks not built** - Run `npm run build` before bundle size analysis
+**Inconsistent results** - Use `--executions 3` for more reliable averages
 
-**Build Time:** Compilation performance
-- Clean build duration, output size MB
-- Non-destructive (preserves existing builds)
-
-**Dev Server:** Development experience
-- Startup time, HMR response time
-- Automatic port detection and cleanup
-
-**Resource Usage:** System monitoring ⚠️
-- Memory/CPU usage, efficiency scores (0-100)
-- Browser heap analysis, interaction scenarios
-- **Note:** Minimal differences on lightweight apps like these weather demos
-
-## Configuration
-
-Settings in `config.json`:
-- Server host/port
-- Lighthouse categories and thresholds
-- Framework definitions in `frameworks.json`
+The benchmark system is designed to provide objective, reproducible measurements for comparing framework performance and developer experience.

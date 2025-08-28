@@ -144,6 +144,14 @@ class FrameworkServer:
         def homepage():
             return self.website_generator.render_homepage()
         
+        @self.app.route('/docs/')
+        def docs_index():
+            return self.website_generator.render_docs_index()
+        
+        @self.app.route('/docs/<page_name>/')
+        def docs_page(page_name: str):
+            return self.website_generator.render_docs_page(page_name)
+        
         @self.app.route('/<framework_id>/')
         def framework_page(framework_id: str):
             if framework_id in self.frameworks:
