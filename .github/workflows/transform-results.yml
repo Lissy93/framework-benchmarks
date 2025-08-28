@@ -66,21 +66,34 @@ jobs:
           artifact_dir=$(find ./downloaded-artifacts -name "benchmark-results-*" -type d | head -1)
           if [ -n "$artifact_dir" ]; then
             echo "📂 Copying results from: $artifact_dir"
-            cp -r "$artifact_dir"/* benchmark-results/ 2>/dev/null || {
-              # Try alternative structure
+            # Check if there's a nested benchmark-results directory
+            if [ -d "$artifact_dir/benchmark-results" ]; then
+              cp -r "$artifact_dir/benchmark-results"/* benchmark-results/ 2>/dev/null || true
+            else
+              cp -r "$artifact_dir"/* benchmark-results/ 2>/dev/null || true
+            fi
+            # Try alternative structure if nothing was copied
+            if [ -z "$(find benchmark-results -name "*.json" -type f 2>/dev/null)" ]; then
               find "$artifact_dir" -name "*.json" -exec cp {} benchmark-results/ \; 2>/dev/null || true
-            }
+            fi
           else
             echo "❌ Could not find benchmark results in artifacts"
             exit 1
           fi
           
-          # Read workflow context to determine if we should skip main branch commit
+          # Read workflow context to determine if we should skip main branch commit  
+          context_file=""
           if [ -f "benchmark-results/workflow-context.json" ]; then
-            SKIP_COMMIT=$(python3 -c "import json; print(json.load(open('benchmark-results/workflow-context.json')).get('skip_commit', 'false'))" 2>/dev/null || echo "false")
+            context_file="benchmark-results/workflow-context.json"
+          elif [ -f "$artifact_dir/workflow-context.json" ]; then
+            context_file="$artifact_dir/workflow-context.json"
+          fi
+          
+          if [ -n "$context_file" ]; then
+            SKIP_COMMIT=$(python3 -c "import json; print(json.load(open('$context_file')).get('skip_commit', 'false'))" 2>/dev/null || echo "false")
             echo "SKIP_MAIN_COMMIT=$SKIP_COMMIT" >> $GITHUB_ENV
             echo "📋 Workflow context: skip_commit=$SKIP_COMMIT"
-            rm benchmark-results/workflow-context.json  # Clean up
+            rm "$context_file" 2>/dev/null || true  # Clean up
           else
             echo "SKIP_MAIN_COMMIT=false" >> $GITHUB_ENV
             echo "📋 No workflow context found, defaulting to commit to main branch"
