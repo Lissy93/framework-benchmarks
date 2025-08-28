@@ -161,7 +161,7 @@ class FrameworkServer:
         def framework_source(framework_id: str):
             if framework_id not in self.frameworks:
                 return self.website_generator.render_404(), 404
-            github_url = f"https://github.com/anthropics/framework-benchmarks/tree/main/apps/{framework_id}"
+            github_url = f"https://github.com/lissy93/framework-benchmarks/tree/main/apps/{framework_id}"
             return redirect(github_url)
     
     def _setup_asset_routes(self) -> None:

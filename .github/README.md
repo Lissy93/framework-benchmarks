@@ -202,7 +202,7 @@ To compare the frameworks, we need to measure:
 The interface is simple, but must be identical arcorss all apps. As validated by the snapshots in the tests.<br>
 The screenshots will all look like this:
 
-<img src="https://i.ibb.co/ymGkLnMY/framework-benchmarks.png" width="400" />
+<img src="https://raw.githubusercontent.com/Lissy93/framework-benchmarks/refs/heads/main/assets/screenshot.png" width="400" />
 
 ---
 

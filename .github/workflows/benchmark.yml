@@ -23,8 +23,8 @@ on:
         required: false
         default: '60'
         type: string
-      skip_commit:
-        description: 'Skip committing results to main branch (results branch will still be updated)'
+      commit_to_main:
+        description: 'Commit results to main branch (results branch will always be updated)'
         required: false
         default: false
         type: boolean
@@ -165,29 +165,46 @@ jobs:
         run: |
           echo "PYTHONPATH=$PWD:$PWD/scripts" >> $GITHUB_ENV
           
-          # Set skip_commit based on event type or manual input
+          # Set commit behavior based on event type or manual input
           if [ "${{ github.event_name }}" = "schedule" ]; then
-            echo "SKIP_COMMIT=true" >> $GITHUB_ENV
+            echo "COMMIT_TO_MAIN=false" >> $GITHUB_ENV
             echo "⏰ Scheduled run - will skip main branch commit"
+            echo "SCHEDULED_RUN=true" >> $GITHUB_ENV
           else
-            echo "SKIP_COMMIT=${{ github.event.inputs.skip_commit || 'false' }}" >> $GITHUB_ENV
-            echo "👤 Manual run - skip commit: ${{ github.event.inputs.skip_commit || 'false' }}"
+            echo "COMMIT_TO_MAIN=${{ github.event.inputs.commit_to_main || 'false' }}" >> $GITHUB_ENV
+            echo "👤 Manual run - commit to main: ${{ github.event.inputs.commit_to_main || 'false' }}"
+            echo "SCHEDULED_RUN=false" >> $GITHUB_ENV
           fi
           
           echo "📊 Benchmark Configuration:"
-          echo "  Types: ${{ github.event.inputs.benchmark_types || 'all' }}"
-          echo "  Frameworks: ${{ github.event.inputs.frameworks || 'all' }}"
-          echo "  Executions: ${{ github.event.inputs.executions || '1' }}"
+          if [ "${{ env.SCHEDULED_RUN }}" = "true" ]; then
+            echo "  Types: lighthouse,bundle-size,source-analysis,build-time,dev-server,resource-usage (scheduled)"
+            echo "  Frameworks: all (scheduled)"
+            echo "  Executions: 5 (scheduled)"
+          else
+            echo "  Types: ${{ github.event.inputs.benchmark_types || 'all' }}"
+            echo "  Frameworks: ${{ github.event.inputs.frameworks || 'all' }}"
+            echo "  Executions: ${{ github.event.inputs.executions || '1' }}"
+          fi
+          echo "  Commit to Main: ${{ env.COMMIT_TO_MAIN }}"
 
       - name: 🧪 Run Benchmarks
         run: |
           set -e  # Exit on error
           
-          # Parse inputs with defaults
-          benchmark_types="${{ github.event.inputs.benchmark_types }}"
-          frameworks="${{ github.event.inputs.frameworks }}"
-          executions="${{ github.event.inputs.executions }}"
-          detailed="${{ github.event.inputs.detailed_output }}"
+          # Configure parameters based on trigger type
+          if [ "${{ env.SCHEDULED_RUN }}" = "true" ]; then
+            # Scheduled run: comprehensive benchmarks
+            benchmark_types="lighthouse,bundle-size,source-analysis,build-time,dev-server,resource-usage"
+            frameworks=""  # All frameworks
+            executions="5"
+            echo "⏰ Scheduled run configuration: all benchmarks, all frameworks, 5 executions"
+          else
+            # Manual run: use provided inputs
+            benchmark_types="${{ github.event.inputs.benchmark_types }}"
+            frameworks="${{ github.event.inputs.frameworks }}"
+            executions="${{ github.event.inputs.executions }}"
+          fi
           
           # Build command arguments for the benchmark script
           cmd_args=()
@@ -268,7 +285,7 @@ jobs:
 
       - name: 📋 Save Workflow Context
         run: |
-          echo '{"skip_commit": "${{ env.SKIP_COMMIT }}"}' > workflow-context.json
+          echo '{"commit_to_main": "${{ env.COMMIT_TO_MAIN }}"}' > workflow-context.json
           cat workflow-context.json
 
       - name: 📤 Upload Benchmark Results

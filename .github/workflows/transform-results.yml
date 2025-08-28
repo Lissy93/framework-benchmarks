@@ -90,13 +90,13 @@ jobs:
           fi
           
           if [ -n "$context_file" ]; then
-            SKIP_COMMIT=$(python3 -c "import json; print(json.load(open('$context_file')).get('skip_commit', 'false'))" 2>/dev/null || echo "false")
-            echo "SKIP_MAIN_COMMIT=$SKIP_COMMIT" >> $GITHUB_ENV
-            echo "📋 Workflow context: skip_commit=$SKIP_COMMIT"
+            COMMIT_TO_MAIN=$(python3 -c "import json; print(json.load(open('$context_file')).get('commit_to_main', 'false'))" 2>/dev/null || echo "false")
+            echo "COMMIT_TO_MAIN=$COMMIT_TO_MAIN" >> $GITHUB_ENV
+            echo "📋 Workflow context: commit_to_main=$COMMIT_TO_MAIN"
             rm "$context_file" 2>/dev/null || true  # Clean up
           else
-            echo "SKIP_MAIN_COMMIT=false" >> $GITHUB_ENV
-            echo "📋 No workflow context found, defaulting to commit to main branch"
+            echo "COMMIT_TO_MAIN=false" >> $GITHUB_ENV
+            echo "📋 No workflow context found, defaulting to skip main branch commit"
           fi
           
           echo "📊 Final benchmark-results structure:"
@@ -132,6 +132,8 @@ jobs:
         run: |
           echo "📊 Generating framework stats..."
           python scripts/transform/fetch_framework_stats.py || echo "⚠️ Framework stats generation failed"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: 📊 Generate Results Summary
         run: |
@@ -140,7 +142,7 @@ jobs:
           echo "- **Status**: ✅ Success" >> $GITHUB_STEP_SUMMARY
           echo "- **Timestamp**: $(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
           echo "- **Source**: Workflow run #${{ github.event.workflow_run.run_number }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Main Branch Commit**: $([ "$SKIP_MAIN_COMMIT" = "true" ] && echo "⏭️ Skipped" || echo "✅ Updated")" >> $GITHUB_STEP_SUMMARY
+          echo "- **Main Branch Commit**: $([ "$COMMIT_TO_MAIN" = "true" ] && echo "✅ Enabled" || echo "⏭️ Skipped")" >> $GITHUB_STEP_SUMMARY
 
       - name: 📝 Commit to Results Branch
         run: |
@@ -188,9 +190,7 @@ jobs:
           
           # Return to main workspace and conditionally update main branch
           cd "$CURRENT_DIR"
-          if [ "$SKIP_MAIN_COMMIT" = "true" ]; then
-            echo "⏭️ Skipping main branch commit (skip_commit=true)"
-          else
+          if [ "$COMMIT_TO_MAIN" = "true" ]; then
             git add results/ website/static/chart*.json website/static/charts/ .github/README.md || true
             if ! git diff --cached --quiet; then
               git commit -m "chore(results): update benchmark summaries from run #${{ github.event.workflow_run.run_number }}"
@@ -199,6 +199,8 @@ jobs:
             else
               echo "ℹ️ No changes to commit to main branch"
             fi
+          else
+            echo "⏭️ Skipping main branch commit (commit_to_main=false)"
           fi
 
       - name: 🧹 Cleanup
