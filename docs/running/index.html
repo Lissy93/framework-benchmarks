@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Running - Docs - Framework Benchmarks</title>
+    <meta name="description" content="Running documentation for the Framework Benchmarks project">
+    <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/main.css">
+<style>
+.docs-page { max-width: 900px; margin: 0 auto; }
+.docs-nav { margin: 0rem; text-align: left; }
+.docs-nav a { text-decoration: none; color: var(--primary-color, #6762ff); }
+.docs-content { background: var(--card-bg, #fff); border-radius: 12px; padding: 2rem; border: 1px solid var(--border-color, #e5e5e5); line-height: 1.6; }
+.docs-content h1 { color: var(--primary-color, #6762ff); }
+.docs-content h2 { color: var(--primary-color, #6762ff); margin-top: 2rem; }
+.docs-content pre { background: var(--code-bg, #f8f9fa); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+.docs-content code { background: var(--code-bg, #f8f9fa); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+.docs-content pre code { background: none; padding: 0; }
+.docs-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.docs-content th, .docs-content td { border: 1px solid var(--border-color, #e5e5e5); padding: 0.75rem; text-align: left; }
+.docs-content th { background: var(--code-bg, #f8f9fa); font-weight: 600; }
+</style>
+    
+     <!-- Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Framework Benchmarks">
+    <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
+    
+    <!-- Favicons & App Icons -->
+    <link rel="icon" type="image/x-icon" href="static/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="mask-icon" href="/logo.png" color="#6762ff">
+    <meta name="image" content="https://framework-benchmarks.as93.net/banner.png">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#6762ff">
+    <link rel="security.txt" href="/security.txt">
+</head>
+<body>
+    <header>
+        <nav class="navigation">
+            <a href="/" class="nav-logo">
+                <div class="site-name">
+                    <h1>Framework Benchmarks</h1>
+                    <p>Comparing every frontend framework</p>
+                </div>
+            </a>
+            <div class="nav-center">
+
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/docs/" class="nav-link active">Docs</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+<div class="docs-page">
+    <div class="docs-nav">
+        <a href="/docs/">&larr; Back to Documentation</a>
+    </div>
+    
+    <div class="docs-content">
+        <h1>Running Applications</h1>
+<p>This guide covers building framework applications and running them locally or in production.</p>
+<h2>Building Applications</h2>
+<p>To build all framework applications for production:</p>
+<pre><code class="language-bash">npm run build
+</code></pre>
+<p>This compiles each framework into optimized production builds. The process runs in parallel and takes a few minutes to complete all frameworks.</p>
+<p>You can also build individual frameworks:</p>
+<pre><code class="language-bash">npm run build:react
+npm run build:vue
+npm run build:angular
+npm run build:svelte
+# ... and so on for all frameworks
+</code></pre>
+<p>Build outputs are saved to each framework's build directory (usually <code>dist/</code> or <code>build/</code>).</p>
+<h2>Running the Server</h2>
+<p>After building, start the production server:</p>
+<pre><code class="language-bash">npm start
+</code></pre>
+<p>This starts a Flask server on port 3000 that serves all framework applications and the comparison website. Visit <code>http://localhost:3000</code> to see the homepage, or <code>http://localhost:3000/react</code> to view a specific framework.</p>
+<p>The server includes:
+- Framework routing (serves each app at <code>/{framework}/</code>)
+- Static asset handling
+- Health check endpoint at <code>/health</code>
+- 404 error pages for missing frameworks</p>
+<h2>Development Mode</h2>
+<p>For development with hot reloading, you can run individual framework dev servers:</p>
+<pre><code class="language-bash">npm run dev:react     # React development server
+npm run dev:vue       # Vue development server  
+npm run dev:angular   # Angular development server
+# ... etc for all frameworks
+</code></pre>
+<p>These run on port 3000 and provide framework-specific development features like hot module replacement.</p>
+<p>To run all dev servers simultaneously:</p>
+<pre><code class="language-bash">npm run dev:all
+</code></pre>
+<h2>Static Website Generation</h2>
+<p>The comparison website can be built as a static site for deployment:</p>
+<pre><code class="language-bash">python scripts/run/build_website.py
+</code></pre>
+<p>This generates a complete static website in <code>dist-website/</code> with:
+- Pre-rendered HTML pages for all frameworks
+- Interactive charts and visualizations<br />
+- All static assets and styles
+- Optimized for CDN deployment</p>
+<h2>Common Patterns</h2>
+<p><strong>Local development</strong>: Use individual dev servers (<code>npm run dev:react</code>) for working on specific frameworks.</p>
+<p><strong>Testing builds</strong>: Use <code>npm run build</code> followed by <code>npm start</code> to test production builds locally.</p>
+<p><strong>CI/CD deployment</strong>: Use <code>npm run build</code> then static website generation for hosting platforms.</p>
+<h2>Build Directories</h2>
+<p>Each framework saves builds to its standard location:
+- React, Vue, Solid, etc: <code>apps/{framework}/dist/</code>
+- Angular: <code>apps/{framework}/dist/weather-app-angular/</code>
+- Svelte: <code>apps/{framework}/build/</code>
+- Vanilla, Alpine: No build step (served directly)</p>
+<p>The main server automatically detects and serves from the correct build directory for each framework.</p>
+    </div>
+</div>
+    </main>
+    
+    <footer>
+        <i>Free and open source, forever</i>
+        <p>
+            <a href="https://github.com/lissy93/framework-benchmarks">lissy93/framework-benchmarks</a>
+            is licensed under
+            <a href="https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE">MIT</a>
+             • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
+        </p>
+    </footer>
+    
+    <!-- JavaScript -->
+</body>
+</html>

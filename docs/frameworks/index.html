@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frameworks - Docs - Framework Benchmarks</title>
+    <meta name="description" content="Frameworks documentation for the Framework Benchmarks project">
+    <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/main.css">
+<style>
+.docs-page { max-width: 900px; margin: 0 auto; }
+.docs-nav { margin: 0rem; text-align: left; }
+.docs-nav a { text-decoration: none; color: var(--primary-color, #6762ff); }
+.docs-content { background: var(--card-bg, #fff); border-radius: 12px; padding: 2rem; border: 1px solid var(--border-color, #e5e5e5); line-height: 1.6; }
+.docs-content h1 { color: var(--primary-color, #6762ff); }
+.docs-content h2 { color: var(--primary-color, #6762ff); margin-top: 2rem; }
+.docs-content pre { background: var(--code-bg, #f8f9fa); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+.docs-content code { background: var(--code-bg, #f8f9fa); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+.docs-content pre code { background: none; padding: 0; }
+.docs-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.docs-content th, .docs-content td { border: 1px solid var(--border-color, #e5e5e5); padding: 0.75rem; text-align: left; }
+.docs-content th { background: var(--code-bg, #f8f9fa); font-weight: 600; }
+</style>
+    
+     <!-- Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Framework Benchmarks">
+    <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
+    
+    <!-- Favicons & App Icons -->
+    <link rel="icon" type="image/x-icon" href="static/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="mask-icon" href="/logo.png" color="#6762ff">
+    <meta name="image" content="https://framework-benchmarks.as93.net/banner.png">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#6762ff">
+    <link rel="security.txt" href="/security.txt">
+</head>
+<body>
+    <header>
+        <nav class="navigation">
+            <a href="/" class="nav-logo">
+                <div class="site-name">
+                    <h1>Framework Benchmarks</h1>
+                    <p>Comparing every frontend framework</p>
+                </div>
+            </a>
+            <div class="nav-center">
+
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/docs/" class="nav-link active">Docs</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+<div class="docs-page">
+    <div class="docs-nav">
+        <a href="/docs/">&larr; Back to Documentation</a>
+    </div>
+    
+    <div class="docs-content">
+        <h1>🏗️ Framework Management</h1>
+<p>This project uses a centralized configuration system to manage all framework definitions, eliminating hardcoded framework lists throughout the codebase.</p>
+<h2>📋 Central Configuration</h2>
+<p>All framework definitions are stored in <a href="./frameworks.json"><code>frameworks.json</code></a>:</p>
+<pre><code class="language-json">{
+  &quot;frameworks&quot;: [
+    {
+      &quot;id&quot;: &quot;vanilla&quot;,
+      &quot;name&quot;: &quot;Vanilla JS&quot;,
+      &quot;displayName&quot;: &quot;Vanilla JavaScript&quot;, 
+      &quot;icon&quot;: &quot;🧪&quot;,
+      &quot;dir&quot;: &quot;vanilla&quot;,
+      &quot;hasNodeModules&quot;: false,
+      &quot;buildCommand&quot;: &quot;echo 'No build step required'&quot;,
+      &quot;devCommand&quot;: &quot;python3 -m http.server 3000 || python -m http.server 3000&quot;,
+      &quot;testCommand&quot;: &quot;playwright test --config=tests/config/playwright-vanilla.config.js&quot;
+    }
+    // ... more frameworks
+  ]
+}
+</code></pre>
+<h2>🔧 Framework Properties</h2>
+<ul>
+<li><strong><code>id</code></strong>: Unique identifier used in scripts and file names</li>
+<li><strong><code>name</code></strong>: Display name for logs and UI</li>
+<li><strong><code>displayName</code></strong>: Full formal name</li>
+<li><strong><code>icon</code></strong>: Emoji for visual identification</li>
+<li><strong><code>dir</code></strong>: Directory name in <code>apps/</code></li>
+<li><strong><code>hasNodeModules</code></strong>: Whether the framework needs <code>npm install</code></li>
+<li><strong><code>buildCommand</code></strong>: Production build command</li>
+<li><strong><code>devCommand</code></strong>: Development server command  </li>
+<li><strong><code>testCommand</code></strong>: Test command with config path</li>
+</ul>
+<h2>🚀 Usage</h2>
+<h3>Generate Scripts</h3>
+<p>After modifying <code>frameworks.json</code>, regenerate all dependent files:</p>
+<pre><code class="language-bash"># Update package.json scripts
+npm run generate-scripts
+
+# Or run directly
+node scripts/generate-scripts.js
+</code></pre>
+<h3>Available Commands</h3>
+<pre><code class="language-bash"># List all frameworks with details
+node scripts/generate-scripts.js list
+
+# Get framework IDs only (comma-separated)
+node scripts/generate-scripts.js ids
+
+# Get framework list for GitHub Actions
+node scripts/generate-scripts.js github
+</code></pre>
+<h3>Adding a New Framework</h3>
+<ol>
+<li>
+<p><strong>Add to <code>frameworks.json</code></strong>:
+   <code>json
+   {
+     "id": "vue",
+     "name": "Vue.js",
+     "displayName": "Vue.js",
+     "icon": "💚",
+     "dir": "vue",
+     "hasNodeModules": true,
+     "buildCommand": "vite build",
+     "devCommand": "vite dev --port 3000",
+     "testCommand": "playwright test --config=tests/config/playwright-vue.config.js"
+   }</code></p>
+</li>
+<li>
+<p><strong>Regenerate scripts</strong>:
+   <code>bash
+   npm run generate-scripts</code></p>
+</li>
+<li>
+<p><strong>Create required files</strong>:</p>
+</li>
+<li><code>apps/vue/</code> - Framework app directory</li>
+<li>
+<p><code>tests/config/playwright-vue.config.js</code> - Test configuration</p>
+</li>
+<li>
+<p><strong>That's it!</strong> All scripts, GitHub Actions, and tooling will automatically include the new framework.</p>
+</li>
+</ol>
+<h2>📁 What Gets Generated</h2>
+<p>The centralized config automatically updates:</p>
+<h3><code>package.json</code></h3>
+<ul>
+<li><code>test:frameworkId</code> scripts</li>
+<li><code>dev:frameworkId</code> scripts  </li>
+<li>Main <code>test</code> script that runs all frameworks</li>
+</ul>
+<h3>GitHub Actions (<code>.github/workflows/test.yml</code>)</h3>
+<ul>
+<li>Framework list detection</li>
+<li>Dynamic workflow inputs</li>
+</ul>
+<h3>Scripts</h3>
+<ul>
+<li><code>scripts/run-all-tests.js</code> - Test runner</li>
+<li><code>scripts/sync-assets.js</code> - Asset synchronization (already dynamic)</li>
+</ul>
+<h2>🎯 Benefits</h2>
+<p>✅ <strong>Single source of truth</strong> - One place to manage all frameworks<br />
+✅ <strong>No more hardcoded lists</strong> - Automatic synchronization<br />
+✅ <strong>Easy to add frameworks</strong> - Just update config + regenerate<br />
+✅ <strong>Consistent naming</strong> - All scripts follow same patterns<br />
+✅ <strong>Less maintenance</strong> - No manual updates in multiple files<br />
+✅ <strong>Self-documenting</strong> - Config includes all metadata  </p>
+<h2>⚡ Quick Commands</h2>
+<pre><code class="language-bash"># See all frameworks
+npm run generate-scripts -- list
+
+# Add new framework and regenerate everything
+# 1. Edit frameworks.json
+# 2. Run:
+npm run generate-scripts
+
+# Run tests for all frameworks  
+npm test
+
+# Run specific framework tests
+npm run test:vue    # (after adding vue)
+</code></pre>
+<h2>🔍 File Locations</h2>
+<ul>
+<li><strong>Config</strong>: <code>frameworks.json</code></li>
+<li><strong>Generator</strong>: <code>scripts/generate-scripts.js</code> </li>
+<li><strong>Package scripts</strong>: Auto-generated in <code>package.json</code></li>
+<li><strong>GitHub workflow</strong>: <code>.github/workflows/test.yml</code></li>
+<li><strong>Test runner</strong>: <code>scripts/run-all-tests.js</code></li>
+</ul>
+    </div>
+</div>
+    </main>
+    
+    <footer>
+        <i>Free and open source, forever</i>
+        <p>
+            <a href="https://github.com/lissy93/framework-benchmarks">lissy93/framework-benchmarks</a>
+            is licensed under
+            <a href="https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE">MIT</a>
+             • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
+        </p>
+    </footer>
+    
+    <!-- JavaScript -->
+</body>
+</html>

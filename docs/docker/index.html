@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docker - Docs - Framework Benchmarks</title>
+    <meta name="description" content="Docker documentation for the Framework Benchmarks project">
+    <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/main.css">
+<style>
+.docs-page { max-width: 900px; margin: 0 auto; }
+.docs-nav { margin: 0rem; text-align: left; }
+.docs-nav a { text-decoration: none; color: var(--primary-color, #6762ff); }
+.docs-content { background: var(--card-bg, #fff); border-radius: 12px; padding: 2rem; border: 1px solid var(--border-color, #e5e5e5); line-height: 1.6; }
+.docs-content h1 { color: var(--primary-color, #6762ff); }
+.docs-content h2 { color: var(--primary-color, #6762ff); margin-top: 2rem; }
+.docs-content pre { background: var(--code-bg, #f8f9fa); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+.docs-content code { background: var(--code-bg, #f8f9fa); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+.docs-content pre code { background: none; padding: 0; }
+.docs-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.docs-content th, .docs-content td { border: 1px solid var(--border-color, #e5e5e5); padding: 0.75rem; text-align: left; }
+.docs-content th { background: var(--code-bg, #f8f9fa); font-weight: 600; }
+</style>
+    
+     <!-- Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Framework Benchmarks">
+    <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
+    
+    <!-- Favicons & App Icons -->
+    <link rel="icon" type="image/x-icon" href="static/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="mask-icon" href="/logo.png" color="#6762ff">
+    <meta name="image" content="https://framework-benchmarks.as93.net/banner.png">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#6762ff">
+    <link rel="security.txt" href="/security.txt">
+</head>
+<body>
+    <header>
+        <nav class="navigation">
+            <a href="/" class="nav-logo">
+                <div class="site-name">
+                    <h1>Framework Benchmarks</h1>
+                    <p>Comparing every frontend framework</p>
+                </div>
+            </a>
+            <div class="nav-center">
+
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/docs/" class="nav-link active">Docs</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+<div class="docs-page">
+    <div class="docs-nav">
+        <a href="/docs/">&larr; Back to Documentation</a>
+    </div>
+    
+    <div class="docs-content">
+        <h1>🐳 Docker Guide for Framework Benchmarks</h1>
+<p>This guide explains how to run the Framework Benchmarks project using Docker.</p>
+<h2>🚀 Quick Start</h2>
+<h3>Using Published Image (Recommended)</h3>
+<pre><code class="language-bash"># Pull and run the latest image from GitHub Container Registry
+docker run -p 3000:3000 ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre>
+<p>Then visit http://localhost:3000 to explore the framework comparison website and individual apps.</p>
+<h3>Using Docker Compose</h3>
+<pre><code class="language-bash"># Clone the repository first
+git clone https://github.com/lissy93/framework-benchmarks.git
+cd framework-benchmarks
+
+# Run with Docker Compose
+docker-compose up
+</code></pre>
+<h2>🔧 Building Locally</h2>
+<pre><code class="language-bash"># Build the image
+docker build -t framework-benchmarks .
+
+# Run the container
+docker run -p 3000:3000 framework-benchmarks
+</code></pre>
+<h2>📊 Running Benchmarks</h2>
+<p>The Docker image includes Google Chrome and all tools needed to run performance benchmarks.</p>
+<h3>Basic Benchmark Execution</h3>
+<pre><code class="language-bash"># Get container ID
+docker ps
+
+# Run all benchmarks with default settings
+docker exec -it &lt;container-id&gt; bash -c &quot;
+    cd /app &amp;&amp; \
+    CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
+    python scripts/benchmark/main.py all
+&quot;
+</code></pre>
+<h3>Custom Benchmark Options</h3>
+<pre><code class="language-bash"># Run specific benchmark types
+docker exec -it &lt;container-id&gt; bash -c &quot;
+    cd /app &amp;&amp; \
+    CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
+    python scripts/benchmark/main.py all --type lighthouse,bundle-size --executions 3
+&quot;
+
+# Run benchmarks for specific frameworks only
+docker exec -it &lt;container-id&gt; bash -c &quot;
+    cd /app &amp;&amp; \
+    CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
+    python scripts/benchmark/main.py all --frameworks react,vue,svelte --executions 5
+&quot;
+
+# Run with multiple benchmark types and frameworks
+docker exec -it &lt;container-id&gt; bash -c &quot;
+    cd /app &amp;&amp; \
+    CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
+    python scripts/benchmark/main.py all \
+      --type lighthouse,bundle-size,source-analysis,build-time \
+      --frameworks react,vue,angular,svelte \
+      --executions 3
+&quot;
+</code></pre>
+<h3>Development Container Benchmarks</h3>
+<pre><code class="language-bash"># Run development version with full capabilities
+docker compose --profile dev up framework-benchmarks-dev
+
+# Then run benchmarks (development container has additional tools)
+docker exec -it framework-benchmarks-framework-benchmarks-dev-1 bash -c &quot;
+    cd /app &amp;&amp; \
+    CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
+    python scripts/benchmark/main.py all --type lighthouse,bundle-size --executions 3
+&quot;
+</code></pre>
+<h2>🎯 Available Endpoints</h2>
+<p>Once running, the container serves:</p>
+<ul>
+<li><code>http://localhost:3000</code> - Main comparison dashboard</li>
+<li><code>http://localhost:3000/react</code> - React weather app  </li>
+<li><code>http://localhost:3000/vue</code> - Vue weather app</li>
+<li><code>http://localhost:3000/svelte</code> - Svelte weather app</li>
+<li><code>http://localhost:3000/angular</code> - Angular weather app</li>
+<li><code>http://localhost:3000/&lt;framework&gt;</code> - Any of the 12 framework apps</li>
+<li><code>http://localhost:3000/health</code> - Health check endpoint</li>
+</ul>
+<h2>📁 Volume Mounts</h2>
+<h3>Persistent Benchmark Results</h3>
+<pre><code class="language-bash">docker run -p 3000:3000 -v $(pwd)/benchmark-results:/app/benchmark-results ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre>
+<h3>Development Setup</h3>
+<pre><code class="language-bash">docker run -p 3000:3000 \
+  -v $(pwd)/benchmark-results:/app/benchmark-results \
+  -v $(pwd)/results:/app/results \
+  ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre>
+<h2>🌍 Environment Variables</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>NODE_ENV</code></td>
+<td>Environment mode</td>
+<td><code>production</code></td>
+</tr>
+<tr>
+<td><code>CHROME_FLAGS</code></td>
+<td>Chrome launch flags</td>
+<td><code>--no-sandbox --disable-setuid-sandbox</code></td>
+</tr>
+<tr>
+<td><code>BENCHMARK_TYPES</code></td>
+<td>Comma-separated benchmark types</td>
+<td><code>lighthouse,bundle-size,source-analysis</code></td>
+</tr>
+<tr>
+<td><code>FRAMEWORKS</code></td>
+<td>Comma-separated framework list</td>
+<td><em>(all)</em></td>
+</tr>
+<tr>
+<td><code>EXECUTIONS</code></td>
+<td>Number of benchmark executions</td>
+<td><code>1</code></td>
+</tr>
+</tbody>
+</table>
+<p>Example with environment variables:</p>
+<pre><code class="language-bash">docker run -p 3000:3000 \
+  -e BENCHMARK_TYPES=&quot;lighthouse,bundle-size&quot; \
+  -e FRAMEWORKS=&quot;react,vue,svelte&quot; \
+  -e EXECUTIONS=3 \
+  ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre>
+<h2>🔍 Troubleshooting</h2>
+<h3>Chrome/Lighthouse Issues</h3>
+<p>If benchmarks fail with Chrome-related errors:</p>
+<pre><code class="language-bash"># Check Chrome installation
+docker exec -it &lt;container-id&gt; google-chrome --version
+
+# Test Chrome with proper flags
+docker exec -it &lt;container-id&gt; bash -c &quot;
+    google-chrome --no-sandbox --disable-dev-shm-usage --headless --dump-dom http://localhost:3000
+&quot;
+</code></pre>
+<h3>Memory Issues</h3>
+<p>For large-scale benchmarking, increase container memory:</p>
+<pre><code class="language-bash">docker run -p 3000:3000 --memory=4g --shm-size=2g ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre>
+<h3>Port Conflicts</h3>
+<p>If port 3000 is busy, use a different port:</p>
+<pre><code class="language-bash">docker run -p 8080:3000 ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre>
+<p>Then visit http://localhost:8080</p>
+<h2>🏗️ Multi-stage Build</h2>
+<p>The Dockerfile includes two targets:</p>
+<ul>
+<li><strong><code>production</code></strong> (default): Production-ready image with essential tools</li>
+<li><strong><code>development</code></strong>: Includes Playwright and full dev dependencies</li>
+</ul>
+<pre><code class="language-bash"># Build development image
+docker build --target development -t framework-benchmarks:dev .
+
+# Run development container
+docker run -p 3000:3000 framework-benchmarks:dev
+</code></pre>
+<h2>🏷️ Image Tags</h2>
+<p>Available tags on <code>ghcr.io/lissy93/framework-benchmarks</code>:</p>
+<ul>
+<li><code>latest</code> - Latest stable release from main branch</li>
+<li><code>v1.0.0</code> - Specific version tags</li>
+<li><code>main</code> - Latest commit from main branch</li>
+</ul>
+<h2>📈 Performance Tips</h2>
+<ol>
+<li><strong>Use volume mounts</strong> to persist benchmark results between runs</li>
+<li><strong>Increase memory</strong> for intensive benchmarking: <code>--memory=4g</code></li>
+<li><strong>Use SSD storage</strong> for better I/O performance during builds</li>
+<li><strong>Limit concurrent benchmarks</strong> to avoid resource contention</li>
+</ol>
+<hr />
+<h2>📝 Example Workflows</h2>
+<h3>Basic Exploration</h3>
+<pre><code class="language-bash">docker run -p 3000:3000 ghcr.io/lissy93/framework-benchmarks:latest
+# Visit http://localhost:3000 to explore the apps
+</code></pre>
+<h3>Run Benchmarks &amp; Save Results</h3>
+<pre><code class="language-bash">docker run -p 3000:3000 -v $(pwd)/results:/app/benchmark-results ghcr.io/lissy93/framework-benchmarks:latest
+
+# In another terminal - run benchmarks with results saved to host
+docker exec -it $(docker ps -q --filter ancestor=ghcr.io/lissy93/framework-benchmarks:latest) bash -c &quot;
+    cd /app &amp;&amp; \
+    CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
+    python scripts/benchmark/main.py all --type lighthouse,bundle-size --executions 3
+&quot;
+
+# Results will be saved to ./results/ on your host
+</code></pre>
+<h3>Performance Testing Specific Frameworks</h3>
+<pre><code class="language-bash">docker run -p 3000:3000 \
+  -e FRAMEWORKS=&quot;react,vue,svelte&quot; \
+  -e EXECUTIONS=5 \
+  -v $(pwd)/results:/app/benchmark-results \
+  ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre>
+    </div>
+</div>
+    </main>
+    
+    <footer>
+        <i>Free and open source, forever</i>
+        <p>
+            <a href="https://github.com/lissy93/framework-benchmarks">lissy93/framework-benchmarks</a>
+            is licensed under
+            <a href="https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE">MIT</a>
+             • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
+        </p>
+    </footer>
+    
+    <!-- JavaScript -->
+</body>
+</html>

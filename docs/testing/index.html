@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing - Docs - Framework Benchmarks</title>
+    <meta name="description" content="Testing documentation for the Framework Benchmarks project">
+    <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/main.css">
+<style>
+.docs-page { max-width: 900px; margin: 0 auto; }
+.docs-nav { margin: 0rem; text-align: left; }
+.docs-nav a { text-decoration: none; color: var(--primary-color, #6762ff); }
+.docs-content { background: var(--card-bg, #fff); border-radius: 12px; padding: 2rem; border: 1px solid var(--border-color, #e5e5e5); line-height: 1.6; }
+.docs-content h1 { color: var(--primary-color, #6762ff); }
+.docs-content h2 { color: var(--primary-color, #6762ff); margin-top: 2rem; }
+.docs-content pre { background: var(--code-bg, #f8f9fa); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+.docs-content code { background: var(--code-bg, #f8f9fa); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+.docs-content pre code { background: none; padding: 0; }
+.docs-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.docs-content th, .docs-content td { border: 1px solid var(--border-color, #e5e5e5); padding: 0.75rem; text-align: left; }
+.docs-content th { background: var(--code-bg, #f8f9fa); font-weight: 600; }
+</style>
+    
+     <!-- Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Framework Benchmarks">
+    <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
+    
+    <!-- Favicons & App Icons -->
+    <link rel="icon" type="image/x-icon" href="static/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="mask-icon" href="/logo.png" color="#6762ff">
+    <meta name="image" content="https://framework-benchmarks.as93.net/banner.png">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#6762ff">
+    <link rel="security.txt" href="/security.txt">
+</head>
+<body>
+    <header>
+        <nav class="navigation">
+            <a href="/" class="nav-logo">
+                <div class="site-name">
+                    <h1>Framework Benchmarks</h1>
+                    <p>Comparing every frontend framework</p>
+                </div>
+            </a>
+            <div class="nav-center">
+
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/docs/" class="nav-link active">Docs</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+<div class="docs-page">
+    <div class="docs-nav">
+        <a href="/docs/">&larr; Back to Documentation</a>
+    </div>
+    
+    <div class="docs-content">
+        <h1>Weather App Testing Guide</h1>
+<p>This document explains how to run and maintain the comprehensive test suite for the Weather Front project.</p>
+<h2>🧪 Test Structure</h2>
+<p>The project includes both <strong>unit tests</strong> and <strong>end-to-end (E2E) tests</strong>:</p>
+<pre><code>tests/
+├── unit/                          # Unit tests (Node.js)
+│   ├── weather-service.test.js    # API service tests
+│   ├── weather-app.test.js        # App logic tests
+│   └── run-unit-tests.js          # Unit test runner
+├── e2e/                          # Advanced E2E tests
+│   └── weather-app-advanced.test.js
+├── weather-app.test.js           # Core E2E tests
+├── playwright.config.js          # Playwright configuration
+├── test-helpers.js              # Shared test utilities
+└── .env.example                 # Test configuration template
+</code></pre>
+<h2>🚀 Getting Started</h2>
+<h3>1. Install Dependencies</h3>
+<pre><code class="language-bash"># Install Playwright and browsers
+npm install
+npm run install:playwright
+</code></pre>
+<h3>2. Start the Development Server</h3>
+<pre><code class="language-bash"># Start vanilla JS app on localhost:3000
+npm run dev:vanilla
+</code></pre>
+<h3>3. Run Tests</h3>
+<h4>Run All Tests</h4>
+<pre><code class="language-bash">npm run test:all          # Unit + E2E tests
+</code></pre>
+<h4>Run Unit Tests Only</h4>
+<pre><code class="language-bash">npm run test:unit         # Fast JavaScript unit tests
+</code></pre>
+<h4>Run E2E Tests Only</h4>
+<pre><code class="language-bash">npm run test             # All E2E tests (headless)
+npm run test:headed      # E2E tests with browser UI
+npm run test:ui          # Interactive test runner
+</code></pre>
+<h4>Debug Tests</h4>
+<pre><code class="language-bash">npm run test:debug       # Debug mode with DevTools
+</code></pre>
+<h4>View Test Reports</h4>
+<pre><code class="language-bash">npm run test:report      # Open HTML test report
+</code></pre>
+<h2>📋 Test Categories</h2>
+<h3>Unit Tests (Node.js)</h3>
+<ul>
+<li><strong>Fast execution</strong> (~5 seconds)</li>
+<li><strong>No browser required</strong></li>
+<li>Tests individual functions and modules</li>
+<li><strong>Weather Service</strong>: API calls, data transformation, error handling</li>
+<li><strong>Weather App Logic</strong>: DOM manipulation, state management</li>
+</ul>
+<h3>E2E Tests (Playwright)</h3>
+<ul>
+<li><strong>Real browser testing</strong> (Chrome, Firefox, Safari)</li>
+<li><strong>User interaction testing</strong></li>
+<li><strong>Cross-device testing</strong> (desktop, mobile, tablet)</li>
+<li><strong>Network condition testing</strong></li>
+<li><strong>Performance testing</strong></li>
+</ul>
+<h2>🎯 Test Coverage</h2>
+<h3>Core Functionality ✅</h3>
+<ul>
+<li>[x] Initial app loading</li>
+<li>[x] City search functionality</li>
+<li>[x] Weather data display</li>
+<li>[x] 7-day forecast</li>
+<li>[x] Error handling</li>
+<li>[x] Loading states</li>
+<li>[x] LocalStorage persistence</li>
+</ul>
+<h3>Advanced Features ✅</h3>
+<ul>
+<li>[x] Forecast item expansion/collapse</li>
+<li>[x] Responsive design</li>
+<li>[x] Keyboard navigation</li>
+<li>[x] Form validation</li>
+<li>[x] Network error handling</li>
+<li>[x] Rate limiting handling</li>
+<li>[x] Special characters in city names</li>
+</ul>
+<h3>Performance ✅</h3>
+<ul>
+<li>[x] Load time &lt; 2 seconds</li>
+<li>[x] Large data handling</li>
+<li>[x] Rapid interaction handling</li>
+<li>[x] Memory usage optimization</li>
+</ul>
+<h3>Accessibility ✅</h3>
+<ul>
+<li>[x] Proper heading structure</li>
+<li>[x] Form labels and ARIA attributes</li>
+<li>[x] Keyboard navigation</li>
+<li>[x] Focus management</li>
+</ul>
+<h2>🛠 Writing New Tests</h2>
+<h3>Unit Test Example</h3>
+<pre><code class="language-javascript">runner.test('should validate input correctly', async () =&gt; {
+  const service = createWeatherService();
+
+  try {
+    await service.getWeatherByCity('');
+    throw new Error('Should have thrown an error');
+  } catch (error) {
+    if (!error.message.includes('required')) {
+      throw new Error(`Unexpected error: ${error.message}`);
+    }
+  }
+});
+</code></pre>
+<h3>E2E Test Example</h3>
+<pre><code class="language-javascript">test('should search for weather data', async ({ page }) =&gt; {
+  const helpers = new WeatherAppHelpers(page);
+
+  await helpers.navigateToApp();
+  await helpers.searchForCity('London');
+  await helpers.waitForWeatherData();
+  await helpers.assertLocationDisplayed('London');
+});
+</code></pre>
+<h2>🔧 Test Configuration</h2>
+<h3>Browser Testing</h3>
+<p>Tests run on multiple browsers and devices:
+- <strong>Desktop</strong>: Chrome, Firefox, Safari
+- <strong>Mobile</strong>: Pixel 5, iPhone 12</p>
+<h3>API Mocking</h3>
+<p>All tests use mocked APIs to ensure:
+- <strong>Consistent test data</strong>
+- <strong>Fast execution</strong>
+- <strong>No external dependencies</strong>
+- <strong>Predictable error scenarios</strong></p>
+<h3>Environment Variables</h3>
+<p>Copy <code>tests/.env.example</code> to <code>tests/.env</code> to customize:
+- Test timeouts
+- Browser settings
+- Performance thresholds
+- Debug options</p>
+<h2>📊 Continuous Integration</h2>
+<h3>GitHub Actions Ready</h3>
+<pre><code class="language-yaml">- name: Run Tests
+  run: |
+    npm run test:unit
+    npm run test:ci
+</code></pre>
+<h3>Test Reports</h3>
+<ul>
+<li><strong>HTML Report</strong>: Visual test results with screenshots</li>
+<li><strong>JSON Report</strong>: Machine-readable results</li>
+<li><strong>JUnit XML</strong>: CI integration format</li>
+</ul>
+<h2>🐛 Debugging Failed Tests</h2>
+<h3>1. Run in Headed Mode</h3>
+<pre><code class="language-bash">npm run test:headed
+</code></pre>
+<h3>2. Use Debug Mode</h3>
+<pre><code class="language-bash">npm run test:debug
+</code></pre>
+<h3>3. Check Screenshots</h3>
+<p>Failed tests automatically capture screenshots in <code>test-results/</code></p>
+<h3>4. View Trace Files</h3>
+<p>Playwright traces show step-by-step execution:</p>
+<pre><code class="language-bash">npx playwright show-trace test-results/trace.zip
+</code></pre>
+<h2>📈 Performance Monitoring</h2>
+<p>Tests include performance assertions:
+- <strong>Page load time</strong>: &lt; 2 seconds
+- <strong>Data rendering</strong>: &lt; 1 second
+- <strong>Search response</strong>: &lt; 3 seconds</p>
+<h2>✅ Test Quality Standards</h2>
+<h3>All Tests Must:</h3>
+<ol>
+<li><strong>Be deterministic</strong> - Same result every time</li>
+<li><strong>Be isolated</strong> - No dependencies between tests</li>
+<li><strong>Be fast</strong> - Unit tests &lt; 100ms, E2E tests &lt; 30s</li>
+<li><strong>Test real scenarios</strong> - Based on actual user workflows</li>
+<li><strong>Include error cases</strong> - Test failure paths</li>
+<li><strong>Be maintainable</strong> - Clear, documented code</li>
+</ol>
+<h3>Test Naming Convention</h3>
+<ul>
+<li><strong>Unit</strong>: <code>should [expected behavior] when [condition]</code></li>
+<li><strong>E2E</strong>: <code>should [user action] and [expected outcome]</code></li>
+</ul>
+<h2>🔄 Framework Compatibility</h2>
+<p>These tests are designed to work across all planned framework implementations:
+- ✅ <strong>Vanilla JS</strong> (current)
+- 🔄 <strong>React</strong> (planned)
+- 🔄 <strong>Vue</strong> (planned)
+- 🔄 <strong>Svelte</strong> (planned)
+- 🔄 <strong>Angular</strong> (planned)</p>
+<p>The same test suite will verify consistent behavior across all implementations.</p>
+<hr />
+<h2>📞 Support</h2>
+<p>If tests fail or you need help:
+1. Check this README
+2. Review test output and screenshots
+3. Run tests in debug mode
+4. Check <a href="https://github.com/lissy93/framework-benchmarks/issues">GitHub Issues</a></p>
+<p><strong>Happy Testing! 🎉</strong></p>
+    </div>
+</div>
+    </main>
+    
+    <footer>
+        <i>Free and open source, forever</i>
+        <p>
+            <a href="https://github.com/lissy93/framework-benchmarks">lissy93/framework-benchmarks</a>
+            is licensed under
+            <a href="https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE">MIT</a>
+             • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
+        </p>
+    </footer>
+    
+    <!-- JavaScript -->
+</body>
+</html>

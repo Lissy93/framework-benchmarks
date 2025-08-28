@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troubleshooting - Docs - Framework Benchmarks</title>
+    <meta name="description" content="Troubleshooting documentation for the Framework Benchmarks project">
+    <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/main.css">
+<style>
+.docs-page { max-width: 900px; margin: 0 auto; }
+.docs-nav { margin: 0rem; text-align: left; }
+.docs-nav a { text-decoration: none; color: var(--primary-color, #6762ff); }
+.docs-content { background: var(--card-bg, #fff); border-radius: 12px; padding: 2rem; border: 1px solid var(--border-color, #e5e5e5); line-height: 1.6; }
+.docs-content h1 { color: var(--primary-color, #6762ff); }
+.docs-content h2 { color: var(--primary-color, #6762ff); margin-top: 2rem; }
+.docs-content pre { background: var(--code-bg, #f8f9fa); padding: 1rem; border-radius: 8px; overflow-x: auto; }
+.docs-content code { background: var(--code-bg, #f8f9fa); padding: 0.2rem 0.4rem; border-radius: 4px; font-size: 0.9em; }
+.docs-content pre code { background: none; padding: 0; }
+.docs-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.docs-content th, .docs-content td { border: 1px solid var(--border-color, #e5e5e5); padding: 0.75rem; text-align: left; }
+.docs-content th { background: var(--code-bg, #f8f9fa); font-weight: 600; }
+</style>
+    
+     <!-- Twitter -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Framework Benchmarks">
+    <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
+    
+    <!-- Favicons & App Icons -->
+    <link rel="icon" type="image/x-icon" href="static/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="mask-icon" href="/logo.png" color="#6762ff">
+    <meta name="image" content="https://framework-benchmarks.as93.net/banner.png">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#6762ff">
+    <link rel="security.txt" href="/security.txt">
+</head>
+<body>
+    <header>
+        <nav class="navigation">
+            <a href="/" class="nav-logo">
+                <div class="site-name">
+                    <h1>Framework Benchmarks</h1>
+                    <p>Comparing every frontend framework</p>
+                </div>
+            </a>
+            <div class="nav-center">
+
+            </div>
+            <div class="nav-links">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/docs/" class="nav-link active">Docs</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+<div class="docs-page">
+    <div class="docs-nav">
+        <a href="/docs/">&larr; Back to Documentation</a>
+    </div>
+    
+    <div class="docs-content">
+        <h1>Troubleshooting</h1>
+<p>This guide covers common issues you might encounter and how to resolve them.</p>
+<h2>Setup Issues</h2>
+<p><strong>Permission denied errors during npm install</strong>
+Run with sudo if needed: <code>sudo npm install</code>. On Windows, run terminal as administrator.</p>
+<p><strong>Python command not found</strong>
+Ensure Python 3.8+ is installed and available as <code>python</code> or <code>python3</code>. Install from python.org or use your system package manager.</p>
+<p><strong>Git clone fails with permission errors</strong>
+Use HTTPS instead of SSH: <code>git clone https://github.com/lissy93/framework-benchmarks.git</code></p>
+<p><strong>Setup hangs or times out</strong>
+This usually happens during npm install for frameworks. Wait for completion (can take 10+ minutes) or check your network connection.</p>
+<h2>Build Issues</h2>
+<p><strong>Individual framework build fails</strong>
+Check the specific framework's logs. Common causes:
+- Missing dependencies (run <code>npm install</code> in the framework directory)
+- Node.js version compatibility (ensure Node.js 18+)
+- Disk space issues (each build needs ~100MB)</p>
+<p><strong>Angular build fails with memory errors</strong>
+Increase Node.js memory: <code>NODE_OPTIONS="--max-old-space-size=4096" npm run build:angular</code></p>
+<p><strong>Build output directory not found</strong>
+Different frameworks use different output directories. Check <code>apps/{framework}/dist/</code> or <code>apps/{framework}/build/</code>.</p>
+<h2>Server Issues</h2>
+<p><strong>Port 3000 already in use</strong>
+Kill the existing process: <code>pkill -f ":3000"</code> or use a different port with <code>npm start -- --port 3001</code></p>
+<p><strong>Framework shows 404 or not found</strong>
+Ensure the framework is built first with <code>npm run build:{framework}</code> before starting the server.</p>
+<p><strong>Server starts but frameworks don't load</strong>
+Check that build outputs exist in the correct directories. Run <code>ls apps/{framework}/dist/</code> to verify.</p>
+<h2>Benchmark Issues</h2>
+<p><strong>Chrome not found for Lighthouse</strong>
+Install Chrome or Chromium:
+- Ubuntu/Debian: <code>sudo apt install chromium-browser</code>
+- macOS: Install Chrome from google.com/chrome
+- Windows: Install Chrome from google.com/chrome</p>
+<p><strong>Benchmark results are inconsistent</strong>
+Use multiple executions for more reliable results: <code>python scripts/benchmark/main.py all --executions 3</code></p>
+<p><strong>Bundle size analysis shows zero</strong>
+The frameworks need to be built first: <code>npm run build</code> before running bundle analysis.</p>
+<p><strong>Lighthouse fails with connection errors</strong>
+Ensure the server is running (<code>npm start</code>) and accessible at <code>http://localhost:3000</code> before running benchmarks.</p>
+<h2>Docker Issues</h2>
+<p><strong>Docker build fails</strong>
+Ensure you have sufficient disk space (build needs ~2GB) and Docker is running.</p>
+<p><strong>Container starts but benchmarks fail</strong>
+Use the correct Chrome flags for containers: <code>CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless'</code></p>
+<h2>General Tips</h2>
+<p><strong>Check logs</strong> - Most scripts provide detailed error messages. Read them carefully for specific guidance.</p>
+<p><strong>Clean and retry</strong> - Try <code>npm run clean</code> followed by a fresh setup if builds are behaving unexpectedly.</p>
+<p><strong>Check dependencies</strong> - Ensure all system requirements (Node.js 18+, Python 3.8+, Chrome) are installed and up to date.</p>
+<p><strong>Disk space</strong> - The full project with all frameworks built needs ~5GB of disk space.</p>
+    </div>
+</div>
+    </main>
+    
+    <footer>
+        <i>Free and open source, forever</i>
+        <p>
+            <a href="https://github.com/lissy93/framework-benchmarks">lissy93/framework-benchmarks</a>
+            is licensed under
+            <a href="https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE">MIT</a>
+             • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
+        </p>
+    </footer>
+    
+    <!-- JavaScript -->
+</body>
+</html>
