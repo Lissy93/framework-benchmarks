@@ -55,12 +55,30 @@ RUN apt-get update && apt-get install -y \
     libasound2 \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Google Chrome
-RUN wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | apt-key add - \
-    && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list \
-    && apt-get update \
-    && apt-get install -y google-chrome-stable \
-    && rm -rf /var/lib/apt/lists/*
+# Install Chrome/Chromium (best effort - continue build even if this fails)
+RUN set -e; \
+    if [ "$(dpkg --print-architecture)" = "amd64" ]; then \
+        echo "Attempting to install Google Chrome..."; \
+        (wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/googlechrome-linux-keyring.gpg \
+        && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/googlechrome-linux-keyring.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | tee /etc/apt/sources.list.d/google.list \
+        && apt-get update \
+        && apt-get install -y google-chrome-stable \
+        && echo "Google Chrome installed successfully") || \
+        (echo "Google Chrome installation failed, trying Chromium..." \
+        && apt-get update \
+        && apt-get install -y chromium-browser \
+        && ln -sf /usr/bin/chromium-browser /usr/bin/google-chrome \
+        && echo "Chromium installed as fallback") || \
+        echo "Warning: No Chrome/Chromium could be installed - Lighthouse benchmarks will be skipped"; \
+    else \
+        echo "Installing Chromium for non-amd64 architecture..."; \
+        (apt-get update \
+        && apt-get install -y chromium-browser \
+        && ln -sf /usr/bin/chromium-browser /usr/bin/google-chrome \
+        && echo "Chromium installed successfully") || \
+        echo "Warning: Chromium installation failed - Lighthouse benchmarks will be skipped"; \
+    fi \
+    && rm -rf /var/lib/apt/lists/* || true
 
 WORKDIR /app
 

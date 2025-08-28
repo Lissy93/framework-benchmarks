@@ -219,6 +219,7 @@ For slightly more interactive reports, you can view the website at [framework-be
 and also view a stats on a per-framework basis.
 
 ### Summary
+<p align="center"><sub>The following charts show live data from the latest benchmark run. See the web version for interactive charts.</sub></p>
 <!-- start_summary_charts -->
 <p align="center">
   <img src="https://quickchart.io/chart/render/zf-b27bec6a-2182-4b9f-9aa4-e54800a2591c" width="256" title="Performance Overview" alt="Performance Overview" />
@@ -280,13 +281,14 @@ Each app gets built and tested to ensure that it is functional, compliant with t
 
 | Workflow | Status |
 |---|---|
-| **Benchmark**: Executes all app benchmarks | [![📈 Benchmark](https://github.com/Lissy93/framework-benchmarks/actions/workflows/benchmark.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/benchmark.yml) |
 | **Build**: Compiles each app for deployment | [![🔨 Build](https://github.com/Lissy93/framework-benchmarks/actions/workflows/build.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/build.yml) |
-| **Lint**: Ensures lint/consistency checks pass | [![🧼 Lint](https://github.com/Lissy93/framework-benchmarks/actions/workflows/lint.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/lint.yml) |
-| **Mirror**: Syncs repo to Codeberg mirror  | [![🪞 Mirror to Codeberg](https://github.com/Lissy93/framework-benchmarks/actions/workflows/mirror.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/mirror.yml) |
 | **Test**: Runs all unit and integration tests | [![🧪 Test](https://github.com/Lissy93/framework-benchmarks/actions/workflows/test.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/test.yml) |
+| **Lint**: Ensures lint/consistency checks pass | [![🧼 Lint](https://github.com/Lissy93/framework-benchmarks/actions/workflows/lint.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/lint.yml) |
+| **Benchmark**: Executes all app benchmarks | [![📈 Benchmark](https://github.com/Lissy93/framework-benchmarks/actions/workflows/benchmark.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/benchmark.yml) |
 | **Transform**: Formats and publishes results | [![🔄 Transform Results](https://github.com/Lissy93/framework-benchmarks/actions/workflows/transform-results.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/transform-results.yml) |
-| **Update readme**: Updates dynamic info in docs | [![📄 Update readme](https://github.com/Lissy93/framework-benchmarks/actions/workflows/update-docs.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/update-docs.yml) |
+| **Docker**: Builds and publishes the image | [![🐳 Build & Publish Docker Image](https://github.com/Lissy93/framework-benchmarks/actions/workflows/docker.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/docker.yml) |
+| **Docs**: Updates dynamic info in markdown | [![📄 Update readme](https://github.com/Lissy93/framework-benchmarks/actions/workflows/update-docs.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/update-docs.yml) |
+| **Mirror**: Syncs repo to Codeberg mirror  | [![🪞 Mirror to Codeberg](https://github.com/Lissy93/framework-benchmarks/actions/workflows/mirror.yml/badge.svg)](https://github.com/Lissy93/framework-benchmarks/actions/workflows/mirror.yml) |
 
 
 <!-- start_all_status -->
