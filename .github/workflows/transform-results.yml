@@ -154,7 +154,7 @@ jobs:
           
           # Switch to results branch (similar to badges approach)
           git fetch origin results:results 2>/dev/null || git checkout --orphan results
-          git checkout results 2>/dev/null || true
+          git checkout results -- 2>/dev/null || true
           git pull origin results 2>/dev/null || true
           
           # Set up directory structure
