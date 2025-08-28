@@ -1,0 +1,219 @@
+{
+  "type": "bar",
+  "data": {
+    "labels": [
+      "Alpine",
+      "Angular",
+      "Jquery",
+      "Lit",
+      "Preact",
+      "Qwik",
+      "React",
+      "Solid",
+      "Svelte",
+      "Vanilla",
+      "Vanjs",
+      "Vue"
+    ],
+    "datasets": [
+      {
+        "label": "Average CPU Usage (%)",
+        "data": [
+          8.3,
+          29.8,
+          13.28,
+          9.97,
+          23.27,
+          26.47,
+          30.97,
+          8.3,
+          26.57,
+          6.6,
+          12.45,
+          5.8
+        ],
+        "backgroundColor": [
+          "rgba(139, 195, 74, 0.8)",
+          "rgba(221, 0, 49, 0.8)",
+          "rgba(7, 105, 173, 0.8)",
+          "rgba(50, 79, 255, 0.8)",
+          "rgba(103, 58, 184, 0.8)",
+          "rgba(172, 126, 244, 0.8)",
+          "rgba(97, 218, 251, 0.8)",
+          "rgba(44, 79, 124, 0.8)",
+          "rgba(255, 62, 0, 0.8)",
+          "rgba(247, 223, 30, 0.8)",
+          "rgba(255, 107, 53, 0.8)",
+          "rgba(79, 192, 141, 0.8)"
+        ],
+        "borderColor": [
+          "rgba(139, 195, 74, 1.0)",
+          "rgba(221, 0, 49, 1.0)",
+          "rgba(7, 105, 173, 1.0)",
+          "rgba(50, 79, 255, 1.0)",
+          "rgba(103, 58, 184, 1.0)",
+          "rgba(172, 126, 244, 1.0)",
+          "rgba(97, 218, 251, 1.0)",
+          "rgba(44, 79, 124, 1.0)",
+          "rgba(255, 62, 0, 1.0)",
+          "rgba(247, 223, 30, 1.0)",
+          "rgba(255, 107, 53, 1.0)",
+          "rgba(79, 192, 141, 1.0)"
+        ],
+        "borderWidth": 2,
+        "yAxisID": "y"
+      },
+      {
+        "label": "Memory Usage (MB)",
+        "data": [
+          974.41,
+          983.56,
+          973.77,
+          959.29,
+          964.89,
+          970.34,
+          971.64,
+          958.87,
+          949.32,
+          963.39,
+          945.36,
+          966.76
+        ],
+        "backgroundColor": [
+          "rgba(139, 195, 74, 0.6)",
+          "rgba(221, 0, 49, 0.6)",
+          "rgba(7, 105, 173, 0.6)",
+          "rgba(50, 79, 255, 0.6)",
+          "rgba(103, 58, 184, 0.6)",
+          "rgba(172, 126, 244, 0.6)",
+          "rgba(97, 218, 251, 0.6)",
+          "rgba(44, 79, 124, 0.6)",
+          "rgba(255, 62, 0, 0.6)",
+          "rgba(247, 223, 30, 0.6)",
+          "rgba(255, 107, 53, 0.6)",
+          "rgba(79, 192, 141, 0.6)"
+        ],
+        "borderColor": [
+          "rgba(139, 195, 74, 1.0)",
+          "rgba(221, 0, 49, 1.0)",
+          "rgba(7, 105, 173, 1.0)",
+          "rgba(50, 79, 255, 1.0)",
+          "rgba(103, 58, 184, 1.0)",
+          "rgba(172, 126, 244, 1.0)",
+          "rgba(97, 218, 251, 1.0)",
+          "rgba(44, 79, 124, 1.0)",
+          "rgba(255, 62, 0, 1.0)",
+          "rgba(247, 223, 30, 1.0)",
+          "rgba(255, 107, 53, 1.0)",
+          "rgba(79, 192, 141, 1.0)"
+        ],
+        "borderWidth": 2,
+        "yAxisID": "y1"
+      }
+    ]
+  },
+  "options": {
+    "responsive": true,
+    "maintainAspectRatio": false,
+    "interaction": {
+      "intersect": false,
+      "mode": "index"
+    },
+    "plugins": {
+      "legend": {
+        "display": true,
+        "position": "top",
+        "labels": {
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 11
+          },
+          "padding": 20,
+          "usePointStyle": true
+        }
+      },
+      "tooltip": {
+        "backgroundColor": "rgba(0, 0, 0, 0.8)",
+        "titleFont": {
+          "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+          "size": 12
+        },
+        "bodyFont": {
+          "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+          "size": 12
+        },
+        "cornerRadius": 8,
+        "displayColors": true
+      },
+      "title": {
+        "display": true,
+        "text": "Resource Consumption",
+        "font": {
+          "size": 16,
+          "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif"
+        }
+      }
+    },
+    "scales": {
+      "x": {
+        "type": "category",
+        "grid": {
+          "display": false
+        },
+        "ticks": {
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 12
+          }
+        }
+      },
+      "y": {
+        "type": "linear",
+        "beginAtZero": true,
+        "grid": {
+          "color": "rgba(0, 0, 0, 0.1)",
+          "drawOnChartArea": true
+        },
+        "ticks": {
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 12
+          }
+        },
+        "title": {
+          "display": true,
+          "text": "CPU Usage (%)",
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 12,
+            "weight": "bold"
+          }
+        }
+      },
+      "y1": {
+        "type": "linear",
+        "position": "right",
+        "grid": {
+          "drawOnChartArea": false
+        },
+        "title": {
+          "display": true,
+          "text": "Memory (MB)",
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 12,
+            "weight": "bold"
+          }
+        }
+      }
+    },
+    "layout": {
+      "padding": {
+        "top": 10,
+        "right": 10,
+        "bottom": 10,
+        "left": 10
+      }
+    }
+  }
+}

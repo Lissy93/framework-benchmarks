@@ -1,0 +1,618 @@
+{
+  "benchmark_type": "Lighthouse",
+  "benchmark_slug": "lighthouse",
+  "timestamp": "2025-08-28T14:07:27.056634",
+  "date": "2025-08-28",
+  "run_id": "run_20250828_140727",
+  "metadata": {
+    "frameworks_tested": [
+      "react",
+      "angular",
+      "svelte",
+      "preact",
+      "solid",
+      "qwik",
+      "vue",
+      "jquery",
+      "alpine",
+      "lit",
+      "vanjs",
+      "vanilla"
+    ],
+    "frameworks_count": 12,
+    "successful_count": 12,
+    "failed_count": 0,
+    "successful_frameworks": [
+      "react",
+      "angular",
+      "svelte",
+      "preact",
+      "solid",
+      "qwik",
+      "vue",
+      "jquery",
+      "alpine",
+      "lit",
+      "vanjs",
+      "vanilla"
+    ],
+    "failed_frameworks": [],
+    "execution_time_iso": "2025-08-28T14:07:27.056640",
+    "file_path": "benchmark-results/2025-08-28/lighthouse_20250828_140727.json"
+  },
+  "config": {
+    "categories": [
+      "performance",
+      "accessibility",
+      "best-practices",
+      "seo"
+    ],
+    "settings": {
+      "onlyCategories": [
+        "performance",
+        "accessibility",
+        "best-practices",
+        "seo"
+      ],
+      "output": "json",
+      "chromeFlags": [
+        "--headless=new",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--disable-dev-shm-usage",
+        "--disable-extensions",
+        "--disable-background-timer-throttling",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-renderer-backgrounding"
+      ]
+    },
+    "thresholds": {
+      "performance": 80,
+      "accessibility": 90,
+      "best-practices": 80,
+      "seo": 90
+    }
+  },
+  "results": [
+    {
+      "framework": "react",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2025-08-28T14:05:28.690934",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/react/app/?mock=true",
+        "scores": {
+          "performance": 87.0,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1936.4174,
+            "displayValue": "1.9\u00a0s",
+            "score": 0.86
+          },
+          "largest-contentful-paint": {
+            "value": 2240.1261000000004,
+            "displayValue": "2.2\u00a0s",
+            "score": 0.94
+          },
+          "speed-index": {
+            "value": 1936.4174,
+            "displayValue": "1.9\u00a0s",
+            "score": 1
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00020420641547086574,
+            "displayValue": "0",
+            "score": 1
+          },
+          "total-blocking-time": {
+            "value": 405,
+            "displayValue": "410\u00a0ms",
+            "score": 0.67
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2025-08-28T14:05:19.973Z"
+      }
+    },
+    {
+      "framework": "angular",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2025-08-28T14:05:39.546403",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/angular/app/?mock=true",
+        "scores": {
+          "performance": 95.0,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 2107.7412999999997,
+            "displayValue": "2.1\u00a0s",
+            "score": 0.81
+          },
+          "largest-contentful-paint": {
+            "value": 2638.6119499999995,
+            "displayValue": "2.6\u00a0s",
+            "score": 0.87
+          },
+          "speed-index": {
+            "value": 2107.7412999999997,
+            "displayValue": "2.1\u00a0s",
+            "score": 0.99
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00010210320773543287,
+            "displayValue": "0",
+            "score": 1
+          },
+          "total-blocking-time": {
+            "value": 27,
+            "displayValue": "30\u00a0ms",
+            "score": 1
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2025-08-28T14:05:31.334Z"
+      }
+    },
+    {
+      "framework": "svelte",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2025-08-28T14:05:50.220327",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/svelte/app/?mock=true",
+        "scores": {
+          "performance": 98.0,
+          "accessibility": 100,
+          "best-practices": 96.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1664.1027250000002,
+            "displayValue": "1.7\u00a0s",
+            "score": 0.93
+          },
+          "largest-contentful-paint": {
+            "value": 2112.0880500000003,
+            "displayValue": "2.1\u00a0s",
+            "score": 0.96
+          },
+          "speed-index": {
+            "value": 1664.1027250000002,
+            "displayValue": "1.7\u00a0s",
+            "score": 1
+          },
+          "cumulative-layout-shift": {
+            "value": 0,
+            "displayValue": "0",
+            "score": 1
+          },
+          "total-blocking-time": {
+            "value": 0,
+            "displayValue": "0\u00a0ms",
+            "score": 1
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2025-08-28T14:05:42.210Z"
+      }
+    },
+    {
+      "framework": "preact",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2025-08-28T14:06:00.874885",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/preact/app/?mock=true",
+        "scores": {
+          "performance": 100,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1356.8123,
+            "displayValue": "1.4\u00a0s",
+            "score": 0.98
+          },
+          "largest-contentful-paint": {
+            "value": 1660.21845,
+            "displayValue": "1.7\u00a0s",
+            "score": 0.99
+          },
+          "speed-index": {
+            "value": 1356.8123,
+            "displayValue": "1.4\u00a0s",
+            "score": 1
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00010210320773543287,
+            "displayValue": "0",
+            "score": 1
+          },
+          "total-blocking-time": {
+            "value": 0,
+            "displayValue": "0\u00a0ms",
+            "score": 1
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2025-08-28T14:05:52.852Z"
+      }
+    },
+    {
+      "framework": "solid",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2025-08-28T14:06:11.541066",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/solid/app/?mock=true",
+        "scores": {
+          "performance": 100,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1355.1486,
+            "displayValue": "1.4\u00a0s",
+            "score": 0.98
+          },
+          "largest-contentful-paint": {
+            "value": 1534.7229,
+            "displayValue": "1.5\u00a0s",
+            "score": 1
+          },
+          "speed-index": {
+            "value": 1355.1486,
+            "displayValue": "1.4\u00a0s",
+            "score": 1
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00010210320773543287,
+            "displayValue": "0",
+            "score": 1
+          },
+          "total-blocking-time": {
+            "value": 0,
+            "displayValue": "0\u00a0ms",
+            "score": 1
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2025-08-28T14:06:03.494Z"
+      }
+    },
+    {
+      "framework": "qwik",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2025-08-28T14:06:22.527133",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/qwik/app/?mock=true",
+        "scores": {
+          "performance": 99.0,
+          "accessibility": 96.0,
+          "best-practices": 100,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1431.996,
+            "displayValue": "1.4\u00a0s",
+            "score": 0.97
+          },
+          "largest-contentful-paint": {
+            "value": 2124.324,
+            "displayValue": "2.1\u00a0s",
+            "score": 0.96
+          },
+          "speed-index": {
+            "value": 1431.996,
+            "displayValue": "1.4\u00a0s",
+            "score": 1
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00020420641547086574,
+            "displayValue": "0",
+            "score": 1
+          },
+          "total-blocking-time": {
+            "value": 0,
+            "displayValue": "0\u00a0ms",
+            "score": 1
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2025-08-28T14:06:14.176Z"
+      }
+    },
+    {
+      "framework": "vue",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2025-08-28T14:06:33.269106",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/vue/app/?mock=true",
+        "scores": {
+          "performance": 99.0,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1507.5296,
+            "displayValue": "1.5\u00a0s",
+            "score": 0.96
+          },
+          "largest-contentful-paint": {
+            "value": 1850.2944,
+            "displayValue": "1.9\u00a0s",
+            "score": 0.98
+          },
+          "speed-index": {
+            "value": 1507.5296,
+            "displayValue": "1.5\u00a0s",
+            "score": 1
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00010210320773543287,
+            "displayValue": "0",
+            "score": 1
+          },
+          "total-blocking-time": {
+            "value": 0,
+            "displayValue": "0\u00a0ms",
+            "score": 1
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2025-08-28T14:06:25.176Z"
+      }
+    },
+    {
+      "framework": "jquery",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2025-08-28T14:06:43.989657",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/jquery/app/?mock=true",
+        "scores": {
+          "performance": 92.0,
+          "accessibility": 100,
+          "best-practices": 96.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1808.1576,
+            "displayValue": "1.8\u00a0s",
+            "score": 0.89
+          },
+          "largest-contentful-paint": {
+            "value": 1977.2364,
+            "displayValue": "2.0\u00a0s",
+            "score": 0.97
+          },
+          "speed-index": {
+            "value": 1808.1576,
+            "displayValue": "1.8\u00a0s",
+            "score": 1
+          },
+          "cumulative-layout-shift": {
+            "value": 0.14591724344081572,
+            "displayValue": "0.146",
+            "score": 0.77
+          },
+          "total-blocking-time": {
+            "value": 0,
+            "displayValue": "0\u00a0ms",
+            "score": 1
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2025-08-28T14:06:35.921Z"
+      }
+    },
+    {
+      "framework": "alpine",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2025-08-28T14:06:54.879910",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/alpine/app/?mock=true",
+        "scores": {
+          "performance": 100,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1369.93515,
+            "displayValue": "1.4\u00a0s",
+            "score": 0.97
+          },
+          "largest-contentful-paint": {
+            "value": 1369.93515,
+            "displayValue": "1.4\u00a0s",
+            "score": 1
+          },
+          "speed-index": {
+            "value": 1369.93515,
+            "displayValue": "1.4\u00a0s",
+            "score": 1
+          },
+          "cumulative-layout-shift": {
+            "value": 0.0002701852769072786,
+            "displayValue": "0",
+            "score": 1
+          },
+          "total-blocking-time": {
+            "value": 11,
+            "displayValue": "10\u00a0ms",
+            "score": 1
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2025-08-28T14:06:46.641Z"
+      }
+    },
+    {
+      "framework": "lit",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2025-08-28T14:07:05.649292",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/lit/app/?mock=true",
+        "scores": {
+          "performance": 99.0,
+          "accessibility": 96.0,
+          "best-practices": 100,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1539.8993,
+            "displayValue": "1.5\u00a0s",
+            "score": 0.95
+          },
+          "largest-contentful-paint": {
+            "value": 1843.34895,
+            "displayValue": "1.8\u00a0s",
+            "score": 0.98
+          },
+          "speed-index": {
+            "value": 1539.8993,
+            "displayValue": "1.5\u00a0s",
+            "score": 1
+          },
+          "cumulative-layout-shift": {
+            "value": 0.055037808632872866,
+            "displayValue": "0.055",
+            "score": 0.98
+          },
+          "total-blocking-time": {
+            "value": 0,
+            "displayValue": "0\u00a0ms",
+            "score": 1
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2025-08-28T14:06:57.549Z"
+      }
+    },
+    {
+      "framework": "vanjs",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2025-08-28T14:07:16.356295",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/vanjs/app/?mock=true",
+        "scores": {
+          "performance": 100,
+          "accessibility": 100,
+          "best-practices": 100,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1233.7492,
+            "displayValue": "1.2\u00a0s",
+            "score": 0.99
+          },
+          "largest-contentful-paint": {
+            "value": 1389.6237999999998,
+            "displayValue": "1.4\u00a0s",
+            "score": 1
+          },
+          "speed-index": {
+            "value": 1233.7492,
+            "displayValue": "1.2\u00a0s",
+            "score": 1
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00010210320773543287,
+            "displayValue": "0",
+            "score": 1
+          },
+          "total-blocking-time": {
+            "value": 0,
+            "displayValue": "0\u00a0ms",
+            "score": 1
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2025-08-28T14:07:08.302Z"
+      }
+    },
+    {
+      "framework": "vanilla",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2025-08-28T14:07:27.038258",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/vanilla/app/?mock=true",
+        "scores": {
+          "performance": 94.0,
+          "accessibility": 100,
+          "best-practices": 96.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1219.9602,
+            "displayValue": "1.2\u00a0s",
+            "score": 0.99
+          },
+          "largest-contentful-paint": {
+            "value": 1526.6136,
+            "displayValue": "1.5\u00a0s",
+            "score": 1
+          },
+          "speed-index": {
+            "value": 1219.9602,
+            "displayValue": "1.2\u00a0s",
+            "score": 1
+          },
+          "cumulative-layout-shift": {
+            "value": 0.14612144985628658,
+            "displayValue": "0.146",
+            "score": 0.77
+          },
+          "total-blocking-time": {
+            "value": 0,
+            "displayValue": "0\u00a0ms",
+            "score": 1
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2025-08-28T14:07:19.004Z"
+      }
+    }
+  ]
+}

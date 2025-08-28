@@ -1,0 +1,243 @@
+{
+  "type": "bar",
+  "data": {
+    "labels": [
+      "Alpine",
+      "Angular",
+      "Jquery",
+      "Lit",
+      "Preact",
+      "Qwik",
+      "React",
+      "Solid",
+      "Svelte",
+      "Vanilla",
+      "Vanjs",
+      "Vue"
+    ],
+    "datasets": [
+      {
+        "label": "Total Size (KB)",
+        "data": [
+          16.060546875,
+          233.4482421875,
+          97.6650390625,
+          58.693359375,
+          26.974609375,
+          89.021484375,
+          154.822265625,
+          25.837890625,
+          112.794921875,
+          20.318359375,
+          16.8076171875,
+          74.7900390625
+        ],
+        "backgroundColor": [
+          "rgba(139, 195, 74, 0.6)",
+          "rgba(221, 0, 49, 0.6)",
+          "rgba(7, 105, 173, 0.6)",
+          "rgba(50, 79, 255, 0.6)",
+          "rgba(103, 58, 184, 0.6)",
+          "rgba(172, 126, 244, 0.6)",
+          "rgba(97, 218, 251, 0.6)",
+          "rgba(44, 79, 124, 0.6)",
+          "rgba(255, 62, 0, 0.6)",
+          "rgba(247, 223, 30, 0.6)",
+          "rgba(255, 107, 53, 0.6)",
+          "rgba(79, 192, 141, 0.6)"
+        ],
+        "borderColor": [
+          "rgba(139, 195, 74, 1.0)",
+          "rgba(221, 0, 49, 1.0)",
+          "rgba(7, 105, 173, 1.0)",
+          "rgba(50, 79, 255, 1.0)",
+          "rgba(103, 58, 184, 1.0)",
+          "rgba(172, 126, 244, 1.0)",
+          "rgba(97, 218, 251, 1.0)",
+          "rgba(44, 79, 124, 1.0)",
+          "rgba(255, 62, 0, 1.0)",
+          "rgba(247, 223, 30, 1.0)",
+          "rgba(255, 107, 53, 1.0)",
+          "rgba(79, 192, 141, 1.0)"
+        ],
+        "borderWidth": 2,
+        "yAxisID": "y"
+      },
+      {
+        "label": "Gzipped Size (KB)",
+        "data": [
+          5.041015625,
+          72.8271484375,
+          33.908203125,
+          15.3828125,
+          9.8515625,
+          33.81640625,
+          49.078125,
+          9.0263671875,
+          37.4404296875,
+          5.3515625,
+          5.8583984375,
+          28.6611328125
+        ],
+        "backgroundColor": [
+          "rgba(139, 195, 74, 0.8)",
+          "rgba(221, 0, 49, 0.8)",
+          "rgba(7, 105, 173, 0.8)",
+          "rgba(50, 79, 255, 0.8)",
+          "rgba(103, 58, 184, 0.8)",
+          "rgba(172, 126, 244, 0.8)",
+          "rgba(97, 218, 251, 0.8)",
+          "rgba(44, 79, 124, 0.8)",
+          "rgba(255, 62, 0, 0.8)",
+          "rgba(247, 223, 30, 0.8)",
+          "rgba(255, 107, 53, 0.8)",
+          "rgba(79, 192, 141, 0.8)"
+        ],
+        "borderColor": [
+          "rgba(139, 195, 74, 1.0)",
+          "rgba(221, 0, 49, 1.0)",
+          "rgba(7, 105, 173, 1.0)",
+          "rgba(50, 79, 255, 1.0)",
+          "rgba(103, 58, 184, 1.0)",
+          "rgba(172, 126, 244, 1.0)",
+          "rgba(97, 218, 251, 1.0)",
+          "rgba(44, 79, 124, 1.0)",
+          "rgba(255, 62, 0, 1.0)",
+          "rgba(247, 223, 30, 1.0)",
+          "rgba(255, 107, 53, 1.0)",
+          "rgba(79, 192, 141, 1.0)"
+        ],
+        "borderWidth": 2,
+        "yAxisID": "y"
+      },
+      {
+        "label": "Compression Ratio",
+        "data": [
+          3.19,
+          3.21,
+          2.88,
+          3.82,
+          2.74,
+          2.63,
+          3.15,
+          2.86,
+          3.01,
+          3.8,
+          2.87,
+          2.61
+        ],
+        "type": "line",
+        "backgroundColor": "rgba(99, 102, 241, 0.1)",
+        "borderColor": "rgba(99, 102, 241, 1)",
+        "borderWidth": 3,
+        "fill": false,
+        "yAxisID": "y1",
+        "tension": 0.1
+      }
+    ]
+  },
+  "options": {
+    "responsive": true,
+    "maintainAspectRatio": false,
+    "interaction": {
+      "intersect": false,
+      "mode": "index"
+    },
+    "plugins": {
+      "legend": {
+        "display": true,
+        "position": "top",
+        "labels": {
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 11
+          },
+          "padding": 20,
+          "usePointStyle": true
+        }
+      },
+      "tooltip": {
+        "backgroundColor": "rgba(0, 0, 0, 0.8)",
+        "titleFont": {
+          "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+          "size": 12
+        },
+        "bodyFont": {
+          "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+          "size": 12
+        },
+        "cornerRadius": 8,
+        "displayColors": true
+      },
+      "title": {
+        "display": true,
+        "text": "Bundle Size and Comparison",
+        "font": {
+          "size": 16,
+          "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif"
+        }
+      }
+    },
+    "scales": {
+      "x": {
+        "type": "category",
+        "grid": {
+          "display": false
+        },
+        "ticks": {
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 12
+          }
+        }
+      },
+      "y": {
+        "type": "linear",
+        "beginAtZero": true,
+        "grid": {
+          "color": "rgba(0, 0, 0, 0.1)",
+          "drawOnChartArea": true
+        },
+        "ticks": {
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 12
+          }
+        },
+        "title": {
+          "display": true,
+          "text": "Bundle Size (KB)",
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 12,
+            "weight": "bold"
+          }
+        }
+      },
+      "y1": {
+        "type": "linear",
+        "position": "right",
+        "grid": {
+          "drawOnChartArea": false
+        },
+        "title": {
+          "display": true,
+          "text": "Compression Ratio",
+          "font": {
+            "family": "-apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, sans-serif",
+            "size": 12,
+            "weight": "bold"
+          }
+        }
+      }
+    },
+    "layout": {
+      "padding": {
+        "top": 10,
+        "right": 10,
+        "bottom": 10,
+        "left": 10
+      }
+    }
+  }
+}

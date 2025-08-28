@@ -1,0 +1,65 @@
+/* Lit specific styles */
+
+/* Ensure weather components display properly */
+weather-app {
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+}
+
+weather-search {
+  display: block;
+  width: 100%;
+}
+
+weather-display {
+  display: block;
+  width: 100%;
+}
+
+weather-forecast {
+  display: block;
+  width: 100%;
+}
+
+forecast-item {
+  display: block;
+  width: 100%;
+}
+
+/* Loading and error state transitions */
+.fade-enter {
+  opacity: 0;
+  transform: translateY(-10px);
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.fade-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Lit component styling enhancements */
+weather-app::part(container) {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Active forecast item styling */
+forecast-item[active] {
+  background-color: var(--color-background-secondary);
+  border-radius: var(--border-radius-md);
+}

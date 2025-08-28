@@ -1,0 +1,524 @@
+{% extends "base.html" %}
+
+{% block title %}{{ framework.name }} - {{ config.website.title }}{% endblock %}
+{% block description %}Learn about {{ framework.name }}, explore the weather app implementation, and view performance metrics.{% endblock %}
+
+{% block content %}
+<div class="framework-page" style="--fw-color: {{ framework.meta.color or '#3498db' }};">
+    <div class="framework-grid">
+        <!-- Hero Section -->
+        <article class="framework-hero">
+            <img class="hero-icon" 
+                 src="https://cdn.simpleicons.org/{{ framework.meta.iconName or framework.id }}"
+                 alt="{{ framework.meta.emoji or '🔧' }}"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">{{ (framework.name or framework.id)[0] }}</div>
+            
+            <div class="hero-content">
+                <h2>{{ framework.name or framework.displayName or framework.id.title() }}</h2>
+                <p class="hero-tagline">{{ framework.meta.description or "A web frontend framework" }}</p>
+                <!-- <p class="her-subtagline">{{ framework.meta.longDescription }}</p> -->
+            
+            {% if framework.meta and (framework.meta.website or framework.meta.github) %}
+            <div class="resource-links">
+                {% if framework.meta.website %}
+                <a href="{{ framework.meta.website }}" target="_blank" class="resource-link" title="{{ framework.name }} Official Website">Website</a>
+                {% endif %}
+                {% if framework.meta.github %}
+                <a href="{{ framework.meta.github }}" target="_blank" class="resource-link" title="{{ framework.name }} Sourcecode">GitHub</a>
+                {% endif %}
+                {% if framework.meta.docs %}
+                <a href="{{ framework.meta.docs }}" target="_blank" class="resource-link"  title="{{ framework.name }} Documentation">Docs</a>
+                {% endif %}
+            </div>
+            {% endif %}
+            </div>
+        </article>
+        
+        <!-- Action Cards -->
+        <div class="framework-actions">
+            <a href="/{{ framework.id }}/app/" class="action-card action-primary">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                </svg>
+                <div>
+                    <h4>Demo</h4>
+                    <span>View {{framework.name}} Weather App</span>
+                </div>
+            </a>
+            <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/{{ framework.id }}" class="action-card">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 18L22 12L16 6M8 6L2 12L8 18"/>
+                </svg>
+                <div>
+                    <h4>GitHub</h4>
+                    <span>View {{framework.name}} Weather App Source</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="group-header group-header-results">
+            <h2>Results Summary</h2>
+        </div>
+
+        <!-- Results Summary -->
+        {% if framework_results %}
+        <article class="framework-results-summary">
+            <div class="results-grid">
+                <div class="result-card">
+                    <h4>Performance</h4>
+                    <div class="result-value">{{ framework_results.lighthouse.scores.performance }}%</div>
+                    <div class="result-detail">Lighthouse Score</div>
+                </div>
+                <div class="result-card">
+                    <h4>Bundle Size</h4>
+                    <div class="result-value">{{ (framework_results.bundle_size.total_gzipped / 1024) | round(1) }}KB</div>
+                    <div class="result-detail">Gzipped</div>
+                </div>
+                <div class="result-card">
+                    <h4>Build Time</h4>
+                    <div class="result-value">
+                        {% if framework_results.build_time.build_time_ms > 0 %}
+                            {{ (framework_results.build_time.build_time_ms / 1000) | round(1) }}s
+                        {% else %}
+                            0s
+                        {% endif %}
+                    </div>
+                    <div class="result-detail">Average</div>
+                </div>
+                <div class="result-card">
+                    <h4>Load Time</h4>
+                    <div class="result-value">
+                        {% if framework_results.lighthouse.raw_metrics.lcp >= 1000 %}
+                            {{ "%.1f"|format(framework_results.lighthouse.raw_metrics.lcp / 1000) }}s
+                        {% else %}
+                            {{ framework_results.lighthouse.raw_metrics.lcp|round(0)|int }}ms
+                        {% endif %}
+                    </div>
+                    <div class="result-detail">LCP</div>
+                </div>
+                <div class="result-card">
+                    <h4>Complexity</h4>
+                    <div class="result-value">{{ framework_results.source_analysis.cyclomatic_complexity }}</div>
+                    <div class="result-detail">Cyclomatic</div>
+                </div>
+            </div>
+        </article>
+        {% endif %}
+        
+        <!-- Detailed Results Cards -->
+        {% if framework_results %}
+        <div class="detailed-results">
+            <!-- Performance Metrics Card -->
+            <article class="results-detail-card performance-card">
+                <h4>Performance Metrics</h4>
+                <div class="metrics-grid metrics-grid-5">
+                    <div class="metric-item">
+                        <div class="metric-label">CLS</div>
+                        <div class="metric-value">{{ "%.4f"|format(framework_results.lighthouse.raw_metrics.cls) }}</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">FCP</div>
+                        <div class="metric-value">{{ (framework_results.lighthouse.raw_metrics.fcp)|round(0)|int }}ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">LCP</div>
+                        <div class="metric-value">{{ (framework_results.lighthouse.raw_metrics.lcp)|round(0)|int }}ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">TBT</div>
+                        <div class="metric-value">{{ framework_results.lighthouse.raw_metrics.tbt }}ms</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Bundle Analysis Card -->
+            <article class="results-detail-card bundle-card">
+                <h4>Bundle Analysis</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Compression</div>
+                        <div class="metric-value">{{ "%.1f"|format(framework_results.bundle_size.compression_ratio) }}x</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">File Count</div>
+                        <div class="metric-value">{{ framework_results.bundle_size.file_count }}</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">JS %</div>
+                        <div class="metric-value">{{ "%.1f"|format(framework_results.bundle_size.js_percentage) }}%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Total Size</div>
+                        <div class="metric-value">{{ "%.1f"|format(framework_results.bundle_size.total_size / 1024) }}KB</div>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Build Info Card -->
+            <article class="results-detail-card build-card">
+                <h4>Build Info</h4>
+                <div class="metrics-grid metrics-grid-4">
+                    <div class="metric-item">
+                        <div class="metric-label">Build Time</div>
+                        <div class="metric-value">
+                            {% if framework_results.build_time.build_time_ms > 0 %}
+                                {{ "%.1f"|format(framework_results.build_time.build_time_ms / 1000) }}s
+                            {% else %}
+                                0s
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Output Size</div>
+                        <div class="metric-value">{{ "%.1f"|format(framework_results.build_time.output_size_mb) }}MB</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">HMR Time</div>
+                        <div class="metric-value">{{ framework_results.dev_server.hmr_avg_time_ms }}ms</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Dev Startup</div>
+                        <div class="metric-value">{{ "%.1f"|format(framework_results.dev_server.startup_time_ms / 1000) }}s</div>
+                    </div>
+                </div>
+            </article>
+        </div>
+        {% endif %}
+
+        <div class="group-header group-header-app">
+            <h2>About the {{framework.name}} Weather Front App</h2>
+        </div>
+
+        <article class="framework-status">
+            <h3>Status</h3>
+            <ul class="status-list">
+                <li title="Lint checks for {{ framework.name }}">
+                    <span class="tech-key">Lint</span>
+                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-{{framework.id}}.svg" />
+                </li>
+                <li title="Build and deployment status for {{ framework.name }}">
+                    <span class="tech-key">Build</span>
+                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-{{framework.id}}.svg" />
+                </li>
+                <li title="Unit and integration tests for {{ framework.name }}">
+                    <span class="tech-key">Test</span>
+                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-{{framework.id}}.svg" />
+                </li>
+            </ul>
+        </article>
+
+        <article class="framework-links">
+            <h3>Links</h3>
+            <ul class="links-list">
+                <li><a href="https://github.com/lissy93/framework-benchmarks">View on GitHub</a></li>
+                <li><a href="/{{ framework.id }}/app/">{{framework.name}} App Demo</a></li>
+                <li><a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/{{ framework.id }}">{{framework.name}} App Source</a></li>
+                <li><a href="https://github.com/lissy93/framework-benchmarks/blob/main/.github/CONTRIBUTING.md">Contributing</a></li>
+                <li><a href="https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE">License</a></li>
+                <li><a href="https://as93.net">More Apps</a></li>
+            </ul>
+        </article>
+
+        <!-- Tech Details -->
+        <article class="framework-tech">
+            <h3>Usage Instructions</h3>
+            <p>
+                First, follow the <a target="_blank" href="https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage">repo setup instructions</a>.<br>
+                Then cd into <a target="_blank" href="https://github.com/Lissy93/framework-benchmarks/tree/main/apps/{{framework.id}}">./apps/{{framework.id}}/</a>
+                and and use the following commands:
+            </p>
+
+            <ul class="tech-list">
+                <li title="{{framework.build.devCommand}}">
+                    <span class="tech-key">Dev Command</span>
+                    <span class="tech-value">npm run dev</span>
+                </li>
+                <li title="{{framework.build.testCommand}}">
+                    <span class="tech-key">Test Command</span>
+                    <span class="tech-value">npm run test</span>
+                </li>
+                <li title="Lint all {{ framework.build.lintFiles | join(', ') }} files">
+                    <span class="tech-key">Lint Command</span>
+                    <span class="tech-value" title="{{framework.build.testCommand}}">npm run lint</span>
+                </li>
+                <li title="{{ framework.build.buildCommand }}">
+                    <span class="tech-key">Build Command</span>
+                    <span class="tech-value">npm run build</span>
+                </li>
+                <li title="Serves the built output from {{ framework.buildDir or "dist" }}">
+                    <span class="tech-key">Start</span>
+                    <span class="tech-value">npm start</span>
+                </li>
+            </ul>
+            <small>
+                For troubleshooting, use <code>npm run verify</code> from the root of the project.
+            </small>
+        </article>
+
+
+        <article class="app-requirements-section">
+            <h3>App Requirements</h3>
+            <p>
+                The purpose of this project, was to build the same identical app in <i>every</i> frontend framework, in order to benchmark and compare their performance.
+                As such, each app is built to meet identical requirements, which are then verified with the test suite.
+            </p>
+            <div class="requirement-group">
+                <div>
+                    <h4>Technical Requirements</h4>
+                    <ul>
+                        <li>Binding user input and validation</li>
+                        <li>Fetching external data asynchronously</li>
+                        <li>Basic state management of components</li>
+                        <li>Handling fallback views (loading, errors)</li>
+                        <li>Using browser features (location, storage, etc)</li>
+                        <li>Logic blocks, for iterative content and conditionals</li>
+                        <li>Lifecycle methods (mounting, updating, unmounting)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Feature Requirements</h4>
+                    <ul>
+                        <li>🌦️ Live weather conditions</li>
+                        <li>📅 7-day weather forecast</li>
+                        <li>🔍 City search functionality</li>
+                        <li>📍 Geolocation support</li>
+                        <li>💾 Persistent location storage</li>
+                        <li>📱 Responsive design</li>
+                        <li>♿ Accessible interface</li>
+                        <li>🎨 Multi-theme support</li>
+                        <li>🧪 Fully unit tested</li>
+                        <li>🌐 Internationalized</li>
+                    </ul>
+                </div>
+                <img class="screenshot" src="https://raw.githubusercontent.com/Lissy93/framework-benchmarks/refs/heads/main/assets/screenshot.png" />
+            </div>
+        </article>
+
+        <!-- Framework Implementation -->
+        {% if framework_commentary.implementation %}
+        <article class="framework-implementation-section">
+            <h3>{{framework.name}} Implementation</h3>
+            <div class="framework-implementation">
+                {{ framework_commentary.implementation | safe }}
+            </div>
+        </article>
+        {% endif %}
+
+        
+        <!-- Stats Grid -->
+        <!-- <div class="framework-stats">
+            <div class="stat-card">
+                <div class="stat-value">95</div>
+                <div class="stat-label">Performance</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">42kb</div>
+                <div class="stat-label">Bundle Size</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">2.1s</div>
+                <div class="stat-label">Build Time</div>
+            </div>
+        </div> -->
+    
+        <div class="group-header group-header-info">
+            <h2>About {{framework.name}}</h2>
+        </div>
+
+        <!-- Framework Stats -->
+        <div class="framework-stats" id="framework-stats-container">
+            <!-- Stats will be populated by JavaScript -->
+        </div>
+
+        <article class="framework-example-app">
+            <h3>Real-world App</h3>
+            {% if framework.exampleRealApp.logo %}
+            Since the weather app is very simple, and doesn't show of the full features of a framework,
+            it may be helpful to see a more practical implementation of a {{ framework.name }} app. So, checkout:
+            <div class="example-app-info">
+                <a href="{{ framework.exampleRealApp.repo }}" target="_blank">
+                    <img src="{{ framework.exampleRealApp.logo }}" alt="{{ framework.exampleRealApp.title }} Logo" width="64" />
+                </a>
+                <div>
+                    <h4>{{framework.exampleRealApp.title}}</h4>
+                    <p>{{framework.exampleRealApp.longDescription or framework.exampleRealApp.description}}</p>
+                    <p class="example-app-links">
+                        <a href="{{ framework.exampleRealApp.website }}">Website</a>
+                        •
+                        <a href="{{ framework.exampleRealApp.repo }}">GitHub</a>
+                    </p>
+                </div>
+            </div>
+            {% else %}
+            <div>Coming soon...</div>
+            {% endif %}
+        </article>
+        
+        <!-- About Section -->
+        <article class="framework-video">
+            <h3>Intro to {{ framework.name or framework.id.title() }}</h3>
+            <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/{{framework.meta.video}}" 
+                title="YouTube video"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowfullscreen>
+            </iframe>
+            </div>
+        </article>
+        
+        <!-- About Framework Section -->
+        {% if framework_commentary.about %}
+        <article class="framework-about-section">
+            <h3>About {{framework.name}}</h3>
+            <div class="framework-about">
+                {{ framework_commentary.about | safe }}
+            </div>
+        </article>
+        {% endif %}
+        
+        <!-- My pointless thoughts on this pointless framework -->
+        {% if framework_commentary.thoughts %}
+        <article class="framework-thoughts-section">
+            <h3>My thoughts on {{framework.name}}</h3>
+            <div class="framework-about">
+                {{ framework_commentary.thoughts | safe }}
+            </div>
+        </article>
+        {% endif %}
+        
+        <!-- Navigation -->
+        <div class="framework-nav">
+            {% if prev_framework %}
+            <a href="/{{ prev_framework.id }}/" class="nav-card">
+                <div class="nav-label">Previous</div>
+                <div class="nav-title">{{ prev_framework.name or prev_framework.id.title() }}</div>
+            </a>
+            {% else %}
+            <div></div>
+            {% endif %}
+            
+            <a href="/" class="nav-card">
+                <div class="nav-label">Home</div>
+                <div class="nav-title">All Frameworks</div>
+            </a>
+            
+            {% if next_framework %}
+            <a href="/{{ next_framework.id }}/" class="nav-card">
+                <div class="nav-label">Next</div>
+                <div class="nav-title">{{ next_framework.name or next_framework.id.title() }}</div>
+            </a>
+            {% else %}
+            <div></div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="/static/css/framework.css">
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load and display framework stats
+    fetch('/static/framework-stats.json')
+        .then(response => response.json())
+        .then(data => {
+            const frameworkId = '{{ framework.id }}';
+            const frameworkData = data.items.find(item => item.id === frameworkId);
+            
+            if (frameworkData) {
+                displayFrameworkStats(frameworkData);
+            } else {
+                // Hide stats section if no data available
+                document.getElementById('framework-stats-container').style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading framework stats:', error);
+            document.getElementById('framework-stats-container').style.display = 'none';
+        });
+});
+
+function displayFrameworkStats(data) {
+    const container = document.getElementById('framework-stats-container');
+    
+    // Helper functions
+    const formatNumber = (num) => {
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+        return num?.toLocaleString() || '0';
+    };
+    
+    const formatAge = (dateStr) => {
+        if (!dateStr) return 'Unknown';
+        const date = new Date(dateStr);
+        const now = new Date();
+        const years = Math.floor((now - date) / (1000 * 60 * 60 * 24 * 365));
+        const months = Math.floor(((now - date) % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+        
+        if (years > 0) {
+            return months > 0 ? `${years}y ${months}m` : `${years}y`;
+        } else if (months > 0) {
+            return `${months}m`;
+        } else {
+            const days = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+            return `${days}d`;
+        }
+    };
+    
+    const formatDate = (dateStr) => {
+        if (!dateStr) return 'Unknown';
+        return new Date(dateStr).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short'
+        });
+    };
+    
+    // Create stats cards
+    const statsCards = [
+        {
+            label: 'Stars',
+            primary: formatNumber(data.stars),
+            secondary: `${formatNumber(data.forks)} forks`
+        },
+        {
+            label: 'Contributors',
+            primary: formatNumber(data.contributors),
+            secondary: `${data.top_author_pct}% by <a target="_blank" href="https://github.com/${data.top_author_name}">@${data.top_author_name}</a>`
+        },
+        {
+            label: 'Age',
+            primary: formatAge(data.first_commit),
+            secondary: `Last update ${formatDate(data.last_commit)}`
+        },
+        {
+            label: 'Downloads',
+            primary: data.downloads ? formatNumber(data.downloads) : 'N/A',
+            secondary: data.npm_latest ? `v${data.npm_latest} • ${formatDate(data.npm_latest_date)}` : 'No NPM package'
+        },
+        {
+            label: 'Open Issues',
+            primary: formatNumber(data.open_issues),
+            secondary: `${data.closed_issues} closed issues`
+        }
+    ];
+    
+    // Generate HTML
+    const statsHTML = statsCards.map(stat => `
+        <div class="stat-card card card-small">
+            <h4 class="stat-label">${stat.label}</h4>
+            <div class="stat-primary">${stat.primary}</div>
+            <div class="stat-secondary">${stat.secondary}</div>
+        </div>
+    `).join('');
+    
+    container.innerHTML = statsHTML;
+}
+</script>
+{% endblock %}

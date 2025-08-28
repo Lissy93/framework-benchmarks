@@ -1,0 +1,316 @@
+name: 🔨 Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      frameworks:
+        description: 'Frameworks to build (comma-separated, see frameworks.json for available options)'
+        required: false
+        default: 'all'
+        type: string
+  push:
+    branches: [ main ]
+    paths:
+      - 'apps/**'
+      - 'results/**'
+      - 'website/**'
+      - 'frameworks.json'
+      - 'config.json'
+  workflow_run:
+    workflows: ["🔄 Transform Results"]
+    types: [completed]
+    branches: [main]
+
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+jobs:
+  setup:
+    name: Setup and Prepare Environment
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      frameworks: ${{ steps.matrix.outputs.frameworks }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+          
+      - name: Install dependencies and setup project
+        run: |
+          pip install -r scripts/requirements.txt
+          npm ci
+          python scripts/setup/main.py --skip-build
+          
+      - name: Verify setup
+        run: python scripts/verify/check.py
+        
+      - name: Cache setup for build jobs
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            apps/*/public
+            apps/*/static
+            assets
+          key: setup-cache-${{ github.sha }}
+        
+      - name: Determine frameworks to build
+        id: matrix
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.frameworks }}" != "all" ]; then
+            frameworks="${{ github.event.inputs.frameworks }}"
+          else
+            frameworks=$(python scripts/get_frameworks.py)
+          fi
+          echo "frameworks=$(echo "[$frameworks]" | sed 's/,/", "/g' | sed 's/\[/[\"/ ; s/\]/\"]/')" >> $GITHUB_OUTPUT
+          echo "Building frameworks: $frameworks"
+
+  build:
+    name: Build ${{ matrix.framework }}
+    needs: setup
+    if: fromJSON(needs.setup.outputs.frameworks)[0] != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: ${{ fromJSON(needs.setup.outputs.frameworks) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+          
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+        
+      - name: Restore setup cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            apps/*/public
+            apps/*/static
+            assets
+          key: setup-cache-${{ github.sha }}
+          fail-on-cache-miss: true
+        
+      - name: Build ${{ matrix.framework }}
+        id: build-run
+        run: |
+          if python scripts/run/build.py --framework ${{ matrix.framework }} --ci --for-comparison; then
+            echo "status=success" >> $GITHUB_OUTPUT
+          else
+            echo "status=failure" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+          
+      - name: Log build status
+        if: always()
+        run: |
+          echo "Build status for ${{ matrix.framework }}: ${{ steps.build-run.outputs.status }}"
+          if [ "${{ steps.build-run.outputs.status }}" == "success" ]; then
+            echo "✅ ${{ matrix.framework }} built successfully"
+          else
+            echo "❌ ${{ matrix.framework }} build failed"
+          fi
+          
+      - name: Generate build badge
+        if: always()
+        run: |
+          if [[ "${{ steps.build-run.outputs.status }}" == "success" ]]; then
+            status="Success"
+            color="3cd96b"
+            label_color="33b348"
+          else
+            status="Failed"
+            color="ff5666"
+            label_color="d5334a"
+          fi
+          
+          badge_url="https://img.shields.io/badge/Build-${status}-${color}?logo=rocket&logoColor=fff&labelColor=${label_color}"
+          curl -o "build-${{ matrix.framework }}.svg" "$badge_url"
+          
+      - name: Upload badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: badge-build-${{ matrix.framework }}
+          path: build-${{ matrix.framework }}.svg
+          retention-days: 1
+
+  website:
+    name: Generate Static Website
+    needs: [setup, build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+          
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+        
+      - name: Restore setup cache
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            apps/*/public
+            apps/*/static
+            assets
+          key: setup-cache-${{ github.sha }}
+          fail-on-cache-miss: true
+          
+      - name: Build all frameworks and generate website
+        run: |
+          echo "Building all frameworks for comparison website..."
+          npm run build -- --for-comparison 
+          
+      - name: Upload website artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: website
+          path: dist-website
+          retention-days: 30
+
+  deploy:
+    name: Deploy Website
+    needs: [setup, build, website]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Download website
+        uses: actions/download-artifact@v4
+        with:
+          name: website
+          path: website-artifact
+          
+      - name: Deploy to website branch
+        run: |
+          set -euo pipefail
+          git config user.name 'liss-bot'
+          git config user.email 'alicia-gh-bot@mail.as93.net'
+
+          # Switch to website branch (create if missing)
+          if git ls-remote --exit-code --heads origin website >/dev/null 2>&1; then
+            git fetch origin website:website
+            git checkout website
+            git pull origin website || true
+          else
+            git checkout --orphan website
+            git commit --allow-empty -m "init website branch" || true
+          fi
+
+          # Ensure artifact exists
+          if [ ! -d "website-artifact" ] || [ -z "$(ls -A website-artifact 2>/dev/null)" ]; then
+            echo "⚠️ No website files found in ./website-artifact"
+            exit 1
+          fi
+
+          # Clear branch root but keep .git and the downloaded folder
+          find . -maxdepth 1 -mindepth 1 \
+            -not -name '.git' \
+            -not -name 'website-artifact' \
+            -exec rm -rf {} + 2>/dev/null || true
+
+          # Copy website files (includes dotfiles)
+          cp -a website-artifact/. .
+
+          # Remove the website-artifact directory after copying
+          rm -rf website-artifact
+
+          # Commit only if there are changes
+          git add -A
+          
+          if git diff --staged --quiet; then
+            echo "ℹ️ No website changes to deploy"
+          else
+            git commit -m "Deploy website"
+            git push origin website
+            echo "✅ Successfully deployed website"
+          fi
+
+  badges:
+    name: Update Build Badges
+    needs: [setup, build]
+    if: always()
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          
+      - name: Download all badges
+        uses: actions/download-artifact@v4
+        with:
+          pattern: badge-build-*
+          path: badges
+          merge-multiple: true
+          
+      - name: Commit badges
+        run: |
+          git config user.name 'liss-bot'
+          git config user.email 'alicia-gh-bot@mail.as93.net'
+          
+          # Switch to badges branch
+          git fetch origin badges:badges 2>/dev/null || git checkout --orphan badges
+          git checkout badges 2>/dev/null || true
+          git pull origin badges 2>/dev/null || true
+          
+          # Copy badges and commit
+          cp badges/*.svg . 2>/dev/null || echo "⚠️ No badge files found"
+          
+          if git add *.svg && git diff --staged --quiet; then
+            echo "ℹ️ No badge changes to commit"
+          else
+            git commit -m "Update build badges"
+            if git push origin badges; then
+              echo "✅ Successfully updated build badges"
+            else
+              echo "⚠️ Failed to push badge updates"
+              exit 1
+            fi
+          fi

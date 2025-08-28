@@ -1,0 +1,474 @@
+name: 🧪 Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      frameworks:
+        description: 'Frameworks to test (comma-separated, see frameworks.json for available options)'
+        required: false
+        default: 'all'
+        type: string
+  pull_request:
+    branches: [ main, dev ]
+    types: [ opened, synchronize, reopened ]
+  push:
+    branches: [ main ]
+    paths:
+      - 'apps/**'
+      - 'frameworks.json'
+      - 'config.json'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  actions: read
+
+env:
+  NODE_VERSION: '18'
+  PYTHON_VERSION: '3.9'
+
+jobs:
+  setup:
+    name: Setup and Sync Assets
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      frameworks: ${{ steps.matrix.outputs.frameworks }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+          
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+          
+      - name: Install root dependencies
+        run: |
+          npm ci
+          npx playwright install --with-deps
+          
+      - name: Run Python setup script
+        run: python scripts/setup/main.py --skip-build
+        
+      - name: Cache node_modules and Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-node-modules-playwright-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-playwright-
+            ${{ runner.os }}-node-modules-
+            
+      - name: Determine frameworks to test
+        id: matrix
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ github.event.inputs.frameworks }}" != "all" ]; then
+            frameworks="${{ github.event.inputs.frameworks }}"
+          else
+            # Get framework list from Python config
+            frameworks=$(python scripts/get_frameworks.py)
+          fi
+          echo "frameworks=$(echo "[$frameworks]" | sed 's/,/", "/g' | sed 's/\[/[\"/ ; s/\]/\"]/')" >> $GITHUB_OUTPUT
+          echo "Testing frameworks: $frameworks"
+
+  test:
+    name: Test ${{ matrix.framework }}
+    needs: setup
+    if: fromJSON(needs.setup.outputs.frameworks)[0] != ''
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        framework: ${{ fromJSON(needs.setup.outputs.frameworks) }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+          cache: 'pip'
+          cache-dependency-path: scripts/requirements.txt
+          
+      - name: Install Python dependencies
+        run: pip install -r scripts/requirements.txt
+          
+      - name: Restore dependencies cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            apps/*/node_modules
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-node-modules-playwright-${{ hashFiles('**/package-lock.json') }}
+          
+      - name: Install dependencies (if cache miss)
+        run: |
+          if [ ! -d "node_modules" ]; then
+            echo "Dependencies cache miss - installing"
+            npm ci
+          else
+            echo "Dependencies cache hit"
+          fi
+          
+      - name: Add node_modules/.bin to PATH
+        run: echo "${{ github.workspace }}/node_modules/.bin" >> $GITHUB_PATH
+          
+      - name: Install Playwright browsers (if cache miss)
+        run: |
+          if [ ! -d ~/.cache/ms-playwright ]; then
+            echo "Playwright cache miss - installing browsers"
+            npx playwright install --with-deps
+          else
+            echo "Playwright cache hit - skipping browser installation"
+          fi
+          
+      - name: Verify Playwright installation
+        run: |
+          echo "Checking @playwright/test availability..."
+          if [ -f "node_modules/@playwright/test/package.json" ]; then
+            echo "✅ @playwright/test found in node_modules"
+          else
+            echo "❌ @playwright/test not found, forcing npm ci"
+            npm ci
+          fi
+          
+      - name: Run setup for project preparation
+        run: |
+          python scripts/setup/main.py --skip-build
+          
+      - name: Run tests for ${{ matrix.framework }}
+        id: test-run
+        uses: nick-fields/retry@v2
+        with:
+          timeout_minutes: 10
+          max_attempts: 4
+          retry_wait_seconds: 30
+          command: |
+            echo "🧪 Running ${{ matrix.framework }} tests (attempt ${{ github.run_attempt }})"
+            # Add framework context to test output for better annotations
+            echo "::group::${{ matrix.framework }} Framework Tests"
+            npm run test:${{ matrix.framework }} -- --reporter=github --reporter=list
+            echo "::endgroup::"
+            
+      - name: Create detailed result file
+        if: always()
+        run: |
+          mkdir -p test-status test-details
+          
+          # Determine final status (failed if all retries exhausted)
+          if [[ "${{ steps.test-run.outcome }}" == "success" ]]; then
+            status="passed"
+            icon="✅"
+          else
+            status="failed"
+            icon="❌"
+          fi
+          
+          # Create status file
+          echo "$status" > test-status/${{ matrix.framework }}.txt
+          
+          # Create detailed results file
+          cat > test-details/${{ matrix.framework }}.json << EOF
+          {
+            "framework": "${{ matrix.framework }}",
+            "status": "$status",
+            "icon": "$icon",
+            "attempts": ${{ steps.test-run.outputs.total_attempts || '1' }},
+            "final_attempt": ${{ steps.test-run.outputs.exit_code || '0' }},
+            "duration": "${{ steps.test-run.outputs.elapsed_time || 'unknown' }}",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "runner": "${{ runner.os }}",
+            "node_version": "$(node --version)",
+            "playwright_version": "$(npx playwright --version | head -1)"
+          }
+          EOF
+            
+      - name: Upload test results (conditional)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.framework }}-test-results
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 30
+          
+      - name: Upload test status and details
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.framework }}-status
+          path: |
+            test-status/${{ matrix.framework }}.txt
+            test-details/${{ matrix.framework }}.json
+          retention-days: 7
+          
+      - name: Generate test badge
+        if: always()
+        run: |
+          # Determine badge status and color
+          if [[ "${{ steps.test-run.outcome }}" == "success" ]]; then
+            status="Passing"
+            color="3cd96b"
+            label_color="33b348"
+          else
+            attempts="${{ steps.test-run.outputs.total_attempts || '1' }}"
+            if [[ "$attempts" -gt "1" ]]; then
+              status="Unstable"
+              color="fb974e"
+              label_color="d58144"
+            else
+              status="Failing"
+              color="ff5666"
+              label_color="d5334a"
+            fi
+          fi
+          
+          # Generate badge
+          badge_url="https://img.shields.io/badge/Tests-${status}-${color}?logo=vitest&logoColor=fff&labelColor=${label_color}"
+          curl -o "test-${{ matrix.framework }}.svg" "$badge_url"
+          
+      - name: Upload badge
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: badge-test-${{ matrix.framework }}
+          path: test-${{ matrix.framework }}.svg
+          retention-days: 1
+
+  summary:
+    name: Test Summary
+    needs: [setup, test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          
+      - name: Download all test status artifacts
+        if: always()
+        uses: actions/download-artifact@v4
+        with:
+          pattern: "*-status"
+          path: test-artifacts
+          merge-multiple: true
+          
+      - name: Generate test summary
+        run: |
+          cd test-artifacts || exit 1
+          
+          # Get frameworks and initialize counters
+          frameworks="${{ needs.setup.outputs.frameworks }}"
+          frameworks_array=($(echo "$frameworks" | tr -d '[]"' | tr ',' '\n' | xargs))
+          passed_count=0
+          failed_count=0
+          total_count=${#frameworks_array[@]}
+          
+          # Generate summary header
+          {
+            echo "# 🧪 Test Results Summary"
+            echo ""
+            success_rate=$(( (total_count - failed_count) * 100 / total_count ))
+            if [[ $failed_count -eq 0 ]]; then
+              echo "> 🎉 **Perfect score!** All ${total_count} frameworks passed their tests."
+            elif [[ $success_rate -ge 80 ]]; then
+              echo "> ✅ **${success_rate}% success rate** - ${passed_count}/${total_count} frameworks passing."
+            else
+              echo "> ⚠️ **${success_rate}% success rate** - ${failed_count} frameworks need attention."
+            fi
+            echo ""
+            echo "| Framework | Status | Attempts |"
+            echo "|-----------|--------|----------|"
+          } >> "$GITHUB_STEP_SUMMARY"
+          
+          # Process each framework
+          for framework in "${frameworks_array[@]}"; do
+            status_file="test-status/${framework}.txt"
+            details_file="test-details/${framework}.json"
+            
+            if [[ -f "$status_file" ]]; then
+              status=$(cat "$status_file" 2>/dev/null || echo "unknown")
+              
+              # Parse JSON details
+              attempts="1"
+              if [[ -f "$details_file" ]] && command -v jq >/dev/null 2>&1; then
+                attempts=$(jq -r '.attempts // "1"' "$details_file" 2>/dev/null || echo "1")
+              fi
+              
+              # Build table row
+              if [[ "$status" == "passed" ]]; then
+                icon="✅"
+                passed_count=$((passed_count + 1))
+              else
+                icon="❌"
+                failed_count=$((failed_count + 1))
+              fi
+              
+              echo "| **${framework}** | ${icon} **${status^}** | ${attempts} |" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "| **${framework}** | ⚠️ **Missing** | - |" >> "$GITHUB_STEP_SUMMARY"
+              failed_count=$((failed_count + 1))
+            fi
+          done
+          
+          # Add workflow information
+          {
+            echo ""
+            echo "**Workflow Info:** Triggered by ${{ github.event_name }} on \`${{ github.ref_name }}\` by @${{ github.actor }} | [View Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})"
+          } >> "$GITHUB_STEP_SUMMARY"
+          
+          # Set environment variables
+          success_rate=$(( passed_count * 100 / total_count ))
+          echo "FAILED_COUNT=$failed_count" >> $GITHUB_ENV
+          echo "PASSED_COUNT=$passed_count" >> $GITHUB_ENV
+          echo "SUCCESS_RATE=$success_rate" >> $GITHUB_ENV
+          
+          cd ..
+          
+      - name: Set workflow status
+        run: |
+          echo "📊 Final Results:"
+          echo "   ✅ Passed: $PASSED_COUNT"
+          echo "   ❌ Failed: $FAILED_COUNT"
+          echo "   📈 Success Rate: $SUCCESS_RATE%"
+          
+          if [[ "$FAILED_COUNT" -gt 0 ]]; then
+            echo ""
+            echo "❌ Some framework tests failed."
+            echo "ℹ️  This is expected behavior - the workflow continues even when individual frameworks fail."
+            echo "📋 Check the summary above for detailed results."
+            # Don't exit 1 here since we want the workflow to show as successful
+            # if it completed (even with some framework failures)
+          else
+            echo ""
+            echo "✅ All framework tests passed successfully. Party time! 🎉"
+          fi
+          
+      - name: Create status badge data
+        if: always()
+        run: |
+          mkdir -p badge-data
+          
+          # Calculate total frameworks from the array
+          frameworks="${{ needs.setup.outputs.frameworks }}"
+          frameworks_array=($(echo "$frameworks" | tr -d '[]"' | tr ',' '\n' | xargs))
+          total_count=${#frameworks_array[@]}
+          
+          # Determine badge color (with null checks)
+          if [[ -z "$FAILED_COUNT" || -z "$SUCCESS_RATE" ]]; then
+            badge_color="lightgrey"
+            badge_message="unknown"
+          elif [ $FAILED_COUNT -eq 0 ]; then
+            badge_color="brightgreen" 
+            badge_message="${PASSED_COUNT}/${total_count} passed"
+          elif [ $SUCCESS_RATE -ge 80 ]; then
+            badge_color="green"
+            badge_message="${PASSED_COUNT}/${total_count} passed"
+          elif [ $SUCCESS_RATE -ge 50 ]; then
+            badge_color="yellow"
+            badge_message="${PASSED_COUNT}/${total_count} passed"
+          else
+            badge_color="red"
+            badge_message="${PASSED_COUNT}/${total_count} passed"
+          fi
+          
+          # Create badge JSON
+          cat > badge-data/test-results.json << EOF
+          {
+            "schemaVersion": 1,
+            "label": "tests",
+            "message": "${badge_message}",
+            "color": "${badge_color}",
+            "namedLogo": "playwright",
+            "logoColor": "white"
+          }
+          EOF
+          
+      - name: Upload badge data
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: badge-data
+          path: badge-data/test-results.json
+          retention-days: 90
+
+  badges:
+    name: Update Test Badges
+    needs: [setup, test]
+    if: always()
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout with bot token
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.BOT_TOKEN }}
+          fetch-depth: 0
+          
+      - name: Download all badges
+        uses: actions/download-artifact@v4
+        with:
+          pattern: badge-test-*
+          path: badges
+          merge-multiple: true
+          
+      - name: Commit badges
+        run: |
+          git config user.name 'liss-bot'
+          git config user.email 'alicia-gh-bot@mail.as93.net'
+          
+          # Switch to badges branch
+          git fetch origin badges:badges 2>/dev/null || git checkout --orphan badges
+          git checkout badges 2>/dev/null || true
+          git pull origin badges 2>/dev/null || true
+          
+          # Copy badges and commit
+          cp badges/*.svg . 2>/dev/null || echo "⚠️ No badge files found"
+          
+          if git add *.svg && git diff --staged --quiet; then
+            echo "ℹ️ No badge changes to commit"
+          else
+            git commit -m "Update test badges"
+            if git push origin badges; then
+              echo "✅ Successfully updated test badges"
+            else
+              echo "⚠️ Failed to push badge updates"
+              exit 1
+            fi
+          fi

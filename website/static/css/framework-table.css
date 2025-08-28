@@ -1,0 +1,238 @@
+/* Framework Stats Table Styles */
+.framework-stats {
+  margin: 2rem 0;
+  padding: 0 1rem;
+}
+
+.stats-table-container {
+  height: 640px;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background: var(--bg-primary);
+}
+
+/* AG Grid theme customization */
+.ag-theme-alpine-dark,
+.ag-theme-alpine {
+  --ag-header-height: 48px;
+  --ag-row-height: 52px;
+  --ag-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --ag-font-size: 14px;
+  --ag-border-radius: 8px;
+}
+
+.ag-theme-alpine {
+  --ag-background-color: #ffffff;
+  --ag-header-background-color: #f8f9fa;
+  --ag-odd-row-background-color: #ffffff;
+  --ag-even-row-background-color: #f8f9fa;
+  --ag-row-hover-color: #e3f2fd;
+  --ag-border-color: #e0e0e0;
+  --ag-header-foreground-color: #333;
+  --ag-foreground-color: #333;
+}
+
+.ag-theme-alpine-dark {
+  --ag-background-color: #1e1e1e;
+  --ag-header-background-color: #2d2d2d;
+  --ag-odd-row-background-color: #1e1e1e;
+  --ag-even-row-background-color: #252525;
+  --ag-row-hover-color: #333;
+  --ag-border-color: #404040;
+  --ag-header-foreground-color: #ffffff;
+  --ag-foreground-color: #ffffff;
+}
+
+/* Framework logo cell */
+.framework-logo-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 0;
+}
+
+.framework-logo-cell img {
+  width: 24px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.framework-name {
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* Number formatting */
+.number-cell {
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', monospace;
+  font-size: 13px;
+  text-align: right;
+}
+
+.large-number {
+  font-weight: 600;
+}
+
+/* Progress bars for relative values */
+.progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 100%;
+}
+
+.progress-fill {
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg, #4caf50, #2196f3);
+  transition: width 0.3s ease;
+}
+
+.progress-bg {
+  flex: 1;
+  height: 6px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  position: relative;
+  @media (max-width: 1024px) {
+    display: none;
+  }
+}
+
+.progress-text {
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 60px;
+  text-align: right;
+}
+
+/* License badges */
+.license-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.license-mit {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.license-bsd {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.license-other {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+/* Dark mode license badges */
+.ag-theme-alpine-dark .license-mit {
+  background: rgba(76, 175, 80, 0.2);
+  color: #81c784;
+}
+
+.ag-theme-alpine-dark .license-bsd {
+  background: rgba(255, 152, 0, 0.2);
+  color: #ffb74d;
+}
+
+.ag-theme-alpine-dark .license-other {
+  background: rgba(156, 39, 176, 0.2);
+  color: #ba68c8;
+}
+
+/* Date formatting */
+.date-cell {
+  font-size: 12px;
+  color: #666;
+}
+
+.ag-theme-alpine-dark .date-cell {
+  color: #bbb;
+}
+
+/* Language tags */
+.language-tag {
+  display: inline-block;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-size: 11px;
+  font-weight: 500;
+  background: rgba(33, 150, 243, 0.1);
+  color: #1976d2;
+}
+
+.ag-theme-alpine-dark .language-tag {
+  background: rgba(33, 150, 243, 0.2);
+  color: #64b5f6;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .stats-table-container {
+    height: 500px;
+  }
+  
+  .framework-stats {
+    padding: 0 0.5rem;
+  }
+}
+
+/* Header tooltips */
+.ag-header-cell-text {
+  font-weight: 600;
+}
+
+@media (max-width: 640px) {
+  .framework-stats {
+    margin: 2rem auto;
+    padding: 0;
+    overflow-x: auto;
+  }
+  
+  .stats-table-container {
+    height: 400px;
+    min-width: 800px;
+    border-radius: 0;
+  }
+  
+  .ag-theme-alpine,
+  .ag-theme-alpine-dark {
+    --ag-font-size: 11px;
+    --ag-header-height: 36px;
+    --ag-row-height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .framework-stats {
+    position: relative;
+  }
+  
+  .stats-table-container {
+    display: none;
+  }
+  
+  .framework-stats::after {
+    content: '📱 Community stats table is hidden on mobile devices. View on desktop or tablet for full statistics.';
+    display: block;
+    text-align: center;
+    padding: 2rem 1rem;
+    background: var(--card-bg, white);
+    border: 1px solid var(--card-border, #e2e8f0);
+    border-radius: var(--border-radius, 0.75rem);
+    color: var(--text-muted, #718096);
+    font-size: 0.9rem;
+    margin: 0 1rem;
+    line-height: 1.5;
+  }
+}
