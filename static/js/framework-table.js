@@ -5,6 +5,7 @@ class FrameworkTable {
     this.frameworksData = frameworksData;
     this.gridApi = null;
     this.isDark = document.documentElement.classList.contains('dark-theme');
+    this.frameworksData = this.frameworksData.filter(fw => fw?.id !== 'vanilla');
   }
 
   formatNumber(value, type = 'default') {
@@ -61,7 +62,7 @@ class FrameworkTable {
         pinned: 'left',
         cellRenderer: (params) => {
           const framework = params.data;
-          const iconUrl = `https://cdn.simpleicons.org/${framework.id}`;
+          const iconUrl = `https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/${framework.id}.png`;
           return `
             <div class="framework-logo-cell">
               <img src="${iconUrl}" alt="${framework.name}" onerror="this.style.display='none'">
@@ -136,10 +137,7 @@ class FrameworkTable {
         type: 'numericColumn',
         cellRenderer: (params) => {
           const open = params.value || 0;
-          const closed = params.data.closed_issues || 0;
-          const total = open + closed;
-          const openPct = total > 0 ? (open / total) * 100 : 0;
-          const color = openPct > 20 ? '#f44336' : openPct > 10 ? '#ff9800' : '#4caf50';
+          const color = open > 400 ? '#f44336' : open > 200 ? '#ff9800' : '#4caf50';
           return `<span class="number-cell" style="color: ${color}">${open}</span>`;
         },
         sortable: true,

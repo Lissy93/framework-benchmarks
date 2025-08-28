@@ -7,6 +7,11 @@
     <meta name="description" content="Learn about Vue, explore the weather app implementation, and view performance metrics.">
     <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
     
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <!-- CSS -->
     <link rel="stylesheet" href="/static/css/main.css">
 <link rel="stylesheet" href="/static/css/framework.css">
@@ -45,7 +50,7 @@
             </div>
             <div class="nav-links">
                 <a href="/" class="nav-link">Home</a>
-                <a href="https://github.com/lissy93/weather-front" class="nav-link" target="_blank">GitHub</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
             </div>
         </nav>
     </header>
@@ -85,7 +90,7 @@
                     <span>View Vue Weather App</span>
                 </div>
             </a>
-            <a href="https://github.com/Lissy93/weather-front/tree/main/apps/vue" class="action-card">
+            <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vue" class="action-card">
                 <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M16 18L22 12L16 6M8 6L2 12L8 18"/>
                 </svg>
@@ -116,14 +121,14 @@
                 <div class="result-card">
                     <h4>Build Time</h4>
                     <div class="result-value">
-                            0.8s
+                            1.8s
                     </div>
                     <div class="result-detail">Average</div>
                 </div>
                 <div class="result-card">
                     <h4>Load Time</h4>
                     <div class="result-value">
-                            1.8s
+                            1.9s
                     </div>
                     <div class="result-detail">LCP</div>
                 </div>
@@ -147,15 +152,15 @@
                     </div>
                     <div class="metric-item">
                         <div class="metric-label">FCP</div>
-                        <div class="metric-value">1660ms</div>
+                        <div class="metric-value">1572ms</div>
                     </div>
                     <div class="metric-item">
                         <div class="metric-label">LCP</div>
-                        <div class="metric-value">1839ms</div>
+                        <div class="metric-value">1932ms</div>
                     </div>
                     <div class="metric-item">
                         <div class="metric-label">TBT</div>
-                        <div class="metric-value">0ms</div>
+                        <div class="metric-value">3ms</div>
                     </div>
                 </div>
             </article>
@@ -190,12 +195,12 @@
                     <div class="metric-item">
                         <div class="metric-label">Build Time</div>
                         <div class="metric-value">
-                                0.8s
+                                1.8s
                         </div>
                     </div>
                     <div class="metric-item">
                         <div class="metric-label">Output Size</div>
-                        <div class="metric-value">1.8MB</div>
+                        <div class="metric-value">2.2MB</div>
                     </div>
                     <div class="metric-item">
                         <div class="metric-label">HMR Time</div>
@@ -218,15 +223,15 @@
             <ul class="status-list">
                 <li title="Lint checks for Vue">
                     <span class="tech-key">Lint</span>
-                    <img class="badge" src="https://https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/lint-vue.svg" />
+                    <img class="badge" src="https://https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-vue.svg" />
                 </li>
                 <li title="Build and deployment status for Vue">
                     <span class="tech-key">Build</span>
-                    <img class="badge" src="https://https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/build-vue.svg" />
+                    <img class="badge" src="https://https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-vue.svg" />
                 </li>
                 <li title="Unit and integration tests for Vue">
                     <span class="tech-key">Test</span>
-                    <img class="badge" src="https://https://raw.githubusercontent.com/Lissy93/weather-front/refs/heads/badges/test-vue.svg" />
+                    <img class="badge" src="https://https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-vue.svg" />
                 </li>
             </ul>
         </article>
@@ -234,11 +239,11 @@
         <article class="framework-links">
             <h3>Links</h3>
             <ul class="links-list">
-                <li><a href="https://github.com/lissy93/weather-front">View on GitHub</a></li>
+                <li><a href="https://github.com/lissy93/framework-benchmarks">View on GitHub</a></li>
                 <li><a href="/vue/app/">Vue App Demo</a></li>
-                <li><a href="https://github.com/Lissy93/weather-front/tree/main/apps/vue">Vue App Source</a></li>
-                <li><a href="https://github.com/Lissy93/weather-front/blob/main/.github/CONTRIBUTING.md">Contributing</a></li>
-                <li><a href="https://github.com/Lissy93/weather-front/blob/main/LICENSE">License</a></li>
+                <li><a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vue">Vue App Source</a></li>
+                <li><a href="https://github.com/lissy93/framework-benchmarks/blob/main/.github/CONTRIBUTING.md">Contributing</a></li>
+                <li><a href="https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE">License</a></li>
                 <li><a href="https://as93.net">More Apps</a></li>
             </ul>
         </article>
@@ -247,8 +252,9 @@
         <article class="framework-tech">
             <h3>Usage Instructions</h3>
             <p>
-                First, follow the <a href="https://github.com/Lissy93/weather-front?tab=readme-ov-file#usage">repo setup instructions</a>
-                Then cd into 'apps/vue' and and use the following commands:
+                First, follow the <a target="_blank" href="https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage">repo setup instructions</a>.<br>
+                Then cd into <a target="_blank" href="https://github.com/Lissy93/framework-benchmarks/tree/main/apps/vue">./apps/vue/</a>
+                and and use the following commands:
             </p>
 
             <ul class="tech-list">
@@ -313,7 +319,7 @@
                         <li>🌐 Internationalized</li>
                     </ul>
                 </div>
-                <img class="screenshot" src="https://i.ibb.co/ymGkLnMY/weather-front.png" />
+                <img class="screenshot" src="https://i.ibb.co/ymGkLnMY/framework-benchmarks.png" />
             </div>
         </article>
 
@@ -321,8 +327,7 @@
         <article class="framework-implementation-section">
             <h3>Vue Implementation</h3>
             <div class="framework-implementation">
-                <h3>Notable files</h3>
-<ul>
+                <ul>
 <li><code>src/App.vue</code> - Main component using Vue's Composition API</li>
 <li><code>src/services/weatherService.js</code> - API integration with Vue's reactive patterns  </li>
 <li><code>src/components/</code> - Single File Components with scoped styles</li>
@@ -395,6 +400,14 @@
         <article class="framework-about-section">
             <h3>About Vue</h3>
             <div class="framework-about">
+                <p>TEST123</p>
+            </div>
+        </article>
+        
+        <!-- My pointless thoughts on this pointless framework -->
+        <article class="framework-thoughts-section">
+            <h3>My thoughts on Vue</h3>
+            <div class="framework-about">
                 <p>Vue sits in the Goldilocks zone - not as minimal as Alpine, not as opinionated as Angular, just right for most projects. It feels like the framework that actually learned from React's mistakes while keeping the good parts. Single File Components are brilliant, the template syntax is intuitive, and reactivity just works without the mental gymnastics of <code>useEffect</code>.</p>
 <p>For our weather app, Vue felt natural and productive. The <code>v-if</code>, <code>v-for</code>, and <code>v-model</code> directives handle conditional rendering, lists, and form inputs elegantly. No weird JSX quirks, no manual event handling - just HTML that does what you expect. The Composition API gives you React-style logic organization when you need it, but Options API is still there for simpler components.</p>
 <p>The reactivity system using Proxies is genuinely impressive. Change a data property and everything dependent on it updates automatically. No <code>useState</code>, no memoization hell, no stale closures. Vue tracks dependencies behind the scenes and updates only what needs to change.</p>
@@ -428,9 +441,9 @@
     <footer>
         <i>Free and open source, forever</i>
         <p>
-            <a href="https://github.com/lissy93/weather-front">lissy93/weather-front</a>
-            Licensed under
-            <a href="https://github.com/Lissy93/weather-front/blob/main/LICENSE">MIT</a>
+            <a href="https://github.com/lissy93/framework-benchmarks">lissy93/framework-benchmarks</a>
+            is licensed under
+            <a href="https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE">MIT</a>
              • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
         </p>
     </footer>

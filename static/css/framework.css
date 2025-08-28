@@ -34,6 +34,7 @@
     "example example example example example example video video video video video video"
     "example example example example example example video video video video video video"
     "about-section about-section about-section about-section about-section about-section about-section about-section about-section about-section about-section about-section"
+    "thoughts thoughts thoughts thoughts thoughts thoughts thoughts thoughts thoughts thoughts thoughts thoughts"
     "nav nav nav nav nav nav nav nav nav nav nav nav";
   
   gap: var(--grid-gap);
@@ -58,6 +59,7 @@
 .framework-example-app { grid-area: example; }
 .framework-video { grid-area: video; }
 .framework-about-section { grid-area: about-section; }
+.framework-thoughts-section { grid-area: thoughts; }
 .framework-nav { grid-area: nav; }
 
 /* =============================================================================
@@ -182,6 +184,9 @@ h4 {
   display: flex;
   flex-direction: column;
   gap: calc(var(--grid-gap) * 0.75);
+  @media (max-width: 600px) {
+    flex-direction: column !important;
+  }
 }
 
 .action-card {
@@ -572,12 +577,16 @@ h4 {
       "links links links tech tech tech"
       "requirements requirements requirements requirements requirements requirements"
       "requirements requirements requirements requirements requirements requirements"
+      "implementation implementation implementation implementation implementation implementation"
+      "implementation implementation implementation implementation implementation implementation"
       "commentary commentary commentary commentary commentary commentary"
       "commentary commentary commentary commentary commentary commentary"
       "info-header info-header info-header info-header info-header info-header"
       "stats stats stats stats stats stats"
       "example example example video video video"
       "example example example video video video"
+      "about-section about-section about-section about-section about-section about-section"
+      "thoughts thoughts thoughts thoughts thoughts thoughts"
       "nav nav nav nav nav nav";
   }
 
