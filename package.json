@@ -74,24 +74,16 @@
     "lint:vue": "eslint 'apps/vue/**/*.{js,vue}'",
     "// MISC SCRIPTS": "--------------------------------------------------------",
     "install:playwright": "playwright install",
-    "generate-mocks": "cd scripts && python setup/generate_mocks.py",
-    "generate-scripts": "cd scripts && python setup/generate_scripts.py",
-    "sync-assets": "cd scripts && python setup/sync_assets.py",
+    "generate-mocks": "python scripts/setup/generate_mocks.py",
+    "generate-scripts": "python scripts/setup/generate_scripts.py",
+    "sync-assets": "python scripts/setup/sync_assets.py",
     "benchmark": "python scripts/benchmark/main.py",
-    "benchmark:lighthouse": "cd scripts && python benchmark/lighthouse.py",
-    "perf": "node scripts/performance/index.js",
-    "perf:bundle": "node scripts/performance/index.js --only bundle",
-    "perf:html": "node scripts/performance/index.js --html",
-    "perf:lighthouse": "node scripts/performance/index.js --only lighthouse",
-    "perf:runtime": "node scripts/performance/index.js --only runtime",
-    "perf:vanjs": "node scripts/performance/index.js --frameworks vanjs",
-    "serve:production": "node scripts/performance/production-server.js",
-    "serve:single": "node scripts/performance/serve-single.js",
-    "verify": "cd scripts && python verify/main.py"
+    "benchmark:lighthouse": "python scripts/benchmark/lighthouse.py",
+    "verify": "python scripts/verify/main.py",
+    "build:static": "python scripts/run/build.py -- --static-site",
+    "transform": "python scripts/transform/benchmark_results.py --average --output-dir ./results "
   },
-  "dependencies": {
-    
-  },
+  "dependencies": {},
   "devDependencies": {
     "@angular-eslint/eslint-plugin": "^20.1.1",
     "@angular-eslint/schematics": "^20.1.1",

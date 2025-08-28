@@ -20,7 +20,7 @@ Comparison website showcasing framework demos and performance metrics.
 
 **Development:** Website built automatically with framework builds
 ```bash
-npm run build -- --for-comparison
+npm run build -- --static-site
 ```
 
 **Production:** Static site generation

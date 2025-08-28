@@ -52,7 +52,7 @@ def build_framework(framework_id: str, framework_data: dict, app_dir: Path) -> T
 @click.option('--framework', '-f', help='Build a single framework by ID')
 @click.option('--ci', is_flag=True, help='CI mode: exit 1 on build failure, minimal output')
 @click.option('--skip-website', is_flag=True, help='Skip building the website after frameworks')
-@click.option('--for-comparison', is_flag=True, help='Build frameworks with absolute paths for comparison website')
+@click.option('--static-site', is_flag=True, help='Build frameworks with absolute paths for comparison website')
 def build_all(parallel: bool, framework: str, ci: bool, skip_website: bool, for_comparison: bool):
     """Build framework applications."""
     show_header("Build Apps", "Compile all framework applications to generate static dist")

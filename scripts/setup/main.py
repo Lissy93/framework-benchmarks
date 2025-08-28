@@ -53,7 +53,7 @@ def setup_all(skip_assets: bool, skip_mocks: bool, skip_scripts: bool, skip_deps
             elif task_func == generate_scripts:
                 task_func.callback(dry_run=False, verbose=False)
             elif task_func == build_all:
-                task_func.callback(parallel=False, framework=None, ci=False)
+                task_func.callback(parallel=False, framework=None, ci=False, skip_website=False, for_comparison=False)
             else:
                 task_func.callback()
         except Exception as e:
