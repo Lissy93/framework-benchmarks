@@ -161,8 +161,10 @@ jobs:
           # Switch to results branch
           git fetch origin results 2>/dev/null || echo "Results branch doesn't exist yet"
           
-          # Clean any uncommitted changes first
-          git stash push -u -m "temp stash before results branch switch" || true
+          # Aggressively clean working directory to avoid checkout conflicts
+          git add -A
+          git reset --hard HEAD
+          git clean -fdx
           
           # Handle results branch carefully to avoid main branch contamination
           if git show-ref --verify --quiet refs/remotes/origin/results; then
