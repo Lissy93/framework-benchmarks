@@ -328,12 +328,16 @@
         <article class="framework-implementation-section">
             <h3>Lit Implementation</h3>
             <div class="framework-implementation">
-                <ul>
-<li><code>src/weather-app.js</code> - Main application as a custom element</li>
-<li><code>src/weather-display.js</code> - Weather data display component</li>
-<li><code>src/weather-forecast.js</code> - Forecast list with lit-html templates</li>
-<li><code>src/weather-search.js</code> - Search form component with event binding</li>
-</ul>
+                <h4>Web Components &amp; Custom Elements</h4>
+<p>The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/lit/src/weather-app.js"><code>weather-app.js</code></a> extends <code>LitElement</code> and registers as <code>&lt;weather-app&gt;</code> using <code>customElements.define()</code>. All components are true Web Components that work in any framework.</p>
+<h4>Tagged Template Literals</h4>
+<p>Lit uses JavaScript tagged template literals for both HTML templates (<code>html\</code>`<code>) and CSS styles (</code>css``). This provides syntax highlighting and type safety without build-time compilation.</p>
+<h4>Reactive Properties</h4>
+<p>Static properties are defined with <code>static properties = { _isLoading: { state: true } }</code>. Changes to these properties automatically trigger re-renders of only the affected parts.</p>
+<h4>Shared Style System</h4>
+<p>The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/lit/src/shared-styles.js"><code>shared-styles.js</code></a> demonstrates Lit's CSS module system using <code>css</code> tagged template literals for design system consistency across components.</p>
+<h4>Shadow DOM Encapsulation</h4>
+<p>Each Lit component renders in its own Shadow DOM, providing true style encapsulation without CSS-in-JS runtime overhead.</p>
             </div>
         </article>
 
@@ -381,6 +385,15 @@
         </article>
         
         <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About Lit</h3>
+            <div class="framework-about">
+                <p>Lit is a framework from Google built around Web Components. 
+It’s minimal, modern and uses standard browser APIs rather than reinventing the wheel. 
+Great when you want reusable components without a massive framework overhead. 
+It’s gaining traction for design systems and apps that need native-feeling components.</p>
+            </div>
+        </article>
         
         <!-- My pointless thoughts on this pointless framework -->
         <article class="framework-thoughts-section">

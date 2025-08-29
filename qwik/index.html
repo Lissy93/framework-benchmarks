@@ -328,12 +328,16 @@
         <article class="framework-implementation-section">
             <h3>Qwik Implementation</h3>
             <div class="framework-implementation">
-                <ul>
-<li><code>src/App.tsx</code> - Main component with resumable state</li>
-<li><code>src/stores/weatherStore.ts</code> - Qwik stores that serialize automatically  </li>
-<li><code>src/services/WeatherService.ts</code> - API calls with progressive loading</li>
-<li><code>src/components/</code> - Components that wake up on demand</li>
-</ul>
+                <h4>Resumability &amp; Serialization</h4>
+<p>Qwik's defining feature is resumability - the app can be paused on the server and resumed on the client without re-execution. Functions prefixed with <code>$</code> like <code>$(async (city: string) =&gt; {...})</code> create serialization boundaries.</p>
+<h4>useSignal for State</h4>
+<p>The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/qwik/src/App.tsx"><code>App.tsx</code></a> uses <code>useSignal&lt;WeatherData | null&gt;(null)</code> for reactive state management, similar to React but optimized for Qwik's lazy execution model.</p>
+<h4>Context API</h4>
+<p>The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/qwik/src/stores/weatherStore.ts"><code>weatherStore.ts</code></a> defines a context using <code>createContextId&lt;WeatherState&gt;('weather')</code> for sharing state across components without prop drilling.</p>
+<h4>useVisibleTask$ Optimization</h4>
+<p>Qwik's <code>useVisibleTask$()</code> only runs when the component becomes visible, enabling fine-grained lazy loading and reducing initial JavaScript execution.</p>
+<h4>File-based Routing</h4>
+<p>Uses Qwik City's file-based routing system with <code>routes/index.tsx</code> automatically mapping to the root path, similar to Next.js but with Qwik's resumability benefits.</p>
             </div>
         </article>
 
@@ -381,6 +385,15 @@
         </article>
         
         <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About Qwik</h3>
+            <div class="framework-about">
+                <p>Qwik is all about instant load times and fine-grained lazy loading. 
+It serialises app state into HTML, letting pages become interactive with almost zero JS upfront. 
+It’s built for the modern web where performance and SEO matter. 
+It feels experimental but it’s pushing interesting ideas around resumability.</p>
+            </div>
+        </article>
         
         <!-- My pointless thoughts on this pointless framework -->
         <article class="framework-thoughts-section">

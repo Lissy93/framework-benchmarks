@@ -328,12 +328,16 @@
         <article class="framework-implementation-section">
             <h3>Vanilla JS Implementation</h3>
             <div class="framework-implementation">
-                <ul>
-<li><code>src/main.js</code> - Application initialization and DOM manipulation</li>
-<li><code>src/weather-service.js</code> - API calls using native fetch</li>
-<li><code>src/weather-utils.js</code> - Utility functions for data processing</li>
-<li><code>index.html</code> - Pure HTML structure without framework dependencies</li>
-</ul>
+                <h4>ES6 Class Architecture</h4>
+<p>The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/vanilla/js/weather-app.js"><code>weather-app.js</code></a> uses ES6 classes to organize functionality, demonstrating how to structure vanilla JavaScript apps without frameworks.</p>
+<h4>Native DOM APIs</h4>
+<p>Direct use of <code>document.querySelector()</code>, <code>createElement()</code>, <code>addEventListener()</code> and other native browser APIs. No abstractions - just the platform as designed by browser vendors.</p>
+<h4>Event-Driven Architecture</h4>
+<p>Manual event handling with <code>addEventListener()</code> and custom event patterns. The app manages its own event lifecycle without framework helpers.</p>
+<h4>Explicit State Management</h4>
+<p>State is manually managed through object properties and explicit DOM updates. When data changes, you must manually call update methods to reflect changes in the UI.</p>
+<h4>Modern JavaScript Features</h4>
+<p>Leverages async/await, destructuring, template literals, and other ES6+ features to write clean vanilla JavaScript without sacrificing readability.</p>
             </div>
         </article>
 
@@ -366,6 +370,15 @@
         </article>
         
         <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About Vanilla JS</h3>
+            <div class="framework-about">
+                <p>Vanilla JS just means plain JavaScript, using modern ES6+ features like classes, modules, promises and async/await. 
+Most things frameworks used to solve can now be done natively. 
+It’s often the best choice for small projects where adding a framework is overkill. 
+Plus, it ensures you really understand the language itself.</p>
+            </div>
+        </article>
         
         <!-- My pointless thoughts on this pointless framework -->
         <article class="framework-thoughts-section">

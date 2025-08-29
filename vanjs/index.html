@@ -328,12 +328,16 @@
         <article class="framework-implementation-section">
             <h3>VanJS Implementation</h3>
             <div class="framework-implementation">
-                <ul>
-<li><code>src/main.js</code> - Application logic with VanJS state and DOM creation</li>
-<li><code>src/weather-service.js</code> - API calls that update VanJS reactive state</li>
-<li><code>src/weather-utils.js</code> - Utility functions for data processing</li>
-<li><code>index.html</code> - Minimal HTML with VanJS script tag</li>
-</ul>
+                <h4>Hyperscript DOM Creation</h4>
+<p>The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/vanjs/src/main.js"><code>main.js</code></a> uses VanJS's hyperscript syntax with <code>const { div, h1, p } = van.tags</code> to create DOM elements functionally without JSX or templates.</p>
+<h4>Reactive State with van.state</h4>
+<p>VanJS provides reactive state through <code>van.state('initial')</code> which returns an object with a <code>.val</code> property. Changes to <code>state.val</code> automatically trigger re-renders of dependent DOM.</p>
+<h4>Functional Component Pattern</h4>
+<p>Components are plain JavaScript functions that return DOM elements. The <code>WeatherApp</code> class demonstrates organizing complex UI logic while maintaining VanJS's functional approach.</p>
+<h4>Direct DOM Manipulation</h4>
+<p>Unlike virtual DOM frameworks, VanJS directly manipulates the real DOM, making it extremely lightweight (~1KB) while maintaining reactivity through state bindings.</p>
+<h4>Template-less Architecture</h4>
+<p>No templates, JSX, or HTML strings - everything is created through JavaScript functions, providing full IDE support and type safety for DOM creation.</p>
             </div>
         </article>
 
@@ -381,6 +385,15 @@
         </article>
         
         <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About VanJS</h3>
+            <div class="framework-about">
+                <p>VanJS is an ultra-tiny library for writing reactive UIs with plain functions. 
+No build step, no virtual DOM, just direct DOM manipulation with reactivity built in. 
+It’s surprisingly powerful for its size and is good for small apps or embedded widgets. 
+Think of it as a modern alternative to jQuery that actually plays nice with modern JS.</p>
+            </div>
+        </article>
         
         <!-- My pointless thoughts on this pointless framework -->
         <article class="framework-thoughts-section">

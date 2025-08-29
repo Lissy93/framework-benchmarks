@@ -328,12 +328,16 @@
         <article class="framework-implementation-section">
             <h3>Svelte Implementation</h3>
             <div class="framework-implementation">
-                <ul>
-<li><code>src/routes/+page.svelte</code> - Main page using SvelteKit's file-based routing</li>
-<li><code>src/lib/stores/weather-store.js</code> - Global state with Svelte writable stores</li>
-<li><code>src/lib/services/weather-service.js</code> - API calls integrated with stores</li>
-<li><code>src/lib/components/</code> - Single-file components with scoped styles</li>
-</ul>
+                <h4>Svelte Stores</h4>
+<p>The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/svelte/src/lib/stores/weather-store.js"><code>weather-store.js</code></a> uses Svelte's writable stores for global state management. Store actions are grouped in an object, providing a clean API for weather operations.</p>
+<h4>Reactivity Without Framework Runtime</h4>
+<p>Svelte compiles away at build time, meaning no virtual DOM or framework code ships to the browser. Reactive statements using <code>$:</code> syntax automatically recompute when dependencies change.</p>
+<h4>Built-in State Management</h4>
+<p>No external state management library needed - Svelte's stores handle global state with automatic reactivity. Components can subscribe to stores using the <code>$store</code> syntax.</p>
+<h4>SvelteKit Integration</h4>
+<p>Uses SvelteKit's file-based routing with <code>+page.svelte</code> and <code>+layout.svelte</code>. The <code>$app/environment</code> module provides SSR-safe environment detection with the <code>browser</code> check.</p>
+<h4>Simplified Component Syntax</h4>
+<p>Svelte components use <code>&lt;script&gt;</code>, <code>&lt;template&gt;</code>, and <code>&lt;style&gt;</code> sections, but with less boilerplate than other frameworks - no need for explicit return statements or render functions.</p>
             </div>
         </article>
 
@@ -381,6 +385,16 @@
         </article>
         
         <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About Svelte</h3>
+            <div class="framework-about">
+                <p>Svelte compiles your code at build time into minimal JS with no runtime framework. 
+That makes it very fast, with tiny bundle sizes. 
+It’s one of the most loved frameworks in surveys like Stack Overflow’s. 
+The syntax is simple and elegant, and it feels closer to writing plain HTML, CSS and JS. 
+The main drawback is a smaller ecosystem compared to React or Vue.</p>
+            </div>
+        </article>
         
         <!-- My pointless thoughts on this pointless framework -->
         <article class="framework-thoughts-section">

@@ -328,12 +328,16 @@
         <article class="framework-implementation-section">
             <h3>Preact Implementation</h3>
             <div class="framework-implementation">
-                <ul>
-<li><code>src/App.jsx</code> - Main component with familiar React-style hooks</li>
-<li><code>src/hooks/useWeatherData.js</code> - Custom hook for weather state and API calls</li>
-<li><code>src/components/</code> - Standard functional components with hooks</li>
-<li><code>src/services/WeatherService.js</code> - API service using native fetch</li>
-</ul>
+                <h4>React API Compatibility</h4>
+<p>Preact provides a nearly identical API to React, using the same hooks (<code>useState</code>, <code>useEffect</code>, <code>useCallback</code>) and patterns but in a much smaller bundle (~3KB vs React's ~42KB).</p>
+<h4>Race Condition Handling</h4>
+<p>The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/preact/src/hooks/useWeatherData.js"><code>useWeatherData</code></a> hook implements sophisticated race condition prevention using <code>useRef</code> to track the latest request ID, ensuring stale requests don't override newer ones.</p>
+<h4>Import from preact/hooks</h4>
+<p>Uses <code>import { useState, useEffect } from 'preact/hooks'</code> instead of React's import paths, but otherwise the code is virtually identical to React patterns.</p>
+<h4>Smaller Bundle Size</h4>
+<p>Preact's lightweight nature means the entire weather app compiles to a significantly smaller bundle while maintaining full React compatibility for most use cases.</p>
+<h4>Fast Refresh Support</h4>
+<p>Modern Preact setup with Vite provides the same fast refresh development experience as React, with instant hot reloading during development.</p>
             </div>
         </article>
 
@@ -366,6 +370,15 @@
         </article>
         
         <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About Preact</h3>
+            <div class="framework-about">
+                <p>Preact is a tiny React alternative that’s API-compatible with React in most cases. 
+It’s known for its speed and small bundle size, making it perfect for performance-sensitive projects. 
+Big names like Uber and Lyft have used it in production. 
+The trade-off is that some advanced React features are missing or behave differently.</p>
+            </div>
+        </article>
         
         <!-- My pointless thoughts on this pointless framework -->
         <article class="framework-thoughts-section">

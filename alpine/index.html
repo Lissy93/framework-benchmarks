@@ -328,12 +328,16 @@
         <article class="framework-implementation-section">
             <h3>Alpine.js Implementation</h3>
             <div class="framework-implementation">
-                <ul>
-<li><code>index.html</code> - Main HTML with Alpine directives sprinkled in</li>
-<li><code>js/weather-app.js</code> - Alpine data and methods for weather logic</li>
-<li><code>js/weather-service.js</code> - API calls integrated with Alpine reactivity</li>
-<li><code>js/weather-utils.js</code> - Utility functions for data formatting</li>
-</ul>
+                <h4>HTML-First Approach</h4>
+<p>Alpine.js enhances HTML directly with directives. The main <code>index.html</code> uses <code>x-data="weatherApp()"</code> to bind the <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/alpine/js/weather-app.js"><code>weather-app.js</code></a> function to the DOM.</p>
+<h4>Reactive Data Object</h4>
+<p>The <code>weatherApp()</code> function returns an object with reactive properties (<code>isLoading</code>, <code>hasError</code>, <code>currentWeather</code>) that automatically update the UI when changed.</p>
+<h4>Alpine Directives</h4>
+<p>Uses Alpine's directive system: <code>x-show</code> for conditional visibility, <code>x-on:click</code> for event handling, and <code>x-text</code> for content binding, making it feel like Vue but with minimal JavaScript.</p>
+<h4>No Build Step Required</h4>
+<p>Alpine works directly in the browser without compilation. Just include the script tag and start using directives - perfect for progressively enhancing existing HTML.</p>
+<h4>Vanilla JavaScript Integration</h4>
+<p>The weather logic is written in plain JavaScript functions that return reactive objects, making it easy to understand and debug without framework-specific patterns.</p>
             </div>
         </article>
 
@@ -381,6 +385,14 @@
         </article>
         
         <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About Alpine.js</h3>
+            <div class="framework-about">
+                <p>Alpine is a super lightweight framework for adding interactivity directly in HTML using attributes. 
+It feels like Tailwind but for behaviour, making it ideal for simple UI enhancements without a full build setup. 
+Great for quick prototypes or adding sprinkles of interactivity to static sites.</p>
+            </div>
+        </article>
         
         <!-- My pointless thoughts on this pointless framework -->
         <article class="framework-thoughts-section">

@@ -328,12 +328,16 @@
         <article class="framework-implementation-section">
             <h3>Solid.js Implementation</h3>
             <div class="framework-implementation">
-                <ul>
-<li><code>src/App.jsx</code> - Main component using Solid's reactive primitives</li>
-<li><code>src/stores/weatherStore.js</code> - Global state with <code>createStore</code></li>
-<li><code>src/services/WeatherService.js</code> - API integration with <code>createResource</code></li>
-<li><code>src/components/</code> - Reactive components that update precisely</li>
-</ul>
+                <h4>Fine-Grained Reactivity with Signals</h4>
+<p>The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/solid/src/stores/weatherStore.js"><code>weatherStore.js</code></a> uses SolidJS's <code>createSignal()</code> for fine-grained reactivity. Unlike React, changes only update specific DOM nodes, not entire component trees.</p>
+<h4>JSX Without Virtual DOM</h4>
+<p>SolidJS uses JSX syntax but compiles to real DOM operations. No virtual DOM overhead - changes are tracked at the signal level and update the DOM directly.</p>
+<h4>Signal Accessors</h4>
+<p>Signals return getter/setter pairs: <code>const [count, setCount] = createSignal(0)</code>. The store exposes both getter functions and signal accessors for flexible consumption patterns.</p>
+<h4>Race Condition Prevention</h4>
+<p>The store implements request ID tracking (<code>latestRequestId</code>) to prevent race conditions when multiple async operations are in flight simultaneously.</p>
+<h4>Reactive Dependencies</h4>
+<p>SolidJS automatically tracks dependencies, so reactive computations only re-run when their actual dependencies change, not when the entire component re-renders.</p>
             </div>
         </article>
 
@@ -381,6 +385,15 @@
         </article>
         
         <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About Solid.js</h3>
+            <div class="framework-about">
+                <p>Solid looks like React on the surface but skips the virtual DOM, updating the DOM directly with fine-grained reactivity. 
+This makes it blazing fast and efficient. 
+It has a smaller community but a lot of buzz among developers chasing performance. 
+If you like React’s syntax but hate its runtime overhead, Solid is refreshing.</p>
+            </div>
+        </article>
         
         <!-- My pointless thoughts on this pointless framework -->
         <article class="framework-thoughts-section">

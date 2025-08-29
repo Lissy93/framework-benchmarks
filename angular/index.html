@@ -328,13 +328,16 @@
         <article class="framework-implementation-section">
             <h3>Angular Implementation</h3>
             <div class="framework-implementation">
-                <ul>
-<li><code>src/app/app.component.ts</code> - Root component with weather state management</li>
-<li><code>src/app/services/weather.service.ts</code> - Injectable service using Angular's HttpClient</li>
-<li><code>src/app/services/weather-state.service.ts</code> - Centralized state with RxJS observables</li>
-<li><code>src/app/components/</code> - Standalone components for weather display</li>
-<li><code>src/app/types/weather.types.ts</code> - TypeScript interfaces for type safety</li>
-</ul>
+                <h4>Dependency Injection &amp; Services</h4>
+<p>The app uses Angular's dependency injection system with services marked as <code>@Injectable({ providedIn: 'root' })</code>. The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/angular/src/app/services/weather-state.service.ts"><code>WeatherStateService</code></a> manages global state using RxJS <code>BehaviorSubject</code>.</p>
+<h4>RxJS Reactive Patterns</h4>
+<p>State management leverages RxJS observables with operators like <code>catchError</code>, <code>finalize</code>, <code>switchMap</code>, and <code>delay</code>. The app component uses <code>takeUntil</code> pattern for subscription cleanup to prevent memory leaks.</p>
+<h4>Standalone Components</h4>
+<p>All components use Angular's modern standalone API, eliminating the need for NgModules. Components import their dependencies directly in the <code>imports</code> array.</p>
+<h4>Inline Templates</h4>
+<p>The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/angular/src/app/app.component.ts"><code>AppComponent</code></a> demonstrates Angular's inline template syntax with data binding (<code>[isLoading]</code>, <code>(search)</code>), structural directives, and conditional rendering.</p>
+<h4>TypeScript Integration</h4>
+<p>Full TypeScript support with typed interfaces for weather data and app state, providing compile-time type checking and better developer experience.</p>
             </div>
         </article>
 
@@ -382,6 +385,15 @@
         </article>
         
         <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About Angular</h3>
+            <div class="framework-about">
+                <p>Angular is a full-blown framework from Google, not just a library. 
+It comes with everything out of the box, from routing to forms to testing. 
+Its TypeScript-first approach and structured architecture make it great for large, enterprise apps. 
+The learning curve is steep but it’s incredibly powerful when mastered.</p>
+            </div>
+        </article>
         
         <!-- My pointless thoughts on this pointless framework -->
         <article class="framework-thoughts-section">

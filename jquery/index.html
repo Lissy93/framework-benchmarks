@@ -328,12 +328,16 @@
         <article class="framework-implementation-section">
             <h3>jQuery Implementation</h3>
             <div class="framework-implementation">
-                <ul>
-<li><code>src/main.js</code> - Application initialization and jQuery setup</li>
-<li><code>src/components/weather-ui.js</code> - Manual DOM management and event handling</li>
-<li><code>src/services/weather-service.js</code> - API calls with <code>$.ajax()</code></li>
-<li><code>index.html</code> - Plain HTML structure with jQuery CDN</li>
-</ul>
+                <h4>DOM-First Approach</h4>
+<p>jQuery follows a DOM-centric approach where you select elements first (<code>$('#weather-container')</code>) then manipulate them. The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/jquery/src/components/weather-ui.js"><code>weather-ui.js</code></a> demonstrates classic jQuery patterns.</p>
+<h4>Imperative DOM Manipulation</h4>
+<p>Unlike declarative frameworks, jQuery requires explicit DOM updates. When weather data changes, you manually call <code>$('#temperature').text(temp)</code> to update the display.</p>
+<h4>CSS Selector Power</h4>
+<p>jQuery's strength lies in its CSS selector engine. Complex DOM queries like <code>$('.forecast-item.active .details')</code> make it easy to find and manipulate specific elements.</p>
+<h4>Event Delegation</h4>
+<p>Uses jQuery's event delegation with <code>.on()</code> method to handle dynamically added forecast items, ensuring click handlers work on elements added after page load.</p>
+<h4>AJAX Integration</h4>
+<p>The weather service leverages jQuery's <code>$.ajax()</code> method for HTTP requests, providing a clean Promise-like interface with <code>.done()</code> and <code>.fail()</code> callbacks.</p>
             </div>
         </article>
 
@@ -366,6 +370,14 @@
         </article>
         
         <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About jQuery</h3>
+            <div class="framework-about">
+                <p>jQuery was once the king of the web, making DOM manipulation and AJAX simple back when browsers were inconsistent. 
+Most of what it offers is now part of vanilla JS, so it’s largely unnecessary today. 
+Still, it powered much of the modern web and is a big part of web history.</p>
+            </div>
+        </article>
         
         <!-- My pointless thoughts on this pointless framework -->
         <article class="framework-thoughts-section">

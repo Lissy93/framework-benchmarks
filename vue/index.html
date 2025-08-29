@@ -328,12 +328,16 @@
         <article class="framework-implementation-section">
             <h3>Vue Implementation</h3>
             <div class="framework-implementation">
-                <ul>
-<li><code>src/App.vue</code> - Main component using Vue's Composition API</li>
-<li><code>src/services/weatherService.js</code> - API integration with Vue's reactive patterns  </li>
-<li><code>src/components/</code> - Single File Components with scoped styles</li>
-<li><code>src/utils/weatherUtils.js</code> - Utility functions for data processing</li>
-</ul>
+                <h4>Composition API</h4>
+<p>The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/vue/src/App.vue"><code>App.vue</code></a> uses Vue 3's Composition API with <code>&lt;script setup&gt;</code> syntax, providing a more flexible and reusable way to organize component logic compared to the Options API.</p>
+<h4>Single File Components</h4>
+<p>All components use Vue's SFC format, combining template, script, and style in a single <code>.vue</code> file with clear separation of concerns.</p>
+<h4>Reactive References</h4>
+<p>Uses Vue's <code>ref()</code> for reactive state management, with automatic reactivity tracking that eliminates the need for manual dependency management.</p>
+<h4>Template Directives</h4>
+<p>Leverages Vue's powerful template directives like <code>v-if</code>, <code>v-for</code>, and event binding with <code>@</code> syntax for declarative and readable templates.</p>
+<h4>Lifecycle Hooks</h4>
+<p>The <code>onMounted</code> hook demonstrates Vue's composition API lifecycle management, providing a clean way to handle component initialization.</p>
             </div>
         </article>
 
@@ -384,7 +388,10 @@
         <article class="framework-about-section">
             <h3>About Vue</h3>
             <div class="framework-about">
-                <p>TEST123</p>
+                <p>Vue was created by Evan You after working on Angular at Google, and it became hugely popular thanks to its simplicity. 
+It mixes the best ideas of Angular and React but with a gentler learning curve. 
+Its ecosystem includes Vue Router and Vuex, and it’s used by Alibaba, Xiaomi and GitLab. 
+Developers love its approachability and elegance.</p>
             </div>
         </article>
         

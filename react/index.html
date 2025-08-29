@@ -328,12 +328,16 @@
         <article class="framework-implementation-section">
             <h3>React Implementation</h3>
             <div class="framework-implementation">
-                <ul>
-<li><code>src/App.jsx</code> - Main component with hooks-based state management</li>
-<li><code>src/hooks/useWeatherData.js</code> - Custom hook for weather logic and API calls</li>
-<li><code>src/components/ErrorBoundary.jsx</code> - Error boundary for crash protection</li>
-<li><code>src/components/</code> - Modular functional components</li>
-</ul>
+                <h4>Custom Hooks</h4>
+<p>The <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/react/src/hooks/useWeatherData.js"><code>useWeatherData</code></a> custom hook encapsulates all weather-related state and logic, demonstrating React's hooks pattern for reusable stateful logic.</p>
+<h4>Error Boundary</h4>
+<p>The app includes an <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/apps/react/src/components/ErrorBoundary.jsx"><code>ErrorBoundary</code></a> component using class-based lifecycle methods to catch JavaScript errors anywhere in the component tree.</p>
+<h4>useCallback &amp; useEffect Optimization</h4>
+<p>Extensive use of <code>useCallback</code> for memoizing functions and <code>useEffect</code> with proper dependency arrays to prevent unnecessary re-renders and infinite loops.</p>
+<h4>Conditional Rendering Patterns</h4>
+<p>React's conditional rendering using logical operators (<code>&amp;&amp;</code>) and ternary expressions for showing loading states, errors, and weather content based on application state.</p>
+<h4>Functional Components</h4>
+<p>All components are functional components using hooks, showcasing modern React patterns over legacy class-based components.</p>
             </div>
         </article>
 
@@ -381,6 +385,16 @@
         </article>
         
         <!-- About Framework Section -->
+        <article class="framework-about-section">
+            <h3>About React</h3>
+            <div class="framework-about">
+                <p>React is the most popular frontend library, created by Facebook in 2013. 
+It popularised the component model and virtual DOM, changing frontend forever. 
+Its ecosystem is massive, with libraries for everything. 
+The downside is that it’s just a view layer, so you end up wiring lots of pieces together. 
+Still, it runs huge apps like Facebook, Instagram and Netflix.</p>
+            </div>
+        </article>
         
         <!-- My pointless thoughts on this pointless framework -->
         <article class="framework-thoughts-section">
