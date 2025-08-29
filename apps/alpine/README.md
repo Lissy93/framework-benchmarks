@@ -67,10 +67,20 @@ For troubleshooting, use `npm run verify` from the root of the project.
 ## Alpine Implementation
 
 <!-- start_framework_specific -->
-- `index.html` - Main HTML with Alpine directives sprinkled in
-- `js/weather-app.js` - Alpine data and methods for weather logic
-- `js/weather-service.js` - API calls integrated with Alpine reactivity
-- `js/weather-utils.js` - Utility functions for data formatting
+#### HTML-First Approach
+Alpine.js enhances HTML directly with directives. The main `index.html` uses `x-data="weatherApp()"` to bind the [`weather-app.js`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/alpine/js/weather-app.js) function to the DOM.
+
+#### Reactive Data Object
+The `weatherApp()` function returns an object with reactive properties (`isLoading`, `hasError`, `currentWeather`) that automatically update the UI when changed.
+
+#### Alpine Directives
+Uses Alpine's directive system: `x-show` for conditional visibility, `x-on:click` for event handling, and `x-text` for content binding, making it feel like Vue but with minimal JavaScript.
+
+#### No Build Step Required
+Alpine works directly in the browser without compilation. Just include the script tag and start using directives - perfect for progressively enhancing existing HTML.
+
+#### Vanilla JavaScript Integration
+The weather logic is written in plain JavaScript functions that return reactive objects, making it easy to understand and debug without framework-specific patterns.
 <!-- end_framework_specific -->
 
 ## About Alpine

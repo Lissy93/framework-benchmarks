@@ -75,11 +75,20 @@ The learning curve is steep but it’s incredibly powerful when mastered.
 
 ## Angular Implementation
 <!-- start_framework_specific -->
-- `src/app/app.component.ts` - Root component with weather state management
-- `src/app/services/weather.service.ts` - Injectable service using Angular's HttpClient
-- `src/app/services/weather-state.service.ts` - Centralized state with RxJS observables
-- `src/app/components/` - Standalone components for weather display
-- `src/app/types/weather.types.ts` - TypeScript interfaces for type safety
+#### Dependency Injection & Services
+The app uses Angular's dependency injection system with services marked as `@Injectable({ providedIn: 'root' })`. The [`WeatherStateService`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/angular/src/app/services/weather-state.service.ts) manages global state using RxJS `BehaviorSubject`.
+
+#### RxJS Reactive Patterns
+State management leverages RxJS observables with operators like `catchError`, `finalize`, `switchMap`, and `delay`. The app component uses `takeUntil` pattern for subscription cleanup to prevent memory leaks.
+
+#### Standalone Components
+All components use Angular's modern standalone API, eliminating the need for NgModules. Components import their dependencies directly in the `imports` array.
+
+#### Inline Templates
+The [`AppComponent`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/angular/src/app/app.component.ts) demonstrates Angular's inline template syntax with data binding (`[isLoading]`, `(search)`), structural directives, and conditional rendering.
+
+#### TypeScript Integration
+Full TypeScript support with typed interfaces for weather data and app state, providing compile-time type checking and better developer experience.
 <!-- end_framework_specific -->
 
 ## My Thoughts on Angular

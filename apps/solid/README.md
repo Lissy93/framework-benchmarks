@@ -67,10 +67,20 @@ For troubleshooting, use `npm run verify` from the root of the project.
 ## Solid Implementation
 
 <!-- start_framework_specific -->
-- `src/App.jsx` - Main component using Solid's reactive primitives
-- `src/stores/weatherStore.js` - Global state with `createStore`
-- `src/services/WeatherService.js` - API integration with `createResource`
-- `src/components/` - Reactive components that update precisely
+#### Fine-Grained Reactivity with Signals
+The [`weatherStore.js`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/solid/src/stores/weatherStore.js) uses SolidJS's `createSignal()` for fine-grained reactivity. Unlike React, changes only update specific DOM nodes, not entire component trees.
+
+#### JSX Without Virtual DOM
+SolidJS uses JSX syntax but compiles to real DOM operations. No virtual DOM overhead - changes are tracked at the signal level and update the DOM directly.
+
+#### Signal Accessors
+Signals return getter/setter pairs: `const [count, setCount] = createSignal(0)`. The store exposes both getter functions and signal accessors for flexible consumption patterns.
+
+#### Race Condition Prevention
+The store implements request ID tracking (`latestRequestId`) to prevent race conditions when multiple async operations are in flight simultaneously.
+
+#### Reactive Dependencies
+SolidJS automatically tracks dependencies, so reactive computations only re-run when their actual dependencies change, not when the entire component re-renders.
 <!-- end_framework_specific -->
 
 ## About Solid

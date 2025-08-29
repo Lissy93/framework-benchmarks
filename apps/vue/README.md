@@ -67,10 +67,20 @@ For troubleshooting, use `npm run verify` from the root of the project.
 ## Vue Implementation
 
 <!-- start_framework_specific -->
-- `src/App.vue` - Main component using Vue's Composition API
-- `src/services/weatherService.js` - API integration with Vue's reactive patterns  
-- `src/components/` - Single File Components with scoped styles
-- `src/utils/weatherUtils.js` - Utility functions for data processing
+#### Composition API
+The [`App.vue`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/vue/src/App.vue) uses Vue 3's Composition API with `<script setup>` syntax, providing a more flexible and reusable way to organize component logic compared to the Options API.
+
+#### Single File Components
+All components use Vue's SFC format, combining template, script, and style in a single `.vue` file with clear separation of concerns.
+
+#### Reactive References
+Uses Vue's `ref()` for reactive state management, with automatic reactivity tracking that eliminates the need for manual dependency management.
+
+#### Template Directives
+Leverages Vue's powerful template directives like `v-if`, `v-for`, and event binding with `@` syntax for declarative and readable templates.
+
+#### Lifecycle Hooks
+The `onMounted` hook demonstrates Vue's composition API lifecycle management, providing a clean way to handle component initialization.
 <!-- end_framework_specific -->
 
 ## About Vue

@@ -66,10 +66,20 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## Svelte Implementation
 <!-- start_framework_specific -->
-- `src/routes/+page.svelte` - Main page using SvelteKit's file-based routing
-- `src/lib/stores/weather-store.js` - Global state with Svelte writable stores
-- `src/lib/services/weather-service.js` - API calls integrated with stores
-- `src/lib/components/` - Single-file components with scoped styles
+#### Svelte Stores
+The [`weather-store.js`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/svelte/src/lib/stores/weather-store.js) uses Svelte's writable stores for global state management. Store actions are grouped in an object, providing a clean API for weather operations.
+
+#### Reactivity Without Framework Runtime
+Svelte compiles away at build time, meaning no virtual DOM or framework code ships to the browser. Reactive statements using `$:` syntax automatically recompute when dependencies change.
+
+#### Built-in State Management
+No external state management library needed - Svelte's stores handle global state with automatic reactivity. Components can subscribe to stores using the `$store` syntax.
+
+#### SvelteKit Integration
+Uses SvelteKit's file-based routing with `+page.svelte` and `+layout.svelte`. The `$app/environment` module provides SSR-safe environment detection with the `browser` check.
+
+#### Simplified Component Syntax
+Svelte components use `<script>`, `<template>`, and `<style>` sections, but with less boilerplate than other frameworks - no need for explicit return statements or render functions.
 <!-- end_framework_specific -->
 
 ## About Svelte

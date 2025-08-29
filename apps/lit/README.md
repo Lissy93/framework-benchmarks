@@ -66,10 +66,20 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## Lit Implementation
 <!-- start_framework_specific -->
-- `src/weather-app.js` - Main application as a custom element
-- `src/weather-display.js` - Weather data display component
-- `src/weather-forecast.js` - Forecast list with lit-html templates
-- `src/weather-search.js` - Search form component with event binding
+#### Web Components & Custom Elements
+The [`weather-app.js`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/lit/src/weather-app.js) extends `LitElement` and registers as `<weather-app>` using `customElements.define()`. All components are true Web Components that work in any framework.
+
+#### Tagged Template Literals
+Lit uses JavaScript tagged template literals for both HTML templates (`html\`\``) and CSS styles (`css\`\`). This provides syntax highlighting and type safety without build-time compilation.
+
+#### Reactive Properties
+Static properties are defined with `static properties = { _isLoading: { state: true } }`. Changes to these properties automatically trigger re-renders of only the affected parts.
+
+#### Shared Style System
+The [`shared-styles.js`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/lit/src/shared-styles.js) demonstrates Lit's CSS module system using `css` tagged template literals for design system consistency across components.
+
+#### Shadow DOM Encapsulation
+Each Lit component renders in its own Shadow DOM, providing true style encapsulation without CSS-in-JS runtime overhead.
 <!-- end_framework_specific -->
 
 ## About Lit

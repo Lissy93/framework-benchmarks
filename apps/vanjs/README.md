@@ -66,10 +66,20 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## VanJS Implementation
 <!-- start_framework_specific -->
-- `src/main.js` - Application logic with VanJS state and DOM creation
-- `src/weather-service.js` - API calls that update VanJS reactive state
-- `src/weather-utils.js` - Utility functions for data processing
-- `index.html` - Minimal HTML with VanJS script tag
+#### Hyperscript DOM Creation
+The [`main.js`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/vanjs/src/main.js) uses VanJS's hyperscript syntax with `const { div, h1, p } = van.tags` to create DOM elements functionally without JSX or templates.
+
+#### Reactive State with van.state
+VanJS provides reactive state through `van.state('initial')` which returns an object with a `.val` property. Changes to `state.val` automatically trigger re-renders of dependent DOM.
+
+#### Functional Component Pattern
+Components are plain JavaScript functions that return DOM elements. The `WeatherApp` class demonstrates organizing complex UI logic while maintaining VanJS's functional approach.
+
+#### Direct DOM Manipulation
+Unlike virtual DOM frameworks, VanJS directly manipulates the real DOM, making it extremely lightweight (~1KB) while maintaining reactivity through state bindings.
+
+#### Template-less Architecture
+No templates, JSX, or HTML strings - everything is created through JavaScript functions, providing full IDE support and type safety for DOM creation.
 <!-- end_framework_specific -->
 
 ## About Van

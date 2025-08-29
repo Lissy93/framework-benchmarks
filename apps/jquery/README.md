@@ -67,10 +67,20 @@ For troubleshooting, use `npm run verify` from the root of the project.
 ## jQuery Implementation
 
 <!-- start_framework_specific -->
-- `src/main.js` - Application initialization and jQuery setup
-- `src/components/weather-ui.js` - Manual DOM management and event handling
-- `src/services/weather-service.js` - API calls with `$.ajax()`
-- `index.html` - Plain HTML structure with jQuery CDN
+#### DOM-First Approach
+jQuery follows a DOM-centric approach where you select elements first (`$('#weather-container')`) then manipulate them. The [`weather-ui.js`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/jquery/src/components/weather-ui.js) demonstrates classic jQuery patterns.
+
+#### Imperative DOM Manipulation
+Unlike declarative frameworks, jQuery requires explicit DOM updates. When weather data changes, you manually call `$('#temperature').text(temp)` to update the display.
+
+#### CSS Selector Power
+jQuery's strength lies in its CSS selector engine. Complex DOM queries like `$('.forecast-item.active .details')` make it easy to find and manipulate specific elements.
+
+#### Event Delegation
+Uses jQuery's event delegation with `.on()` method to handle dynamically added forecast items, ensuring click handlers work on elements added after page load.
+
+#### AJAX Integration
+The weather service leverages jQuery's `$.ajax()` method for HTTP requests, providing a clean Promise-like interface with `.done()` and `.fail()` callbacks.
 <!-- end_framework_specific -->
 
 ## About jQuery

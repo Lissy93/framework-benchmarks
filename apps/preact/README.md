@@ -66,10 +66,20 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## Preact Implementation
 <!-- start_framework_specific -->
-- `src/App.jsx` - Main component with familiar React-style hooks
-- `src/hooks/useWeatherData.js` - Custom hook for weather state and API calls
-- `src/components/` - Standard functional components with hooks
-- `src/services/WeatherService.js` - API service using native fetch
+#### React API Compatibility
+Preact provides a nearly identical API to React, using the same hooks (`useState`, `useEffect`, `useCallback`) and patterns but in a much smaller bundle (~3KB vs React's ~42KB).
+
+#### Race Condition Handling
+The [`useWeatherData`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/preact/src/hooks/useWeatherData.js) hook implements sophisticated race condition prevention using `useRef` to track the latest request ID, ensuring stale requests don't override newer ones.
+
+#### Import from preact/hooks
+Uses `import { useState, useEffect } from 'preact/hooks'` instead of React's import paths, but otherwise the code is virtually identical to React patterns.
+
+#### Smaller Bundle Size
+Preact's lightweight nature means the entire weather app compiles to a significantly smaller bundle while maintaining full React compatibility for most use cases.
+
+#### Fast Refresh Support
+Modern Preact setup with Vite provides the same fast refresh development experience as React, with instant hot reloading during development.
 <!-- end_framework_specific -->
 
 

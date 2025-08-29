@@ -66,10 +66,20 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## React Implementation
 <!-- start_framework_specific -->
-- `src/App.jsx` - Main component with hooks-based state management
-- `src/hooks/useWeatherData.js` - Custom hook for weather logic and API calls
-- `src/components/ErrorBoundary.jsx` - Error boundary for crash protection
-- `src/components/` - Modular functional components
+#### Custom Hooks
+The [`useWeatherData`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/react/src/hooks/useWeatherData.js) custom hook encapsulates all weather-related state and logic, demonstrating React's hooks pattern for reusable stateful logic.
+
+#### Error Boundary
+The app includes an [`ErrorBoundary`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/react/src/components/ErrorBoundary.jsx) component using class-based lifecycle methods to catch JavaScript errors anywhere in the component tree.
+
+#### useCallback & useEffect Optimization
+Extensive use of `useCallback` for memoizing functions and `useEffect` with proper dependency arrays to prevent unnecessary re-renders and infinite loops.
+
+#### Conditional Rendering Patterns
+React's conditional rendering using logical operators (`&&`) and ternary expressions for showing loading states, errors, and weather content based on application state.
+
+#### Functional Components
+All components are functional components using hooks, showcasing modern React patterns over legacy class-based components.
 <!-- end_framework_specific -->
 
 ## About React

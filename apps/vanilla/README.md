@@ -67,10 +67,20 @@ For troubleshooting, use `npm run verify` from the root of the project.
 ## Vanilla JavaScript Implementation
 
 <!-- start_framework_specific -->
-- `src/main.js` - Application initialization and DOM manipulation
-- `src/weather-service.js` - API calls using native fetch
-- `src/weather-utils.js` - Utility functions for data processing
-- `index.html` - Pure HTML structure without framework dependencies
+#### ES6 Class Architecture
+The [`weather-app.js`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/vanilla/js/weather-app.js) uses ES6 classes to organize functionality, demonstrating how to structure vanilla JavaScript apps without frameworks.
+
+#### Native DOM APIs
+Direct use of `document.querySelector()`, `createElement()`, `addEventListener()` and other native browser APIs. No abstractions - just the platform as designed by browser vendors.
+
+#### Event-Driven Architecture
+Manual event handling with `addEventListener()` and custom event patterns. The app manages its own event lifecycle without framework helpers.
+
+#### Explicit State Management
+State is manually managed through object properties and explicit DOM updates. When data changes, you must manually call update methods to reflect changes in the UI.
+
+#### Modern JavaScript Features
+Leverages async/await, destructuring, template literals, and other ES6+ features to write clean vanilla JavaScript without sacrificing readability.
 <!-- end_framework_specific -->
 
 ## About JavaScript

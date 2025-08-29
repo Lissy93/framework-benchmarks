@@ -66,10 +66,20 @@ For troubleshooting, use `npm run verify` from the root of the project.
 
 ## Qwik Implementation
 <!-- start_framework_specific -->
-- `src/App.tsx` - Main component with resumable state
-- `src/stores/weatherStore.ts` - Qwik stores that serialize automatically  
-- `src/services/WeatherService.ts` - API calls with progressive loading
-- `src/components/` - Components that wake up on demand
+#### Resumability & Serialization
+Qwik's defining feature is resumability - the app can be paused on the server and resumed on the client without re-execution. Functions prefixed with `$` like `$(async (city: string) => {...})` create serialization boundaries.
+
+#### useSignal for State
+The [`App.tsx`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/qwik/src/App.tsx) uses `useSignal<WeatherData | null>(null)` for reactive state management, similar to React but optimized for Qwik's lazy execution model.
+
+#### Context API
+The [`weatherStore.ts`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/qwik/src/stores/weatherStore.ts) defines a context using `createContextId<WeatherState>('weather')` for sharing state across components without prop drilling.
+
+#### useVisibleTask$ Optimization
+Qwik's `useVisibleTask$()` only runs when the component becomes visible, enabling fine-grained lazy loading and reducing initial JavaScript execution.
+
+#### File-based Routing
+Uses Qwik City's file-based routing system with `routes/index.tsx` automatically mapping to the root path, similar to Next.js but with Qwik's resumability benefits.
 <!-- end_framework_specific -->
 
 ## About Qwik
