@@ -152,35 +152,56 @@ jobs:
           git config user.name "liss-bot"
           git config user.email "alicia-gh-bot@mail.as93.net"
           
-          # Switch to results branch (explicit branch reference to avoid directory confusion)
+          # Store current files in a temporary location
+          mkdir -p /tmp/results-data
+          [ -d "benchmark-results" ] && cp -r benchmark-results /tmp/results-data/ 2>/dev/null || true
+          [ -d "results" ] && cp -r results /tmp/results-data/ 2>/dev/null || true
+          [ -d "website/static/charts" ] && cp -r website/static/charts /tmp/results-data/ 2>/dev/null || true
+          
+          # Switch to results branch
           git fetch origin results 2>/dev/null || echo "Results branch doesn't exist yet"
           
-          # Check if results branch exists locally or remotely
+          # Clean any uncommitted changes first
+          git stash push -u -m "temp stash before results branch switch" || true
+          
+          # Handle results branch carefully to avoid main branch contamination
           if git show-ref --verify --quiet refs/remotes/origin/results; then
-            # Remote exists, checkout/create local branch from remote
-            git checkout -B results origin/results
-          elif git show-ref --verify --quiet refs/heads/results; then
-            # Only local exists, use it
-            git checkout results
+            # Remote results branch exists - check if it's clean (results-only)
+            git checkout --orphan temp-check
+            git rm -rf . 2>/dev/null || true
+            git fetch origin results:temp-results
+            git checkout temp-results
+            
+            # Check if this branch has main branch files (contamination check)
+            if [ -f ".github/README.md" ] || [ -f "package.json" ]; then
+              echo "🧹 Results branch appears contaminated with main branch files, creating clean branch"
+              git checkout --orphan results
+              git rm -rf . 2>/dev/null || true
+            else
+              echo "✅ Results branch looks clean, using existing branch"
+              git branch -D results 2>/dev/null || true
+              git branch -m temp-results results
+            fi
+            git branch -D temp-check 2>/dev/null || true
           else
-            # Neither exists, create new orphan branch
+            # No remote results branch exists, create new orphan branch
+            echo "🆕 Creating new results branch"
             git checkout --orphan results
-            # Clean working directory for orphan branch
             git rm -rf . 2>/dev/null || true
           fi
 
           # Set up directory structure
           mkdir -p raw summary charts stats
           
-          # Copy files to organized structure
-          [ -d "benchmark-results" ] && cp -r benchmark-results/* raw/ 2>/dev/null || true
-          [ -f "results/summary.json" ] && cp results/summary.json summary/summary-${TIMESTAMP}.json 2>/dev/null || true
-          [ -f "results/summary.tsv" ] && cp results/summary.tsv summary/summary-${TIMESTAMP}.tsv 2>/dev/null || true
-          [ -f "results/summary.json" ] && cp results/summary.json summary/summary.json 2>/dev/null || true
-          [ -f "results/summary.tsv" ] && cp results/summary.tsv summary/summary.tsv 2>/dev/null || true
-          [ -d "website/static/charts" ] && cp -r website/static/charts/* charts/ 2>/dev/null || true
-          [ -f "results/framework-stats.json" ] && cp results/framework-stats.json stats/stats-${TIMESTAMP}.json 2>/dev/null || true
-          [ -f "results/framework-stats.json" ] && cp results/framework-stats.json stats/framework-stats.json 2>/dev/null || true
+          # Copy files from temporary location to organized structure
+          [ -d "/tmp/results-data/benchmark-results" ] && cp -r /tmp/results-data/benchmark-results/* raw/ 2>/dev/null || true
+          [ -f "/tmp/results-data/results/summary.json" ] && cp /tmp/results-data/results/summary.json summary/summary-${TIMESTAMP}.json 2>/dev/null || true
+          [ -f "/tmp/results-data/results/summary.tsv" ] && cp /tmp/results-data/results/summary.tsv summary/summary-${TIMESTAMP}.tsv 2>/dev/null || true
+          [ -f "/tmp/results-data/results/summary.json" ] && cp /tmp/results-data/results/summary.json summary/summary.json 2>/dev/null || true
+          [ -f "/tmp/results-data/results/summary.tsv" ] && cp /tmp/results-data/results/summary.tsv summary/summary.tsv 2>/dev/null || true
+          [ -d "/tmp/results-data/charts" ] && cp -r /tmp/results-data/charts/* charts/ 2>/dev/null || true
+          [ -f "/tmp/results-data/results/framework-stats.json" ] && cp /tmp/results-data/results/framework-stats.json stats/stats-${TIMESTAMP}.json 2>/dev/null || true
+          [ -f "/tmp/results-data/results/framework-stats.json" ] && cp /tmp/results-data/results/framework-stats.json stats/framework-stats.json 2>/dev/null || true
           
           # Commit and push results branch
           if git add raw/ summary/ charts/ stats/ && ! git diff --staged --quiet; then
