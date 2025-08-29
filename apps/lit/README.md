@@ -7,9 +7,9 @@
   <br>
   <b><a href="/">🚀 Demo</a> ● <a href="https://frontend-framework-benchmarks.as93.net">📊 Results</a></b>
   <br><br>
-  <img src="https://img.shields.io/badge/Framework-Lit-324fff?logo=lit&logoColor=fff&labelColor=324fff" />
-  <img src="https://img.shields.io/badge/License-MIT-AE56FF?logo=googledocs&logoColor=fff&labelColor=8A2BE2" />
-  <img src="https://img.shields.io/badge/Author-Lissy93-EA4AAA?logo=githubsponsors&logoColor=fff&labelColor=E31591" />
+  <a href="https://lit.dev/" target="_blank"><img src="https://img.shields.io/badge/Framework-Lit-324fff?logo=lit&logoColor=fff&labelColor=324fff" /></a>
+  <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-AE56FF?logo=googledocs&logoColor=fff&labelColor=8A2BE2" /></a>
+  <a href="https://github.com/lissy93"><img src="https://img.shields.io/badge/Author-Lissy93-EA4AAA?logo=githubsponsors&logoColor=fff&labelColor=E31591" /></a>
 </p>
 <!-- end_header -->
 
