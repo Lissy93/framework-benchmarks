@@ -153,10 +153,16 @@ jobs:
           git config user.email "alicia-gh-bot@mail.as93.net"
           
           # Switch to results branch (explicit branch reference to avoid directory confusion)
-          git fetch origin results:results 2>/dev/null || echo "Results branch doesn't exist yet"
-          git checkout -B results origin/results 2>/dev/null || git checkout --orphan results
+          git fetch origin results 2>/dev/null || echo "Results branch doesn't exist yet"
           
-          git pull origin results 2>/dev/null || true
+          # Check if results branch exists locally
+          if git show-ref --verify --quiet refs/heads/results; then
+            git checkout results
+            git pull origin results 2>/dev/null || true
+          else
+            # Try to checkout from remote, fallback to orphan if remote doesn't exist
+            git checkout -b results origin/results 2>/dev/null || git checkout --orphan results
+          fi
 
           # Set up directory structure
           mkdir -p raw summary charts stats
