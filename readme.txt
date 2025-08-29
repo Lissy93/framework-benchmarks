@@ -1,11 +1,21 @@
-This branch contains all data and formatted results from benchmarking runs, both current and historical.
+This branch contains all current and historical
+benchmakring data for each framework's test app
 
-- charts	Ready-to-go chart.js configs with data
-- raw		Raw benchmarking data
-- stats		Auto-fetched framework info
-- summary	Formatted and processed results
+-------------------------------------------------
 
-See also:
+DIRECTORIES:
+- charts   Ready-to-go chart.js configs with data
+- raw      Raw benchmark data from each execution
+- stats    Auto-fetched framework package metrics
+- summary  Formatted, processed, combined results
+
+-------------------------------------------------
+
+SEE ALSO:
 - Homepage: https://framework-benchmarks.as93.net
 - Framework Chooser: https://stack-match.as93.net
-- Repo: https://github.com/Lissy93/framework-benchmarks
+- https://github.com/lissy93/framework-benchmarks
+
+-------------------------------------------------
+
+Licesned under MIT © Alicia Sykes <as93.net> 2025
