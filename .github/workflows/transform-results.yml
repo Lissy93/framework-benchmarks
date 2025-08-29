@@ -155,13 +155,18 @@ jobs:
           # Switch to results branch (explicit branch reference to avoid directory confusion)
           git fetch origin results 2>/dev/null || echo "Results branch doesn't exist yet"
           
-          # Check if results branch exists locally
-          if git show-ref --verify --quiet refs/heads/results; then
+          # Check if results branch exists locally or remotely
+          if git show-ref --verify --quiet refs/remotes/origin/results; then
+            # Remote exists, checkout/create local branch from remote
+            git checkout -B results origin/results
+          elif git show-ref --verify --quiet refs/heads/results; then
+            # Only local exists, use it
             git checkout results
-            git pull origin results 2>/dev/null || true
           else
-            # Try to checkout from remote, fallback to orphan if remote doesn't exist
-            git checkout -b results origin/results 2>/dev/null || git checkout --orphan results
+            # Neither exists, create new orphan branch
+            git checkout --orphan results
+            # Clean working directory for orphan branch
+            git rm -rf . 2>/dev/null || true
           fi
 
           # Set up directory structure
@@ -180,7 +185,7 @@ jobs:
           # Commit and push results branch
           if git add raw/ summary/ charts/ stats/ && ! git diff --staged --quiet; then
             git commit -m "chore: update results from run #${{ github.event.workflow_run.run_number }} [${TIMESTAMP}]"
-            if git push origin results; then
+            if git push --force-with-lease origin results; then
               echo "✅ Results committed to results branch"
             else
               echo "⚠️ Failed to push results branch updates"
