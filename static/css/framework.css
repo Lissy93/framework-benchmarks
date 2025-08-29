@@ -35,6 +35,8 @@
     "example example example example example example video video video video video video"
     "about-section about-section about-section about-section about-section about-section about-section about-section about-section about-section about-section about-section"
     "thoughts thoughts thoughts thoughts thoughts thoughts thoughts thoughts thoughts thoughts thoughts thoughts"
+    "choosing-header choosing-header choosing-header choosing-header choosing-header choosing-header choosing-header choosing-header choosing-header choosing-header choosing-header choosing-header"
+    "stack-match stack-match stack-match stack-match stack-match stack-match stack-match stack-match stack-match stack-match stack-match stack-match"
     "nav nav nav nav nav nav nav nav nav nav nav nav";
   
   gap: var(--grid-gap);
@@ -60,6 +62,8 @@
 .framework-video { grid-area: video; }
 .framework-about-section { grid-area: about-section; }
 .framework-thoughts-section { grid-area: thoughts; }
+.group-header-choosing { grid-area: choosing-header; }
+.stack-match-section { grid-area: stack-match; }
 .framework-nav { grid-area: nav; }
 
 /* =============================================================================
@@ -579,14 +583,14 @@ h4 {
       "requirements requirements requirements requirements requirements requirements"
       "implementation implementation implementation implementation implementation implementation"
       "implementation implementation implementation implementation implementation implementation"
-      "commentary commentary commentary commentary commentary commentary"
-      "commentary commentary commentary commentary commentary commentary"
       "info-header info-header info-header info-header info-header info-header"
       "stats stats stats stats stats stats"
       "example example example video video video"
       "example example example video video video"
       "about-section about-section about-section about-section about-section about-section"
       "thoughts thoughts thoughts thoughts thoughts thoughts"
+      "choosing-header choosing-header choosing-header choosing-header choosing-header choosing-header"
+      "stack-match stack-match stack-match stack-match stack-match stack-match"
       "nav nav nav nav nav nav";
   }
 
@@ -663,6 +667,121 @@ h4 {
   .metric-value {
     font-size: 1rem;
   }
+  
+  /* Stack Match responsive styles */
+  .stack-match-section {
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 1.5rem 1rem;
+  }
+  
+  .stack-match-info {
+    min-width: auto;
+  }
+  
+  .stack-match-screenshot {
+    width: 100%;
+    max-width: 400px;
+    align-self: center;
+  }
+  
+  .button-wrap {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .primary-cta,
+  .secondary-cta {
+    text-align: center;
+  }
+}
+
+/* Stack Match Section */
+.stack-match-section {
+  background: white;
+  border: 1px solid var(--card-border, #e0e0e0);
+  border-radius: var(--border-radius, 16px);
+  padding: 2rem 1rem 1rem;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  box-shadow: var(--shadow);
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.stack-match-info {
+  flex: 1;
+  min-width: 300px;
+}
+
+.stack-match-info h3 {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0 0 1rem 0;
+  font-size: 1.4rem;
+  color: var(--text-color);
+}
+
+.stack-match-info p {
+  margin: 0 0 1.5rem 0;
+  line-height: 1.6;
+  color: var(--text-color);
+}
+
+.stack-match-screenshot {
+  border-radius: 8px;
+  box-shadow: var(--shadow-lg, 0 10px 25px rgba(0,0,0,0.15));
+  transition: transform 0.3s ease;
+  width: 400px;
+  max-width: 100%;
+  height: auto;
+}
+
+.stack-match-section:hover .stack-match-screenshot {
+  transform: translateY(-2px);
+}
+
+.button-wrap {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.primary-cta,
+.secondary-cta {
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.primary-cta {
+  background: var(--fw-color, var(--primary-color, #3498db));
+  color: white;
+}
+
+.primary-cta:hover {
+  background: color-mix(in srgb, var(--fw-color, var(--primary-color, #3498db)) 90%, black);
+  transform: translateY(-1px);
+  color: white;
+}
+
+.secondary-cta {
+  background: var(--secondary-bg, #f8f9fa);
+  color: var(--text-color);
+  border: 1px solid var(--border-color, #e0e0e0);
+}
+
+.secondary-cta:hover {
+  background: var(--border-color, #e0e0e0);
+  transform: translateY(-1px);
+  color: var(--text-color);
 }
 
 .group-header h2 {
