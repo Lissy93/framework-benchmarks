@@ -1,0 +1,2792 @@
+{
+  "benchmark_type": "Source Analysis",
+  "benchmark_slug": "source_analysis",
+  "timestamp": "2025-09-25T04:51:42.642794",
+  "date": "2025-09-25",
+  "run_id": "run_20250925_045142",
+  "metadata": {
+    "frameworks_tested": [
+      "react",
+      "angular",
+      "svelte",
+      "preact",
+      "solid",
+      "qwik",
+      "vue",
+      "jquery",
+      "alpine",
+      "lit",
+      "vanjs",
+      "vanilla"
+    ],
+    "frameworks_count": 12,
+    "successful_count": 12,
+    "failed_count": 0,
+    "successful_frameworks": [
+      "react",
+      "angular",
+      "svelte",
+      "preact",
+      "solid",
+      "qwik",
+      "vue",
+      "jquery",
+      "alpine",
+      "lit",
+      "vanjs",
+      "vanilla"
+    ],
+    "failed_frameworks": [],
+    "execution_time_iso": "2025-09-25T04:51:42.642798",
+    "file_path": "benchmark-results/2025-09-25/source_analysis_20250925_045142.json"
+  },
+  "config": {},
+  "results": [
+    {
+      "framework": "react",
+      "benchmark_type": "Source Analysis",
+      "timestamp": "2025-09-25T04:51:42.580526",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "framework": "react",
+        "summary": {
+          "total_files": 13,
+          "totals": {
+            "physical_lines": 762,
+            "logical_lines": 438,
+            "cyclomatic_complexity": 90,
+            "maintainability_index": 634.6899999999999,
+            "halstead_volume": 24213.690000000006
+          },
+          "averages": {
+            "physical_lines": 58.6,
+            "logical_lines": 33.7,
+            "cyclomatic_complexity": 6.9,
+            "maintainability_index": 48.8,
+            "halstead_volume": 1862.6
+          }
+        },
+        "files": [
+          {
+            "file": "App.jsx",
+            "lines": {
+              "physical": 46,
+              "logical": 17
+            },
+            "cyclomatic_complexity": 4,
+            "halstead": {
+              "length": 265,
+              "vocabulary": 64,
+              "volume": 1590.0,
+              "operators": {
+                "total": 126,
+                "unique": 3
+              },
+              "operands": {
+                "total": 139,
+                "unique": 61
+              }
+            },
+            "maintainability_index": 50.2
+          },
+          {
+            "file": "main.jsx",
+            "lines": {
+              "physical": 8,
+              "logical": 4
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 37,
+              "vocabulary": 16,
+              "volume": 148.0,
+              "operators": {
+                "total": 11,
+                "unique": 1
+              },
+              "operands": {
+                "total": 26,
+                "unique": 15
+              }
+            },
+            "maintainability_index": 71.54
+          },
+          {
+            "file": "utils/WeatherUtils.js",
+            "lines": {
+              "physical": 117,
+              "logical": 86
+            },
+            "cyclomatic_complexity": 24,
+            "halstead": {
+              "length": 500,
+              "vocabulary": 128,
+              "volume": 3500.0,
+              "operators": {
+                "total": 189,
+                "unique": 6
+              },
+              "operands": {
+                "total": 311,
+                "unique": 122
+              }
+            },
+            "maintainability_index": 29.76
+          },
+          {
+            "file": "services/WeatherService.js",
+            "lines": {
+              "physical": 145,
+              "logical": 97
+            },
+            "cyclomatic_complexity": 29,
+            "halstead": {
+              "length": 661,
+              "vocabulary": 181,
+              "volume": 4957.4,
+              "operators": {
+                "total": 174,
+                "unique": 7
+              },
+              "operands": {
+                "total": 487,
+                "unique": 174
+              }
+            },
+            "maintainability_index": 26.89
+          },
+          {
+            "file": "components/ForecastItem.jsx",
+            "lines": {
+              "physical": 93,
+              "logical": 31
+            },
+            "cyclomatic_complexity": 5,
+            "halstead": {
+              "length": 592,
+              "vocabulary": 91,
+              "volume": 3852.61,
+              "operators": {
+                "total": 264,
+                "unique": 4
+              },
+              "operands": {
+                "total": 328,
+                "unique": 87
+              }
+            },
+            "maintainability_index": 41.69
+          },
+          {
+            "file": "components/WeatherContent.jsx",
+            "lines": {
+              "physical": 18,
+              "logical": 8
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 77,
+              "vocabulary": 24,
+              "volume": 353.04,
+              "operators": {
+                "total": 33,
+                "unique": 2
+              },
+              "operands": {
+                "total": 44,
+                "unique": 22
+              }
+            },
+            "maintainability_index": 62.33
+          },
+          {
+            "file": "components/ErrorState.jsx",
+            "lines": {
+              "physical": 16,
+              "logical": 7
+            },
+            "cyclomatic_complexity": 2,
+            "halstead": {
+              "length": 73,
+              "vocabulary": 36,
+              "volume": 377.4,
+              "operators": {
+                "total": 28,
+                "unique": 2
+              },
+              "operands": {
+                "total": 45,
+                "unique": 34
+              }
+            },
+            "maintainability_index": 63.25
+          },
+          {
+            "file": "components/CurrentWeather.jsx",
+            "lines": {
+              "physical": 73,
+              "logical": 19
+            },
+            "cyclomatic_complexity": 2,
+            "halstead": {
+              "length": 519,
+              "vocabulary": 81,
+              "volume": 3290.38,
+              "operators": {
+                "total": 247,
+                "unique": 3
+              },
+              "operands": {
+                "total": 272,
+                "unique": 78
+              }
+            },
+            "maintainability_index": 47.21
+          },
+          {
+            "file": "components/LoadingState.jsx",
+            "lines": {
+              "physical": 14,
+              "logical": 6
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 56,
+              "vocabulary": 23,
+              "volume": 253.32,
+              "operators": {
+                "total": 25,
+                "unique": 2
+              },
+              "operands": {
+                "total": 31,
+                "unique": 21
+              }
+            },
+            "maintainability_index": 66.06
+          },
+          {
+            "file": "components/Forecast.jsx",
+            "lines": {
+              "physical": 42,
+              "logical": 28
+            },
+            "cyclomatic_complexity": 4,
+            "halstead": {
+              "length": 186,
+              "vocabulary": 58,
+              "volume": 1089.58,
+              "operators": {
+                "total": 78,
+                "unique": 3
+              },
+              "operands": {
+                "total": 108,
+                "unique": 55
+              }
+            },
+            "maintainability_index": 46.63
+          },
+          {
+            "file": "components/SearchForm.jsx",
+            "lines": {
+              "physical": 51,
+              "logical": 25
+            },
+            "cyclomatic_complexity": 5,
+            "halstead": {
+              "length": 252,
+              "vocabulary": 71,
+              "volume": 1549.74,
+              "operators": {
+                "total": 104,
+                "unique": 4
+              },
+              "operands": {
+                "total": 148,
+                "unique": 67
+              }
+            },
+            "maintainability_index": 46.49
+          },
+          {
+            "file": "components/ErrorBoundary.jsx",
+            "lines": {
+              "physical": 33,
+              "logical": 21
+            },
+            "cyclomatic_complexity": 2,
+            "halstead": {
+              "length": 155,
+              "vocabulary": 68,
+              "volume": 943.56,
+              "operators": {
+                "total": 53,
+                "unique": 3
+              },
+              "operands": {
+                "total": 102,
+                "unique": 65
+              }
+            },
+            "maintainability_index": 50.06
+          },
+          {
+            "file": "hooks/useWeatherData.js",
+            "lines": {
+              "physical": 106,
+              "logical": 89
+            },
+            "cyclomatic_complexity": 10,
+            "halstead": {
+              "length": 346,
+              "vocabulary": 102,
+              "volume": 2308.66,
+              "operators": {
+                "total": 76,
+                "unique": 5
+              },
+              "operands": {
+                "total": 270,
+                "unique": 97
+              }
+            },
+            "maintainability_index": 32.58
+          }
+        ]
+      }
+    },
+    {
+      "framework": "angular",
+      "benchmark_type": "Source Analysis",
+      "timestamp": "2025-09-25T04:51:42.586196",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "framework": "angular",
+        "summary": {
+          "total_files": 13,
+          "totals": {
+            "physical_lines": 868,
+            "logical_lines": 474,
+            "cyclomatic_complexity": 85,
+            "maintainability_index": 604.86,
+            "halstead_volume": 29635.289999999994
+          },
+          "averages": {
+            "physical_lines": 66.8,
+            "logical_lines": 36.5,
+            "cyclomatic_complexity": 6.5,
+            "maintainability_index": 46.5,
+            "halstead_volume": 2279.6
+          }
+        },
+        "files": [
+          {
+            "file": "main.ts",
+            "lines": {
+              "physical": 8,
+              "logical": 5
+            },
+            "cyclomatic_complexity": 2,
+            "halstead": {
+              "length": 36,
+              "vocabulary": 18,
+              "volume": 150.12,
+              "operators": {
+                "total": 9,
+                "unique": 1
+              },
+              "operands": {
+                "total": 27,
+                "unique": 17
+              }
+            },
+            "maintainability_index": 69.24
+          },
+          {
+            "file": "app/app.component.ts",
+            "lines": {
+              "physical": 80,
+              "logical": 29
+            },
+            "cyclomatic_complexity": 4,
+            "halstead": {
+              "length": 411,
+              "vocabulary": 99,
+              "volume": 2724.67,
+              "operators": {
+                "total": 169,
+                "unique": 2
+              },
+              "operands": {
+                "total": 242,
+                "unique": 97
+              }
+            },
+            "maintainability_index": 43.51
+          },
+          {
+            "file": "app/types/weather.types.ts",
+            "lines": {
+              "physical": 39,
+              "logical": 39
+            },
+            "cyclomatic_complexity": 4,
+            "halstead": {
+              "length": 109,
+              "vocabulary": 39,
+              "volume": 576.11,
+              "operators": {
+                "total": 34,
+                "unique": 1
+              },
+              "operands": {
+                "total": 75,
+                "unique": 38
+              }
+            },
+            "maintainability_index": 45.43
+          },
+          {
+            "file": "app/utils/weather.utils.ts",
+            "lines": {
+              "physical": 105,
+              "logical": 74
+            },
+            "cyclomatic_complexity": 24,
+            "halstead": {
+              "length": 515,
+              "vocabulary": 117,
+              "volume": 3538.24,
+              "operators": {
+                "total": 206,
+                "unique": 5
+              },
+              "operands": {
+                "total": 309,
+                "unique": 112
+              }
+            },
+            "maintainability_index": 31.15
+          },
+          {
+            "file": "app/services/weather-state.service.ts",
+            "lines": {
+              "physical": 97,
+              "logical": 76
+            },
+            "cyclomatic_complexity": 13,
+            "halstead": {
+              "length": 463,
+              "vocabulary": 137,
+              "volume": 3286.39,
+              "operators": {
+                "total": 107,
+                "unique": 5
+              },
+              "operands": {
+                "total": 356,
+                "unique": 132
+              }
+            },
+            "maintainability_index": 32.6
+          },
+          {
+            "file": "app/services/weather.service.ts",
+            "lines": {
+              "physical": 165,
+              "logical": 98
+            },
+            "cyclomatic_complexity": 21,
+            "halstead": {
+              "length": 791,
+              "vocabulary": 216,
+              "volume": 6134.12,
+              "operators": {
+                "total": 238,
+                "unique": 7
+              },
+              "operands": {
+                "total": 553,
+                "unique": 209
+              }
+            },
+            "maintainability_index": 27.22
+          },
+          {
+            "file": "app/components/loading-state.component.ts",
+            "lines": {
+              "physical": 20,
+              "logical": 6
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 75,
+              "vocabulary": 30,
+              "volume": 368.02,
+              "operators": {
+                "total": 30,
+                "unique": 1
+              },
+              "operands": {
+                "total": 45,
+                "unique": 29
+              }
+            },
+            "maintainability_index": 64.92
+          },
+          {
+            "file": "app/components/current-weather.component.ts",
+            "lines": {
+              "physical": 86,
+              "logical": 26
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 579,
+              "vocabulary": 87,
+              "volume": 3730.46,
+              "operators": {
+                "total": 263,
+                "unique": 1
+              },
+              "operands": {
+                "total": 316,
+                "unique": 86
+              }
+            },
+            "maintainability_index": 43.99
+          },
+          {
+            "file": "app/components/weather-content.component.ts",
+            "lines": {
+              "physical": 26,
+              "logical": 10
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 135,
+              "vocabulary": 36,
+              "volume": 697.94,
+              "operators": {
+                "total": 54,
+                "unique": 1
+              },
+              "operands": {
+                "total": 81,
+                "unique": 35
+              }
+            },
+            "maintainability_index": 58.14
+          },
+          {
+            "file": "app/components/forecast.component.ts",
+            "lines": {
+              "physical": 47,
+              "logical": 25
+            },
+            "cyclomatic_complexity": 3,
+            "halstead": {
+              "length": 240,
+              "vocabulary": 83,
+              "volume": 1530.01,
+              "operators": {
+                "total": 90,
+                "unique": 3
+              },
+              "operands": {
+                "total": 150,
+                "unique": 80
+              }
+            },
+            "maintainability_index": 46.8
+          },
+          {
+            "file": "app/components/forecast-item.component.ts",
+            "lines": {
+              "physical": 106,
+              "logical": 45
+            },
+            "cyclomatic_complexity": 4,
+            "halstead": {
+              "length": 634,
+              "vocabulary": 112,
+              "volume": 4315.86,
+              "operators": {
+                "total": 276,
+                "unique": 5
+              },
+              "operands": {
+                "total": 358,
+                "unique": 107
+              }
+            },
+            "maintainability_index": 37.95
+          },
+          {
+            "file": "app/components/error-state.component.ts",
+            "lines": {
+              "physical": 23,
+              "logical": 8
+            },
+            "cyclomatic_complexity": 2,
+            "halstead": {
+              "length": 99,
+              "vocabulary": 45,
+              "volume": 543.69,
+              "operators": {
+                "total": 36,
+                "unique": 1
+              },
+              "operands": {
+                "total": 63,
+                "unique": 44
+              }
+            },
+            "maintainability_index": 60.88
+          },
+          {
+            "file": "app/components/search-form.component.ts",
+            "lines": {
+              "physical": 66,
+              "logical": 33
+            },
+            "cyclomatic_complexity": 5,
+            "halstead": {
+              "length": 307,
+              "vocabulary": 100,
+              "volume": 2039.66,
+              "operators": {
+                "total": 115,
+                "unique": 6
+              },
+              "operands": {
+                "total": 192,
+                "unique": 94
+              }
+            },
+            "maintainability_index": 43.03
+          }
+        ]
+      }
+    },
+    {
+      "framework": "svelte",
+      "benchmark_type": "Source Analysis",
+      "timestamp": "2025-09-25T04:51:42.590428",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "framework": "svelte",
+        "summary": {
+          "total_files": 12,
+          "totals": {
+            "physical_lines": 797,
+            "logical_lines": 405,
+            "cyclomatic_complexity": 101,
+            "maintainability_index": 690.76,
+            "halstead_volume": 16137.400000000001
+          },
+          "averages": {
+            "physical_lines": 66.4,
+            "logical_lines": 33.8,
+            "cyclomatic_complexity": 8.4,
+            "maintainability_index": 57.6,
+            "halstead_volume": 1344.8
+          }
+        },
+        "files": [
+          {
+            "file": "lib/stores/weather-store.js",
+            "lines": {
+              "physical": 119,
+              "logical": 94
+            },
+            "cyclomatic_complexity": 22,
+            "halstead": {
+              "length": 538,
+              "vocabulary": 151,
+              "volume": 3894.26,
+              "operators": {
+                "total": 120,
+                "unique": 8
+              },
+              "operands": {
+                "total": 418,
+                "unique": 143
+              }
+            },
+            "maintainability_index": 28.86
+          },
+          {
+            "file": "lib/utils/weather-utils.js",
+            "lines": {
+              "physical": 116,
+              "logical": 85
+            },
+            "cyclomatic_complexity": 24,
+            "halstead": {
+              "length": 498,
+              "vocabulary": 127,
+              "volume": 3480.36,
+              "operators": {
+                "total": 189,
+                "unique": 6
+              },
+              "operands": {
+                "total": 309,
+                "unique": 121
+              }
+            },
+            "maintainability_index": 29.89
+          },
+          {
+            "file": "lib/services/weather-service.js",
+            "lines": {
+              "physical": 188,
+              "logical": 126
+            },
+            "cyclomatic_complexity": 32,
+            "halstead": {
+              "length": 798,
+              "vocabulary": 216,
+              "volume": 6188.4,
+              "operators": {
+                "total": 212,
+                "unique": 7
+              },
+              "operands": {
+                "total": 586,
+                "unique": 209
+              }
+            },
+            "maintainability_index": 23.33
+          },
+          {
+            "file": "lib/components/Forecast.svelte",
+            "lines": {
+              "physical": 39,
+              "logical": 19
+            },
+            "cyclomatic_complexity": 3,
+            "halstead": {
+              "length": 77,
+              "vocabulary": 41,
+              "volume": 412.53,
+              "operators": {
+                "total": 21,
+                "unique": 4
+              },
+              "operands": {
+                "total": 56,
+                "unique": 37
+              }
+            },
+            "maintainability_index": 53.39
+          },
+          {
+            "file": "lib/components/LoadingState.svelte",
+            "lines": {
+              "physical": 11,
+              "logical": 1
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 5,
+              "vocabulary": 5,
+              "volume": 11.61,
+              "operators": {
+                "total": 1,
+                "unique": 1
+              },
+              "operands": {
+                "total": 4,
+                "unique": 4
+              }
+            },
+            "maintainability_index": 92.41
+          },
+          {
+            "file": "lib/components/ForecastItem.svelte",
+            "lines": {
+              "physical": 87,
+              "logical": 21
+            },
+            "cyclomatic_complexity": 3,
+            "halstead": {
+              "length": 97,
+              "vocabulary": 41,
+              "volume": 519.68,
+              "operators": {
+                "total": 28,
+                "unique": 3
+              },
+              "operands": {
+                "total": 69,
+                "unique": 38
+              }
+            },
+            "maintainability_index": 51.74
+          },
+          {
+            "file": "lib/components/ErrorState.svelte",
+            "lines": {
+              "physical": 14,
+              "logical": 2
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 10,
+              "vocabulary": 7,
+              "volume": 28.07,
+              "operators": {
+                "total": 2,
+                "unique": 1
+              },
+              "operands": {
+                "total": 8,
+                "unique": 6
+              }
+            },
+            "maintainability_index": 83.16
+          },
+          {
+            "file": "lib/components/WeatherContent.svelte",
+            "lines": {
+              "physical": 16,
+              "logical": 4
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 22,
+              "vocabulary": 12,
+              "volume": 78.87,
+              "operators": {
+                "total": 4,
+                "unique": 1
+              },
+              "operands": {
+                "total": 18,
+                "unique": 11
+              }
+            },
+            "maintainability_index": 73.45
+          },
+          {
+            "file": "lib/components/CurrentWeather.svelte",
+            "lines": {
+              "physical": 70,
+              "logical": 2
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 15,
+              "vocabulary": 11,
+              "volume": 51.89,
+              "operators": {
+                "total": 4,
+                "unique": 1
+              },
+              "operands": {
+                "total": 11,
+                "unique": 10
+              }
+            },
+            "maintainability_index": 81.29
+          },
+          {
+            "file": "lib/components/SearchForm.svelte",
+            "lines": {
+              "physical": 69,
+              "logical": 36
+            },
+            "cyclomatic_complexity": 11,
+            "halstead": {
+              "length": 157,
+              "vocabulary": 60,
+              "volume": 927.38,
+              "operators": {
+                "total": 45,
+                "unique": 4
+              },
+              "operands": {
+                "total": 112,
+                "unique": 56
+              }
+            },
+            "maintainability_index": 43.79
+          },
+          {
+            "file": "routes/+layout.svelte",
+            "lines": {
+              "physical": 17,
+              "logical": 5
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 32,
+              "vocabulary": 19,
+              "volume": 135.93,
+              "operators": {
+                "total": 7,
+                "unique": 1
+              },
+              "operands": {
+                "total": 25,
+                "unique": 18
+              }
+            },
+            "maintainability_index": 69.68
+          },
+          {
+            "file": "routes/+page.svelte",
+            "lines": {
+              "physical": 51,
+              "logical": 10
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 79,
+              "vocabulary": 36,
+              "volume": 408.42,
+              "operators": {
+                "total": 18,
+                "unique": 2
+              },
+              "operands": {
+                "total": 61,
+                "unique": 34
+              }
+            },
+            "maintainability_index": 59.77
+          }
+        ]
+      }
+    },
+    {
+      "framework": "preact",
+      "benchmark_type": "Source Analysis",
+      "timestamp": "2025-09-25T04:51:42.595348",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "framework": "preact",
+        "summary": {
+          "total_files": 12,
+          "totals": {
+            "physical_lines": 776,
+            "logical_lines": 461,
+            "cyclomatic_complexity": 101,
+            "maintainability_index": 585.8,
+            "halstead_volume": 25344.18
+          },
+          "averages": {
+            "physical_lines": 64.7,
+            "logical_lines": 38.4,
+            "cyclomatic_complexity": 8.4,
+            "maintainability_index": 48.8,
+            "halstead_volume": 2112.0
+          }
+        },
+        "files": [
+          {
+            "file": "App.jsx",
+            "lines": {
+              "physical": 53,
+              "logical": 21
+            },
+            "cyclomatic_complexity": 4,
+            "halstead": {
+              "length": 270,
+              "vocabulary": 70,
+              "volume": 1654.91,
+              "operators": {
+                "total": 129,
+                "unique": 3
+              },
+              "operands": {
+                "total": 141,
+                "unique": 67
+              }
+            },
+            "maintainability_index": 48.08
+          },
+          {
+            "file": "main.jsx",
+            "lines": {
+              "physical": 3,
+              "logical": 3
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 18,
+              "vocabulary": 10,
+              "volume": 59.79,
+              "operators": {
+                "total": 4,
+                "unique": 1
+              },
+              "operands": {
+                "total": 14,
+                "unique": 9
+              }
+            },
+            "maintainability_index": 77.02
+          },
+          {
+            "file": "utils/WeatherUtils.js",
+            "lines": {
+              "physical": 117,
+              "logical": 86
+            },
+            "cyclomatic_complexity": 24,
+            "halstead": {
+              "length": 500,
+              "vocabulary": 128,
+              "volume": 3500.0,
+              "operators": {
+                "total": 189,
+                "unique": 6
+              },
+              "operands": {
+                "total": 311,
+                "unique": 122
+              }
+            },
+            "maintainability_index": 29.76
+          },
+          {
+            "file": "services/WeatherService.js",
+            "lines": {
+              "physical": 185,
+              "logical": 123
+            },
+            "cyclomatic_complexity": 30,
+            "halstead": {
+              "length": 771,
+              "vocabulary": 207,
+              "volume": 5931.68,
+              "operators": {
+                "total": 203,
+                "unique": 7
+              },
+              "operands": {
+                "total": 568,
+                "unique": 200
+              }
+            },
+            "maintainability_index": 23.96
+          },
+          {
+            "file": "components/ForecastItem.jsx",
+            "lines": {
+              "physical": 84,
+              "logical": 32
+            },
+            "cyclomatic_complexity": 5,
+            "halstead": {
+              "length": 560,
+              "vocabulary": 86,
+              "volume": 3598.71,
+              "operators": {
+                "total": 262,
+                "unique": 4
+              },
+              "operands": {
+                "total": 298,
+                "unique": 82
+              }
+            },
+            "maintainability_index": 41.59
+          },
+          {
+            "file": "components/WeatherContent.jsx",
+            "lines": {
+              "physical": 17,
+              "logical": 7
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 75,
+              "vocabulary": 23,
+              "volume": 339.27,
+              "operators": {
+                "total": 35,
+                "unique": 2
+              },
+              "operands": {
+                "total": 40,
+                "unique": 21
+              }
+            },
+            "maintainability_index": 63.71
+          },
+          {
+            "file": "components/ErrorState.jsx",
+            "lines": {
+              "physical": 12,
+              "logical": 5
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 45,
+              "vocabulary": 18,
+              "volume": 187.65,
+              "operators": {
+                "total": 22,
+                "unique": 2
+              },
+              "operands": {
+                "total": 23,
+                "unique": 16
+              }
+            },
+            "maintainability_index": 68.7
+          },
+          {
+            "file": "components/CurrentWeather.jsx",
+            "lines": {
+              "physical": 71,
+              "logical": 18
+            },
+            "cyclomatic_complexity": 2,
+            "halstead": {
+              "length": 556,
+              "vocabulary": 82,
+              "volume": 3534.8,
+              "operators": {
+                "total": 265,
+                "unique": 3
+              },
+              "operands": {
+                "total": 291,
+                "unique": 79
+              }
+            },
+            "maintainability_index": 47.5
+          },
+          {
+            "file": "components/LoadingState.jsx",
+            "lines": {
+              "physical": 13,
+              "logical": 5
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 52,
+              "vocabulary": 19,
+              "volume": 220.89,
+              "operators": {
+                "total": 26,
+                "unique": 2
+              },
+              "operands": {
+                "total": 26,
+                "unique": 17
+              }
+            },
+            "maintainability_index": 68.2
+          },
+          {
+            "file": "components/Forecast.jsx",
+            "lines": {
+              "physical": 41,
+              "logical": 29
+            },
+            "cyclomatic_complexity": 4,
+            "halstead": {
+              "length": 174,
+              "vocabulary": 58,
+              "volume": 1019.29,
+              "operators": {
+                "total": 71,
+                "unique": 4
+              },
+              "operands": {
+                "total": 103,
+                "unique": 54
+              }
+            },
+            "maintainability_index": 46.5
+          },
+          {
+            "file": "components/SearchForm.jsx",
+            "lines": {
+              "physical": 67,
+              "logical": 39
+            },
+            "cyclomatic_complexity": 10,
+            "halstead": {
+              "length": 321,
+              "vocabulary": 94,
+              "volume": 2104.02,
+              "operators": {
+                "total": 125,
+                "unique": 5
+              },
+              "operands": {
+                "total": 196,
+                "unique": 89
+              }
+            },
+            "maintainability_index": 40.68
+          },
+          {
+            "file": "hooks/useWeatherData.js",
+            "lines": {
+              "physical": 113,
+              "logical": 93
+            },
+            "cyclomatic_complexity": 18,
+            "halstead": {
+              "length": 454,
+              "vocabulary": 131,
+              "volume": 3193.17,
+              "operators": {
+                "total": 103,
+                "unique": 7
+              },
+              "operands": {
+                "total": 351,
+                "unique": 124
+              }
+            },
+            "maintainability_index": 30.1
+          }
+        ]
+      }
+    },
+    {
+      "framework": "solid",
+      "benchmark_type": "Source Analysis",
+      "timestamp": "2025-09-25T04:51:42.600370",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "framework": "solid",
+        "summary": {
+          "total_files": 12,
+          "totals": {
+            "physical_lines": 786,
+            "logical_lines": 458,
+            "cyclomatic_complexity": 98,
+            "maintainability_index": 581.4399999999999,
+            "halstead_volume": 26202.05
+          },
+          "averages": {
+            "physical_lines": 65.5,
+            "logical_lines": 38.2,
+            "cyclomatic_complexity": 8.2,
+            "maintainability_index": 48.5,
+            "halstead_volume": 2183.5
+          }
+        },
+        "files": [
+          {
+            "file": "App.jsx",
+            "lines": {
+              "physical": 55,
+              "logical": 23
+            },
+            "cyclomatic_complexity": 4,
+            "halstead": {
+              "length": 286,
+              "vocabulary": 77,
+              "volume": 1792.3,
+              "operators": {
+                "total": 130,
+                "unique": 3
+              },
+              "operands": {
+                "total": 156,
+                "unique": 74
+              }
+            },
+            "maintainability_index": 46.98
+          },
+          {
+            "file": "index.jsx",
+            "lines": {
+              "physical": 3,
+              "logical": 3
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 23,
+              "vocabulary": 11,
+              "volume": 79.57,
+              "operators": {
+                "total": 8,
+                "unique": 1
+              },
+              "operands": {
+                "total": 15,
+                "unique": 10
+              }
+            },
+            "maintainability_index": 76.15
+          },
+          {
+            "file": "stores/weatherStore.js",
+            "lines": {
+              "physical": 117,
+              "logical": 87
+            },
+            "cyclomatic_complexity": 20,
+            "halstead": {
+              "length": 483,
+              "vocabulary": 147,
+              "volume": 3477.44,
+              "operators": {
+                "total": 108,
+                "unique": 7
+              },
+              "operands": {
+                "total": 375,
+                "unique": 140
+              }
+            },
+            "maintainability_index": 30.21
+          },
+          {
+            "file": "utils/WeatherUtils.js",
+            "lines": {
+              "physical": 117,
+              "logical": 86
+            },
+            "cyclomatic_complexity": 24,
+            "halstead": {
+              "length": 500,
+              "vocabulary": 128,
+              "volume": 3500.0,
+              "operators": {
+                "total": 189,
+                "unique": 6
+              },
+              "operands": {
+                "total": 311,
+                "unique": 122
+              }
+            },
+            "maintainability_index": 29.76
+          },
+          {
+            "file": "services/WeatherService.js",
+            "lines": {
+              "physical": 184,
+              "logical": 123
+            },
+            "cyclomatic_complexity": 29,
+            "halstead": {
+              "length": 762,
+              "vocabulary": 207,
+              "volume": 5862.44,
+              "operators": {
+                "total": 200,
+                "unique": 7
+              },
+              "operands": {
+                "total": 562,
+                "unique": 200
+              }
+            },
+            "maintainability_index": 24.13
+          },
+          {
+            "file": "components/ForecastItem.jsx",
+            "lines": {
+              "physical": 85,
+              "logical": 32
+            },
+            "cyclomatic_complexity": 4,
+            "halstead": {
+              "length": 600,
+              "vocabulary": 92,
+              "volume": 3914.14,
+              "operators": {
+                "total": 274,
+                "unique": 5
+              },
+              "operands": {
+                "total": 326,
+                "unique": 87
+              }
+            },
+            "maintainability_index": 41.47
+          },
+          {
+            "file": "components/WeatherContent.jsx",
+            "lines": {
+              "physical": 16,
+              "logical": 7
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 83,
+              "vocabulary": 26,
+              "volume": 390.14,
+              "operators": {
+                "total": 36,
+                "unique": 3
+              },
+              "operands": {
+                "total": 47,
+                "unique": 23
+              }
+            },
+            "maintainability_index": 63.29
+          },
+          {
+            "file": "components/ErrorState.jsx",
+            "lines": {
+              "physical": 11,
+              "logical": 5
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 53,
+              "vocabulary": 24,
+              "volume": 243.0,
+              "operators": {
+                "total": 23,
+                "unique": 3
+              },
+              "operands": {
+                "total": 30,
+                "unique": 21
+              }
+            },
+            "maintainability_index": 67.91
+          },
+          {
+            "file": "components/CurrentWeather.jsx",
+            "lines": {
+              "physical": 79,
+              "logical": 23
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 560,
+              "vocabulary": 85,
+              "volume": 3589.26,
+              "operators": {
+                "total": 263,
+                "unique": 3
+              },
+              "operands": {
+                "total": 297,
+                "unique": 82
+              }
+            },
+            "maintainability_index": 45.27
+          },
+          {
+            "file": "components/LoadingState.jsx",
+            "lines": {
+              "physical": 12,
+              "logical": 5
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 61,
+              "vocabulary": 25,
+              "volume": 283.28,
+              "operators": {
+                "total": 28,
+                "unique": 3
+              },
+              "operands": {
+                "total": 33,
+                "unique": 22
+              }
+            },
+            "maintainability_index": 67.45
+          },
+          {
+            "file": "components/Forecast.jsx",
+            "lines": {
+              "physical": 41,
+              "logical": 25
+            },
+            "cyclomatic_complexity": 3,
+            "halstead": {
+              "length": 183,
+              "vocabulary": 63,
+              "volume": 1093.84,
+              "operators": {
+                "total": 76,
+                "unique": 5
+              },
+              "operands": {
+                "total": 107,
+                "unique": 58
+              }
+            },
+            "maintainability_index": 47.82
+          },
+          {
+            "file": "components/SearchForm.jsx",
+            "lines": {
+              "physical": 66,
+              "logical": 39
+            },
+            "cyclomatic_complexity": 9,
+            "halstead": {
+              "length": 303,
+              "vocabulary": 92,
+              "volume": 1976.64,
+              "operators": {
+                "total": 118,
+                "unique": 5
+              },
+              "operands": {
+                "total": 185,
+                "unique": 87
+              }
+            },
+            "maintainability_index": 41.0
+          }
+        ]
+      }
+    },
+    {
+      "framework": "qwik",
+      "benchmark_type": "Source Analysis",
+      "timestamp": "2025-09-25T04:51:42.605776",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "framework": "qwik",
+        "summary": {
+          "total_files": 16,
+          "totals": {
+            "physical_lines": 754,
+            "logical_lines": 414,
+            "cyclomatic_complexity": 83,
+            "maintainability_index": 862.4599999999999,
+            "halstead_volume": 26425.589999999997
+          },
+          "averages": {
+            "physical_lines": 47.1,
+            "logical_lines": 25.9,
+            "cyclomatic_complexity": 5.2,
+            "maintainability_index": 53.9,
+            "halstead_volume": 1651.6
+          }
+        },
+        "files": [
+          {
+            "file": "entry.dev.tsx",
+            "lines": {
+              "physical": 5,
+              "logical": 5
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 30,
+              "vocabulary": 19,
+              "volume": 127.44,
+              "operators": {
+                "total": 8,
+                "unique": 3
+              },
+              "operands": {
+                "total": 22,
+                "unique": 16
+              }
+            },
+            "maintainability_index": 69.88
+          },
+          {
+            "file": "root.tsx",
+            "lines": {
+              "physical": 37,
+              "logical": 5
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 248,
+              "vocabulary": 64,
+              "volume": 1488.0,
+              "operators": {
+                "total": 129,
+                "unique": 2
+              },
+              "operands": {
+                "total": 119,
+                "unique": 62
+              }
+            },
+            "maintainability_index": 62.4
+          },
+          {
+            "file": "main.tsx",
+            "lines": {
+              "physical": 3,
+              "logical": 3
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 18,
+              "vocabulary": 10,
+              "volume": 59.79,
+              "operators": {
+                "total": 5,
+                "unique": 1
+              },
+              "operands": {
+                "total": 13,
+                "unique": 9
+              }
+            },
+            "maintainability_index": 77.02
+          },
+          {
+            "file": "entry.ssr.tsx",
+            "lines": {
+              "physical": 19,
+              "logical": 14
+            },
+            "cyclomatic_complexity": 2,
+            "halstead": {
+              "length": 78,
+              "vocabulary": 43,
+              "volume": 423.25,
+              "operators": {
+                "total": 20,
+                "unique": 3
+              },
+              "operands": {
+                "total": 58,
+                "unique": 40
+              }
+            },
+            "maintainability_index": 56.34
+          },
+          {
+            "file": "App.tsx",
+            "lines": {
+              "physical": 87,
+              "logical": 68
+            },
+            "cyclomatic_complexity": 16,
+            "halstead": {
+              "length": 398,
+              "vocabulary": 82,
+              "volume": 2530.31,
+              "operators": {
+                "total": 140,
+                "unique": 5
+              },
+              "operands": {
+                "total": 258,
+                "unique": 77
+              }
+            },
+            "maintainability_index": 34.04
+          },
+          {
+            "file": "stores/weatherStore.ts",
+            "lines": {
+              "physical": 9,
+              "logical": 9
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 43,
+              "vocabulary": 25,
+              "volume": 199.69,
+              "operators": {
+                "total": 12,
+                "unique": 1
+              },
+              "operands": {
+                "total": 31,
+                "unique": 24
+              }
+            },
+            "maintainability_index": 62.94
+          },
+          {
+            "file": "utils/WeatherUtils.ts",
+            "lines": {
+              "physical": 131,
+              "logical": 72
+            },
+            "cyclomatic_complexity": 14,
+            "halstead": {
+              "length": 755,
+              "vocabulary": 133,
+              "volume": 5326.74,
+              "operators": {
+                "total": 302,
+                "unique": 5
+              },
+              "operands": {
+                "total": 453,
+                "unique": 128
+              }
+            },
+            "maintainability_index": 31.51
+          },
+          {
+            "file": "services/WeatherService.ts",
+            "lines": {
+              "physical": 161,
+              "logical": 93
+            },
+            "cyclomatic_complexity": 28,
+            "halstead": {
+              "length": 674,
+              "vocabulary": 156,
+              "volume": 4910.36,
+              "operators": {
+                "total": 256,
+                "unique": 10
+              },
+              "operands": {
+                "total": 418,
+                "unique": 146
+              }
+            },
+            "maintainability_index": 27.45
+          },
+          {
+            "file": "components/SearchForm.tsx",
+            "lines": {
+              "physical": 60,
+              "logical": 29
+            },
+            "cyclomatic_complexity": 7,
+            "halstead": {
+              "length": 271,
+              "vocabulary": 73,
+              "volume": 1677.44,
+              "operators": {
+                "total": 119,
+                "unique": 4
+              },
+              "operands": {
+                "total": 152,
+                "unique": 69
+              }
+            },
+            "maintainability_index": 44.58
+          },
+          {
+            "file": "components/CurrentWeather.tsx",
+            "lines": {
+              "physical": 76,
+              "logical": 24
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 546,
+              "vocabulary": 85,
+              "volume": 3499.53,
+              "operators": {
+                "total": 254,
+                "unique": 2
+              },
+              "operands": {
+                "total": 292,
+                "unique": 83
+              }
+            },
+            "maintainability_index": 44.94
+          },
+          {
+            "file": "components/Forecast.tsx",
+            "lines": {
+              "physical": 34,
+              "logical": 23
+            },
+            "cyclomatic_complexity": 2,
+            "halstead": {
+              "length": 162,
+              "vocabulary": 49,
+              "volume": 909.58,
+              "operators": {
+                "total": 69,
+                "unique": 4
+              },
+              "operands": {
+                "total": 93,
+                "unique": 45
+              }
+            },
+            "maintainability_index": 49.31
+          },
+          {
+            "file": "components/WeatherContent.tsx",
+            "lines": {
+              "physical": 17,
+              "logical": 10
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 88,
+              "vocabulary": 28,
+              "volume": 423.05,
+              "operators": {
+                "total": 37,
+                "unique": 2
+              },
+              "operands": {
+                "total": 51,
+                "unique": 26
+              }
+            },
+            "maintainability_index": 59.66
+          },
+          {
+            "file": "components/ErrorState.tsx",
+            "lines": {
+              "physical": 12,
+              "logical": 7
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 66,
+              "vocabulary": 29,
+              "volume": 320.63,
+              "operators": {
+                "total": 28,
+                "unique": 2
+              },
+              "operands": {
+                "total": 38,
+                "unique": 27
+              }
+            },
+            "maintainability_index": 63.88
+          },
+          {
+            "file": "components/LoadingState.tsx",
+            "lines": {
+              "physical": 9,
+              "logical": 4
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 51,
+              "vocabulary": 21,
+              "volume": 224.01,
+              "operators": {
+                "total": 24,
+                "unique": 2
+              },
+              "operands": {
+                "total": 27,
+                "unique": 19
+              }
+            },
+            "maintainability_index": 70.28
+          },
+          {
+            "file": "components/ForecastItem.tsx",
+            "lines": {
+              "physical": 88,
+              "logical": 43
+            },
+            "cyclomatic_complexity": 5,
+            "halstead": {
+              "length": 625,
+              "vocabulary": 103,
+              "volume": 4179.06,
+              "operators": {
+                "total": 277,
+                "unique": 4
+              },
+              "operands": {
+                "total": 348,
+                "unique": 99
+              }
+            },
+            "maintainability_index": 38.34
+          },
+          {
+            "file": "routes/index.tsx",
+            "lines": {
+              "physical": 6,
+              "logical": 5
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 31,
+              "vocabulary": 17,
+              "volume": 126.71,
+              "operators": {
+                "total": 12,
+                "unique": 2
+              },
+              "operands": {
+                "total": 19,
+                "unique": 15
+              }
+            },
+            "maintainability_index": 69.89
+          }
+        ]
+      }
+    },
+    {
+      "framework": "vue",
+      "benchmark_type": "Source Analysis",
+      "timestamp": "2025-09-25T04:51:42.609143",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "framework": "vue",
+        "summary": {
+          "total_files": 11,
+          "totals": {
+            "physical_lines": 677,
+            "logical_lines": 217,
+            "cyclomatic_complexity": 57,
+            "maintainability_index": 686.46,
+            "halstead_volume": 10853.470000000001
+          },
+          "averages": {
+            "physical_lines": 61.5,
+            "logical_lines": 19.7,
+            "cyclomatic_complexity": 5.2,
+            "maintainability_index": 62.4,
+            "halstead_volume": 986.7
+          }
+        },
+        "files": [
+          {
+            "file": "App.vue",
+            "lines": {
+              "physical": 80,
+              "logical": 15
+            },
+            "cyclomatic_complexity": 6,
+            "halstead": {
+              "length": 184,
+              "vocabulary": 56,
+              "volume": 1068.55,
+              "operators": {
+                "total": 45,
+                "unique": 2
+              },
+              "operands": {
+                "total": 139,
+                "unique": 54
+              }
+            },
+            "maintainability_index": 52.33
+          },
+          {
+            "file": "main.js",
+            "lines": {
+              "physical": 3,
+              "logical": 3
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 14,
+              "vocabulary": 8,
+              "volume": 42.0,
+              "operators": {
+                "total": 1,
+                "unique": 1
+              },
+              "operands": {
+                "total": 13,
+                "unique": 7
+              }
+            },
+            "maintainability_index": 78.09
+          },
+          {
+            "file": "utils/weatherUtils.js",
+            "lines": {
+              "physical": 110,
+              "logical": 48
+            },
+            "cyclomatic_complexity": 9,
+            "halstead": {
+              "length": 339,
+              "vocabulary": 109,
+              "volume": 2294.41,
+              "operators": {
+                "total": 111,
+                "unique": 4
+              },
+              "operands": {
+                "total": 228,
+                "unique": 105
+              }
+            },
+            "maintainability_index": 38.58
+          },
+          {
+            "file": "services/weatherService.js",
+            "lines": {
+              "physical": 172,
+              "logical": 115
+            },
+            "cyclomatic_complexity": 31,
+            "halstead": {
+              "length": 712,
+              "vocabulary": 193,
+              "volume": 5405.83,
+              "operators": {
+                "total": 198,
+                "unique": 7
+              },
+              "operands": {
+                "total": 514,
+                "unique": 186
+              }
+            },
+            "maintainability_index": 24.74
+          },
+          {
+            "file": "components/CurrentWeather.vue",
+            "lines": {
+              "physical": 89,
+              "logical": 7
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 94,
+              "vocabulary": 32,
+              "volume": 470.0,
+              "operators": {
+                "total": 27,
+                "unique": 2
+              },
+              "operands": {
+                "total": 67,
+                "unique": 30
+              }
+            },
+            "maintainability_index": 62.72
+          },
+          {
+            "file": "components/ErrorState.vue",
+            "lines": {
+              "physical": 14,
+              "logical": 3
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 9,
+              "vocabulary": 7,
+              "volume": 25.27,
+              "operators": {
+                "total": 3,
+                "unique": 1
+              },
+              "operands": {
+                "total": 6,
+                "unique": 6
+              }
+            },
+            "maintainability_index": 79.64
+          },
+          {
+            "file": "components/LoadingState.vue",
+            "lines": {
+              "physical": 9,
+              "logical": 0
+            },
+            "cyclomatic_complexity": 2,
+            "halstead": {
+              "length": 12,
+              "vocabulary": 11,
+              "volume": 41.51,
+              "operators": {
+                "total": 3,
+                "unique": 2
+              },
+              "operands": {
+                "total": 9,
+                "unique": 9
+              }
+            },
+            "maintainability_index": 88.4
+          },
+          {
+            "file": "components/SearchForm.vue",
+            "lines": {
+              "physical": 60,
+              "logical": 9
+            },
+            "cyclomatic_complexity": 3,
+            "halstead": {
+              "length": 80,
+              "vocabulary": 38,
+              "volume": 419.83,
+              "operators": {
+                "total": 24,
+                "unique": 4
+              },
+              "operands": {
+                "total": 56,
+                "unique": 34
+              }
+            },
+            "maintainability_index": 60.41
+          },
+          {
+            "file": "components/WeatherContent.vue",
+            "lines": {
+              "physical": 18,
+              "logical": 3
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 21,
+              "vocabulary": 12,
+              "volume": 75.28,
+              "operators": {
+                "total": 5,
+                "unique": 1
+              },
+              "operands": {
+                "total": 16,
+                "unique": 11
+              }
+            },
+            "maintainability_index": 76.32
+          },
+          {
+            "file": "components/Forecast.vue",
+            "lines": {
+              "physical": 45,
+              "logical": 7
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 117,
+              "vocabulary": 45,
+              "volume": 642.55,
+              "operators": {
+                "total": 32,
+                "unique": 2
+              },
+              "operands": {
+                "total": 85,
+                "unique": 43
+              }
+            },
+            "maintainability_index": 61.77
+          },
+          {
+            "file": "components/ForecastItem.vue",
+            "lines": {
+              "physical": 77,
+              "logical": 7
+            },
+            "cyclomatic_complexity": 1,
+            "halstead": {
+              "length": 73,
+              "vocabulary": 33,
+              "volume": 368.24,
+              "operators": {
+                "total": 21,
+                "unique": 2
+              },
+              "operands": {
+                "total": 52,
+                "unique": 31
+              }
+            },
+            "maintainability_index": 63.46
+          }
+        ]
+      }
+    },
+    {
+      "framework": "jquery",
+      "benchmark_type": "Source Analysis",
+      "timestamp": "2025-09-25T04:51:42.612561",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "framework": "jquery",
+        "summary": {
+          "total_files": 3,
+          "totals": {
+            "physical_lines": 481,
+            "logical_lines": 287,
+            "cyclomatic_complexity": 45,
+            "maintainability_index": 87.4,
+            "halstead_volume": 18604.14
+          },
+          "averages": {
+            "physical_lines": 160.3,
+            "logical_lines": 95.7,
+            "cyclomatic_complexity": 15.0,
+            "maintainability_index": 29.1,
+            "halstead_volume": 6201.4
+          }
+        },
+        "files": [
+          {
+            "file": "main.js",
+            "lines": {
+              "physical": 74,
+              "logical": 55
+            },
+            "cyclomatic_complexity": 10,
+            "halstead": {
+              "length": 362,
+              "vocabulary": 138,
+              "volume": 2573.29,
+              "operators": {
+                "total": 97,
+                "unique": 6
+              },
+              "operands": {
+                "total": 265,
+                "unique": 132
+              }
+            },
+            "maintainability_index": 36.81
+          },
+          {
+            "file": "services/weather-service.js",
+            "lines": {
+              "physical": 217,
+              "logical": 113
+            },
+            "cyclomatic_complexity": 25,
+            "halstead": {
+              "length": 931,
+              "vocabulary": 231,
+              "volume": 7309.98,
+              "operators": {
+                "total": 286,
+                "unique": 7
+              },
+              "operands": {
+                "total": 645,
+                "unique": 224
+              }
+            },
+            "maintainability_index": 24.8
+          },
+          {
+            "file": "components/weather-ui.js",
+            "lines": {
+              "physical": 190,
+              "logical": 119
+            },
+            "cyclomatic_complexity": 10,
+            "halstead": {
+              "length": 1094,
+              "vocabulary": 251,
+              "volume": 8720.87,
+              "operators": {
+                "total": 360,
+                "unique": 7
+              },
+              "operands": {
+                "total": 734,
+                "unique": 244
+              }
+            },
+            "maintainability_index": 25.79
+          }
+        ]
+      }
+    },
+    {
+      "framework": "alpine",
+      "benchmark_type": "Source Analysis",
+      "timestamp": "2025-09-25T04:51:42.615693",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "framework": "alpine",
+        "summary": {
+          "total_files": 3,
+          "totals": {
+            "physical_lines": 444,
+            "logical_lines": 299,
+            "cyclomatic_complexity": 68,
+            "maintainability_index": 83.56,
+            "halstead_volume": 13776.089999999998
+          },
+          "averages": {
+            "physical_lines": 148.0,
+            "logical_lines": 99.7,
+            "cyclomatic_complexity": 22.7,
+            "maintainability_index": 27.9,
+            "halstead_volume": 4592.0
+          }
+        },
+        "files": [
+          {
+            "file": "js/weather-utils.js",
+            "lines": {
+              "physical": 116,
+              "logical": 85
+            },
+            "cyclomatic_complexity": 24,
+            "halstead": {
+              "length": 497,
+              "vocabulary": 126,
+              "volume": 3467.71,
+              "operators": {
+                "total": 189,
+                "unique": 6
+              },
+              "operands": {
+                "total": 308,
+                "unique": 120
+              }
+            },
+            "maintainability_index": 29.9
+          },
+          {
+            "file": "js/weather-app.js",
+            "lines": {
+              "physical": 185,
+              "logical": 118
+            },
+            "cyclomatic_complexity": 16,
+            "halstead": {
+              "length": 704,
+              "vocabulary": 209,
+              "volume": 5425.98,
+              "operators": {
+                "total": 167,
+                "unique": 5
+              },
+              "operands": {
+                "total": 537,
+                "unique": 204
+              }
+            },
+            "maintainability_index": 26.5
+          },
+          {
+            "file": "js/weather-service.js",
+            "lines": {
+              "physical": 143,
+              "logical": 96
+            },
+            "cyclomatic_complexity": 28,
+            "halstead": {
+              "length": 651,
+              "vocabulary": 181,
+              "volume": 4882.4,
+              "operators": {
+                "total": 172,
+                "unique": 7
+              },
+              "operands": {
+                "total": 479,
+                "unique": 174
+              }
+            },
+            "maintainability_index": 27.16
+          }
+        ]
+      }
+    },
+    {
+      "framework": "lit",
+      "benchmark_type": "Source Analysis",
+      "timestamp": "2025-09-25T04:51:42.621846",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "framework": "lit",
+        "summary": {
+          "total_files": 8,
+          "totals": {
+            "physical_lines": 1310,
+            "logical_lines": 955,
+            "cyclomatic_complexity": 84,
+            "maintainability_index": 246.73,
+            "halstead_volume": 46709.68
+          },
+          "averages": {
+            "physical_lines": 163.8,
+            "logical_lines": 119.4,
+            "cyclomatic_complexity": 10.5,
+            "maintainability_index": 30.8,
+            "halstead_volume": 5838.7
+          }
+        },
+        "files": [
+          {
+            "file": "weather-display.js",
+            "lines": {
+              "physical": 136,
+              "logical": 53
+            },
+            "cyclomatic_complexity": 5,
+            "halstead": {
+              "length": 790,
+              "vocabulary": 137,
+              "volume": 5607.45,
+              "operators": {
+                "total": 361,
+                "unique": 3
+              },
+              "operands": {
+                "total": 429,
+                "unique": 134
+              }
+            },
+            "maintainability_index": 35.47
+          },
+          {
+            "file": "weather-utils.js",
+            "lines": {
+              "physical": 116,
+              "logical": 85
+            },
+            "cyclomatic_complexity": 24,
+            "halstead": {
+              "length": 498,
+              "vocabulary": 127,
+              "volume": 3480.36,
+              "operators": {
+                "total": 189,
+                "unique": 6
+              },
+              "operands": {
+                "total": 309,
+                "unique": 121
+              }
+            },
+            "maintainability_index": 29.89
+          },
+          {
+            "file": "weather-app.js",
+            "lines": {
+              "physical": 187,
+              "logical": 143
+            },
+            "cyclomatic_complexity": 9,
+            "halstead": {
+              "length": 681,
+              "vocabulary": 169,
+              "volume": 5040.0,
+              "operators": {
+                "total": 212,
+                "unique": 4
+              },
+              "operands": {
+                "total": 469,
+                "unique": 165
+              }
+            },
+            "maintainability_index": 25.85
+          },
+          {
+            "file": "weather-search.js",
+            "lines": {
+              "physical": 85,
+              "logical": 40
+            },
+            "cyclomatic_complexity": 3,
+            "halstead": {
+              "length": 332,
+              "vocabulary": 96,
+              "volume": 2186.21,
+              "operators": {
+                "total": 124,
+                "unique": 5
+              },
+              "operands": {
+                "total": 208,
+                "unique": 91
+              }
+            },
+            "maintainability_index": 41.26
+          },
+          {
+            "file": "weather-forecast.js",
+            "lines": {
+              "physical": 65,
+              "logical": 39
+            },
+            "cyclomatic_complexity": 3,
+            "halstead": {
+              "length": 257,
+              "vocabulary": 76,
+              "volume": 1605.72,
+              "operators": {
+                "total": 97,
+                "unique": 4
+              },
+              "operands": {
+                "total": 160,
+                "unique": 72
+              }
+            },
+            "maintainability_index": 42.44
+          },
+          {
+            "file": "weather-service.js",
+            "lines": {
+              "physical": 143,
+              "logical": 96
+            },
+            "cyclomatic_complexity": 28,
+            "halstead": {
+              "length": 650,
+              "vocabulary": 181,
+              "volume": 4874.9,
+              "operators": {
+                "total": 171,
+                "unique": 7
+              },
+              "operands": {
+                "total": 479,
+                "unique": 174
+              }
+            },
+            "maintainability_index": 27.17
+          },
+          {
+            "file": "shared-styles.js",
+            "lines": {
+              "physical": 447,
+              "logical": 429
+            },
+            "cyclomatic_complexity": 2,
+            "halstead": {
+              "length": 2350,
+              "vocabulary": 228,
+              "volume": 18407.29,
+              "operators": {
+                "total": 1167,
+                "unique": 3
+              },
+              "operands": {
+                "total": 1183,
+                "unique": 225
+              }
+            },
+            "maintainability_index": 12.44
+          },
+          {
+            "file": "forecast-item.js",
+            "lines": {
+              "physical": 131,
+              "logical": 70
+            },
+            "cyclomatic_complexity": 10,
+            "halstead": {
+              "length": 765,
+              "vocabulary": 147,
+              "volume": 5507.75,
+              "operators": {
+                "total": 315,
+                "unique": 5
+              },
+              "operands": {
+                "total": 450,
+                "unique": 142
+              }
+            },
+            "maintainability_index": 32.21
+          }
+        ]
+      }
+    },
+    {
+      "framework": "vanjs",
+      "benchmark_type": "Source Analysis",
+      "timestamp": "2025-09-25T04:51:42.625821",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "framework": "vanjs",
+        "summary": {
+          "total_files": 3,
+          "totals": {
+            "physical_lines": 743,
+            "logical_lines": 388,
+            "cyclomatic_complexity": 76,
+            "maintainability_index": 74.17,
+            "halstead_volume": 22895.14
+          },
+          "averages": {
+            "physical_lines": 247.7,
+            "logical_lines": 129.3,
+            "cyclomatic_complexity": 25.3,
+            "maintainability_index": 24.7,
+            "halstead_volume": 7631.7
+          }
+        },
+        "files": [
+          {
+            "file": "weather-utils.js",
+            "lines": {
+              "physical": 116,
+              "logical": 85
+            },
+            "cyclomatic_complexity": 24,
+            "halstead": {
+              "length": 498,
+              "vocabulary": 127,
+              "volume": 3480.36,
+              "operators": {
+                "total": 189,
+                "unique": 6
+              },
+              "operands": {
+                "total": 309,
+                "unique": 121
+              }
+            },
+            "maintainability_index": 29.89
+          },
+          {
+            "file": "weather-service.js",
+            "lines": {
+              "physical": 143,
+              "logical": 96
+            },
+            "cyclomatic_complexity": 28,
+            "halstead": {
+              "length": 650,
+              "vocabulary": 181,
+              "volume": 4874.9,
+              "operators": {
+                "total": 171,
+                "unique": 7
+              },
+              "operands": {
+                "total": 479,
+                "unique": 174
+              }
+            },
+            "maintainability_index": 27.17
+          },
+          {
+            "file": "main.js",
+            "lines": {
+              "physical": 484,
+              "logical": 207
+            },
+            "cyclomatic_complexity": 24,
+            "halstead": {
+              "length": 1737,
+              "vocabulary": 331,
+              "volume": 14539.88,
+              "operators": {
+                "total": 500,
+                "unique": 6
+              },
+              "operands": {
+                "total": 1237,
+                "unique": 325
+              }
+            },
+            "maintainability_index": 17.11
+          }
+        ]
+      }
+    },
+    {
+      "framework": "vanilla",
+      "benchmark_type": "Source Analysis",
+      "timestamp": "2025-09-25T04:51:42.629528",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "framework": "vanilla",
+        "summary": {
+          "total_files": 3,
+          "totals": {
+            "physical_lines": 560,
+            "logical_lines": 426,
+            "cyclomatic_complexity": 74,
+            "maintainability_index": 71.69,
+            "halstead_volume": 20768.9
+          },
+          "averages": {
+            "physical_lines": 186.7,
+            "logical_lines": 142.0,
+            "cyclomatic_complexity": 24.7,
+            "maintainability_index": 23.9,
+            "halstead_volume": 6923.0
+          }
+        },
+        "files": [
+          {
+            "file": "js/weather-utils.js",
+            "lines": {
+              "physical": 139,
+              "logical": 106
+            },
+            "cyclomatic_complexity": 26,
+            "halstead": {
+              "length": 585,
+              "vocabulary": 142,
+              "volume": 4182.6,
+              "operators": {
+                "total": 209,
+                "unique": 7
+              },
+              "operands": {
+                "total": 376,
+                "unique": 135
+              }
+            },
+            "maintainability_index": 26.97
+          },
+          {
+            "file": "js/weather-app.js",
+            "lines": {
+              "physical": 278,
+              "logical": 224
+            },
+            "cyclomatic_complexity": 20,
+            "halstead": {
+              "length": 1451,
+              "vocabulary": 268,
+              "volume": 11703.9,
+              "operators": {
+                "total": 434,
+                "unique": 5
+              },
+              "operands": {
+                "total": 1017,
+                "unique": 263
+              }
+            },
+            "maintainability_index": 17.56
+          },
+          {
+            "file": "js/weather-service.js",
+            "lines": {
+              "physical": 143,
+              "logical": 96
+            },
+            "cyclomatic_complexity": 28,
+            "halstead": {
+              "length": 651,
+              "vocabulary": 181,
+              "volume": 4882.4,
+              "operators": {
+                "total": 172,
+                "unique": 7
+              },
+              "operands": {
+                "total": 479,
+                "unique": 174
+              }
+            },
+            "maintainability_index": 27.16
+          }
+        ]
+      }
+    }
+  ]
+}
