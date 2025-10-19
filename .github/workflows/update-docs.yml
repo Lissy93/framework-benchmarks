@@ -61,6 +61,13 @@ jobs:
         run: |
           python scripts/transform/build_app_readme.py
 
+      # 5) Build charts and update README with QuickChart.io URLs
+      - name: Build charts
+        id: build_charts
+        continue-on-error: true
+        run: |
+          python scripts/transform/build_charts.py
+
       - name: Commit & push changes (if any)
         if: always()
         env:
@@ -86,6 +93,7 @@ jobs:
           insert_table="${{ steps.insert_table.conclusion }}"
           insert_statuses="${{ steps.insert_statuses.conclusion }}"
           build_readmes="${{ steps.build_readmes.conclusion }}"
+          build_charts="${{ steps.build_charts.conclusion }}"
 
           line() {
             if [ "$1" = "success" ]; then echo "- ✅ $2"; else echo "- ❌ $2"; fi
@@ -96,4 +104,5 @@ jobs:
             line "$insert_table"    "Inserted stats table into readme"
             line "$insert_statuses" "Inserted status badges into readme"
             line "$build_readmes"   "Updated project readmes"
+            line "$build_charts"    "Built charts and updated readme"
           } >> "$GITHUB_STEP_SUMMARY"
