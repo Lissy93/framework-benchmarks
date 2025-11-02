@@ -353,11 +353,15 @@ def copy_framework_apps(frameworks: List[Dict], root_dir: Path, config: Dict, ou
 
 def generate_deployment_files(base_url: str, frameworks: List[Dict], output_dir: Path) -> None:
     """Generate additional files for deployment (robots.txt, sitemap, etc.)."""
+    # Use production URL as default if base_url is empty
+    if not base_url:
+        base_url = "https://framework-benchmarks.as93.net"
+
     # Generate robots.txt
     robots_content = f"User-agent: *\nAllow: /\n\nSitemap: {base_url}/sitemap.xml\n"
     with open(output_dir / "robots.txt", "w") as f:
         f.write(robots_content)
-    
+
     # Generate sitemap.xml
     sitemap_urls = [base_url + "/"]
     for framework in frameworks:

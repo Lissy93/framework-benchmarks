@@ -82,6 +82,7 @@ class WebsiteGenerator:
         # Add functions to global context
         self.env.globals['url_for_static'] = url_for_static
         self.env.globals['url_for_framework'] = url_for_framework
+        self.env.globals['frameworks'] = self.frameworks_list
         self.env.filters['filesizeformat'] = filesizeformat
     
     def get_framework_by_id(self, framework_id: str) -> Optional[Dict[str, Any]]:
@@ -268,8 +269,9 @@ class WebsiteGenerator:
         
         with open(doc_file, 'r', encoding='utf-8') as f:
             content = f.read()
-        
-        html_content = markdown.markdown(content, extensions=['tables', 'fenced_code'])
+
+        # Use 'extra' extension which includes tables, fenced_code, and proper list handling
+        html_content = markdown.markdown(content, extensions=['extra', 'codehilite', 'nl2br'])
         
         template = self.env.get_template('docs-page.html')
         return template.render(
