@@ -154,63 +154,6 @@ Note that the project commands get generated automatically by the [`generate_scr
 
 ---
 
-## Requirement Spec
-
-Every app is built with identical requirements (as validated by the shared test suite), and uses the same assets, styles, and data. The only difference is the framework used to build each.
-
-### Technical Requirements
-Why a weather app? Because it enables us to use all the critical features of any frontend framework, including:
-- Binding user input and validation
-- Fetching external data asynchronously
-- Basic state management of components
-- Handling fallback views (loading, errors)
-- Using browser features (location, storage, etc)
-- Logic blocks, for iterative content and conditionals
-- Lifecycle methods (mounting, updating, unmounting)
-
-### Functional Requirements
-For our app to be somewhat complete and useful, it must do the following:
-- On initial load, the user should see weather for their current GPS location
-- The user should be able to search for a city, and view it's weather
-- And the user's city should be stored in localstorage for next time
-- The app should show a detailed view of the current weather
-- And a summary 7-day forecast, where days can be expanded for more details
-
-### Quality Requirements
-There's certain standards every app should follow, and we want to use best practices, so:
-- Theming: The app should support both light and dark mode, based on the user's preferences
-- Internationalization: The copy should be extracted out of the code, so that it is translatable
-- Accessibility: The app should meet AA standard of accessibility
-- Mobile: The app should be fully responsive and optimized for mobile
-- Performance: The app should be efficiently coded as best as the framework allows
-- Testing: The app should meet 90% test coverage
-- Error Handling: Errors should be handled, correctly surfaced, and tracible
-- Quality: The code should be linted for consistent formatting
-- Security: Inputs must be validated, data via HTTPS, and no known vulnerabilities
-- SEO: Basic meta and og tags, SSR where possible, 
-- CI: Automated tests, lints and validation should ensure all changes are compliant
-
-### Benchmarking Requirements
-To compare the frameworks, we need to measure:
-- Bundle size & output
-- Load metrics: FCP, LCP, CLS, TTI, interaction latency
-- Hydration/SSR cost, CPU & memory
-- Cold vs. warm cache behaviour
-- Memory usage: idle, post-flow, leak delta
-- Build time & dev server HMR latency
-
-### UI Requirements
-The interface is simple, but must be identical arcorss all apps. As validated by the snapshots in the tests.<br>
-The screenshots will all look like this:
-
-<img src="https://raw.githubusercontent.com/Lissy93/framework-benchmarks/refs/heads/main/assets/screenshot.png" width="400" />
-
----
-
-## Benchmarking
-
----
-
 ## Results
 
 A summary of results can be viewed in [`summary.tsv`](https://github.com/Lissy93/framework-benchmarks/blob/main/results/summary.tsv).<br>
@@ -309,6 +252,59 @@ Each app gets built and tested to ensure that it is functional, compliant with t
 | <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vanjs"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vanjs.png" width="16" /> VanJS</a> | ![VanJS Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-vanjs.svg) | ![VanJS Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-vanjs.svg) | ![VanJS Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-vanjs.svg) |
 | <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vanilla"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/javascript.png" width="16" /> Vanilla JavaScript</a> | ![Vanilla JavaScript Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/build-vanilla.svg) | ![Vanilla JavaScript Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/test-vanilla.svg) | ![Vanilla JavaScript Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/badges/lint-vanilla.svg) |
 <!-- end_all_status -->
+
+---
+
+## Requirement Spec
+
+Every app is built with identical requirements (as validated by the shared test suite), and uses the same assets, styles, and data. The only difference is the framework used to build each.
+
+### Technical Requirements
+Why a weather app? Because it enables us to use all the critical features of any frontend framework, including:
+- Binding user input and validation
+- Fetching external data asynchronously
+- Basic state management of components
+- Handling fallback views (loading, errors)
+- Using browser features (location, storage, etc)
+- Logic blocks, for iterative content and conditionals
+- Lifecycle methods (mounting, updating, unmounting)
+
+### Functional Requirements
+For our app to be somewhat complete and useful, it must do the following:
+- On initial load, the user should see weather for their current GPS location
+- The user should be able to search for a city, and view it's weather
+- And the user's city should be stored in localstorage for next time
+- The app should show a detailed view of the current weather
+- And a summary 7-day forecast, where days can be expanded for more details
+
+### Quality Requirements
+There's certain standards every app should follow, and we want to use best practices, so:
+- Theming: The app should support both light and dark mode, based on the user's preferences
+- Internationalization: The copy should be extracted out of the code, so that it is translatable
+- Accessibility: The app should meet AA standard of accessibility
+- Mobile: The app should be fully responsive and optimized for mobile
+- Performance: The app should be efficiently coded as best as the framework allows
+- Testing: The app should meet 90% test coverage
+- Error Handling: Errors should be handled, correctly surfaced, and tracible
+- Quality: The code should be linted for consistent formatting
+- Security: Inputs must be validated, data via HTTPS, and no known vulnerabilities
+- SEO: Basic meta and og tags, SSR where possible, 
+- CI: Automated tests, lints and validation should ensure all changes are compliant
+
+### Benchmarking Requirements
+To compare the frameworks, we need to measure:
+- Bundle size & output
+- Load metrics: FCP, LCP, CLS, TTI, interaction latency
+- Hydration/SSR cost, CPU & memory
+- Cold vs. warm cache behaviour
+- Memory usage: idle, post-flow, leak delta
+- Build time & dev server HMR latency
+
+### UI Requirements
+The interface is simple, but must be identical arcorss all apps. As validated by the snapshots in the tests.<br>
+The screenshots will all look like this:
+
+<img src="https://raw.githubusercontent.com/Lissy93/framework-benchmarks/refs/heads/main/assets/screenshot.png" width="400" />
 
 ---
 
