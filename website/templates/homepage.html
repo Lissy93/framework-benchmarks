@@ -10,8 +10,21 @@
         <h1>Framework Benchmarks</h1>
         <p class="subtitle">The same app, built in <i>every</i> frontend web framework, and then benchmarked</p>
         <div class="hero-buttons">
-            <a class="primary-cta" href="https://github.com/lissy93/framework-benchmarks" target="_blank">View on GitHub</a>
-            <a class="primary-cta" href="https://stack-match.as93.net/" target="_blank">Choose a Framework</a>
+            <a class="primary-cta" href="https://github.com/lissy93/framework-benchmarks" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+                </svg>
+                View on GitHub
+            </a>
+            <a class="primary-cta" href="https://stack-match.as93.net/" target="_blank" rel="noopener">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3v18h18"/>
+                    <path d="M18 17V9"/>
+                    <path d="M13 17v-4"/>
+                    <path d="M8 17v-6"/>
+                </svg>
+                Choose a Framework
+            </a>
         </div>
         <div class="hero-buttons">
             <a class="secondary-cta" href="#framework-results">Results</a>
@@ -125,30 +138,60 @@
     <div id="framework-stats-grid"></div>
 </section>
 
+<h2 id="framework-stats">Download Raw Results</h2>
+<section class="raw-results">
+    <p>
+        We run benchmarks every night, using the latest version of each framework.
+        You can access the latest and historic raw results in JSON format,
+        within the <a href="https://github.com/Lissy93/framework-benchmarks/tree/results" target="_blank" rel="noopener" aria-label="Results Branch"><code>results</code></a>
+        branch of our git repo.
+    </p>
+    <h3>Full Results</h3>
+    <p>
+        These files include the raw numbers and benchmark data for all frameworks and tests. The files may be large.
+    </p>
+    <a class="primary-cta" href="https://github.com/Lissy93/framework-benchmarks/tree/results/raw" target="_blank" rel="noopener" style="width: fit-content;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Get Full Data
+    </a>
+    <br>
+
+    <h3>Summary TSV</h3>
+    <iframe frameborder="0" scrolling="no" style="width:100%; height:352px;" allow="clipboard-write" src="https://github-embed.as93.net/iframe.html?target=https%3A%2F%2Fgithub.com%2FLissy93%2Fframework-benchmarks%2Fblob%2Fresults%2Fsummary%2Fsummary.tsv&style=atom-one-light&type=code&showBorder=on&showFileMeta=on&showFullPath=on&showCopy=on"></iframe>
+
+    <h3>Repo Stats</h3>
+    <iframe frameborder="0" scrolling="yes" style="width:100%; height:300px;" allow="clipboard-write" src="https://github-embed.as93.net/iframe.html?target=https%3A%2F%2Fgithub.com%2FLissy93%2Fframework-benchmarks%2Fblob%2Fresults%2Fstats%2Fframework-stats.json&style=atom-one-light&type=code&showBorder=on&showFileMeta=on&showFullPath=on&showCopy=on"></iframe>
+</section>
+
 <h2 id="framework-apps">Try the Framework Comparison Tool</h2>
 <section id="compare-app-container">
     <div class="compare-info">
         <h3>
-            <img width="24" src="https://raw.githubusercontent.com/Lissy93/stack-match/refs/heads/main/static/android-chrome-192x192.png" />
+            <img width="24" src="https://raw.githubusercontent.com/Lissy93/stack-match/refs/heads/main/static/android-chrome-192x192.png" alt="Stack Match Logo" />
             Stack Match
         </h3>
         <p>
             Not sure which framework to choose?
-            Use <a href="https://stack-match.as93.net/" target="_blank">Stack Match</a> to select your preferences
+            Use <a href="https://stack-match.as93.net/" target="_blank" rel="noopener">Stack Match</a> to select your preferences
             and get a tailored recommendation based on the benchmark data.
         </p>
         <div class="button-wrap">
-            <a class="primary-cta" href="https://stack-match.as93.net/" target="_blank">Try Stack Match</a>
-            <a class="secondary-cta" href="https://github.com/lissy93/stack-match" target="_blank">View on GitHub</a>
+            <a class="primary-cta" href="https://stack-match.as93.net/" target="_blank" rel="noopener">Try Stack Match</a>
+            <a class="secondary-cta" href="https://github.com/lissy93/stack-match" target="_blank" rel="noopener">View on GitHub</a>
         </div>
         
     </div>
     <img
         class="screenshot"
         width="400"
-        src="https://raw.githubusercontent.com/Lissy93/stack-match/refs/heads/main/static/screenshot.png"
+        src="https://github.com/Lissy93/stack-match/blob/main/static/screenshots/compare.png?raw=true"
         alt="Stack Match Screenshot"
         class="compare-screenshot"
+        loading="lazy"
     />
 </section>
 

@@ -22,13 +22,13 @@
             {% if framework.meta and (framework.meta.website or framework.meta.github) %}
             <div class="resource-links">
                 {% if framework.meta.website %}
-                <a href="{{ framework.meta.website }}" target="_blank" class="resource-link" title="{{ framework.name }} Official Website">Website</a>
+                <a href="{{ framework.meta.website }}" target="_blank" rel="noopener" class="resource-link" title="{{ framework.name }} Official Website">Website</a>
                 {% endif %}
                 {% if framework.meta.github %}
-                <a href="{{ framework.meta.github }}" target="_blank" class="resource-link" title="{{ framework.name }} Sourcecode">GitHub</a>
+                <a href="{{ framework.meta.github }}" target="_blank" rel="noopener" class="resource-link" title="{{ framework.name }} Sourcecode">GitHub</a>
                 {% endif %}
                 {% if framework.meta.docs %}
-                <a href="{{ framework.meta.docs }}" target="_blank" class="resource-link"  title="{{ framework.name }} Documentation">Docs</a>
+                <a href="{{ framework.meta.docs }}" target="_blank" rel="noopener" class="resource-link"  title="{{ framework.name }} Documentation">Docs</a>
                 {% endif %}
             </div>
             {% endif %}
@@ -37,7 +37,19 @@
         
         <!-- Action Cards -->
         <div class="framework-actions">
-            <a href="/{{ framework.id }}/app/" class="action-card action-primary">
+            <a href="https://stack-match.as93.net/{{ framework.id }}/" class="action-card action-primary" target="_blank" rel="nofollow noopener">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3v18h18"/>
+                    <path d="M18 17V9"/>
+                    <path d="M13 17v-4"/>
+                    <path d="M8 17v-6"/>
+                </svg>
+                <div>
+                    <h4>{{framework.name}} Stats</h4>
+                    <span>View and compare all {{framework.name}} metrics</span>
+                </div>
+            </a>
+            <a href="/{{ framework.id }}/app/" class="action-card">
                 <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17L17 7M17 7H7M17 7V17"/>
                 </svg>
@@ -195,15 +207,15 @@
             <ul class="status-list">
                 <li title="Lint checks for {{ framework.name }}">
                     <span class="tech-key">Lint</span>
-                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-{{framework.id}}.svg" />
+                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-{{framework.id}}.svg" alt="Lint status badge for {{framework.name}}" />
                 </li>
                 <li title="Build and deployment status for {{ framework.name }}">
                     <span class="tech-key">Build</span>
-                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-{{framework.id}}.svg" />
+                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-{{framework.id}}.svg" alt="Build status badge for {{framework.name}}" />
                 </li>
                 <li title="Unit and integration tests for {{ framework.name }}">
                     <span class="tech-key">Test</span>
-                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-{{framework.id}}.svg" />
+                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-{{framework.id}}.svg" alt="Test status badge for {{framework.name}}" />
                 </li>
             </ul>
         </article>
@@ -224,8 +236,8 @@
         <article class="framework-tech">
             <h3>Usage Instructions</h3>
             <p>
-                First, follow the <a target="_blank" href="https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage">repo setup instructions</a>.<br>
-                Then cd into <a target="_blank" href="https://github.com/Lissy93/framework-benchmarks/tree/main/apps/{{framework.id}}">./apps/{{framework.id}}/</a>
+                First, follow the <a target="_blank" rel="noopener" href="https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage">repo setup instructions</a>.<br>
+                Then cd into <a target="_blank" rel="noopener" href="https://github.com/Lissy93/framework-benchmarks/tree/main/apps/{{framework.id}}">./apps/{{framework.id}}/</a>
                 and and use the following commands:
             </p>
 
@@ -291,7 +303,7 @@
                         <li>🌐 Internationalized</li>
                     </ul>
                 </div>
-                <img class="screenshot" src="https://raw.githubusercontent.com/Lissy93/framework-benchmarks/refs/heads/main/assets/screenshot.png" />
+                <img class="screenshot" src="https://raw.githubusercontent.com/Lissy93/framework-benchmarks/refs/heads/main/assets/screenshot.png" alt="Weather app screenshot showing interface features" loading="lazy" />
             </div>
         </article>
 
@@ -320,8 +332,8 @@
             Since the weather app is very simple, and doesn't show of the full features of a framework,
             it may be helpful to see a more practical implementation of a {{ framework.name }} app. So, checkout:
             <div class="example-app-info">
-                <a href="{{ framework.exampleRealApp.repo }}" target="_blank">
-                    <img src="{{ framework.exampleRealApp.logo }}" alt="{{ framework.exampleRealApp.title }} Logo" width="64" />
+                <a href="{{ framework.exampleRealApp.repo }}" target="_blank" rel="noopener">
+                    <img src="{{ framework.exampleRealApp.logo }}" alt="{{ framework.exampleRealApp.title }} Logo" width="64" loading="lazy" />
                 </a>
                 <div>
                     <h4>{{framework.exampleRealApp.title}}</h4>
@@ -385,19 +397,20 @@
                 </h3>
                 <p>
                     Not sure if {{ framework.name }} is right for your project?
-                    Use <a href="https://stack-match.as93.net/" target="_blank">Stack Match</a> to select your preferences
+                    Use <a href="https://stack-match.as93.net/" target="_blank" rel="noopener">Stack Match</a> to select your preferences
                     and get a tailored recommendation based on the benchmark data.
                 </p>
                 <div class="button-wrap">
-                    <a class="primary-cta" href="https://stack-match.as93.net/" target="_blank">Try Stack Match</a>
-                    <a class="secondary-cta" href="https://github.com/lissy93/stack-match" target="_blank">View on GitHub</a>
+                    <a class="primary-cta" href="https://stack-match.as93.net/" target="_blank" rel="noopener">Try Stack Match</a>
+                    <a class="secondary-cta" href="https://github.com/lissy93/stack-match" target="_blank" rel="noopener">View on GitHub</a>
                 </div>
             </div>
             <img
                 class="stack-match-screenshot"
                 width="400"
-                src="https://raw.githubusercontent.com/Lissy93/stack-match/refs/heads/main/static/screenshot.png"
+                src="https://github.com/Lissy93/stack-match/blob/main/static/screenshots/home.png?raw=true"
                 alt="Stack Match Screenshot"
+                loading="lazy"
             />
         </section>
         
@@ -502,7 +515,7 @@ function displayFrameworkStats(data) {
         {
             label: 'Contributors',
             primary: formatNumber(data.contributors),
-            secondary: `${data.top_author_pct}% by <a target="_blank" href="https://github.com/${data.top_author_name}">@${data.top_author_name}</a>`
+            secondary: `${data.top_author_pct}% by <a target="_blank" rel="noopener" href="https://github.com/${data.top_author_name}">@${data.top_author_name}</a>`
         },
         {
             label: 'Age',

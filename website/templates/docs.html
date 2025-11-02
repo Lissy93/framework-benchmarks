@@ -19,6 +19,15 @@
 .commands pre, pre { margin: 0; white-space: pre-wrap; background: var(--code-bg, #f8f9fa); border-radius: 8px; padding: 0.75rem 1rem; }
 .workflows { background: var(--code-bg, #f8f9fa); border-radius: 8px; padding: 0.5rem 0.75rem; margin-top: 0.5rem; }
 .workflows ul { margin: 0; padding-left: 1rem; }
+.primary-cta {
+    display: flex;
+    gap: 0.25rem;
+    background: var(--gradient);
+    color: white;
+    width: fit-content;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
 </style>
 {% endblock %}
 
@@ -112,6 +121,28 @@ npm run clean         # Clean build artifacts</code></pre>
     </div>
 
     <div class="docs-section">
+        <h2>Getting Results</h2>
+        <p>After running a benchmark, your results will be outputted to the <code>benchmark-results</code> directory.</p>
+        <p>
+            Alternatively, we run benchmarks every night on GitHub Actions, using the latest versions of each framework.
+            You can access the latest and historic raw results in JSON format,
+            within the <a href="https://github.com/Lissy93/framework-benchmarks/tree/results" target="_blank" rel="noopener" aria-label="Results Branch"><code>results</code></a>
+            branch of our git repo.
+        </p>
+        <p>
+            These files include the raw numbers and benchmark data for all frameworks and tests. The files may be large.
+        </p>
+        <a class="primary-cta" href="https://github.com/Lissy93/framework-benchmarks/tree/results/raw" target="_blank" rel="noopener" style="width: fit-content;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Get Full Data
+        </a>
+    </div>
+
+    <div class="docs-section">
         <h2>GitHub Actions Workflows</h2>
         <p>
             Alteratively, you can use the built-in GitHub Actions workflows to run the app, checks, tests and benchmarks.<br>
@@ -120,35 +151,35 @@ npm run clean         # Clean build artifacts</code></pre>
         <div class="workflows">
             <ul>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/build.yml" target="_blank"><strong>build</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/build.yml" target="_blank" rel="noopener"><strong>build</strong></a>
                     - Build all framework applications
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/test.yml" target="_blank"><strong>test</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/test.yml" target="_blank" rel="noopener"><strong>test</strong></a>
                     - Run all unit and integration tests
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/lint.yml" target="_blank"><strong>lint</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/lint.yml" target="_blank" rel="noopener"><strong>lint</strong></a>
                     - Run linting checks
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/benchmark.yml" target="_blank"><strong>benchmark</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/benchmark.yml" target="_blank" rel="noopener"><strong>benchmark</strong></a>
                     - Executes the performance benchmarks
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/transform-results.yml" target="_blank"><strong>transform-results</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/transform-results.yml" target="_blank" rel="noopener"><strong>transform-results</strong></a>
                     - Process benchmark data and generate charts
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/docker.yml" target="_blank"><strong>docker</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/docker.yml" target="_blank" rel="noopener"><strong>docker</strong></a>
                     - Builds and publishes the Docker images
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/update-docs.yml" target="_blank"><strong>update-docs</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/update-docs.yml" target="_blank" rel="noopener"><strong>update-docs</strong></a>
                     - Update documentation automatically
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/mirror.yml" target="_blank"><strong>mirror</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/mirror.yml" target="_blank" rel="noopener"><strong>mirror</strong></a>
                     - Mirror repository to other platforms
                 </li>
             </ul>
