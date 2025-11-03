@@ -6,6 +6,11 @@
     <title>Documentation - Framework Benchmarks</title>
     <meta name="description" content="Complete documentation for the Framework Benchmarks project">
     <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Alicia Sykes">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://framework-benchmarks.as93.net/">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,13 +34,31 @@
 .commands pre, pre { margin: 0; white-space: pre-wrap; background: var(--code-bg, #f8f9fa); border-radius: 8px; padding: 0.75rem 1rem; }
 .workflows { background: var(--code-bg, #f8f9fa); border-radius: 8px; padding: 0.5rem 0.75rem; margin-top: 0.5rem; }
 .workflows ul { margin: 0; padding-left: 1rem; }
+.primary-cta {
+    display: flex;
+    gap: 0.25rem;
+    background: var(--gradient);
+    color: white;
+    width: fit-content;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
 </style>
     
-     <!-- Twitter -->
+     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Framework Benchmarks">
     <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta property="og:url" content="https://framework-benchmarks.as93.net/">
+    <meta property="og:image" content="https://framework-benchmarks.as93.net/banner.png">
+    <meta property="og:site_name" content="Framework Benchmarks">
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Lissy_Sykes">
+    <meta name="twitter:creator" content="@Lissy_Sykes">
+    <meta name="twitter:title" content="Framework Benchmarks">
+    <meta name="twitter:description" content="A comprehensive comparison of modern frontend frameworks">
     <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
     
     <!-- Favicons & App Icons -->
@@ -50,23 +73,99 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Framework Benchmarks",
+        "url": "https://framework-benchmarks.as93.net",
+        "description": "A comprehensive comparison of modern frontend frameworks",
+        "author": {
+            "@type": "Person",
+            "name": "Alicia Sykes",
+            "url": "https://aliciasykes.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Framework Benchmarks",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://framework-benchmarks.as93.net/logo.png"
+            }
+        }
+    }
+    </script>
 </head>
 <body>
     <header>
-        <nav class="navigation">
-            <a href="/" class="nav-logo">
+        <nav class="navigation" role="navigation" aria-label="Main navigation">
+            <a href="/" class="nav-logo" aria-label="Home">
                 <div class="site-name">
-                    <h1>Framework Benchmarks</h1>
+                    <span class="site-title">Framework Benchmarks</span>
                     <p>Comparing every frontend framework</p>
                 </div>
             </a>
-            <div class="nav-center">
 
-            </div>
-            <div class="nav-links">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <div class="nav-links" id="nav-menu">
                 <a href="/" class="nav-link">Home</a>
+                <a href="/#framework-results" class="nav-link">Results</a>
                 <a href="/docs/" class="nav-link active">Docs</a>
-                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Frameworks
+                        <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                            <path d="M6 9L1 4h10z"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="/react/" class="dropdown-item" role="menuitem">
+                            React
+                        </a>
+                        <a href="/angular/" class="dropdown-item" role="menuitem">
+                            Angular
+                        </a>
+                        <a href="/svelte/" class="dropdown-item" role="menuitem">
+                            Svelte
+                        </a>
+                        <a href="/preact/" class="dropdown-item" role="menuitem">
+                            Preact
+                        </a>
+                        <a href="/solid/" class="dropdown-item" role="menuitem">
+                            Solid.js
+                        </a>
+                        <a href="/qwik/" class="dropdown-item" role="menuitem">
+                            Qwik
+                        </a>
+                        <a href="/vue/" class="dropdown-item" role="menuitem">
+                            Vue
+                        </a>
+                        <a href="/jquery/" class="dropdown-item" role="menuitem">
+                            jQuery
+                        </a>
+                        <a href="/alpine/" class="dropdown-item" role="menuitem">
+                            Alpine.js
+                        </a>
+                        <a href="/lit/" class="dropdown-item" role="menuitem">
+                            Lit
+                        </a>
+                        <a href="/vanjs/" class="dropdown-item" role="menuitem">
+                            VanJS
+                        </a>
+                        <a href="/vanilla/" class="dropdown-item" role="menuitem">
+                            Vanilla JS
+                        </a>
+                    </div>
+                </div>
+
+                <a href="https://stack-match.as93.net/" class="nav-link" target="_blank" rel="noopener">Stack Match</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank" rel="noopener">GitHub</a>
             </div>
         </nav>
     </header>
@@ -161,6 +260,28 @@ npm run clean         # Clean build artifacts</code></pre>
     </div>
 
     <div class="docs-section">
+        <h2>Getting Results</h2>
+        <p>After running a benchmark, your results will be outputted to the <code>benchmark-results</code> directory.</p>
+        <p>
+            Alternatively, we run benchmarks every night on GitHub Actions, using the latest versions of each framework.
+            You can access the latest and historic raw results in JSON format,
+            within the <a href="https://github.com/Lissy93/framework-benchmarks/tree/results" target="_blank" rel="noopener" aria-label="Results Branch"><code>results</code></a>
+            branch of our git repo.
+        </p>
+        <p>
+            These files include the raw numbers and benchmark data for all frameworks and tests. The files may be large.
+        </p>
+        <a class="primary-cta" href="https://github.com/Lissy93/framework-benchmarks/tree/results/raw" target="_blank" rel="noopener" style="width: fit-content;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Get Full Data
+        </a>
+    </div>
+
+    <div class="docs-section">
         <h2>GitHub Actions Workflows</h2>
         <p>
             Alteratively, you can use the built-in GitHub Actions workflows to run the app, checks, tests and benchmarks.<br>
@@ -169,35 +290,35 @@ npm run clean         # Clean build artifacts</code></pre>
         <div class="workflows">
             <ul>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/build.yml" target="_blank"><strong>build</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/build.yml" target="_blank" rel="noopener"><strong>build</strong></a>
                     - Build all framework applications
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/test.yml" target="_blank"><strong>test</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/test.yml" target="_blank" rel="noopener"><strong>test</strong></a>
                     - Run all unit and integration tests
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/lint.yml" target="_blank"><strong>lint</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/lint.yml" target="_blank" rel="noopener"><strong>lint</strong></a>
                     - Run linting checks
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/benchmark.yml" target="_blank"><strong>benchmark</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/benchmark.yml" target="_blank" rel="noopener"><strong>benchmark</strong></a>
                     - Executes the performance benchmarks
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/transform-results.yml" target="_blank"><strong>transform-results</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/transform-results.yml" target="_blank" rel="noopener"><strong>transform-results</strong></a>
                     - Process benchmark data and generate charts
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/docker.yml" target="_blank"><strong>docker</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/docker.yml" target="_blank" rel="noopener"><strong>docker</strong></a>
                     - Builds and publishes the Docker images
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/update-docs.yml" target="_blank"><strong>update-docs</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/update-docs.yml" target="_blank" rel="noopener"><strong>update-docs</strong></a>
                     - Update documentation automatically
                 </li>
                 <li>
-                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/mirror.yml" target="_blank"><strong>mirror</strong></a>
+                    <a href="https://github.com/Lissy93/framework-benchmarks/actions/workflows/mirror.yml" target="_blank" rel="noopener"><strong>mirror</strong></a>
                     - Mirror repository to other platforms
                 </li>
             </ul>
@@ -235,7 +356,88 @@ npm run clean         # Clean build artifacts</code></pre>
              • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
         </p>
     </footer>
-    
+
+    <!-- Navigation JavaScript -->
+    <script>
+    (function() {
+        'use strict';
+
+        // Mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', function() {
+                const isOpen = navLinks.classList.toggle('open');
+                mobileToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navigation')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close mobile menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    mobileToggle.focus();
+                }
+            });
+        }
+
+        // Dropdown menu
+        const dropdown = document.querySelector('.nav-dropdown');
+        const dropdownToggle = dropdown?.querySelector('.dropdown-toggle');
+
+        if (dropdown && dropdownToggle) {
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = dropdown.classList.toggle('open');
+                dropdownToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-dropdown')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close dropdown on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownToggle.focus();
+                }
+            });
+
+            // Keyboard navigation for dropdown items
+            const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach((item, index) => {
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const nextItem = dropdownItems[index + 1] || dropdownItems[0];
+                        nextItem.focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prevItem = dropdownItems[index - 1] || dropdownItems[dropdownItems.length - 1];
+                        prevItem.focus();
+                    }
+                });
+            });
+        }
+    })();
+    </script>
+
     <!-- JavaScript -->
 </body>
 </html>

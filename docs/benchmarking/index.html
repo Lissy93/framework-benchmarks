@@ -6,6 +6,11 @@
     <title>Benchmarking - Docs - Framework Benchmarks</title>
     <meta name="description" content="Benchmarking documentation for the Framework Benchmarks project">
     <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Alicia Sykes">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://framework-benchmarks.as93.net/">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,13 +32,24 @@
 .docs-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
 .docs-content th, .docs-content td { border: 1px solid var(--border-color, #e5e5e5); padding: 0.75rem; text-align: left; }
 .docs-content th { background: var(--code-bg, #f8f9fa); font-weight: 600; }
+.docs-content ul, .docs-content ol { margin: 1rem 0; padding-left: 2rem; }
+.docs-content li { margin: 0.5rem 0; line-height: 1.6; }
 </style>
     
-     <!-- Twitter -->
+     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Framework Benchmarks">
     <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta property="og:url" content="https://framework-benchmarks.as93.net/">
+    <meta property="og:image" content="https://framework-benchmarks.as93.net/banner.png">
+    <meta property="og:site_name" content="Framework Benchmarks">
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Lissy_Sykes">
+    <meta name="twitter:creator" content="@Lissy_Sykes">
+    <meta name="twitter:title" content="Framework Benchmarks">
+    <meta name="twitter:description" content="A comprehensive comparison of modern frontend frameworks">
     <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
     
     <!-- Favicons & App Icons -->
@@ -48,23 +64,99 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Framework Benchmarks",
+        "url": "https://framework-benchmarks.as93.net",
+        "description": "A comprehensive comparison of modern frontend frameworks",
+        "author": {
+            "@type": "Person",
+            "name": "Alicia Sykes",
+            "url": "https://aliciasykes.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Framework Benchmarks",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://framework-benchmarks.as93.net/logo.png"
+            }
+        }
+    }
+    </script>
 </head>
 <body>
     <header>
-        <nav class="navigation">
-            <a href="/" class="nav-logo">
+        <nav class="navigation" role="navigation" aria-label="Main navigation">
+            <a href="/" class="nav-logo" aria-label="Home">
                 <div class="site-name">
-                    <h1>Framework Benchmarks</h1>
+                    <span class="site-title">Framework Benchmarks</span>
                     <p>Comparing every frontend framework</p>
                 </div>
             </a>
-            <div class="nav-center">
 
-            </div>
-            <div class="nav-links">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <div class="nav-links" id="nav-menu">
                 <a href="/" class="nav-link">Home</a>
+                <a href="/#framework-results" class="nav-link">Results</a>
                 <a href="/docs/" class="nav-link active">Docs</a>
-                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Frameworks
+                        <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                            <path d="M6 9L1 4h10z"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="/react/" class="dropdown-item" role="menuitem">
+                            React
+                        </a>
+                        <a href="/angular/" class="dropdown-item" role="menuitem">
+                            Angular
+                        </a>
+                        <a href="/svelte/" class="dropdown-item" role="menuitem">
+                            Svelte
+                        </a>
+                        <a href="/preact/" class="dropdown-item" role="menuitem">
+                            Preact
+                        </a>
+                        <a href="/solid/" class="dropdown-item" role="menuitem">
+                            Solid.js
+                        </a>
+                        <a href="/qwik/" class="dropdown-item" role="menuitem">
+                            Qwik
+                        </a>
+                        <a href="/vue/" class="dropdown-item" role="menuitem">
+                            Vue
+                        </a>
+                        <a href="/jquery/" class="dropdown-item" role="menuitem">
+                            jQuery
+                        </a>
+                        <a href="/alpine/" class="dropdown-item" role="menuitem">
+                            Alpine.js
+                        </a>
+                        <a href="/lit/" class="dropdown-item" role="menuitem">
+                            Lit
+                        </a>
+                        <a href="/vanjs/" class="dropdown-item" role="menuitem">
+                            VanJS
+                        </a>
+                        <a href="/vanilla/" class="dropdown-item" role="menuitem">
+                            Vanilla JS
+                        </a>
+                    </div>
+                </div>
+
+                <a href="https://stack-match.as93.net/" class="nav-link" target="_blank" rel="noopener">Stack Match</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank" rel="noopener">GitHub</a>
             </div>
         </nav>
     </header>
@@ -79,15 +171,16 @@
         <h1>Benchmarking</h1>
 <p>This guide covers running performance benchmarks to compare the different framework implementations.</p>
 <h2>Quick Start</h2>
-<pre><code class="language-bash"># Build all frameworks first
-npm run build
+<div class="codehilite"><pre><span></span><code><span class="c1"># Build all frameworks first</span>
+npm<span class="w"> </span>run<span class="w"> </span>build
 
-# Start the server
-npm start
+<span class="c1"># Start the server</span>
+npm<span class="w"> </span>start
 
-# Run all benchmarks
-npm run benchmark
-</code></pre>
+<span class="c1"># Run all benchmarks</span>
+npm<span class="w"> </span>run<span class="w"> </span>benchmark
+</code></pre></div>
+
 <p>The benchmark process will test all frameworks across multiple performance metrics and generate detailed results.</p>
 <h2>Available Benchmarks</h2>
 <p><strong>Lighthouse</strong> - Google's web performance auditing tool that measures performance, accessibility, SEO, and best practices on a 0-100 scale.</p>
@@ -98,16 +191,18 @@ npm run benchmark
 <p><strong>Resource Usage</strong> - Monitors CPU and memory consumption during runtime (results may be minimal for simple applications).</p>
 <h2>Running Specific Benchmarks</h2>
 <p>You can run individual benchmark types:</p>
-<pre><code class="language-bash">npm run benchmark:lighthouse    # Web performance scores
-npm run perf:bundle            # File size analysis
-npm run perf:lighthouse        # Alternative lighthouse command
-</code></pre>
+<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span>benchmark:lighthouse<span class="w">    </span><span class="c1"># Web performance scores</span>
+npm<span class="w"> </span>run<span class="w"> </span>perf:bundle<span class="w">            </span><span class="c1"># File size analysis</span>
+npm<span class="w"> </span>run<span class="w"> </span>perf:lighthouse<span class="w">        </span><span class="c1"># Alternative lighthouse command</span>
+</code></pre></div>
+
 <p>For more control, use the Python script directly:</p>
-<pre><code class="language-bash">python scripts/benchmark/main.py all                    # All benchmarks
-python scripts/benchmark/main.py all --executions 3     # Run 3 times and average
-python scripts/benchmark/main.py all --frameworks react,vue,svelte
-python scripts/benchmark/main.py all --type lighthouse,bundle-size
-</code></pre>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>scripts/benchmark/main.py<span class="w"> </span>all<span class="w">                    </span><span class="c1"># All benchmarks</span>
+python<span class="w"> </span>scripts/benchmark/main.py<span class="w"> </span>all<span class="w"> </span>--executions<span class="w"> </span><span class="m">3</span><span class="w">     </span><span class="c1"># Run 3 times and average</span>
+python<span class="w"> </span>scripts/benchmark/main.py<span class="w"> </span>all<span class="w"> </span>--frameworks<span class="w"> </span>react,vue,svelte
+python<span class="w"> </span>scripts/benchmark/main.py<span class="w"> </span>all<span class="w"> </span>--type<span class="w"> </span>lighthouse,bundle-size
+</code></pre></div>
+
 <h2>Prerequisites</h2>
 <p>Before running benchmarks:</p>
 <ol>
@@ -117,19 +212,19 @@ python scripts/benchmark/main.py all --type lighthouse,bundle-size
 <li><strong>Python dependencies</strong>: Ensure <code>pip install -r scripts/requirements.txt</code> was run</li>
 </ol>
 <h2>Understanding Results</h2>
-<p>Results are saved in <code>benchmark-results/</code> with timestamps. The console output shows:
-- Individual scores for each framework
+<p>Results are saved in <code>benchmark-results/</code> with timestamps. The console output shows:<br />
+- Individual scores for each framework<br />
 - Pass/fail status against thresholds<br />
-- Statistical analysis when using multiple executions
+- Statistical analysis when using multiple executions<br />
 - Summary comparisons across frameworks</p>
-<p><strong>Performance scores</strong> range from 0-100, with higher being better.
-<strong>Bundle sizes</strong> are shown in KB for both raw and gzipped files.
-<strong>Build times</strong> are measured in seconds.
+<p><strong>Performance scores</strong> range from 0-100, with higher being better.<br />
+<strong>Bundle sizes</strong> are shown in KB for both raw and gzipped files.<br />
+<strong>Build times</strong> are measured in seconds.<br />
 <strong>Complexity scores</strong> use industry-standard metrics for code maintainability.</p>
 <h2>Common Issues</h2>
-<p><strong>Server not running</strong> - Ensure <code>npm start</code> is active before running Lighthouse benchmarks
-<strong>Chrome not found</strong> - Install Chrome or set Chrome path in environment variables
-<strong>Frameworks not built</strong> - Run <code>npm run build</code> before bundle size analysis
+<p><strong>Server not running</strong> - Ensure <code>npm start</code> is active before running Lighthouse benchmarks<br />
+<strong>Chrome not found</strong> - Install Chrome or set Chrome path in environment variables<br />
+<strong>Frameworks not built</strong> - Run <code>npm run build</code> before bundle size analysis<br />
 <strong>Inconsistent results</strong> - Use <code>--executions 3</code> for more reliable averages</p>
 <p>The benchmark system is designed to provide objective, reproducible measurements for comparing framework performance and developer experience.</p>
     </div>
@@ -145,7 +240,88 @@ python scripts/benchmark/main.py all --type lighthouse,bundle-size
              • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
         </p>
     </footer>
-    
+
+    <!-- Navigation JavaScript -->
+    <script>
+    (function() {
+        'use strict';
+
+        // Mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', function() {
+                const isOpen = navLinks.classList.toggle('open');
+                mobileToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navigation')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close mobile menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    mobileToggle.focus();
+                }
+            });
+        }
+
+        // Dropdown menu
+        const dropdown = document.querySelector('.nav-dropdown');
+        const dropdownToggle = dropdown?.querySelector('.dropdown-toggle');
+
+        if (dropdown && dropdownToggle) {
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = dropdown.classList.toggle('open');
+                dropdownToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-dropdown')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close dropdown on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownToggle.focus();
+                }
+            });
+
+            // Keyboard navigation for dropdown items
+            const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach((item, index) => {
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const nextItem = dropdownItems[index + 1] || dropdownItems[0];
+                        nextItem.focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prevItem = dropdownItems[index - 1] || dropdownItems[dropdownItems.length - 1];
+                        prevItem.focus();
+                    }
+                });
+            });
+        }
+    })();
+    </script>
+
     <!-- JavaScript -->
 </body>
 </html>

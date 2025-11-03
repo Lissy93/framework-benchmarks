@@ -6,6 +6,11 @@
     <title>Setup - Docs - Framework Benchmarks</title>
     <meta name="description" content="Setup documentation for the Framework Benchmarks project">
     <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Alicia Sykes">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://framework-benchmarks.as93.net/">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,13 +32,24 @@
 .docs-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
 .docs-content th, .docs-content td { border: 1px solid var(--border-color, #e5e5e5); padding: 0.75rem; text-align: left; }
 .docs-content th { background: var(--code-bg, #f8f9fa); font-weight: 600; }
+.docs-content ul, .docs-content ol { margin: 1rem 0; padding-left: 2rem; }
+.docs-content li { margin: 0.5rem 0; line-height: 1.6; }
 </style>
     
-     <!-- Twitter -->
+     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Framework Benchmarks">
     <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta property="og:url" content="https://framework-benchmarks.as93.net/">
+    <meta property="og:image" content="https://framework-benchmarks.as93.net/banner.png">
+    <meta property="og:site_name" content="Framework Benchmarks">
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Lissy_Sykes">
+    <meta name="twitter:creator" content="@Lissy_Sykes">
+    <meta name="twitter:title" content="Framework Benchmarks">
+    <meta name="twitter:description" content="A comprehensive comparison of modern frontend frameworks">
     <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
     
     <!-- Favicons & App Icons -->
@@ -48,23 +64,99 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Framework Benchmarks",
+        "url": "https://framework-benchmarks.as93.net",
+        "description": "A comprehensive comparison of modern frontend frameworks",
+        "author": {
+            "@type": "Person",
+            "name": "Alicia Sykes",
+            "url": "https://aliciasykes.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Framework Benchmarks",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://framework-benchmarks.as93.net/logo.png"
+            }
+        }
+    }
+    </script>
 </head>
 <body>
     <header>
-        <nav class="navigation">
-            <a href="/" class="nav-logo">
+        <nav class="navigation" role="navigation" aria-label="Main navigation">
+            <a href="/" class="nav-logo" aria-label="Home">
                 <div class="site-name">
-                    <h1>Framework Benchmarks</h1>
+                    <span class="site-title">Framework Benchmarks</span>
                     <p>Comparing every frontend framework</p>
                 </div>
             </a>
-            <div class="nav-center">
 
-            </div>
-            <div class="nav-links">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <div class="nav-links" id="nav-menu">
                 <a href="/" class="nav-link">Home</a>
+                <a href="/#framework-results" class="nav-link">Results</a>
                 <a href="/docs/" class="nav-link active">Docs</a>
-                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Frameworks
+                        <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                            <path d="M6 9L1 4h10z"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="/react/" class="dropdown-item" role="menuitem">
+                            React
+                        </a>
+                        <a href="/angular/" class="dropdown-item" role="menuitem">
+                            Angular
+                        </a>
+                        <a href="/svelte/" class="dropdown-item" role="menuitem">
+                            Svelte
+                        </a>
+                        <a href="/preact/" class="dropdown-item" role="menuitem">
+                            Preact
+                        </a>
+                        <a href="/solid/" class="dropdown-item" role="menuitem">
+                            Solid.js
+                        </a>
+                        <a href="/qwik/" class="dropdown-item" role="menuitem">
+                            Qwik
+                        </a>
+                        <a href="/vue/" class="dropdown-item" role="menuitem">
+                            Vue
+                        </a>
+                        <a href="/jquery/" class="dropdown-item" role="menuitem">
+                            jQuery
+                        </a>
+                        <a href="/alpine/" class="dropdown-item" role="menuitem">
+                            Alpine.js
+                        </a>
+                        <a href="/lit/" class="dropdown-item" role="menuitem">
+                            Lit
+                        </a>
+                        <a href="/vanjs/" class="dropdown-item" role="menuitem">
+                            VanJS
+                        </a>
+                        <a href="/vanilla/" class="dropdown-item" role="menuitem">
+                            Vanilla JS
+                        </a>
+                    </div>
+                </div>
+
+                <a href="https://stack-match.as93.net/" class="nav-link" target="_blank" rel="noopener">Stack Match</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank" rel="noopener">GitHub</a>
             </div>
         </nav>
     </header>
@@ -79,12 +171,13 @@
         <h1>Setup</h1>
 <p>This guide covers setting up the project from scratch or maintaining an existing installation.</p>
 <h2>Quick Start</h2>
-<pre><code class="language-bash">git clone https://github.com/lissy93/framework-benchmarks.git
-cd framework-benchmarks
-npm install
-pip install -r scripts/requirements.txt
-npm run setup
-</code></pre>
+<div class="codehilite"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/lissy93/framework-benchmarks.git
+<span class="nb">cd</span><span class="w"> </span>framework-benchmarks
+npm<span class="w"> </span>install
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>scripts/requirements.txt
+npm<span class="w"> </span>run<span class="w"> </span>setup
+</code></pre></div>
+
 <p>This runs all setup tasks automatically and prepares the project for development.</p>
 <h2>What Setup Does</h2>
 <p>The setup process handles four main tasks:</p>
@@ -94,27 +187,28 @@ npm run setup
 <p><strong>Generate Scripts</strong> - Auto-generates npm scripts in each framework's package.json file, ensuring consistent dev/build/test/lint commands across all applications.</p>
 <h2>Manual Setup Steps</h2>
 <p>If you prefer to run setup steps individually:</p>
-<pre><code class="language-bash"># Install dependencies for all frameworks
-python scripts/setup/install_deps.py
+<div class="codehilite"><pre><span></span><code><span class="c1"># Install dependencies for all frameworks</span>
+python<span class="w"> </span>scripts/setup/install_deps.py
 
-# Copy shared assets to all frameworks  
-python scripts/setup/sync_assets.py
+<span class="c1"># Copy shared assets to all frameworks  </span>
+python<span class="w"> </span>scripts/setup/sync_assets.py
 
-# Generate mock weather data
-python scripts/setup/generate_mocks.py
+<span class="c1"># Generate mock weather data</span>
+python<span class="w"> </span>scripts/setup/generate_mocks.py
 
-# Update package.json scripts
-python scripts/setup/generate_scripts.py
-</code></pre>
+<span class="c1"># Update package.json scripts</span>
+python<span class="w"> </span>scripts/setup/generate_scripts.py
+</code></pre></div>
+
 <h2>Prerequisites</h2>
-<p>Before running setup, ensure you have:
-- Node.js 18+ and npm
-- Python 3.8+ and pip
+<p>Before running setup, ensure you have:<br />
+- Node.js 18+ and npm<br />
+- Python 3.8+ and pip<br />
 - Git for cloning the repository</p>
 <h2>Common Issues</h2>
-<p><strong>Permission errors</strong> - Use sudo if needed for global npm packages
-<strong>Network timeouts</strong> - Retry setup if npm installs fail
-<strong>Python errors</strong> - Install Python dependencies with <code>pip install -r scripts/requirements.txt</code>
+<p><strong>Permission errors</strong> - Use sudo if needed for global npm packages<br />
+<strong>Network timeouts</strong> - Retry setup if npm installs fail<br />
+<strong>Python errors</strong> - Install Python dependencies with <code>pip install -r scripts/requirements.txt</code><br />
 <strong>Disk space</strong> - Each framework needs ~200MB for node_modules</p>
 <p>After setup, each framework directory will have its dependencies installed and be ready for development.</p>
     </div>
@@ -130,7 +224,88 @@ python scripts/setup/generate_scripts.py
              • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
         </p>
     </footer>
-    
+
+    <!-- Navigation JavaScript -->
+    <script>
+    (function() {
+        'use strict';
+
+        // Mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', function() {
+                const isOpen = navLinks.classList.toggle('open');
+                mobileToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navigation')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close mobile menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    mobileToggle.focus();
+                }
+            });
+        }
+
+        // Dropdown menu
+        const dropdown = document.querySelector('.nav-dropdown');
+        const dropdownToggle = dropdown?.querySelector('.dropdown-toggle');
+
+        if (dropdown && dropdownToggle) {
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = dropdown.classList.toggle('open');
+                dropdownToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-dropdown')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close dropdown on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownToggle.focus();
+                }
+            });
+
+            // Keyboard navigation for dropdown items
+            const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach((item, index) => {
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const nextItem = dropdownItems[index + 1] || dropdownItems[0];
+                        nextItem.focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prevItem = dropdownItems[index - 1] || dropdownItems[dropdownItems.length - 1];
+                        prevItem.focus();
+                    }
+                });
+            });
+        }
+    })();
+    </script>
+
     <!-- JavaScript -->
 </body>
 </html>

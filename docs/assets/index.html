@@ -6,6 +6,11 @@
     <title>Assets - Docs - Framework Benchmarks</title>
     <meta name="description" content="Assets documentation for the Framework Benchmarks project">
     <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Alicia Sykes">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://framework-benchmarks.as93.net/">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,13 +32,24 @@
 .docs-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
 .docs-content th, .docs-content td { border: 1px solid var(--border-color, #e5e5e5); padding: 0.75rem; text-align: left; }
 .docs-content th { background: var(--code-bg, #f8f9fa); font-weight: 600; }
+.docs-content ul, .docs-content ol { margin: 1rem 0; padding-left: 2rem; }
+.docs-content li { margin: 0.5rem 0; line-height: 1.6; }
 </style>
     
-     <!-- Twitter -->
+     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Framework Benchmarks">
     <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta property="og:url" content="https://framework-benchmarks.as93.net/">
+    <meta property="og:image" content="https://framework-benchmarks.as93.net/banner.png">
+    <meta property="og:site_name" content="Framework Benchmarks">
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Lissy_Sykes">
+    <meta name="twitter:creator" content="@Lissy_Sykes">
+    <meta name="twitter:title" content="Framework Benchmarks">
+    <meta name="twitter:description" content="A comprehensive comparison of modern frontend frameworks">
     <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
     
     <!-- Favicons & App Icons -->
@@ -48,23 +64,99 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Framework Benchmarks",
+        "url": "https://framework-benchmarks.as93.net",
+        "description": "A comprehensive comparison of modern frontend frameworks",
+        "author": {
+            "@type": "Person",
+            "name": "Alicia Sykes",
+            "url": "https://aliciasykes.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Framework Benchmarks",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://framework-benchmarks.as93.net/logo.png"
+            }
+        }
+    }
+    </script>
 </head>
 <body>
     <header>
-        <nav class="navigation">
-            <a href="/" class="nav-logo">
+        <nav class="navigation" role="navigation" aria-label="Main navigation">
+            <a href="/" class="nav-logo" aria-label="Home">
                 <div class="site-name">
-                    <h1>Framework Benchmarks</h1>
+                    <span class="site-title">Framework Benchmarks</span>
                     <p>Comparing every frontend framework</p>
                 </div>
             </a>
-            <div class="nav-center">
 
-            </div>
-            <div class="nav-links">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <div class="nav-links" id="nav-menu">
                 <a href="/" class="nav-link">Home</a>
+                <a href="/#framework-results" class="nav-link">Results</a>
                 <a href="/docs/" class="nav-link active">Docs</a>
-                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Frameworks
+                        <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                            <path d="M6 9L1 4h10z"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="/react/" class="dropdown-item" role="menuitem">
+                            React
+                        </a>
+                        <a href="/angular/" class="dropdown-item" role="menuitem">
+                            Angular
+                        </a>
+                        <a href="/svelte/" class="dropdown-item" role="menuitem">
+                            Svelte
+                        </a>
+                        <a href="/preact/" class="dropdown-item" role="menuitem">
+                            Preact
+                        </a>
+                        <a href="/solid/" class="dropdown-item" role="menuitem">
+                            Solid.js
+                        </a>
+                        <a href="/qwik/" class="dropdown-item" role="menuitem">
+                            Qwik
+                        </a>
+                        <a href="/vue/" class="dropdown-item" role="menuitem">
+                            Vue
+                        </a>
+                        <a href="/jquery/" class="dropdown-item" role="menuitem">
+                            jQuery
+                        </a>
+                        <a href="/alpine/" class="dropdown-item" role="menuitem">
+                            Alpine.js
+                        </a>
+                        <a href="/lit/" class="dropdown-item" role="menuitem">
+                            Lit
+                        </a>
+                        <a href="/vanjs/" class="dropdown-item" role="menuitem">
+                            VanJS
+                        </a>
+                        <a href="/vanilla/" class="dropdown-item" role="menuitem">
+                            Vanilla JS
+                        </a>
+                    </div>
+                </div>
+
+                <a href="https://stack-match.as93.net/" class="nav-link" target="_blank" rel="noopener">Stack Match</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank" rel="noopener">GitHub</a>
             </div>
         </nav>
     </header>
@@ -79,76 +171,76 @@
         <h1>Assets</h1>
 <p>Shared resources ensuring consistency across frameworks.</p>
 <h2>Structure</h2>
-<p><strong>Icons:</strong> <code>assets/icons/</code>
-- Weather condition icons (sunny, rainy, cloudy, etc.)
-- App icons and favicons
-- Framework logos and badges
+<p><strong>Icons:</strong> <code>assets/icons/</code><br />
+- Weather condition icons (sunny, rainy, cloudy, etc.)<br />
+- App icons and favicons<br />
+- Framework logos and badges<br />
 - SVG format for scalability</p>
 <p><strong>Styles:</strong> <code>assets/styles/</code><br />
-- CSS custom properties (colors, typography)
-- Shared component styles
-- Design system tokens
+- CSS custom properties (colors, typography)<br />
+- Shared component styles<br />
+- Design system tokens<br />
 - Theme definitions</p>
-<p><strong>Mock Data:</strong> <code>assets/mocks/</code>
-- Weather API responses
-- Location databases
-- Error scenarios
+<p><strong>Mock Data:</strong> <code>assets/mocks/</code><br />
+- Weather API responses<br />
+- Location databases<br />
+- Error scenarios<br />
 - Test data variations</p>
 <h2>Sync Process</h2>
-<p><strong>Script:</strong> <code>scripts/setup/sync_assets.py</code>
-- Copies assets to all framework directories
-- Maintains consistent branding
-- Preserves framework-specific customizations
+<p><strong>Script:</strong> <code>scripts/setup/sync_assets.py</code><br />
+- Copies assets to all framework directories<br />
+- Maintains consistent branding<br />
+- Preserves framework-specific customizations<br />
 - Updates on asset changes</p>
-<p><strong>Target locations:</strong>
-- <code>apps/{framework}/public/</code> - Static assets
-- <code>apps/{framework}/src/assets/</code> - Source assets
+<p><strong>Target locations:</strong><br />
+- <code>apps/{framework}/public/</code> - Static assets<br />
+- <code>apps/{framework}/src/assets/</code> - Source assets<br />
 - <code>apps/{framework}/src/mocks/</code> - Mock data</p>
 <h2>Asset Types</h2>
 <h3>Design System</h3>
-<p><strong>Colors:</strong> Consistent palette across frameworks
-- Primary/secondary brand colors
-- Weather condition colors
-- UI state colors (error, success, warning)
+<p><strong>Colors:</strong> Consistent palette across frameworks<br />
+- Primary/secondary brand colors<br />
+- Weather condition colors<br />
+- UI state colors (error, success, warning)<br />
 - Neutral grays and backgrounds</p>
-<p><strong>Typography:</strong> Font definitions
-- Font family selections
-- Size scales and line heights
-- Weight variations
+<p><strong>Typography:</strong> Font definitions<br />
+- Font family selections<br />
+- Size scales and line heights<br />
+- Weight variations<br />
 - Responsive scaling</p>
-<p><strong>Spacing:</strong> Layout consistency
-- Margin/padding scales
-- Grid systems
-- Component spacing
+<p><strong>Spacing:</strong> Layout consistency<br />
+- Margin/padding scales<br />
+- Grid systems<br />
+- Component spacing<br />
 - Responsive breakpoints</p>
 <h3>Weather Icons</h3>
-<p><strong>Conditions:</strong> Complete weather icon set
-- Clear/sunny conditions
-- Cloudy variations
-- Rain and snow
-- Storm conditions
+<p><strong>Conditions:</strong> Complete weather icon set<br />
+- Clear/sunny conditions<br />
+- Cloudy variations<br />
+- Rain and snow<br />
+- Storm conditions<br />
 - Wind indicators</p>
-<p><strong>Formats:</strong> Multiple formats for framework compatibility
-- SVG for modern frameworks
-- PNG fallbacks
-- Icon fonts where needed
+<p><strong>Formats:</strong> Multiple formats for framework compatibility<br />
+- SVG for modern frameworks<br />
+- PNG fallbacks<br />
+- Icon fonts where needed<br />
 - Accessibility considerations</p>
 <h3>Mock Data</h3>
-<p><strong>Realistic responses:</strong> Comprehensive weather data
-- Current conditions
-- Forecasts (hourly/daily)
-- Location information
+<p><strong>Realistic responses:</strong> Comprehensive weather data<br />
+- Current conditions<br />
+- Forecasts (hourly/daily)<br />
+- Location information<br />
 - Weather alerts</p>
-<p><strong>Error scenarios:</strong> Testing edge cases
-- Network failures
+<p><strong>Error scenarios:</strong> Testing edge cases<br />
+- Network failures<br />
 - Invalid locations<br />
-- Service unavailable
+- Service unavailable<br />
 - Timeout conditions</p>
 <h2>Framework Integration</h2>
-<p><strong>React/Preact:</strong> JSX-compatible assets
-<strong>Vue:</strong> Vue template integration
-<strong>Angular:</strong> Angular asset pipeline
-<strong>Svelte:</strong> Svelte asset handling
+<p><strong>React/Preact:</strong> JSX-compatible assets<br />
+<strong>Vue:</strong> Vue template integration<br />
+<strong>Angular:</strong> Angular asset pipeline<br />
+<strong>Svelte:</strong> Svelte asset handling<br />
 <strong>Others:</strong> Standard web asset patterns</p>
 <p>Assets are adapted for each framework's build system while maintaining visual consistency.</p>
     </div>
@@ -164,7 +256,88 @@
              • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
         </p>
     </footer>
-    
+
+    <!-- Navigation JavaScript -->
+    <script>
+    (function() {
+        'use strict';
+
+        // Mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', function() {
+                const isOpen = navLinks.classList.toggle('open');
+                mobileToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navigation')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close mobile menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    mobileToggle.focus();
+                }
+            });
+        }
+
+        // Dropdown menu
+        const dropdown = document.querySelector('.nav-dropdown');
+        const dropdownToggle = dropdown?.querySelector('.dropdown-toggle');
+
+        if (dropdown && dropdownToggle) {
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = dropdown.classList.toggle('open');
+                dropdownToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-dropdown')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close dropdown on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownToggle.focus();
+                }
+            });
+
+            // Keyboard navigation for dropdown items
+            const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach((item, index) => {
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const nextItem = dropdownItems[index + 1] || dropdownItems[0];
+                        nextItem.focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prevItem = dropdownItems[index - 1] || dropdownItems[dropdownItems.length - 1];
+                        prevItem.focus();
+                    }
+                });
+            });
+        }
+    })();
+    </script>
+
     <!-- JavaScript -->
 </body>
 </html>

@@ -6,6 +6,11 @@
     <title>Testing - Docs - Framework Benchmarks</title>
     <meta name="description" content="Testing documentation for the Framework Benchmarks project">
     <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Alicia Sykes">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://framework-benchmarks.as93.net/">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,13 +32,24 @@
 .docs-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
 .docs-content th, .docs-content td { border: 1px solid var(--border-color, #e5e5e5); padding: 0.75rem; text-align: left; }
 .docs-content th { background: var(--code-bg, #f8f9fa); font-weight: 600; }
+.docs-content ul, .docs-content ol { margin: 1rem 0; padding-left: 2rem; }
+.docs-content li { margin: 0.5rem 0; line-height: 1.6; }
 </style>
     
-     <!-- Twitter -->
+     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Framework Benchmarks">
     <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta property="og:url" content="https://framework-benchmarks.as93.net/">
+    <meta property="og:image" content="https://framework-benchmarks.as93.net/banner.png">
+    <meta property="og:site_name" content="Framework Benchmarks">
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Lissy_Sykes">
+    <meta name="twitter:creator" content="@Lissy_Sykes">
+    <meta name="twitter:title" content="Framework Benchmarks">
+    <meta name="twitter:description" content="A comprehensive comparison of modern frontend frameworks">
     <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
     
     <!-- Favicons & App Icons -->
@@ -48,23 +64,99 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Framework Benchmarks",
+        "url": "https://framework-benchmarks.as93.net",
+        "description": "A comprehensive comparison of modern frontend frameworks",
+        "author": {
+            "@type": "Person",
+            "name": "Alicia Sykes",
+            "url": "https://aliciasykes.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Framework Benchmarks",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://framework-benchmarks.as93.net/logo.png"
+            }
+        }
+    }
+    </script>
 </head>
 <body>
     <header>
-        <nav class="navigation">
-            <a href="/" class="nav-logo">
+        <nav class="navigation" role="navigation" aria-label="Main navigation">
+            <a href="/" class="nav-logo" aria-label="Home">
                 <div class="site-name">
-                    <h1>Framework Benchmarks</h1>
+                    <span class="site-title">Framework Benchmarks</span>
                     <p>Comparing every frontend framework</p>
                 </div>
             </a>
-            <div class="nav-center">
 
-            </div>
-            <div class="nav-links">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <div class="nav-links" id="nav-menu">
                 <a href="/" class="nav-link">Home</a>
+                <a href="/#framework-results" class="nav-link">Results</a>
                 <a href="/docs/" class="nav-link active">Docs</a>
-                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Frameworks
+                        <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                            <path d="M6 9L1 4h10z"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="/react/" class="dropdown-item" role="menuitem">
+                            React
+                        </a>
+                        <a href="/angular/" class="dropdown-item" role="menuitem">
+                            Angular
+                        </a>
+                        <a href="/svelte/" class="dropdown-item" role="menuitem">
+                            Svelte
+                        </a>
+                        <a href="/preact/" class="dropdown-item" role="menuitem">
+                            Preact
+                        </a>
+                        <a href="/solid/" class="dropdown-item" role="menuitem">
+                            Solid.js
+                        </a>
+                        <a href="/qwik/" class="dropdown-item" role="menuitem">
+                            Qwik
+                        </a>
+                        <a href="/vue/" class="dropdown-item" role="menuitem">
+                            Vue
+                        </a>
+                        <a href="/jquery/" class="dropdown-item" role="menuitem">
+                            jQuery
+                        </a>
+                        <a href="/alpine/" class="dropdown-item" role="menuitem">
+                            Alpine.js
+                        </a>
+                        <a href="/lit/" class="dropdown-item" role="menuitem">
+                            Lit
+                        </a>
+                        <a href="/vanjs/" class="dropdown-item" role="menuitem">
+                            VanJS
+                        </a>
+                        <a href="/vanilla/" class="dropdown-item" role="menuitem">
+                            Vanilla JS
+                        </a>
+                    </div>
+                </div>
+
+                <a href="https://stack-match.as93.net/" class="nav-link" target="_blank" rel="noopener">Stack Match</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank" rel="noopener">GitHub</a>
             </div>
         </nav>
     </header>
@@ -80,7 +172,7 @@
 <p>This document explains how to run and maintain the comprehensive test suite for the Weather Front project.</p>
 <h2>🧪 Test Structure</h2>
 <p>The project includes both <strong>unit tests</strong> and <strong>end-to-end (E2E) tests</strong>:</p>
-<pre><code>tests/
+<div class="codehilite"><pre><span></span><code>tests/
 ├── unit/                          # Unit tests (Node.js)
 │   ├── weather-service.test.js    # API service tests
 │   ├── weather-app.test.js        # App logic tests
@@ -91,35 +183,43 @@
 ├── playwright.config.js          # Playwright configuration
 ├── test-helpers.js              # Shared test utilities
 └── .env.example                 # Test configuration template
-</code></pre>
+</code></pre></div>
+
 <h2>🚀 Getting Started</h2>
 <h3>1. Install Dependencies</h3>
-<pre><code class="language-bash"># Install Playwright and browsers
-npm install
-npm run install:playwright
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Install Playwright and browsers</span>
+npm<span class="w"> </span>install
+npm<span class="w"> </span>run<span class="w"> </span>install:playwright
+</code></pre></div>
+
 <h3>2. Start the Development Server</h3>
-<pre><code class="language-bash"># Start vanilla JS app on localhost:3000
-npm run dev:vanilla
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Start vanilla JS app on localhost:3000</span>
+npm<span class="w"> </span>run<span class="w"> </span>dev:vanilla
+</code></pre></div>
+
 <h3>3. Run Tests</h3>
 <h4>Run All Tests</h4>
-<pre><code class="language-bash">npm run test:all          # Unit + E2E tests
-</code></pre>
+<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span>test:all<span class="w">          </span><span class="c1"># Unit + E2E tests</span>
+</code></pre></div>
+
 <h4>Run Unit Tests Only</h4>
-<pre><code class="language-bash">npm run test:unit         # Fast JavaScript unit tests
-</code></pre>
+<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span>test:unit<span class="w">         </span><span class="c1"># Fast JavaScript unit tests</span>
+</code></pre></div>
+
 <h4>Run E2E Tests Only</h4>
-<pre><code class="language-bash">npm run test             # All E2E tests (headless)
-npm run test:headed      # E2E tests with browser UI
-npm run test:ui          # Interactive test runner
-</code></pre>
+<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span><span class="nb">test</span><span class="w">             </span><span class="c1"># All E2E tests (headless)</span>
+npm<span class="w"> </span>run<span class="w"> </span>test:headed<span class="w">      </span><span class="c1"># E2E tests with browser UI</span>
+npm<span class="w"> </span>run<span class="w"> </span>test:ui<span class="w">          </span><span class="c1"># Interactive test runner</span>
+</code></pre></div>
+
 <h4>Debug Tests</h4>
-<pre><code class="language-bash">npm run test:debug       # Debug mode with DevTools
-</code></pre>
+<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span>test:debug<span class="w">       </span><span class="c1"># Debug mode with DevTools</span>
+</code></pre></div>
+
 <h4>View Test Reports</h4>
-<pre><code class="language-bash">npm run test:report      # Open HTML test report
-</code></pre>
+<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span>test:report<span class="w">      </span><span class="c1"># Open HTML test report</span>
+</code></pre></div>
+
 <h2>📋 Test Categories</h2>
 <h3>Unit Tests (Node.js)</h3>
 <ul>
@@ -174,53 +274,56 @@ npm run test:ui          # Interactive test runner
 </ul>
 <h2>🛠 Writing New Tests</h2>
 <h3>Unit Test Example</h3>
-<pre><code class="language-javascript">runner.test('should validate input correctly', async () =&gt; {
-  const service = createWeatherService();
+<div class="codehilite"><pre><span></span><code><span class="nx">runner</span><span class="p">.</span><span class="nx">test</span><span class="p">(</span><span class="s1">&#39;should validate input correctly&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">service</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">createWeatherService</span><span class="p">();</span>
 
-  try {
-    await service.getWeatherByCity('');
-    throw new Error('Should have thrown an error');
-  } catch (error) {
-    if (!error.message.includes('required')) {
-      throw new Error(`Unexpected error: ${error.message}`);
-    }
-  }
-});
-</code></pre>
+<span class="w">  </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">service</span><span class="p">.</span><span class="nx">getWeatherByCity</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
+<span class="w">    </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="s1">&#39;Should have thrown an error&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="p">.</span><span class="nx">includes</span><span class="p">(</span><span class="s1">&#39;required&#39;</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">throw</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="ne">Error</span><span class="p">(</span><span class="sb">`Unexpected error: </span><span class="si">${</span><span class="nx">error</span><span class="p">.</span><span class="nx">message</span><span class="si">}</span><span class="sb">`</span><span class="p">);</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">});</span>
+</code></pre></div>
+
 <h3>E2E Test Example</h3>
-<pre><code class="language-javascript">test('should search for weather data', async ({ page }) =&gt; {
-  const helpers = new WeatherAppHelpers(page);
+<div class="codehilite"><pre><span></span><code><span class="nx">test</span><span class="p">(</span><span class="s1">&#39;should search for weather data&#39;</span><span class="p">,</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">({</span><span class="w"> </span><span class="nx">page</span><span class="w"> </span><span class="p">})</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="kd">const</span><span class="w"> </span><span class="nx">helpers</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">WeatherAppHelpers</span><span class="p">(</span><span class="nx">page</span><span class="p">);</span>
 
-  await helpers.navigateToApp();
-  await helpers.searchForCity('London');
-  await helpers.waitForWeatherData();
-  await helpers.assertLocationDisplayed('London');
-});
-</code></pre>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">helpers</span><span class="p">.</span><span class="nx">navigateToApp</span><span class="p">();</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">helpers</span><span class="p">.</span><span class="nx">searchForCity</span><span class="p">(</span><span class="s1">&#39;London&#39;</span><span class="p">);</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">helpers</span><span class="p">.</span><span class="nx">waitForWeatherData</span><span class="p">();</span>
+<span class="w">  </span><span class="k">await</span><span class="w"> </span><span class="nx">helpers</span><span class="p">.</span><span class="nx">assertLocationDisplayed</span><span class="p">(</span><span class="s1">&#39;London&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</code></pre></div>
+
 <h2>🔧 Test Configuration</h2>
 <h3>Browser Testing</h3>
-<p>Tests run on multiple browsers and devices:
-- <strong>Desktop</strong>: Chrome, Firefox, Safari
+<p>Tests run on multiple browsers and devices:<br />
+- <strong>Desktop</strong>: Chrome, Firefox, Safari<br />
 - <strong>Mobile</strong>: Pixel 5, iPhone 12</p>
 <h3>API Mocking</h3>
-<p>All tests use mocked APIs to ensure:
-- <strong>Consistent test data</strong>
-- <strong>Fast execution</strong>
-- <strong>No external dependencies</strong>
+<p>All tests use mocked APIs to ensure:<br />
+- <strong>Consistent test data</strong><br />
+- <strong>Fast execution</strong><br />
+- <strong>No external dependencies</strong><br />
 - <strong>Predictable error scenarios</strong></p>
 <h3>Environment Variables</h3>
-<p>Copy <code>tests/.env.example</code> to <code>tests/.env</code> to customize:
-- Test timeouts
-- Browser settings
-- Performance thresholds
+<p>Copy <code>tests/.env.example</code> to <code>tests/.env</code> to customize:<br />
+- Test timeouts<br />
+- Browser settings<br />
+- Performance thresholds<br />
 - Debug options</p>
 <h2>📊 Continuous Integration</h2>
 <h3>GitHub Actions Ready</h3>
-<pre><code class="language-yaml">- name: Run Tests
-  run: |
-    npm run test:unit
-    npm run test:ci
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Run Tests</span>
+<span class="w">  </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">    </span><span class="no">npm run test:unit</span>
+<span class="w">    </span><span class="no">npm run test:ci</span>
+</code></pre></div>
+
 <h3>Test Reports</h3>
 <ul>
 <li><strong>HTML Report</strong>: Visual test results with screenshots</li>
@@ -229,21 +332,24 @@ npm run test:ui          # Interactive test runner
 </ul>
 <h2>🐛 Debugging Failed Tests</h2>
 <h3>1. Run in Headed Mode</h3>
-<pre><code class="language-bash">npm run test:headed
-</code></pre>
+<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span>test:headed
+</code></pre></div>
+
 <h3>2. Use Debug Mode</h3>
-<pre><code class="language-bash">npm run test:debug
-</code></pre>
+<div class="codehilite"><pre><span></span><code>npm<span class="w"> </span>run<span class="w"> </span>test:debug
+</code></pre></div>
+
 <h3>3. Check Screenshots</h3>
 <p>Failed tests automatically capture screenshots in <code>test-results/</code></p>
 <h3>4. View Trace Files</h3>
 <p>Playwright traces show step-by-step execution:</p>
-<pre><code class="language-bash">npx playwright show-trace test-results/trace.zip
-</code></pre>
+<div class="codehilite"><pre><span></span><code>npx<span class="w"> </span>playwright<span class="w"> </span>show-trace<span class="w"> </span>test-results/trace.zip
+</code></pre></div>
+
 <h2>📈 Performance Monitoring</h2>
-<p>Tests include performance assertions:
-- <strong>Page load time</strong>: &lt; 2 seconds
-- <strong>Data rendering</strong>: &lt; 1 second
+<p>Tests include performance assertions:<br />
+- <strong>Page load time</strong>: &lt; 2 seconds<br />
+- <strong>Data rendering</strong>: &lt; 1 second<br />
 - <strong>Search response</strong>: &lt; 3 seconds</p>
 <h2>✅ Test Quality Standards</h2>
 <h3>All Tests Must:</h3>
@@ -261,19 +367,19 @@ npm run test:ui          # Interactive test runner
 <li><strong>E2E</strong>: <code>should [user action] and [expected outcome]</code></li>
 </ul>
 <h2>🔄 Framework Compatibility</h2>
-<p>These tests are designed to work across all planned framework implementations:
-- ✅ <strong>Vanilla JS</strong> (current)
-- 🔄 <strong>React</strong> (planned)
-- 🔄 <strong>Vue</strong> (planned)
-- 🔄 <strong>Svelte</strong> (planned)
+<p>These tests are designed to work across all planned framework implementations:<br />
+- ✅ <strong>Vanilla JS</strong> (current)<br />
+- 🔄 <strong>React</strong> (planned)<br />
+- 🔄 <strong>Vue</strong> (planned)<br />
+- 🔄 <strong>Svelte</strong> (planned)<br />
 - 🔄 <strong>Angular</strong> (planned)</p>
 <p>The same test suite will verify consistent behavior across all implementations.</p>
 <hr />
 <h2>📞 Support</h2>
-<p>If tests fail or you need help:
-1. Check this README
-2. Review test output and screenshots
-3. Run tests in debug mode
+<p>If tests fail or you need help:<br />
+1. Check this README<br />
+2. Review test output and screenshots<br />
+3. Run tests in debug mode<br />
 4. Check <a href="https://github.com/lissy93/framework-benchmarks/issues">GitHub Issues</a></p>
 <p><strong>Happy Testing! 🎉</strong></p>
     </div>
@@ -289,7 +395,88 @@ npm run test:ui          # Interactive test runner
              • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
         </p>
     </footer>
-    
+
+    <!-- Navigation JavaScript -->
+    <script>
+    (function() {
+        'use strict';
+
+        // Mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', function() {
+                const isOpen = navLinks.classList.toggle('open');
+                mobileToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navigation')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close mobile menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    mobileToggle.focus();
+                }
+            });
+        }
+
+        // Dropdown menu
+        const dropdown = document.querySelector('.nav-dropdown');
+        const dropdownToggle = dropdown?.querySelector('.dropdown-toggle');
+
+        if (dropdown && dropdownToggle) {
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = dropdown.classList.toggle('open');
+                dropdownToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-dropdown')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close dropdown on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownToggle.focus();
+                }
+            });
+
+            // Keyboard navigation for dropdown items
+            const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach((item, index) => {
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const nextItem = dropdownItems[index + 1] || dropdownItems[0];
+                        nextItem.focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prevItem = dropdownItems[index - 1] || dropdownItems[dropdownItems.length - 1];
+                        prevItem.focus();
+                    }
+                });
+            });
+        }
+    })();
+    </script>
+
     <!-- JavaScript -->
 </body>
 </html>

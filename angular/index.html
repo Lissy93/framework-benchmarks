@@ -6,6 +6,11 @@
     <title>Angular - Framework Benchmarks</title>
     <meta name="description" content="Learn about Angular, explore the weather app implementation, and view performance metrics.">
     <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Alicia Sykes">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://framework-benchmarks.as93.net/">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -16,11 +21,20 @@
     <link rel="stylesheet" href="/static/css/main.css">
 <link rel="stylesheet" href="/static/css/framework.css">
     
-     <!-- Twitter -->
+     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Framework Benchmarks">
     <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta property="og:url" content="https://framework-benchmarks.as93.net/">
+    <meta property="og:image" content="https://framework-benchmarks.as93.net/banner.png">
+    <meta property="og:site_name" content="Framework Benchmarks">
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Lissy_Sykes">
+    <meta name="twitter:creator" content="@Lissy_Sykes">
+    <meta name="twitter:title" content="Framework Benchmarks">
+    <meta name="twitter:description" content="A comprehensive comparison of modern frontend frameworks">
     <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
     
     <!-- Favicons & App Icons -->
@@ -35,23 +49,99 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Framework Benchmarks",
+        "url": "https://framework-benchmarks.as93.net",
+        "description": "A comprehensive comparison of modern frontend frameworks",
+        "author": {
+            "@type": "Person",
+            "name": "Alicia Sykes",
+            "url": "https://aliciasykes.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Framework Benchmarks",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://framework-benchmarks.as93.net/logo.png"
+            }
+        }
+    }
+    </script>
 </head>
 <body>
     <header>
-        <nav class="navigation">
-            <a href="/" class="nav-logo">
+        <nav class="navigation" role="navigation" aria-label="Main navigation">
+            <a href="/" class="nav-logo" aria-label="Home">
                 <div class="site-name">
-                    <h1>Framework Benchmarks</h1>
+                    <span class="site-title">Framework Benchmarks</span>
                     <p>Comparing every frontend framework</p>
                 </div>
             </a>
-            <div class="nav-center">
 
-            </div>
-            <div class="nav-links">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <div class="nav-links" id="nav-menu">
                 <a href="/" class="nav-link">Home</a>
+                <a href="/#framework-results" class="nav-link">Results</a>
                 <a href="/docs/" class="nav-link">Docs</a>
-                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Frameworks
+                        <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                            <path d="M6 9L1 4h10z"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="/react/" class="dropdown-item" role="menuitem">
+                            React
+                        </a>
+                        <a href="/angular/" class="dropdown-item" role="menuitem">
+                            Angular
+                        </a>
+                        <a href="/svelte/" class="dropdown-item" role="menuitem">
+                            Svelte
+                        </a>
+                        <a href="/preact/" class="dropdown-item" role="menuitem">
+                            Preact
+                        </a>
+                        <a href="/solid/" class="dropdown-item" role="menuitem">
+                            Solid.js
+                        </a>
+                        <a href="/qwik/" class="dropdown-item" role="menuitem">
+                            Qwik
+                        </a>
+                        <a href="/vue/" class="dropdown-item" role="menuitem">
+                            Vue
+                        </a>
+                        <a href="/jquery/" class="dropdown-item" role="menuitem">
+                            jQuery
+                        </a>
+                        <a href="/alpine/" class="dropdown-item" role="menuitem">
+                            Alpine.js
+                        </a>
+                        <a href="/lit/" class="dropdown-item" role="menuitem">
+                            Lit
+                        </a>
+                        <a href="/vanjs/" class="dropdown-item" role="menuitem">
+                            VanJS
+                        </a>
+                        <a href="/vanilla/" class="dropdown-item" role="menuitem">
+                            Vanilla JS
+                        </a>
+                    </div>
+                </div>
+
+                <a href="https://stack-match.as93.net/" class="nav-link" target="_blank" rel="noopener">Stack Match</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank" rel="noopener">GitHub</a>
             </div>
         </nav>
     </header>
@@ -73,16 +163,28 @@
                 <!-- <p class="her-subtagline">Opinionated platform with built-in routing, forms, HTTP client, and testing.</p> -->
             
             <div class="resource-links">
-                <a href="https://angular.io/" target="_blank" class="resource-link" title="Angular Official Website">Website</a>
-                <a href="https://github.com/angular/angular" target="_blank" class="resource-link" title="Angular Sourcecode">GitHub</a>
-                <a href="https://angular.io/docs" target="_blank" class="resource-link"  title="Angular Documentation">Docs</a>
+                <a href="https://angular.io/" target="_blank" rel="noopener" class="resource-link" title="Angular Official Website">Website</a>
+                <a href="https://github.com/angular/angular" target="_blank" rel="noopener" class="resource-link" title="Angular Sourcecode">GitHub</a>
+                <a href="https://angular.io/docs" target="_blank" rel="noopener" class="resource-link"  title="Angular Documentation">Docs</a>
             </div>
             </div>
         </article>
         
         <!-- Action Cards -->
         <div class="framework-actions">
-            <a href="/angular/app/" class="action-card action-primary">
+            <a href="https://stack-match.as93.net/angular/" class="action-card action-primary" target="_blank" rel="nofollow noopener">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3v18h18"/>
+                    <path d="M18 17V9"/>
+                    <path d="M13 17v-4"/>
+                    <path d="M8 17v-6"/>
+                </svg>
+                <div>
+                    <h4>Angular Stats</h4>
+                    <span>View and compare all Angular metrics</span>
+                </div>
+            </a>
+            <a href="/angular/app/" class="action-card">
                 <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M7 17L17 7M17 7H7M17 7V17"/>
                 </svg>
@@ -224,15 +326,15 @@
             <ul class="status-list">
                 <li title="Lint checks for Angular">
                     <span class="tech-key">Lint</span>
-                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-angular.svg" />
+                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-angular.svg" alt="Lint status badge for Angular" />
                 </li>
                 <li title="Build and deployment status for Angular">
                     <span class="tech-key">Build</span>
-                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-angular.svg" />
+                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-angular.svg" alt="Build status badge for Angular" />
                 </li>
                 <li title="Unit and integration tests for Angular">
                     <span class="tech-key">Test</span>
-                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-angular.svg" />
+                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-angular.svg" alt="Test status badge for Angular" />
                 </li>
             </ul>
         </article>
@@ -253,8 +355,8 @@
         <article class="framework-tech">
             <h3>Usage Instructions</h3>
             <p>
-                First, follow the <a target="_blank" href="https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage">repo setup instructions</a>.<br>
-                Then cd into <a target="_blank" href="https://github.com/Lissy93/framework-benchmarks/tree/main/apps/angular">./apps/angular/</a>
+                First, follow the <a target="_blank" rel="noopener" href="https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage">repo setup instructions</a>.<br>
+                Then cd into <a target="_blank" rel="noopener" href="https://github.com/Lissy93/framework-benchmarks/tree/main/apps/angular">./apps/angular/</a>
                 and and use the following commands:
             </p>
 
@@ -320,7 +422,7 @@
                         <li>🌐 Internationalized</li>
                     </ul>
                 </div>
-                <img class="screenshot" src="https://raw.githubusercontent.com/Lissy93/framework-benchmarks/refs/heads/main/assets/screenshot.png" />
+                <img class="screenshot" src="https://raw.githubusercontent.com/Lissy93/framework-benchmarks/refs/heads/main/assets/screenshot.png" alt="Weather app screenshot showing interface features" loading="lazy" />
             </div>
         </article>
 
@@ -355,8 +457,8 @@
             Since the weather app is very simple, and doesn't show of the full features of a framework,
             it may be helpful to see a more practical implementation of a Angular app. So, checkout:
             <div class="example-app-info">
-                <a href="https://github.com/Lissy93/domain-locker" target="_blank">
-                    <img src="https://storage.googleapis.com/as93-screenshots/project-logos/domain-locker.png" alt="Domain Locker Logo" width="64" />
+                <a href="https://github.com/Lissy93/domain-locker" target="_blank" rel="noopener">
+                    <img src="https://storage.googleapis.com/as93-screenshots/project-logos/domain-locker.png" alt="Domain Locker Logo" width="64" loading="lazy" />
                 </a>
                 <div>
                     <h4>Domain Locker</h4>
@@ -420,19 +522,20 @@ The learning curve is steep but it’s incredibly powerful when mastered.</p>
                 </h3>
                 <p>
                     Not sure if Angular is right for your project?
-                    Use <a href="https://stack-match.as93.net/" target="_blank">Stack Match</a> to select your preferences
+                    Use <a href="https://stack-match.as93.net/" target="_blank" rel="noopener">Stack Match</a> to select your preferences
                     and get a tailored recommendation based on the benchmark data.
                 </p>
                 <div class="button-wrap">
-                    <a class="primary-cta" href="https://stack-match.as93.net/" target="_blank">Try Stack Match</a>
-                    <a class="secondary-cta" href="https://github.com/lissy93/stack-match" target="_blank">View on GitHub</a>
+                    <a class="primary-cta" href="https://stack-match.as93.net/" target="_blank" rel="noopener">Try Stack Match</a>
+                    <a class="secondary-cta" href="https://github.com/lissy93/stack-match" target="_blank" rel="noopener">View on GitHub</a>
                 </div>
             </div>
             <img
                 class="stack-match-screenshot"
                 width="400"
-                src="https://raw.githubusercontent.com/Lissy93/stack-match/refs/heads/main/static/screenshot.png"
+                src="https://github.com/Lissy93/stack-match/blob/main/static/screenshots/home.png?raw=true"
                 alt="Stack Match Screenshot"
+                loading="lazy"
             />
         </section>
         
@@ -466,7 +569,88 @@ The learning curve is steep but it’s incredibly powerful when mastered.</p>
              • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
         </p>
     </footer>
-    
+
+    <!-- Navigation JavaScript -->
+    <script>
+    (function() {
+        'use strict';
+
+        // Mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', function() {
+                const isOpen = navLinks.classList.toggle('open');
+                mobileToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navigation')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close mobile menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    mobileToggle.focus();
+                }
+            });
+        }
+
+        // Dropdown menu
+        const dropdown = document.querySelector('.nav-dropdown');
+        const dropdownToggle = dropdown?.querySelector('.dropdown-toggle');
+
+        if (dropdown && dropdownToggle) {
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = dropdown.classList.toggle('open');
+                dropdownToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-dropdown')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close dropdown on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownToggle.focus();
+                }
+            });
+
+            // Keyboard navigation for dropdown items
+            const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach((item, index) => {
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const nextItem = dropdownItems[index + 1] || dropdownItems[0];
+                        nextItem.focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prevItem = dropdownItems[index - 1] || dropdownItems[dropdownItems.length - 1];
+                        prevItem.focus();
+                    }
+                });
+            });
+        }
+    })();
+    </script>
+
     <!-- JavaScript -->
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -535,7 +719,7 @@ function displayFrameworkStats(data) {
         {
             label: 'Contributors',
             primary: formatNumber(data.contributors),
-            secondary: `${data.top_author_pct}% by <a target="_blank" href="https://github.com/${data.top_author_name}">@${data.top_author_name}</a>`
+            secondary: `${data.top_author_pct}% by <a target="_blank" rel="noopener" href="https://github.com/${data.top_author_name}">@${data.top_author_name}</a>`
         },
         {
             label: 'Age',

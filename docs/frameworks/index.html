@@ -6,6 +6,11 @@
     <title>Frameworks - Docs - Framework Benchmarks</title>
     <meta name="description" content="Frameworks documentation for the Framework Benchmarks project">
     <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Alicia Sykes">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://framework-benchmarks.as93.net/">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,13 +32,24 @@
 .docs-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
 .docs-content th, .docs-content td { border: 1px solid var(--border-color, #e5e5e5); padding: 0.75rem; text-align: left; }
 .docs-content th { background: var(--code-bg, #f8f9fa); font-weight: 600; }
+.docs-content ul, .docs-content ol { margin: 1rem 0; padding-left: 2rem; }
+.docs-content li { margin: 0.5rem 0; line-height: 1.6; }
 </style>
     
-     <!-- Twitter -->
+     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Framework Benchmarks">
     <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta property="og:url" content="https://framework-benchmarks.as93.net/">
+    <meta property="og:image" content="https://framework-benchmarks.as93.net/banner.png">
+    <meta property="og:site_name" content="Framework Benchmarks">
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Lissy_Sykes">
+    <meta name="twitter:creator" content="@Lissy_Sykes">
+    <meta name="twitter:title" content="Framework Benchmarks">
+    <meta name="twitter:description" content="A comprehensive comparison of modern frontend frameworks">
     <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
     
     <!-- Favicons & App Icons -->
@@ -48,23 +64,99 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Framework Benchmarks",
+        "url": "https://framework-benchmarks.as93.net",
+        "description": "A comprehensive comparison of modern frontend frameworks",
+        "author": {
+            "@type": "Person",
+            "name": "Alicia Sykes",
+            "url": "https://aliciasykes.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Framework Benchmarks",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://framework-benchmarks.as93.net/logo.png"
+            }
+        }
+    }
+    </script>
 </head>
 <body>
     <header>
-        <nav class="navigation">
-            <a href="/" class="nav-logo">
+        <nav class="navigation" role="navigation" aria-label="Main navigation">
+            <a href="/" class="nav-logo" aria-label="Home">
                 <div class="site-name">
-                    <h1>Framework Benchmarks</h1>
+                    <span class="site-title">Framework Benchmarks</span>
                     <p>Comparing every frontend framework</p>
                 </div>
             </a>
-            <div class="nav-center">
 
-            </div>
-            <div class="nav-links">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <div class="nav-links" id="nav-menu">
                 <a href="/" class="nav-link">Home</a>
+                <a href="/#framework-results" class="nav-link">Results</a>
                 <a href="/docs/" class="nav-link active">Docs</a>
-                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Frameworks
+                        <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                            <path d="M6 9L1 4h10z"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="/react/" class="dropdown-item" role="menuitem">
+                            React
+                        </a>
+                        <a href="/angular/" class="dropdown-item" role="menuitem">
+                            Angular
+                        </a>
+                        <a href="/svelte/" class="dropdown-item" role="menuitem">
+                            Svelte
+                        </a>
+                        <a href="/preact/" class="dropdown-item" role="menuitem">
+                            Preact
+                        </a>
+                        <a href="/solid/" class="dropdown-item" role="menuitem">
+                            Solid.js
+                        </a>
+                        <a href="/qwik/" class="dropdown-item" role="menuitem">
+                            Qwik
+                        </a>
+                        <a href="/vue/" class="dropdown-item" role="menuitem">
+                            Vue
+                        </a>
+                        <a href="/jquery/" class="dropdown-item" role="menuitem">
+                            jQuery
+                        </a>
+                        <a href="/alpine/" class="dropdown-item" role="menuitem">
+                            Alpine.js
+                        </a>
+                        <a href="/lit/" class="dropdown-item" role="menuitem">
+                            Lit
+                        </a>
+                        <a href="/vanjs/" class="dropdown-item" role="menuitem">
+                            VanJS
+                        </a>
+                        <a href="/vanilla/" class="dropdown-item" role="menuitem">
+                            Vanilla JS
+                        </a>
+                    </div>
+                </div>
+
+                <a href="https://stack-match.as93.net/" class="nav-link" target="_blank" rel="noopener">Stack Match</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank" rel="noopener">GitHub</a>
             </div>
         </nav>
     </header>
@@ -80,23 +172,24 @@
 <p>This project uses a centralized configuration system to manage all framework definitions, eliminating hardcoded framework lists throughout the codebase.</p>
 <h2>📋 Central Configuration</h2>
 <p>All framework definitions are stored in <a href="./frameworks.json"><code>frameworks.json</code></a>:</p>
-<pre><code class="language-json">{
-  &quot;frameworks&quot;: [
-    {
-      &quot;id&quot;: &quot;vanilla&quot;,
-      &quot;name&quot;: &quot;Vanilla JS&quot;,
-      &quot;displayName&quot;: &quot;Vanilla JavaScript&quot;, 
-      &quot;icon&quot;: &quot;🧪&quot;,
-      &quot;dir&quot;: &quot;vanilla&quot;,
-      &quot;hasNodeModules&quot;: false,
-      &quot;buildCommand&quot;: &quot;echo 'No build step required'&quot;,
-      &quot;devCommand&quot;: &quot;python3 -m http.server 3000 || python -m http.server 3000&quot;,
-      &quot;testCommand&quot;: &quot;playwright test --config=tests/config/playwright-vanilla.config.js&quot;
-    }
-    // ... more frameworks
-  ]
-}
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;frameworks&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vanilla&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vanilla JS&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;displayName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Vanilla JavaScript&quot;</span><span class="p">,</span><span class="w"> </span>
+<span class="w">      </span><span class="nt">&quot;icon&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;🧪&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;dir&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;vanilla&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;hasNodeModules&quot;</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;buildCommand&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;echo &#39;No build step required&#39;&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;devCommand&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;python3 -m http.server 3000 || python -m http.server 3000&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;testCommand&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;playwright test --config=tests/config/playwright-vanilla.config.js&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">    </span><span class="c1">// ... more frameworks</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</code></pre></div>
+
 <h2>🔧 Framework Properties</h2>
 <ul>
 <li><strong><code>id</code></strong>: Unique identifier used in scripts and file names</li>
@@ -112,27 +205,29 @@
 <h2>🚀 Usage</h2>
 <h3>Generate Scripts</h3>
 <p>After modifying <code>frameworks.json</code>, regenerate all dependent files:</p>
-<pre><code class="language-bash"># Update package.json scripts
-npm run generate-scripts
+<div class="codehilite"><pre><span></span><code><span class="c1"># Update package.json scripts</span>
+npm<span class="w"> </span>run<span class="w"> </span>generate-scripts
 
-# Or run directly
-node scripts/generate-scripts.js
-</code></pre>
+<span class="c1"># Or run directly</span>
+node<span class="w"> </span>scripts/generate-scripts.js
+</code></pre></div>
+
 <h3>Available Commands</h3>
-<pre><code class="language-bash"># List all frameworks with details
-node scripts/generate-scripts.js list
+<div class="codehilite"><pre><span></span><code><span class="c1"># List all frameworks with details</span>
+node<span class="w"> </span>scripts/generate-scripts.js<span class="w"> </span>list
 
-# Get framework IDs only (comma-separated)
-node scripts/generate-scripts.js ids
+<span class="c1"># Get framework IDs only (comma-separated)</span>
+node<span class="w"> </span>scripts/generate-scripts.js<span class="w"> </span>ids
 
-# Get framework list for GitHub Actions
-node scripts/generate-scripts.js github
-</code></pre>
+<span class="c1"># Get framework list for GitHub Actions</span>
+node<span class="w"> </span>scripts/generate-scripts.js<span class="w"> </span>github
+</code></pre></div>
+
 <h3>Adding a New Framework</h3>
 <ol>
 <li>
-<p><strong>Add to <code>frameworks.json</code></strong>:
-   <code>json
+<p><strong>Add to <code>frameworks.json</code></strong>:<br />
+<code>json
    {
      "id": "vue",
      "name": "Vue.js",
@@ -146,8 +241,8 @@ node scripts/generate-scripts.js github
    }</code></p>
 </li>
 <li>
-<p><strong>Regenerate scripts</strong>:
-   <code>bash
+<p><strong>Regenerate scripts</strong>:<br />
+<code>bash
    npm run generate-scripts</code></p>
 </li>
 <li>
@@ -187,20 +282,21 @@ node scripts/generate-scripts.js github
 ✅ <strong>Less maintenance</strong> - No manual updates in multiple files<br />
 ✅ <strong>Self-documenting</strong> - Config includes all metadata  </p>
 <h2>⚡ Quick Commands</h2>
-<pre><code class="language-bash"># See all frameworks
-npm run generate-scripts -- list
+<div class="codehilite"><pre><span></span><code><span class="c1"># See all frameworks</span>
+npm<span class="w"> </span>run<span class="w"> </span>generate-scripts<span class="w"> </span>--<span class="w"> </span>list
 
-# Add new framework and regenerate everything
-# 1. Edit frameworks.json
-# 2. Run:
-npm run generate-scripts
+<span class="c1"># Add new framework and regenerate everything</span>
+<span class="c1"># 1. Edit frameworks.json</span>
+<span class="c1"># 2. Run:</span>
+npm<span class="w"> </span>run<span class="w"> </span>generate-scripts
 
-# Run tests for all frameworks  
-npm test
+<span class="c1"># Run tests for all frameworks  </span>
+npm<span class="w"> </span><span class="nb">test</span>
 
-# Run specific framework tests
-npm run test:vue    # (after adding vue)
-</code></pre>
+<span class="c1"># Run specific framework tests</span>
+npm<span class="w"> </span>run<span class="w"> </span>test:vue<span class="w">    </span><span class="c1"># (after adding vue)</span>
+</code></pre></div>
+
 <h2>🔍 File Locations</h2>
 <ul>
 <li><strong>Config</strong>: <code>frameworks.json</code></li>
@@ -222,7 +318,88 @@ npm run test:vue    # (after adding vue)
              • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
         </p>
     </footer>
-    
+
+    <!-- Navigation JavaScript -->
+    <script>
+    (function() {
+        'use strict';
+
+        // Mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', function() {
+                const isOpen = navLinks.classList.toggle('open');
+                mobileToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navigation')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close mobile menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    mobileToggle.focus();
+                }
+            });
+        }
+
+        // Dropdown menu
+        const dropdown = document.querySelector('.nav-dropdown');
+        const dropdownToggle = dropdown?.querySelector('.dropdown-toggle');
+
+        if (dropdown && dropdownToggle) {
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = dropdown.classList.toggle('open');
+                dropdownToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-dropdown')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close dropdown on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownToggle.focus();
+                }
+            });
+
+            // Keyboard navigation for dropdown items
+            const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach((item, index) => {
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const nextItem = dropdownItems[index + 1] || dropdownItems[0];
+                        nextItem.focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prevItem = dropdownItems[index - 1] || dropdownItems[dropdownItems.length - 1];
+                        prevItem.focus();
+                    }
+                });
+            });
+        }
+    })();
+    </script>
+
     <!-- JavaScript -->
 </body>
 </html>

@@ -6,6 +6,11 @@
     <title>Docker - Docs - Framework Benchmarks</title>
     <meta name="description" content="Docker documentation for the Framework Benchmarks project">
     <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Alicia Sykes">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://framework-benchmarks.as93.net/">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -27,13 +32,24 @@
 .docs-content table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
 .docs-content th, .docs-content td { border: 1px solid var(--border-color, #e5e5e5); padding: 0.75rem; text-align: left; }
 .docs-content th { background: var(--code-bg, #f8f9fa); font-weight: 600; }
+.docs-content ul, .docs-content ol { margin: 1rem 0; padding-left: 2rem; }
+.docs-content li { margin: 0.5rem 0; line-height: 1.6; }
 </style>
     
-     <!-- Twitter -->
+     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="Framework Benchmarks">
     <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta property="og:url" content="https://framework-benchmarks.as93.net/">
+    <meta property="og:image" content="https://framework-benchmarks.as93.net/banner.png">
+    <meta property="og:site_name" content="Framework Benchmarks">
+
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Lissy_Sykes">
+    <meta name="twitter:creator" content="@Lissy_Sykes">
+    <meta name="twitter:title" content="Framework Benchmarks">
+    <meta name="twitter:description" content="A comprehensive comparison of modern frontend frameworks">
     <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
     
     <!-- Favicons & App Icons -->
@@ -48,23 +64,99 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#6762ff">
     <link rel="security.txt" href="/security.txt">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Framework Benchmarks",
+        "url": "https://framework-benchmarks.as93.net",
+        "description": "A comprehensive comparison of modern frontend frameworks",
+        "author": {
+            "@type": "Person",
+            "name": "Alicia Sykes",
+            "url": "https://aliciasykes.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Framework Benchmarks",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://framework-benchmarks.as93.net/logo.png"
+            }
+        }
+    }
+    </script>
 </head>
 <body>
     <header>
-        <nav class="navigation">
-            <a href="/" class="nav-logo">
+        <nav class="navigation" role="navigation" aria-label="Main navigation">
+            <a href="/" class="nav-logo" aria-label="Home">
                 <div class="site-name">
-                    <h1>Framework Benchmarks</h1>
+                    <span class="site-title">Framework Benchmarks</span>
                     <p>Comparing every frontend framework</p>
                 </div>
             </a>
-            <div class="nav-center">
 
-            </div>
-            <div class="nav-links">
+            <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <div class="nav-links" id="nav-menu">
                 <a href="/" class="nav-link">Home</a>
+                <a href="/#framework-results" class="nav-link">Results</a>
                 <a href="/docs/" class="nav-link active">Docs</a>
-                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank">GitHub</a>
+
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Frameworks
+                        <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                            <path d="M6 9L1 4h10z"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="/react/" class="dropdown-item" role="menuitem">
+                            React
+                        </a>
+                        <a href="/angular/" class="dropdown-item" role="menuitem">
+                            Angular
+                        </a>
+                        <a href="/svelte/" class="dropdown-item" role="menuitem">
+                            Svelte
+                        </a>
+                        <a href="/preact/" class="dropdown-item" role="menuitem">
+                            Preact
+                        </a>
+                        <a href="/solid/" class="dropdown-item" role="menuitem">
+                            Solid.js
+                        </a>
+                        <a href="/qwik/" class="dropdown-item" role="menuitem">
+                            Qwik
+                        </a>
+                        <a href="/vue/" class="dropdown-item" role="menuitem">
+                            Vue
+                        </a>
+                        <a href="/jquery/" class="dropdown-item" role="menuitem">
+                            jQuery
+                        </a>
+                        <a href="/alpine/" class="dropdown-item" role="menuitem">
+                            Alpine.js
+                        </a>
+                        <a href="/lit/" class="dropdown-item" role="menuitem">
+                            Lit
+                        </a>
+                        <a href="/vanjs/" class="dropdown-item" role="menuitem">
+                            VanJS
+                        </a>
+                        <a href="/vanilla/" class="dropdown-item" role="menuitem">
+                            Vanilla JS
+                        </a>
+                    </div>
+                </div>
+
+                <a href="https://stack-match.as93.net/" class="nav-link" target="_blank" rel="noopener">Stack Match</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank" rel="noopener">GitHub</a>
             </div>
         </nav>
     </header>
@@ -80,74 +172,80 @@
 <p>This guide explains how to run the Framework Benchmarks project using Docker.</p>
 <h2>🚀 Quick Start</h2>
 <h3>Using Published Image (Recommended)</h3>
-<pre><code class="language-bash"># Pull and run the latest image from GitHub Container Registry
-docker run -p 3000:3000 ghcr.io/lissy93/framework-benchmarks:latest
-</code></pre>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Pull and run the latest image from GitHub Container Registry</span>
+docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span>ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre></div>
+
 <p>Then visit http://localhost:3000 to explore the framework comparison website and individual apps.</p>
 <h3>Using Docker Compose</h3>
-<pre><code class="language-bash"># Clone the repository first
-git clone https://github.com/lissy93/framework-benchmarks.git
-cd framework-benchmarks
+<div class="codehilite"><pre><span></span><code><span class="c1"># Clone the repository first</span>
+git<span class="w"> </span>clone<span class="w"> </span>https://github.com/lissy93/framework-benchmarks.git
+<span class="nb">cd</span><span class="w"> </span>framework-benchmarks
 
-# Run with Docker Compose
-docker-compose up
-</code></pre>
+<span class="c1"># Run with Docker Compose</span>
+docker-compose<span class="w"> </span>up
+</code></pre></div>
+
 <h2>🔧 Building Locally</h2>
-<pre><code class="language-bash"># Build the image
-docker build -t framework-benchmarks .
+<div class="codehilite"><pre><span></span><code><span class="c1"># Build the image</span>
+docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>framework-benchmarks<span class="w"> </span>.
 
-# Run the container
-docker run -p 3000:3000 framework-benchmarks
-</code></pre>
+<span class="c1"># Run the container</span>
+docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span>framework-benchmarks
+</code></pre></div>
+
 <h2>📊 Running Benchmarks</h2>
 <p>The Docker image includes Google Chrome and all tools needed to run performance benchmarks.</p>
 <h3>Basic Benchmark Execution</h3>
-<pre><code class="language-bash"># Get container ID
-docker ps
+<div class="codehilite"><pre><span></span><code><span class="c1"># Get container ID</span>
+docker<span class="w"> </span>ps
 
-# Run all benchmarks with default settings
-docker exec -it &lt;container-id&gt; bash -c &quot;
-    cd /app &amp;&amp; \
-    CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
-    python scripts/benchmark/main.py all
-&quot;
-</code></pre>
+<span class="c1"># Run all benchmarks with default settings</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;container-id&gt;<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">    cd /app &amp;&amp; \</span>
+<span class="s2">    CHROME_FLAGS=&#39;--no-sandbox --disable-dev-shm-usage --headless&#39; \</span>
+<span class="s2">    python scripts/benchmark/main.py all</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
 <h3>Custom Benchmark Options</h3>
-<pre><code class="language-bash"># Run specific benchmark types
-docker exec -it &lt;container-id&gt; bash -c &quot;
-    cd /app &amp;&amp; \
-    CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
-    python scripts/benchmark/main.py all --type lighthouse,bundle-size --executions 3
-&quot;
+<div class="codehilite"><pre><span></span><code><span class="c1"># Run specific benchmark types</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;container-id&gt;<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">    cd /app &amp;&amp; \</span>
+<span class="s2">    CHROME_FLAGS=&#39;--no-sandbox --disable-dev-shm-usage --headless&#39; \</span>
+<span class="s2">    python scripts/benchmark/main.py all --type lighthouse,bundle-size --executions 3</span>
+<span class="s2">&quot;</span>
 
-# Run benchmarks for specific frameworks only
-docker exec -it &lt;container-id&gt; bash -c &quot;
-    cd /app &amp;&amp; \
-    CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
-    python scripts/benchmark/main.py all --frameworks react,vue,svelte --executions 5
-&quot;
+<span class="c1"># Run benchmarks for specific frameworks only</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;container-id&gt;<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">    cd /app &amp;&amp; \</span>
+<span class="s2">    CHROME_FLAGS=&#39;--no-sandbox --disable-dev-shm-usage --headless&#39; \</span>
+<span class="s2">    python scripts/benchmark/main.py all --frameworks react,vue,svelte --executions 5</span>
+<span class="s2">&quot;</span>
 
-# Run with multiple benchmark types and frameworks
-docker exec -it &lt;container-id&gt; bash -c &quot;
-    cd /app &amp;&amp; \
-    CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
-    python scripts/benchmark/main.py all \
-      --type lighthouse,bundle-size,source-analysis,build-time \
-      --frameworks react,vue,angular,svelte \
-      --executions 3
-&quot;
-</code></pre>
+<span class="c1"># Run with multiple benchmark types and frameworks</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;container-id&gt;<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">    cd /app &amp;&amp; \</span>
+<span class="s2">    CHROME_FLAGS=&#39;--no-sandbox --disable-dev-shm-usage --headless&#39; \</span>
+<span class="s2">    python scripts/benchmark/main.py all \</span>
+<span class="s2">      --type lighthouse,bundle-size,source-analysis,build-time \</span>
+<span class="s2">      --frameworks react,vue,angular,svelte \</span>
+<span class="s2">      --executions 3</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
 <h3>Development Container Benchmarks</h3>
-<pre><code class="language-bash"># Run development version with full capabilities
-docker compose --profile dev up framework-benchmarks-dev
+<div class="codehilite"><pre><span></span><code><span class="c1"># Run development version with full capabilities</span>
+docker<span class="w"> </span>compose<span class="w"> </span>--profile<span class="w"> </span>dev<span class="w"> </span>up<span class="w"> </span>framework-benchmarks-dev
 
-# Then run benchmarks (development container has additional tools)
-docker exec -it framework-benchmarks-framework-benchmarks-dev-1 bash -c &quot;
-    cd /app &amp;&amp; \
-    CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
-    python scripts/benchmark/main.py all --type lighthouse,bundle-size --executions 3
-&quot;
-</code></pre>
+<span class="c1"># Then run benchmarks (development container has additional tools)</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>framework-benchmarks-framework-benchmarks-dev-1<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">    cd /app &amp;&amp; \</span>
+<span class="s2">    CHROME_FLAGS=&#39;--no-sandbox --disable-dev-shm-usage --headless&#39; \</span>
+<span class="s2">    python scripts/benchmark/main.py all --type lighthouse,bundle-size --executions 3</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
 <h2>🎯 Available Endpoints</h2>
 <p>Once running, the container serves:</p>
 <ul>
@@ -161,14 +259,16 @@ docker exec -it framework-benchmarks-framework-benchmarks-dev-1 bash -c &quot;
 </ul>
 <h2>📁 Volume Mounts</h2>
 <h3>Persistent Benchmark Results</h3>
-<pre><code class="language-bash">docker run -p 3000:3000 -v $(pwd)/benchmark-results:/app/benchmark-results ghcr.io/lissy93/framework-benchmarks:latest
-</code></pre>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/benchmark-results:/app/benchmark-results<span class="w"> </span>ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre></div>
+
 <h3>Development Setup</h3>
-<pre><code class="language-bash">docker run -p 3000:3000 \
-  -v $(pwd)/benchmark-results:/app/benchmark-results \
-  -v $(pwd)/results:/app/results \
-  ghcr.io/lissy93/framework-benchmarks:latest
-</code></pre>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/benchmark-results:/app/benchmark-results<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/results:/app/results<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre></div>
+
 <h2>🌍 Environment Variables</h2>
 <table>
 <thead>
@@ -207,31 +307,35 @@ docker exec -it framework-benchmarks-framework-benchmarks-dev-1 bash -c &quot;
 </tbody>
 </table>
 <p>Example with environment variables:</p>
-<pre><code class="language-bash">docker run -p 3000:3000 \
-  -e BENCHMARK_TYPES=&quot;lighthouse,bundle-size&quot; \
-  -e FRAMEWORKS=&quot;react,vue,svelte&quot; \
-  -e EXECUTIONS=3 \
-  ghcr.io/lissy93/framework-benchmarks:latest
-</code></pre>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">BENCHMARK_TYPES</span><span class="o">=</span><span class="s2">&quot;lighthouse,bundle-size&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">FRAMEWORKS</span><span class="o">=</span><span class="s2">&quot;react,vue,svelte&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">EXECUTIONS</span><span class="o">=</span><span class="m">3</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre></div>
+
 <h2>🔍 Troubleshooting</h2>
 <h3>Chrome/Lighthouse Issues</h3>
 <p>If benchmarks fail with Chrome-related errors:</p>
-<pre><code class="language-bash"># Check Chrome installation
-docker exec -it &lt;container-id&gt; google-chrome --version
+<div class="codehilite"><pre><span></span><code><span class="c1"># Check Chrome installation</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;container-id&gt;<span class="w"> </span>google-chrome<span class="w"> </span>--version
 
-# Test Chrome with proper flags
-docker exec -it &lt;container-id&gt; bash -c &quot;
-    google-chrome --no-sandbox --disable-dev-shm-usage --headless --dump-dom http://localhost:3000
-&quot;
-</code></pre>
+<span class="c1"># Test Chrome with proper flags</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>&lt;container-id&gt;<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">    google-chrome --no-sandbox --disable-dev-shm-usage --headless --dump-dom http://localhost:3000</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
 <h3>Memory Issues</h3>
 <p>For large-scale benchmarking, increase container memory:</p>
-<pre><code class="language-bash">docker run -p 3000:3000 --memory=4g --shm-size=2g ghcr.io/lissy93/framework-benchmarks:latest
-</code></pre>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span>--memory<span class="o">=</span>4g<span class="w"> </span>--shm-size<span class="o">=</span>2g<span class="w"> </span>ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre></div>
+
 <h3>Port Conflicts</h3>
 <p>If port 3000 is busy, use a different port:</p>
-<pre><code class="language-bash">docker run -p 8080:3000 ghcr.io/lissy93/framework-benchmarks:latest
-</code></pre>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">8080</span>:3000<span class="w"> </span>ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre></div>
+
 <p>Then visit http://localhost:8080</p>
 <h2>🏗️ Multi-stage Build</h2>
 <p>The Dockerfile includes two targets:</p>
@@ -239,12 +343,13 @@ docker exec -it &lt;container-id&gt; bash -c &quot;
 <li><strong><code>production</code></strong> (default): Production-ready image with essential tools</li>
 <li><strong><code>development</code></strong>: Includes Playwright and full dev dependencies</li>
 </ul>
-<pre><code class="language-bash"># Build development image
-docker build --target development -t framework-benchmarks:dev .
+<div class="codehilite"><pre><span></span><code><span class="c1"># Build development image</span>
+docker<span class="w"> </span>build<span class="w"> </span>--target<span class="w"> </span>development<span class="w"> </span>-t<span class="w"> </span>framework-benchmarks:dev<span class="w"> </span>.
 
-# Run development container
-docker run -p 3000:3000 framework-benchmarks:dev
-</code></pre>
+<span class="c1"># Run development container</span>
+docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span>framework-benchmarks:dev
+</code></pre></div>
+
 <h2>🏷️ Image Tags</h2>
 <p>Available tags on <code>ghcr.io/lissy93/framework-benchmarks</code>:</p>
 <ul>
@@ -262,28 +367,30 @@ docker run -p 3000:3000 framework-benchmarks:dev
 <hr />
 <h2>📝 Example Workflows</h2>
 <h3>Basic Exploration</h3>
-<pre><code class="language-bash">docker run -p 3000:3000 ghcr.io/lissy93/framework-benchmarks:latest
-# Visit http://localhost:3000 to explore the apps
-</code></pre>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span>ghcr.io/lissy93/framework-benchmarks:latest
+<span class="c1"># Visit http://localhost:3000 to explore the apps</span>
+</code></pre></div>
+
 <h3>Run Benchmarks &amp; Save Results</h3>
-<pre><code class="language-bash">docker run -p 3000:3000 -v $(pwd)/results:/app/benchmark-results ghcr.io/lissy93/framework-benchmarks:latest
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/results:/app/benchmark-results<span class="w"> </span>ghcr.io/lissy93/framework-benchmarks:latest
 
-# In another terminal - run benchmarks with results saved to host
-docker exec -it $(docker ps -q --filter ancestor=ghcr.io/lissy93/framework-benchmarks:latest) bash -c &quot;
-    cd /app &amp;&amp; \
-    CHROME_FLAGS='--no-sandbox --disable-dev-shm-usage --headless' \
-    python scripts/benchmark/main.py all --type lighthouse,bundle-size --executions 3
-&quot;
+<span class="c1"># In another terminal - run benchmarks with results saved to host</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span><span class="k">$(</span>docker<span class="w"> </span>ps<span class="w"> </span>-q<span class="w"> </span>--filter<span class="w"> </span><span class="nv">ancestor</span><span class="o">=</span>ghcr.io/lissy93/framework-benchmarks:latest<span class="k">)</span><span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">    cd /app &amp;&amp; \</span>
+<span class="s2">    CHROME_FLAGS=&#39;--no-sandbox --disable-dev-shm-usage --headless&#39; \</span>
+<span class="s2">    python scripts/benchmark/main.py all --type lighthouse,bundle-size --executions 3</span>
+<span class="s2">&quot;</span>
 
-# Results will be saved to ./results/ on your host
-</code></pre>
+<span class="c1"># Results will be saved to ./results/ on your host</span>
+</code></pre></div>
+
 <h3>Performance Testing Specific Frameworks</h3>
-<pre><code class="language-bash">docker run -p 3000:3000 \
-  -e FRAMEWORKS=&quot;react,vue,svelte&quot; \
-  -e EXECUTIONS=5 \
-  -v $(pwd)/results:/app/benchmark-results \
-  ghcr.io/lissy93/framework-benchmarks:latest
-</code></pre>
+<div class="codehilite"><pre><span></span><code>docker<span class="w"> </span>run<span class="w"> </span>-p<span class="w"> </span><span class="m">3000</span>:3000<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">FRAMEWORKS</span><span class="o">=</span><span class="s2">&quot;react,vue,svelte&quot;</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-e<span class="w"> </span><span class="nv">EXECUTIONS</span><span class="o">=</span><span class="m">5</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>-v<span class="w"> </span><span class="k">$(</span><span class="nb">pwd</span><span class="k">)</span>/results:/app/benchmark-results<span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>ghcr.io/lissy93/framework-benchmarks:latest
+</code></pre></div>
     </div>
 </div>
     </main>
@@ -297,7 +404,88 @@ docker exec -it $(docker ps -q --filter ancestor=ghcr.io/lissy93/framework-bench
              • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
         </p>
     </footer>
-    
+
+    <!-- Navigation JavaScript -->
+    <script>
+    (function() {
+        'use strict';
+
+        // Mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', function() {
+                const isOpen = navLinks.classList.toggle('open');
+                mobileToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navigation')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close mobile menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    mobileToggle.focus();
+                }
+            });
+        }
+
+        // Dropdown menu
+        const dropdown = document.querySelector('.nav-dropdown');
+        const dropdownToggle = dropdown?.querySelector('.dropdown-toggle');
+
+        if (dropdown && dropdownToggle) {
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = dropdown.classList.toggle('open');
+                dropdownToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-dropdown')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close dropdown on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownToggle.focus();
+                }
+            });
+
+            // Keyboard navigation for dropdown items
+            const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach((item, index) => {
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const nextItem = dropdownItems[index + 1] || dropdownItems[0];
+                        nextItem.focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prevItem = dropdownItems[index - 1] || dropdownItems[dropdownItems.length - 1];
+                        prevItem.focus();
+                    }
+                });
+            });
+        }
+    })();
+    </script>
+
     <!-- JavaScript -->
 </body>
 </html>
