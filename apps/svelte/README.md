@@ -111,11 +111,11 @@ For our simple weather app, we didn't need Svelte's built-in animations or trans
 ## Real-World App
 Since the weather app is very simple, it may be helpful to see a more practical implementation of a Svelte app. So, checkout:
 
-<a href="https://github.com/Lissy93/portainer-templates"><img align="left" src="https://storage.googleapis.com/as93-screenshots/project-logos/portainer-templates.png" width="96"></a>
+<a href="https://github.com/Lissy93/networking-toolbox"><img align="left" src="https://github.com/Lissy93/networking-toolbox/blob/main/static/icon.png?raw=true" width="96"></a>
 
-> **Portainer Templates** - _Automated Docker deployment specs_<br>
-> 🐙 Get it on GitHub at [github.com/Lissy93/portainer-templates](https://github.com/Lissy93/portainer-templates)<br>
-> 🌐 View the website at [portainer-templates.as93.net](https://portainer-templates.as93.net/)
+> **Networking Toolbox** - _100+ offline-first networking tools for sysadmins_<br>
+> 🐙 Get it on GitHub at [github.com/Lissy93/networking-toolbox](https://github.com/Lissy93/networking-toolbox)<br>
+> 🌐 View the website at [networkingtoolbox.net](https://networkingtoolbox.net/)
 
 <br>
 <!-- end_real_world_app -->
