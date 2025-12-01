@@ -38,7 +38,7 @@ jobs:
           pip install -r scripts/requirements.txt
 
       - name: 📥 Download Benchmark Results
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           run-id: ${{ github.event.workflow_run.id }}
