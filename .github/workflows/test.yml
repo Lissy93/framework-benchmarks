@@ -283,7 +283,7 @@ jobs:
           
       - name: Download all test status artifacts
         if: always()
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           pattern: "*-status"
           path: test-artifacts
@@ -442,7 +442,7 @@ jobs:
           fetch-depth: 0
           
       - name: Download all badges
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           pattern: badge-test-*
           path: badges
