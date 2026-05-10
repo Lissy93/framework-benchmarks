@@ -1,0 +1,1482 @@
+{
+  "benchmark_type": "Lighthouse",
+  "benchmark_slug": "lighthouse",
+  "timestamp": "2026-05-10T05:58:10.515434",
+  "date": "2026-05-10",
+  "run_id": "run_20260510_055810",
+  "metadata": {
+    "frameworks_tested": [
+      "react",
+      "angular",
+      "svelte",
+      "preact",
+      "solid",
+      "qwik",
+      "vue",
+      "jquery",
+      "alpine",
+      "lit",
+      "vanjs",
+      "vanilla"
+    ],
+    "frameworks_count": 12,
+    "successful_count": 12,
+    "failed_count": 0,
+    "successful_frameworks": [
+      "react",
+      "angular",
+      "svelte",
+      "preact",
+      "solid",
+      "qwik",
+      "vue",
+      "jquery",
+      "alpine",
+      "lit",
+      "vanjs",
+      "vanilla"
+    ],
+    "failed_frameworks": [],
+    "execution_time_iso": "2026-05-10T05:58:10.515439",
+    "file_path": "benchmark-results/2026-05-10/lighthouse_20260510_055810.json"
+  },
+  "config": {
+    "categories": [
+      "performance",
+      "accessibility",
+      "best-practices",
+      "seo"
+    ],
+    "settings": {
+      "onlyCategories": [
+        "performance",
+        "accessibility",
+        "best-practices",
+        "seo"
+      ],
+      "output": "json",
+      "chromeFlags": [
+        "--headless=new",
+        "--no-sandbox",
+        "--disable-gpu",
+        "--disable-dev-shm-usage",
+        "--disable-extensions",
+        "--disable-background-timer-throttling",
+        "--disable-backgrounding-occluded-windows",
+        "--disable-renderer-backgrounding"
+      ]
+    },
+    "thresholds": {
+      "performance": 80,
+      "accessibility": 90,
+      "best-practices": 80,
+      "seo": 90
+    }
+  },
+  "results": [
+    {
+      "framework": "react",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2026-05-10T05:48:10.627162",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/react/app/?mock=true",
+        "scores": {
+          "performance": 97.0,
+          "accessibility": 100.0,
+          "best-practices": 100.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1961.28766,
+            "displayValue": "2.0\u00a0s",
+            "score": 0.85
+          },
+          "largest-contentful-paint": {
+            "value": 2266.93149,
+            "displayValue": "2.3\u00a0s",
+            "score": 0.938
+          },
+          "speed-index": {
+            "value": 1961.28766,
+            "displayValue": "2.0\u00a0s",
+            "score": 0.99
+          },
+          "cumulative-layout-shift": {
+            "value": 0.0001836,
+            "displayValue": "0.000",
+            "score": 1.0
+          },
+          "total-blocking-time": {
+            "value": 0.0,
+            "displayValue": "0.0\u00a0s",
+            "score": 1.0
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2026-05-10T05:47:18.675Z",
+        "execution_stats": {
+          "total_executions": 5,
+          "successful_executions": 5,
+          "failed_executions": 0,
+          "averaged": true,
+          "statistics": {
+            "scores": {
+              "performance": {
+                "min": 97.0,
+                "max": 97.0,
+                "std_dev": 0.0
+              },
+              "accessibility": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "best-practices": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "seo": {
+                "min": 90.0,
+                "max": 90.0,
+                "std_dev": 0.0
+              }
+            },
+            "metrics": {
+              "first-contentful-paint": {
+                "min": 1956.89,
+                "max": 1969.31,
+                "std_dev": 4.77,
+                "score_min": 0.85,
+                "score_max": 0.85,
+                "score_std_dev": 0.0
+              },
+              "largest-contentful-paint": {
+                "min": 2260.34,
+                "max": 2278.96,
+                "std_dev": 7.15,
+                "score_min": 0.93,
+                "score_max": 0.94,
+                "score_std_dev": 0.004
+              },
+              "speed-index": {
+                "min": 1956.89,
+                "max": 1969.31,
+                "std_dev": 4.77,
+                "score_min": 0.99,
+                "score_max": 0.99,
+                "score_std_dev": 0.0
+              },
+              "cumulative-layout-shift": {
+                "min": 0.0,
+                "max": 0.0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "total-blocking-time": {
+                "min": 0,
+                "max": 0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "framework": "angular",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2026-05-10T05:49:05.281147",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/angular/app/?mock=true",
+        "scores": {
+          "performance": 96.0,
+          "accessibility": 100.0,
+          "best-practices": 100.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1953.9251399999998,
+            "displayValue": "2.0\u00a0s",
+            "score": 0.85
+          },
+          "largest-contentful-paint": {
+            "value": 2483.8877100000004,
+            "displayValue": "2.5\u00a0s",
+            "score": 0.9
+          },
+          "speed-index": {
+            "value": 1953.9251399999998,
+            "displayValue": "2.0\u00a0s",
+            "score": 0.9940000000000001
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00010200000000000001,
+            "displayValue": "0.000",
+            "score": 1.0
+          },
+          "total-blocking-time": {
+            "value": 28.0,
+            "displayValue": "0.0\u00a0s",
+            "score": 1.0
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2026-05-10T05:48:13.353Z",
+        "execution_stats": {
+          "total_executions": 5,
+          "successful_executions": 5,
+          "failed_executions": 0,
+          "averaged": true,
+          "statistics": {
+            "scores": {
+              "performance": {
+                "min": 96.0,
+                "max": 96.0,
+                "std_dev": 0.0
+              },
+              "accessibility": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "best-practices": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "seo": {
+                "min": 90.0,
+                "max": 90.0,
+                "std_dev": 0.0
+              }
+            },
+            "metrics": {
+              "first-contentful-paint": {
+                "min": 1953.08,
+                "max": 1954.76,
+                "std_dev": 0.73,
+                "score_min": 0.85,
+                "score_max": 0.85,
+                "score_std_dev": 0.0
+              },
+              "largest-contentful-paint": {
+                "min": 2481.41,
+                "max": 2490.83,
+                "std_dev": 3.94,
+                "score_min": 0.9,
+                "score_max": 0.9,
+                "score_std_dev": 0.0
+              },
+              "speed-index": {
+                "min": 1953.08,
+                "max": 1954.76,
+                "std_dev": 0.73,
+                "score_min": 0.99,
+                "score_max": 1,
+                "score_std_dev": 0.005
+              },
+              "cumulative-layout-shift": {
+                "min": 0.0,
+                "max": 0.0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "total-blocking-time": {
+                "min": 25,
+                "max": 36,
+                "std_dev": 4.53,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "framework": "svelte",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2026-05-10T05:49:59.235667",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/svelte/app/?mock=true",
+        "scores": {
+          "performance": 98.0,
+          "accessibility": 100.0,
+          "best-practices": 96.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1667.606015,
+            "displayValue": "1.7\u00a0s",
+            "score": 0.9279999999999999
+          },
+          "largest-contentful-paint": {
+            "value": 2115.79949,
+            "displayValue": "2.1\u00a0s",
+            "score": 0.96
+          },
+          "speed-index": {
+            "value": 1667.606015,
+            "displayValue": "1.7\u00a0s",
+            "score": 1.0
+          },
+          "cumulative-layout-shift": {
+            "value": 0.0,
+            "displayValue": "0.000",
+            "score": 1.0
+          },
+          "total-blocking-time": {
+            "value": 0.0,
+            "displayValue": "0.0\u00a0s",
+            "score": 1.0
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2026-05-10T05:49:08.009Z",
+        "execution_stats": {
+          "total_executions": 5,
+          "successful_executions": 5,
+          "failed_executions": 0,
+          "averaged": true,
+          "statistics": {
+            "scores": {
+              "performance": {
+                "min": 98.0,
+                "max": 98.0,
+                "std_dev": 0.0
+              },
+              "accessibility": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "best-practices": {
+                "min": 96.0,
+                "max": 96.0,
+                "std_dev": 0.0
+              },
+              "seo": {
+                "min": 90.0,
+                "max": 90.0,
+                "std_dev": 0.0
+              }
+            },
+            "metrics": {
+              "first-contentful-paint": {
+                "min": 1658.57,
+                "max": 1681.83,
+                "std_dev": 9.05,
+                "score_min": 0.92,
+                "score_max": 0.93,
+                "score_std_dev": 0.004
+              },
+              "largest-contentful-paint": {
+                "min": 2107.34,
+                "max": 2127.29,
+                "std_dev": 7.4,
+                "score_min": 0.96,
+                "score_max": 0.96,
+                "score_std_dev": 0.0
+              },
+              "speed-index": {
+                "min": 1658.57,
+                "max": 1681.83,
+                "std_dev": 9.05,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "cumulative-layout-shift": {
+                "min": 0,
+                "max": 0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "total-blocking-time": {
+                "min": 0,
+                "max": 0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "framework": "preact",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2026-05-10T05:50:53.446010",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/preact/app/?mock=true",
+        "scores": {
+          "performance": 99.6,
+          "accessibility": 100.0,
+          "best-practices": 100.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1361.4748599999998,
+            "displayValue": "1.4\u00a0s",
+            "score": 0.976
+          },
+          "largest-contentful-paint": {
+            "value": 1668.9122900000002,
+            "displayValue": "1.7\u00a0s",
+            "score": 0.99
+          },
+          "speed-index": {
+            "value": 1361.4748599999998,
+            "displayValue": "1.4\u00a0s",
+            "score": 1.0
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00010200000000000001,
+            "displayValue": "0.000",
+            "score": 1.0
+          },
+          "total-blocking-time": {
+            "value": 0.0,
+            "displayValue": "0.0\u00a0s",
+            "score": 1.0
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2026-05-10T05:50:01.956Z",
+        "execution_stats": {
+          "total_executions": 5,
+          "successful_executions": 5,
+          "failed_executions": 0,
+          "averaged": true,
+          "statistics": {
+            "scores": {
+              "performance": {
+                "min": 99.0,
+                "max": 100,
+                "std_dev": 0.55
+              },
+              "accessibility": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "best-practices": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "seo": {
+                "min": 90.0,
+                "max": 90.0,
+                "std_dev": 0.0
+              }
+            },
+            "metrics": {
+              "first-contentful-paint": {
+                "min": 1355.43,
+                "max": 1369.11,
+                "std_dev": 5.16,
+                "score_min": 0.97,
+                "score_max": 0.98,
+                "score_std_dev": 0.005
+              },
+              "largest-contentful-paint": {
+                "min": 1658.14,
+                "max": 1687.17,
+                "std_dev": 11.09,
+                "score_min": 0.99,
+                "score_max": 0.99,
+                "score_std_dev": 0.0
+              },
+              "speed-index": {
+                "min": 1355.43,
+                "max": 1369.11,
+                "std_dev": 5.16,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "cumulative-layout-shift": {
+                "min": 0.0,
+                "max": 0.0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "total-blocking-time": {
+                "min": 0,
+                "max": 0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "framework": "solid",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2026-05-10T05:51:47.775333",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/solid/app/?mock=true",
+        "scores": {
+          "performance": 99.8,
+          "accessibility": 100.0,
+          "best-practices": 100.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1385.9966600000002,
+            "displayValue": "1.4\u00a0s",
+            "score": 0.9719999999999999
+          },
+          "largest-contentful-paint": {
+            "value": 1547.19499,
+            "displayValue": "1.5\u00a0s",
+            "score": 0.998
+          },
+          "speed-index": {
+            "value": 1385.9966600000002,
+            "displayValue": "1.4\u00a0s",
+            "score": 1.0
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00010200000000000001,
+            "displayValue": "0.000",
+            "score": 1.0
+          },
+          "total-blocking-time": {
+            "value": 0.0,
+            "displayValue": "0.0\u00a0s",
+            "score": 1.0
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2026-05-10T05:50:56.178Z",
+        "execution_stats": {
+          "total_executions": 5,
+          "successful_executions": 5,
+          "failed_executions": 0,
+          "averaged": true,
+          "statistics": {
+            "scores": {
+              "performance": {
+                "min": 99.0,
+                "max": 100,
+                "std_dev": 0.45
+              },
+              "accessibility": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "best-practices": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "seo": {
+                "min": 90.0,
+                "max": 90.0,
+                "std_dev": 0.0
+              }
+            },
+            "metrics": {
+              "first-contentful-paint": {
+                "min": 1358.87,
+                "max": 1403.49,
+                "std_dev": 16.38,
+                "score_min": 0.97,
+                "score_max": 0.98,
+                "score_std_dev": 0.004
+              },
+              "largest-contentful-paint": {
+                "min": 1542.3,
+                "max": 1561.73,
+                "std_dev": 8.21,
+                "score_min": 0.99,
+                "score_max": 1,
+                "score_std_dev": 0.004
+              },
+              "speed-index": {
+                "min": 1358.87,
+                "max": 1403.49,
+                "std_dev": 16.38,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "cumulative-layout-shift": {
+                "min": 0.0,
+                "max": 0.0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "total-blocking-time": {
+                "min": 0,
+                "max": 0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "framework": "qwik",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2026-05-10T05:52:43.651634",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/qwik/app/?mock=true",
+        "scores": {
+          "performance": 74.0,
+          "accessibility": 96.0,
+          "best-practices": 100.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1433.30979,
+            "displayValue": "1.4\u00a0s",
+            "score": 0.97
+          },
+          "largest-contentful-paint": {
+            "value": 2128.9895100000003,
+            "displayValue": "2.1\u00a0s",
+            "score": 0.9560000000000001
+          },
+          "speed-index": {
+            "value": 1433.30979,
+            "displayValue": "1.4\u00a0s",
+            "score": 1.0
+          },
+          "cumulative-layout-shift": {
+            "value": 1.0337437999999999,
+            "displayValue": "1.034",
+            "score": 0.018000000000000002
+          },
+          "total-blocking-time": {
+            "value": 0.0,
+            "displayValue": "0.0\u00a0s",
+            "score": 1.0
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2026-05-10T05:51:50.505Z",
+        "execution_stats": {
+          "total_executions": 5,
+          "successful_executions": 5,
+          "failed_executions": 0,
+          "averaged": true,
+          "statistics": {
+            "scores": {
+              "performance": {
+                "min": 74.0,
+                "max": 74.0,
+                "std_dev": 0.0
+              },
+              "accessibility": {
+                "min": 96.0,
+                "max": 96.0,
+                "std_dev": 0.0
+              },
+              "best-practices": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "seo": {
+                "min": 90.0,
+                "max": 90.0,
+                "std_dev": 0.0
+              }
+            },
+            "metrics": {
+              "first-contentful-paint": {
+                "min": 1432.41,
+                "max": 1433.74,
+                "std_dev": 0.55,
+                "score_min": 0.97,
+                "score_max": 0.97,
+                "score_std_dev": 0.0
+              },
+              "largest-contentful-paint": {
+                "min": 2126.05,
+                "max": 2133.4,
+                "std_dev": 2.88,
+                "score_min": 0.95,
+                "score_max": 0.96,
+                "score_std_dev": 0.005
+              },
+              "speed-index": {
+                "min": 1432.41,
+                "max": 1433.74,
+                "std_dev": 0.55,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "cumulative-layout-shift": {
+                "min": 1.0,
+                "max": 1.14,
+                "std_dev": 0.06,
+                "score_min": 0.01,
+                "score_max": 0.02,
+                "score_std_dev": 0.004
+              },
+              "total-blocking-time": {
+                "min": 0,
+                "max": 0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "framework": "vue",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2026-05-10T05:53:37.918574",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/vue/app/?mock=true",
+        "scores": {
+          "performance": 99.0,
+          "accessibility": 100.0,
+          "best-practices": 100.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1662.46676,
+            "displayValue": "1.7\u00a0s",
+            "score": 0.93
+          },
+          "largest-contentful-paint": {
+            "value": 1862.30014,
+            "displayValue": "1.9\u00a0s",
+            "score": 0.9800000000000001
+          },
+          "speed-index": {
+            "value": 1662.46676,
+            "displayValue": "1.7\u00a0s",
+            "score": 1.0
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00010200000000000001,
+            "displayValue": "0.000",
+            "score": 1.0
+          },
+          "total-blocking-time": {
+            "value": 0.0,
+            "displayValue": "0.0\u00a0s",
+            "score": 1.0
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2026-05-10T05:52:46.362Z",
+        "execution_stats": {
+          "total_executions": 5,
+          "successful_executions": 5,
+          "failed_executions": 0,
+          "averaged": true,
+          "statistics": {
+            "scores": {
+              "performance": {
+                "min": 99.0,
+                "max": 99.0,
+                "std_dev": 0.0
+              },
+              "accessibility": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "best-practices": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "seo": {
+                "min": 90.0,
+                "max": 90.0,
+                "std_dev": 0.0
+              }
+            },
+            "metrics": {
+              "first-contentful-paint": {
+                "min": 1660.13,
+                "max": 1666.17,
+                "std_dev": 2.27,
+                "score_min": 0.93,
+                "score_max": 0.93,
+                "score_std_dev": 0.0
+              },
+              "largest-contentful-paint": {
+                "min": 1858.31,
+                "max": 1867.26,
+                "std_dev": 3.41,
+                "score_min": 0.98,
+                "score_max": 0.98,
+                "score_std_dev": 0.0
+              },
+              "speed-index": {
+                "min": 1660.13,
+                "max": 1666.17,
+                "std_dev": 2.27,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "cumulative-layout-shift": {
+                "min": 0.0,
+                "max": 0.0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "total-blocking-time": {
+                "min": 0,
+                "max": 0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "framework": "jquery",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2026-05-10T05:54:32.461083",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/jquery/app/?mock=true",
+        "scores": {
+          "performance": 92.0,
+          "accessibility": 100.0,
+          "best-practices": 99.2,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1848.748,
+            "displayValue": "1.8\u00a0s",
+            "score": 0.8800000000000001
+          },
+          "largest-contentful-paint": {
+            "value": 2024.3220000000001,
+            "displayValue": "2.0\u00a0s",
+            "score": 0.97
+          },
+          "speed-index": {
+            "value": 1848.748,
+            "displayValue": "1.8\u00a0s",
+            "score": 1.0
+          },
+          "cumulative-layout-shift": {
+            "value": 0.145917,
+            "displayValue": "0.146",
+            "score": 0.77
+          },
+          "total-blocking-time": {
+            "value": 0.0,
+            "displayValue": "0.0\u00a0s",
+            "score": 1.0
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2026-05-10T05:53:40.652Z",
+        "execution_stats": {
+          "total_executions": 5,
+          "successful_executions": 5,
+          "failed_executions": 0,
+          "averaged": true,
+          "statistics": {
+            "scores": {
+              "performance": {
+                "min": 92.0,
+                "max": 92.0,
+                "std_dev": 0.0
+              },
+              "accessibility": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "best-practices": {
+                "min": 96.0,
+                "max": 100,
+                "std_dev": 1.79
+              },
+              "seo": {
+                "min": 90.0,
+                "max": 90.0,
+                "std_dev": 0.0
+              }
+            },
+            "metrics": {
+              "first-contentful-paint": {
+                "min": 1841.5,
+                "max": 1863.88,
+                "std_dev": 9.12,
+                "score_min": 0.88,
+                "score_max": 0.88,
+                "score_std_dev": 0.0
+              },
+              "largest-contentful-paint": {
+                "min": 2014.26,
+                "max": 2041.33,
+                "std_dev": 10.98,
+                "score_min": 0.97,
+                "score_max": 0.97,
+                "score_std_dev": 0.0
+              },
+              "speed-index": {
+                "min": 1841.5,
+                "max": 1863.88,
+                "std_dev": 9.12,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "cumulative-layout-shift": {
+                "min": 0.15,
+                "max": 0.15,
+                "std_dev": 0.0,
+                "score_min": 0.77,
+                "score_max": 0.77,
+                "score_std_dev": 0.0
+              },
+              "total-blocking-time": {
+                "min": 0,
+                "max": 0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "framework": "alpine",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2026-05-10T05:55:27.360977",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/alpine/app/?mock=true",
+        "scores": {
+          "performance": 98.6,
+          "accessibility": 100.0,
+          "best-practices": 100.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1670.38914,
+            "displayValue": "1.7\u00a0s",
+            "score": 0.916
+          },
+          "largest-contentful-paint": {
+            "value": 1895.34675,
+            "displayValue": "1.9\u00a0s",
+            "score": 0.976
+          },
+          "speed-index": {
+            "value": 1670.38914,
+            "displayValue": "1.7\u00a0s",
+            "score": 1.0
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00020280000000000002,
+            "displayValue": "0.000",
+            "score": 1.0
+          },
+          "total-blocking-time": {
+            "value": 26.7,
+            "displayValue": "0.0\u00a0s",
+            "score": 1.0
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2026-05-10T05:54:35.171Z",
+        "execution_stats": {
+          "total_executions": 5,
+          "successful_executions": 5,
+          "failed_executions": 0,
+          "averaged": true,
+          "statistics": {
+            "scores": {
+              "performance": {
+                "min": 98.0,
+                "max": 100,
+                "std_dev": 0.89
+              },
+              "accessibility": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "best-practices": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "seo": {
+                "min": 90.0,
+                "max": 90.0,
+                "std_dev": 0.0
+              }
+            },
+            "metrics": {
+              "first-contentful-paint": {
+                "min": 1363.51,
+                "max": 1872.91,
+                "std_dev": 274.15,
+                "score_min": 0.88,
+                "score_max": 0.97,
+                "score_std_dev": 0.049
+              },
+              "largest-contentful-paint": {
+                "min": 1363.51,
+                "max": 2034.0,
+                "std_dev": 297.33,
+                "score_min": 0.97,
+                "score_max": 1,
+                "score_std_dev": 0.013
+              },
+              "speed-index": {
+                "min": 1363.51,
+                "max": 1872.91,
+                "std_dev": 274.15,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "cumulative-layout-shift": {
+                "min": 0.0,
+                "max": 0.0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "total-blocking-time": {
+                "min": 13.5,
+                "max": 33,
+                "std_dev": 8.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "framework": "lit",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2026-05-10T05:56:21.905386",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/lit/app/?mock=true",
+        "scores": {
+          "performance": 99.0,
+          "accessibility": 96.0,
+          "best-practices": 100.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1553.60594,
+            "displayValue": "1.6\u00a0s",
+            "score": 0.95
+          },
+          "largest-contentful-paint": {
+            "value": 1829.68849,
+            "displayValue": "1.8\u00a0s",
+            "score": 0.982
+          },
+          "speed-index": {
+            "value": 1553.60594,
+            "displayValue": "1.6\u00a0s",
+            "score": 1.0
+          },
+          "cumulative-layout-shift": {
+            "value": 0.055038,
+            "displayValue": "0.055",
+            "score": 0.9800000000000001
+          },
+          "total-blocking-time": {
+            "value": 1.8,
+            "displayValue": "0.0\u00a0s",
+            "score": 1.0
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2026-05-10T05:55:30.062Z",
+        "execution_stats": {
+          "total_executions": 5,
+          "successful_executions": 5,
+          "failed_executions": 0,
+          "averaged": true,
+          "statistics": {
+            "scores": {
+              "performance": {
+                "min": 99.0,
+                "max": 99.0,
+                "std_dev": 0.0
+              },
+              "accessibility": {
+                "min": 96.0,
+                "max": 96.0,
+                "std_dev": 0.0
+              },
+              "best-practices": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "seo": {
+                "min": 90.0,
+                "max": 90.0,
+                "std_dev": 0.0
+              }
+            },
+            "metrics": {
+              "first-contentful-paint": {
+                "min": 1509.3,
+                "max": 1590.8,
+                "std_dev": 29.02,
+                "score_min": 0.94,
+                "score_max": 0.96,
+                "score_std_dev": 0.007
+              },
+              "largest-contentful-paint": {
+                "min": 1707.59,
+                "max": 1868.18,
+                "std_dev": 68.64,
+                "score_min": 0.98,
+                "score_max": 0.99,
+                "score_std_dev": 0.004
+              },
+              "speed-index": {
+                "min": 1509.3,
+                "max": 1590.8,
+                "std_dev": 29.02,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "cumulative-layout-shift": {
+                "min": 0.06,
+                "max": 0.06,
+                "std_dev": 0.0,
+                "score_min": 0.98,
+                "score_max": 0.98,
+                "score_std_dev": 0.0
+              },
+              "total-blocking-time": {
+                "min": 0,
+                "max": 5,
+                "std_dev": 2.49,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "framework": "vanjs",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2026-05-10T05:57:16.162835",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/vanjs/app/?mock=true",
+        "scores": {
+          "performance": 100.0,
+          "accessibility": 100.0,
+          "best-practices": 100.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1214.48148,
+            "displayValue": "1.2\u00a0s",
+            "score": 0.99
+          },
+          "largest-contentful-paint": {
+            "value": 1402.32222,
+            "displayValue": "1.4\u00a0s",
+            "score": 1.0
+          },
+          "speed-index": {
+            "value": 1214.48148,
+            "displayValue": "1.2\u00a0s",
+            "score": 1.0
+          },
+          "cumulative-layout-shift": {
+            "value": 0.00010200000000000001,
+            "displayValue": "0.000",
+            "score": 1.0
+          },
+          "total-blocking-time": {
+            "value": 0.0,
+            "displayValue": "0.0\u00a0s",
+            "score": 1.0
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2026-05-10T05:56:24.630Z",
+        "execution_stats": {
+          "total_executions": 5,
+          "successful_executions": 5,
+          "failed_executions": 0,
+          "averaged": true,
+          "statistics": {
+            "scores": {
+              "performance": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "accessibility": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "best-practices": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "seo": {
+                "min": 90.0,
+                "max": 90.0,
+                "std_dev": 0.0
+              }
+            },
+            "metrics": {
+              "first-contentful-paint": {
+                "min": 1206.35,
+                "max": 1222.17,
+                "std_dev": 7.25,
+                "score_min": 0.99,
+                "score_max": 0.99,
+                "score_std_dev": 0.0
+              },
+              "largest-contentful-paint": {
+                "min": 1387.52,
+                "max": 1412.26,
+                "std_dev": 9.63,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "speed-index": {
+                "min": 1206.35,
+                "max": 1222.17,
+                "std_dev": 7.25,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "cumulative-layout-shift": {
+                "min": 0.0,
+                "max": 0.0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "total-blocking-time": {
+                "min": 0,
+                "max": 0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "framework": "vanilla",
+      "benchmark_type": "Lighthouse",
+      "timestamp": "2026-05-10T05:58:10.496119",
+      "success": true,
+      "error_message": null,
+      "data": {
+        "url": "http://127.0.0.1:3000/vanilla/app/?mock=true",
+        "scores": {
+          "performance": 94.0,
+          "accessibility": 100.0,
+          "best-practices": 96.0,
+          "seo": 90.0
+        },
+        "metrics": {
+          "first-contentful-paint": {
+            "value": 1240.97472,
+            "displayValue": "1.2\u00a0s",
+            "score": 0.9860000000000001
+          },
+          "largest-contentful-paint": {
+            "value": 1537.8329600000002,
+            "displayValue": "1.5\u00a0s",
+            "score": 0.9960000000000001
+          },
+          "speed-index": {
+            "value": 1240.97472,
+            "displayValue": "1.2\u00a0s",
+            "score": 1.0
+          },
+          "cumulative-layout-shift": {
+            "value": 0.1460598,
+            "displayValue": "0.146",
+            "score": 0.77
+          },
+          "total-blocking-time": {
+            "value": 0.0,
+            "displayValue": "0.0\u00a0s",
+            "score": 1.0
+          }
+        },
+        "lighthouse_version": "12.8.1",
+        "fetch_time": "2026-05-10T05:57:18.868Z",
+        "execution_stats": {
+          "total_executions": 5,
+          "successful_executions": 5,
+          "failed_executions": 0,
+          "averaged": true,
+          "statistics": {
+            "scores": {
+              "performance": {
+                "min": 94.0,
+                "max": 94.0,
+                "std_dev": 0.0
+              },
+              "accessibility": {
+                "min": 100,
+                "max": 100,
+                "std_dev": 0.0
+              },
+              "best-practices": {
+                "min": 96.0,
+                "max": 96.0,
+                "std_dev": 0.0
+              },
+              "seo": {
+                "min": 90.0,
+                "max": 90.0,
+                "std_dev": 0.0
+              }
+            },
+            "metrics": {
+              "first-contentful-paint": {
+                "min": 1210.01,
+                "max": 1255.87,
+                "std_dev": 18.61,
+                "score_min": 0.98,
+                "score_max": 0.99,
+                "score_std_dev": 0.005
+              },
+              "largest-contentful-paint": {
+                "min": 1513.34,
+                "max": 1564.16,
+                "std_dev": 21.69,
+                "score_min": 0.99,
+                "score_max": 1,
+                "score_std_dev": 0.005
+              },
+              "speed-index": {
+                "min": 1210.01,
+                "max": 1255.87,
+                "std_dev": 18.61,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              },
+              "cumulative-layout-shift": {
+                "min": 0.15,
+                "max": 0.15,
+                "std_dev": 0.0,
+                "score_min": 0.77,
+                "score_max": 0.77,
+                "score_std_dev": 0.0
+              },
+              "total-blocking-time": {
+                "min": 0,
+                "max": 0,
+                "std_dev": 0.0,
+                "score_min": 1,
+                "score_max": 1,
+                "score_std_dev": 0.0
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}
