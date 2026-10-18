@@ -236,6 +236,22 @@ jobs:
           npm ci
           python scripts/setup/main.py --skip-build
 
+      # Scheduled benchmark runs always publish to the `results` branch, but only
+      # commit to main when manually dispatched with commit_to_main=true. The site
+      # is built from main, so without this it renders whatever snapshot happened to
+      # be committed last - omitting every framework added since.
+      - name: Sync latest benchmark results
+        run: |
+          if git fetch --depth=1 origin results 2>/dev/null \
+            && git show FETCH_HEAD:summary/summary.json > /tmp/summary.json 2>/dev/null \
+            && python -c "import json; json.load(open('/tmp/summary.json'))" 2>/dev/null; then
+            mv /tmp/summary.json results/summary.json
+            echo "✅ Synced benchmark results from the results branch"
+            python -c "import json; d = json.load(open('results/summary.json')); print('   generated:', d.get('metadata', {}).get('generated_at', 'unknown')); print('   frameworks:', ', '.join(sorted(d.get('frameworks', {}))))"
+          else
+            echo "::warning::Could not read summary/summary.json from the results branch - building with the committed results/summary.json, which may be out of date"
+          fi
+
       - name: Build all frameworks and generate website
         run: |
           echo "Building all frameworks for comparison website..."
