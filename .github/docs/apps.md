@@ -1,6 +1,6 @@
 # Framework Applications
 
-This project contains the same weather application built using 16 different JavaScript frameworks. Each implementation provides identical functionality but uses the specific patterns and approaches of its framework.
+This project contains the same weather application built using 17 different JavaScript frameworks. Each implementation provides identical functionality but uses the specific patterns and approaches of its framework.
 
 ## Available Frameworks
 

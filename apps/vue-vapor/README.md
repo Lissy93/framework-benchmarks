@@ -7,7 +7,7 @@
   <br>
   <b><a href="/">🚀 Demo</a> ● <a href="https://frontend-framework-benchmarks.as93.net">📊 Results</a></b>
   <br><br>
-  <a href="https://github.com/vuejs/core/releases/tag/v3.6.0-rc.2" target="_blank"><img src="https://img.shields.io/badge/Framework-Vue_Vapor_Mode-42B883?logo=vuedotjs&logoColor=fff&labelColor=35495E" /></a>
+  <a href="https://vuejs.org/" target="_blank"><img src="https://img.shields.io/badge/Framework-Vue_Vapor_Mode-42B883?logo=vuedotjs&logoColor=fff&labelColor=35495E" /></a>
   <a href="https://github.com/Lissy93/framework-benchmarks/blob/main/LICENSE"><img src="https://img.shields.io/badge/License-MIT-AE56FF?logo=googledocs&logoColor=fff&labelColor=8A2BE2" /></a>
   <a href="https://github.com/lissy93"><img src="https://img.shields.io/badge/Author-Lissy93-EA4AAA?logo=githubsponsors&logoColor=fff&labelColor=E31591" /></a>
 </p>
@@ -19,7 +19,7 @@
 
 <img align="right" src="/assets/screenshot.png" width="400">
 
-This is a simple weather app, built in [Vue Vapor Mode](https://github.com/vuejs/core/releases/tag/v3.6.0-rc.2) (as well as also [10 other frontend frameworks](/)) in order to review, compare and benchmark frontend web frameworks.
+This is a simple weather app, built in [Vue Vapor Mode](https://vuejs.org/) (as well as also [10 other frontend frameworks](/)) in order to review, compare and benchmark frontend web frameworks.
 
 - 🌦️ Live weather conditions
 - 📅 7-day weather forecast
