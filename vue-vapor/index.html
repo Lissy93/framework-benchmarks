@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Vapor - Framework Benchmarks</title>
+    <meta name="description" content="Learn about Vue Vapor, explore the weather app implementation, and view performance metrics.">
+    <meta name="keywords" content="weather, frontend frameworks, comparison, open source, benchmarks, performance, javascript, web frameworks, frontend, react, vue, svelte">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="Alicia Sykes">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://framework-benchmarks.as93.net/">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/main.css">
+<link rel="stylesheet" href="/static/css/framework.css">
+    
+     <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Framework Benchmarks">
+    <meta property="og:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta property="og:url" content="https://framework-benchmarks.as93.net/">
+    <meta property="og:image" content="https://framework-benchmarks.as93.net/banner.png">
+    <meta property="og:site_name" content="Framework Benchmarks">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@Lissy_Sykes">
+    <meta name="twitter:creator" content="@Lissy_Sykes">
+    <meta name="twitter:title" content="Framework Benchmarks">
+    <meta name="twitter:description" content="A comprehensive comparison of modern frontend frameworks">
+    <meta name="twitter:image" content="https://framework-benchmarks.as93.net/banner.png">
+    
+    <!-- Favicons & App Icons -->
+    <link rel="icon" type="image/x-icon" href="static/favicon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="mask-icon" href="/logo.png" color="#6762ff">
+    <meta name="image" content="https://framework-benchmarks.as93.net/banner.png">
+
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#6762ff">
+    <link rel="security.txt" href="/security.txt">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Framework Benchmarks",
+        "url": "https://framework-benchmarks.as93.net",
+        "description": "A comprehensive comparison of modern frontend frameworks",
+        "author": {
+            "@type": "Person",
+            "name": "Alicia Sykes",
+            "url": "https://aliciasykes.com"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Framework Benchmarks",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://framework-benchmarks.as93.net/logo.png"
+            }
+        }
+    }
+    </script>
+</head>
+<body>
+    <header>
+        <nav class="navigation" role="navigation" aria-label="Main navigation">
+            <a href="/" class="nav-logo" aria-label="Home">
+                <div class="site-name">
+                    <span class="site-title">Framework Benchmarks</span>
+                    <p>Comparing every frontend framework</p>
+                </div>
+            </a>
+
+            <button class="mobile-menu-toggle" aria-label="Toggle menu" aria-expanded="false" aria-controls="nav-menu">
+                <span class="hamburger"></span>
+            </button>
+
+            <div class="nav-links" id="nav-menu">
+                <a href="/" class="nav-link">Home</a>
+                <a href="/#framework-results" class="nav-link">Results</a>
+                <a href="/docs/" class="nav-link">Docs</a>
+
+                <div class="nav-dropdown">
+                    <button class="nav-link dropdown-toggle" aria-haspopup="true" aria-expanded="false">
+                        Frameworks
+                        <svg class="dropdown-icon" width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
+                            <path d="M6 9L1 4h10z"/>
+                        </svg>
+                    </button>
+                    <div class="dropdown-menu" role="menu">
+                        <a href="/react/" class="dropdown-item" role="menuitem">
+                            React
+                        </a>
+                        <a href="/angular/" class="dropdown-item" role="menuitem">
+                            Angular
+                        </a>
+                        <a href="/svelte/" class="dropdown-item" role="menuitem">
+                            Svelte
+                        </a>
+                        <a href="/preact/" class="dropdown-item" role="menuitem">
+                            Preact
+                        </a>
+                        <a href="/solid/" class="dropdown-item" role="menuitem">
+                            Solid.js
+                        </a>
+                        <a href="/qwik/" class="dropdown-item" role="menuitem">
+                            Qwik
+                        </a>
+                        <a href="/vue/" class="dropdown-item" role="menuitem">
+                            Vue
+                        </a>
+                        <a href="/vue-vapor/" class="dropdown-item" role="menuitem">
+                            Vue Vapor
+                        </a>
+                        <a href="/jquery/" class="dropdown-item" role="menuitem">
+                            jQuery
+                        </a>
+                        <a href="/alpine/" class="dropdown-item" role="menuitem">
+                            Alpine.js
+                        </a>
+                        <a href="/lit/" class="dropdown-item" role="menuitem">
+                            Lit
+                        </a>
+                        <a href="/vanjs/" class="dropdown-item" role="menuitem">
+                            VanJS
+                        </a>
+                        <a href="/astro/" class="dropdown-item" role="menuitem">
+                            Astro
+                        </a>
+                        <a href="/lume-js/" class="dropdown-item" role="menuitem">
+                            Lume.js
+                        </a>
+                        <a href="/octane/" class="dropdown-item" role="menuitem">
+                            Octane
+                        </a>
+                        <a href="/geajs/" class="dropdown-item" role="menuitem">
+                            Gea
+                        </a>
+                        <a href="/vanilla/" class="dropdown-item" role="menuitem">
+                            Vanilla JS
+                        </a>
+                    </div>
+                </div>
+
+                <a href="https://stack-match.as93.net/" class="nav-link" target="_blank" rel="noopener">Stack Match</a>
+                <a href="https://github.com/lissy93/framework-benchmarks" class="nav-link" target="_blank" rel="noopener">GitHub</a>
+            </div>
+        </nav>
+    </header>
+    
+    <main class="main-content">
+<div class="framework-page" style="--fw-color: #42B883;">
+    <div class="framework-grid">
+        <!-- Hero Section -->
+        <article class="framework-hero">
+            <img class="hero-icon" 
+                 src="https://cdn.simpleicons.org/vuedotjs"
+                 alt="💨"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">V</div>
+            
+            <div class="hero-content">
+                <h2>Vue Vapor</h2>
+                <p class="hero-tagline">Opt-in Vue compiler mode using direct DOM updates without a virtual DOM</p>
+                <!-- <p class="her-subtagline">Compile-time Vue rendering mode that emits direct DOM operations and omits the Virtual DOM runtime.</p> -->
+            
+            <div class="resource-links">
+                <a href="https://vuejs.org/" target="_blank" rel="noopener" class="resource-link" title="Vue Vapor Official Website">Website</a>
+                <a href="https://github.com/vuejs/core" target="_blank" rel="noopener" class="resource-link" title="Vue Vapor Sourcecode">GitHub</a>
+                <a href="https://github.com/vuejs/core/releases/tag/v3.6.0-rc.1#about-vapor-mode" target="_blank" rel="noopener" class="resource-link"  title="Vue Vapor Documentation">Docs</a>
+            </div>
+            </div>
+        </article>
+        
+        <!-- Action Cards -->
+        <div class="framework-actions">
+            <a href="https://stack-match.as93.net/vue-vapor/" class="action-card action-primary" target="_blank" rel="nofollow noopener">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 3v18h18"/>
+                    <path d="M18 17V9"/>
+                    <path d="M13 17v-4"/>
+                    <path d="M8 17v-6"/>
+                </svg>
+                <div>
+                    <h4>Vue Vapor Stats</h4>
+                    <span>View and compare all Vue Vapor metrics</span>
+                </div>
+            </a>
+            <a href="/vue-vapor/app/" class="action-card">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                </svg>
+                <div>
+                    <h4>Demo</h4>
+                    <span>View Vue Vapor Weather App</span>
+                </div>
+            </a>
+            <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vue-vapor" class="action-card">
+                <svg class="action-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M16 18L22 12L16 6M8 6L2 12L8 18"/>
+                </svg>
+                <div>
+                    <h4>GitHub</h4>
+                    <span>View Vue Vapor Weather App Source</span>
+                </div>
+            </a>
+        </div>
+
+        <div class="group-header group-header-results">
+            <h2>Results Summary</h2>
+        </div>
+
+        <!-- Results Summary -->
+        
+        <!-- Detailed Results Cards -->
+
+        <div class="group-header group-header-app">
+            <h2>About the Vue Vapor Weather Front App</h2>
+        </div>
+
+        <article class="framework-status">
+            <h3>Status</h3>
+            <ul class="status-list">
+                <li title="Lint checks for Vue Vapor">
+                    <span class="tech-key">Lint</span>
+                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-vue-vapor.svg" alt="Lint status badge for Vue Vapor" />
+                </li>
+                <li title="Build and deployment status for Vue Vapor">
+                    <span class="tech-key">Build</span>
+                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-vue-vapor.svg" alt="Build status badge for Vue Vapor" />
+                </li>
+                <li title="Unit and integration tests for Vue Vapor">
+                    <span class="tech-key">Test</span>
+                    <img class="badge" src="https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-vue-vapor.svg" alt="Test status badge for Vue Vapor" />
+                </li>
+            </ul>
+        </article>
+
+        <article class="framework-links">
+            <h3>Links</h3>
+            <ul class="links-list">
+                <li><a href="https://github.com/lissy93/framework-benchmarks">View on GitHub</a></li>
+                <li><a href="/vue-vapor/app/">Vue Vapor App Demo</a></li>
+                <li><a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vue-vapor">Vue Vapor App Source</a></li>
+                <li><a href="https://github.com/lissy93/framework-benchmarks/blob/main/.github/CONTRIBUTING.md">Contributing</a></li>
+                <li><a href="https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE">License</a></li>
+                <li><a href="https://as93.net">More Apps</a></li>
+            </ul>
+        </article>
+
+        <!-- Tech Details -->
+        <article class="framework-tech">
+            <h3>Usage Instructions</h3>
+            <p>
+                First, follow the <a target="_blank" rel="noopener" href="https://github.com/lissy93/framework-benchmarks?tab=readme-ov-file#usage">repo setup instructions</a>.<br>
+                Then cd into <a target="_blank" rel="noopener" href="https://github.com/Lissy93/framework-benchmarks/tree/main/apps/vue-vapor">./apps/vue-vapor/</a>
+                and and use the following commands:
+            </p>
+
+            <ul class="tech-list">
+                <li title="vite --port 3000">
+                    <span class="tech-key">Dev Command</span>
+                    <span class="tech-value">npm run dev</span>
+                </li>
+                <li title="">
+                    <span class="tech-key">Test Command</span>
+                    <span class="tech-value">npm run test</span>
+                </li>
+                <li title="Lint all js, vue files">
+                    <span class="tech-key">Lint Command</span>
+                    <span class="tech-value" title="">npm run lint</span>
+                </li>
+                <li title="vite build">
+                    <span class="tech-key">Build Command</span>
+                    <span class="tech-value">npm run build</span>
+                </li>
+                <li title="Serves the built output from dist">
+                    <span class="tech-key">Start</span>
+                    <span class="tech-value">npm start</span>
+                </li>
+            </ul>
+            <small>
+                For troubleshooting, use <code>npm run verify</code> from the root of the project.
+            </small>
+        </article>
+
+
+        <article class="app-requirements-section">
+            <h3>App Requirements</h3>
+            <p>
+                The purpose of this project, was to build the same identical app in <i>every</i> frontend framework, in order to benchmark and compare their performance.
+                As such, each app is built to meet identical requirements, which are then verified with the test suite.
+            </p>
+            <div class="requirement-group">
+                <div>
+                    <h4>Technical Requirements</h4>
+                    <ul>
+                        <li>Binding user input and validation</li>
+                        <li>Fetching external data asynchronously</li>
+                        <li>Basic state management of components</li>
+                        <li>Handling fallback views (loading, errors)</li>
+                        <li>Using browser features (location, storage, etc)</li>
+                        <li>Logic blocks, for iterative content and conditionals</li>
+                        <li>Lifecycle methods (mounting, updating, unmounting)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Feature Requirements</h4>
+                    <ul>
+                        <li>🌦️ Live weather conditions</li>
+                        <li>📅 7-day weather forecast</li>
+                        <li>🔍 City search functionality</li>
+                        <li>📍 Geolocation support</li>
+                        <li>💾 Persistent location storage</li>
+                        <li>📱 Responsive design</li>
+                        <li>♿ Accessible interface</li>
+                        <li>🎨 Multi-theme support</li>
+                        <li>🧪 Fully unit tested</li>
+                        <li>🌐 Internationalized</li>
+                    </ul>
+                </div>
+                <img class="screenshot" src="https://raw.githubusercontent.com/Lissy93/framework-benchmarks/refs/heads/main/assets/screenshot.png" alt="Weather app screenshot showing interface features" loading="lazy" />
+            </div>
+        </article>
+
+        <!-- Framework Implementation -->
+
+        <div class="group-header group-header-info">
+            <h2>About Vue Vapor</h2>
+        </div>
+
+        <!-- Framework Stats -->
+        <div class="framework-stats" id="framework-stats-container">
+            <!-- Stats will be populated by JavaScript -->
+        </div>
+
+        <article class="framework-example-app">
+            <h3>Real-world App</h3>
+            <div>Coming soon...</div>
+        </article>
+        
+        <!-- About Section -->
+        
+        <!-- About Framework Section -->
+        
+        <!-- My pointless thoughts on this pointless framework -->
+
+        
+        <div class="group-header group-header-choosing">
+            <h2>Choosing a Framework</h2>
+        </div>
+
+        <section class="stack-match-section">
+            <div class="stack-match-info">
+                <h3>
+                    <img width="24" src="https://raw.githubusercontent.com/Lissy93/stack-match/refs/heads/main/static/android-chrome-192x192.png" alt="Stack Match" />
+                    Stack Match
+                </h3>
+                <p>
+                    Not sure if Vue Vapor is right for your project?
+                    Use <a href="https://stack-match.as93.net/" target="_blank" rel="noopener">Stack Match</a> to select your preferences
+                    and get a tailored recommendation based on the benchmark data.
+                </p>
+                <div class="button-wrap">
+                    <a class="primary-cta" href="https://stack-match.as93.net/" target="_blank" rel="noopener">Try Stack Match</a>
+                    <a class="secondary-cta" href="https://github.com/lissy93/stack-match" target="_blank" rel="noopener">View on GitHub</a>
+                </div>
+            </div>
+            <img
+                class="stack-match-screenshot"
+                width="400"
+                src="https://github.com/Lissy93/stack-match/blob/main/static/screenshots/home.png?raw=true"
+                alt="Stack Match Screenshot"
+                loading="lazy"
+            />
+        </section>
+        
+        <!-- Navigation -->
+        <div class="framework-nav">
+            <a href="/vue/" class="nav-card">
+                <div class="nav-label">Previous</div>
+                <div class="nav-title">Vue</div>
+            </a>
+            
+            <a href="/" class="nav-card">
+                <div class="nav-label">Home</div>
+                <div class="nav-title">All Frameworks</div>
+            </a>
+            
+            <a href="/jquery/" class="nav-card">
+                <div class="nav-label">Next</div>
+                <div class="nav-title">jQuery</div>
+            </a>
+        </div>
+    </div>
+</div>
+    </main>
+    
+    <footer>
+        <i>Free and open source, forever</i>
+        <p>
+            <a href="https://github.com/lissy93/framework-benchmarks">lissy93/framework-benchmarks</a>
+            is licensed under
+            <a href="https://github.com/lissy93/framework-benchmarks/blob/main/LICENSE">MIT</a>
+             • &copy; 2025 <a href="https://aliciasykes.com">Alicia Sykes</a>
+        </p>
+    </footer>
+
+    <!-- Navigation JavaScript -->
+    <script>
+    (function() {
+        'use strict';
+
+        // Mobile menu toggle
+        const mobileToggle = document.querySelector('.mobile-menu-toggle');
+        const navLinks = document.querySelector('.nav-links');
+
+        if (mobileToggle && navLinks) {
+            mobileToggle.addEventListener('click', function() {
+                const isOpen = navLinks.classList.toggle('open');
+                mobileToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.navigation')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close mobile menu on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && navLinks.classList.contains('open')) {
+                    navLinks.classList.remove('open');
+                    mobileToggle.setAttribute('aria-expanded', 'false');
+                    mobileToggle.focus();
+                }
+            });
+        }
+
+        // Dropdown menu
+        const dropdown = document.querySelector('.nav-dropdown');
+        const dropdownToggle = dropdown?.querySelector('.dropdown-toggle');
+
+        if (dropdown && dropdownToggle) {
+            dropdownToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const isOpen = dropdown.classList.toggle('open');
+                dropdownToggle.setAttribute('aria-expanded', isOpen);
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!e.target.closest('.nav-dropdown')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                }
+            });
+
+            // Close dropdown on escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && dropdown.classList.contains('open')) {
+                    dropdown.classList.remove('open');
+                    dropdownToggle.setAttribute('aria-expanded', 'false');
+                    dropdownToggle.focus();
+                }
+            });
+
+            // Keyboard navigation for dropdown items
+            const dropdownItems = dropdown.querySelectorAll('.dropdown-item');
+            dropdownItems.forEach((item, index) => {
+                item.addEventListener('keydown', function(e) {
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        const nextItem = dropdownItems[index + 1] || dropdownItems[0];
+                        nextItem.focus();
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        const prevItem = dropdownItems[index - 1] || dropdownItems[dropdownItems.length - 1];
+                        prevItem.focus();
+                    }
+                });
+            });
+        }
+    })();
+    </script>
+
+    <!-- JavaScript -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load and display framework stats
+    fetch('/static/framework-stats.json')
+        .then(response => response.json())
+        .then(data => {
+            const frameworkId = 'vue-vapor';
+            const frameworkData = data.items.find(item => item.id === frameworkId);
+            
+            if (frameworkData) {
+                displayFrameworkStats(frameworkData);
+            } else {
+                // Hide stats section if no data available
+                document.getElementById('framework-stats-container').style.display = 'none';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading framework stats:', error);
+            document.getElementById('framework-stats-container').style.display = 'none';
+        });
+});
+
+function displayFrameworkStats(data) {
+    const container = document.getElementById('framework-stats-container');
+    
+    // Helper functions
+    const formatNumber = (num) => {
+        if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+        if (num >= 1000) return (num / 1000).toFixed(1) + 'k';
+        return num?.toLocaleString() || '0';
+    };
+    
+    const formatAge = (dateStr) => {
+        if (!dateStr) return 'Unknown';
+        const date = new Date(dateStr);
+        const now = new Date();
+        const years = Math.floor((now - date) / (1000 * 60 * 60 * 24 * 365));
+        const months = Math.floor(((now - date) % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+        
+        if (years > 0) {
+            return months > 0 ? `${years}y ${months}m` : `${years}y`;
+        } else if (months > 0) {
+            return `${months}m`;
+        } else {
+            const days = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+            return `${days}d`;
+        }
+    };
+    
+    const formatDate = (dateStr) => {
+        if (!dateStr) return 'Unknown';
+        return new Date(dateStr).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'short'
+        });
+    };
+    
+    // Create stats cards
+    const statsCards = [
+        {
+            label: 'Stars',
+            primary: formatNumber(data.stars),
+            secondary: `${formatNumber(data.forks)} forks`
+        },
+        {
+            label: 'Contributors',
+            primary: formatNumber(data.contributors),
+            secondary: `${data.top_author_pct}% by <a target="_blank" rel="noopener" href="https://github.com/${data.top_author_name}">@${data.top_author_name}</a>`
+        },
+        {
+            label: 'Age',
+            primary: formatAge(data.first_commit),
+            secondary: `Last update ${formatDate(data.last_commit)}`
+        },
+        {
+            label: 'Downloads',
+            primary: data.downloads ? formatNumber(data.downloads) : 'N/A',
+            secondary: data.npm_latest ? `v${data.npm_latest} • ${formatDate(data.npm_latest_date)}` : 'No NPM package'
+        },
+        {
+            label: 'Open Issues',
+            primary: formatNumber(data.open_issues),
+            secondary: `${data.closed_issues} closed issues`
+        }
+    ];
+    
+    // Generate HTML
+    const statsHTML = statsCards.map(stat => `
+        <div class="stat-card card card-small">
+            <h4 class="stat-label">${stat.label}</h4>
+            <div class="stat-primary">${stat.primary}</div>
+            <div class="stat-secondary">${stat.secondary}</div>
+        </div>
+    `).join('');
+    
+    container.innerHTML = statsHTML;
+}
+</script>
+</body>
+</html>

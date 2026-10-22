@@ -124,6 +124,9 @@
                         <a href="/vue/" class="dropdown-item" role="menuitem">
                             Vue
                         </a>
+                        <a href="/vue-vapor/" class="dropdown-item" role="menuitem">
+                            Vue Vapor
+                        </a>
                         <a href="/jquery/" class="dropdown-item" role="menuitem">
                             jQuery
                         </a>
@@ -287,6 +290,20 @@
                  width="32" 
                  src="https://cdn.simpleicons.org/vuedotjs"
                  alt="💚"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">V</div>
+        </a>
+        <a
+            href="/vue-vapor/"
+            class="framework-card"
+            style="--fw-color: #42B883;"
+            data-framework="vue-vapor"
+            title="Vue Vapor"
+        >
+            <img class="framework-icon" 
+                 width="32" 
+                 src="https://cdn.simpleicons.org/vuedotjs"
+                 alt="💨"
                  onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
             <div class="framework-fallback" style="display: none;">V</div>
         </a>
@@ -495,6 +512,15 @@
                        checked>
                 <span class="checkbox-indicator"></span>
                 <span class="framework-label">Vue</span>
+            </label>
+            <label class="framework-checkbox" style="--fw-color: #42B883;">
+                <input type="checkbox" 
+                       class="framework-toggle" 
+                       id="toggle-vue-vapor" 
+                       data-framework="vue-vapor"
+                       checked>
+                <span class="checkbox-indicator"></span>
+                <span class="framework-label">Vue Vapor</span>
             </label>
             <label class="framework-checkbox" style="--fw-color: #0769AD;">
                 <input type="checkbox" 
@@ -761,6 +787,15 @@
             <div class="framework-fallback" style="display: none;">V</div>
             <div class="framework-name">Vue</div>
         </a>
+        <a href="/vue-vapor/" class="framework-card" style="--fw-color: #42B883;" data-framework="vue-vapor">
+            <img class="framework-icon" 
+                 width="64" 
+                 src="https://cdn.simpleicons.org/vuedotjs"
+                 alt="💨"
+                 onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
+            <div class="framework-fallback" style="display: none;">V</div>
+            <div class="framework-name">Vue Vapor</div>
+        </a>
         <a href="/jquery/" class="framework-card" style="--fw-color: #0769AD;" data-framework="jquery">
             <img class="framework-icon" 
                  width="64" 
@@ -876,6 +911,10 @@
         <li style="--fw-color: #4FC08D;">
             <h4>Vue</h4>
             <code>http://localhost:3000/vue/app?mock=true</code>
+        </li>
+        <li style="--fw-color: #42B883;">
+            <h4>Vue Vapor</h4>
+            <code>http://localhost:3000/vue-vapor/app?mock=true</code>
         </li>
         <li style="--fw-color: #0769AD;">
             <h4>jQuery</h4>

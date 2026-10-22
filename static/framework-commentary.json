@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-22T05:15:45Z",
+  "generated_at": "2026-10-22T17:06:25Z",
   "items": [
     {
       "id": "react",
@@ -49,6 +49,13 @@
       "implementation": "#### Composition API\nThe [`App.vue`](https://github.com/Lissy93/framework-benchmarks/blob/main/apps/vue/src/App.vue) uses Vue 3's Composition API with `<script setup>` syntax, providing a more flexible and reusable way to organize component logic compared to the Options API.\n\n#### Single File Components\nAll components use Vue's SFC format, combining template, script, and style in a single `.vue` file with clear separation of concerns.\n\n#### Reactive References\nUses Vue's `ref()` for reactive state management, with automatic reactivity tracking that eliminates the need for manual dependency management.\n\n#### Template Directives\nLeverages Vue's powerful template directives like `v-if`, `v-for`, and event binding with `@` syntax for declarative and readable templates.\n\n#### Lifecycle Hooks\nThe `onMounted` hook demonstrates Vue's composition API lifecycle management, providing a clean way to handle component initialization.",
       "about": "Vue was created by Evan You after working on Angular at Google, and it became hugely popular thanks to its simplicity. \nIt mixes the best ideas of Angular and React but with a gentler learning curve. \nIts ecosystem includes Vue Router and Vuex, and it’s used by Alibaba, Xiaomi and GitLab. \nDevelopers love its approachability and elegance.",
       "thoughts": "Vue sits in the Goldilocks zone - not as minimal as Alpine, not as opinionated as Angular, just right for most projects. It feels like the framework that actually learned from React's mistakes while keeping the good parts. Single File Components are brilliant, the template syntax is intuitive, and reactivity just works without the mental gymnastics of `useEffect`.\n\nFor our weather app, Vue felt natural and productive. The `v-if`, `v-for`, and `v-model` directives handle conditional rendering, lists, and form inputs elegantly. No weird JSX quirks, no manual event handling - just HTML that does what you expect. The Composition API gives you React-style logic organization when you need it, but Options API is still there for simpler components.\n\nThe reactivity system using Proxies is genuinely impressive. Change a data property and everything dependent on it updates automatically. No `useState`, no memoization hell, no stale closures. Vue tracks dependencies behind the scenes and updates only what needs to change.\n\nThe Single File Component format is perfect - template, script, and styles all in one file with proper scoping. `<style scoped>` means your CSS only affects that component, no global pollution or CSS-in-JS complexity. It just works the way you'd expect.\n\nVue's ecosystem is mature without being overwhelming. I didn't need Vue Router or Pinia for this simple app, but they're there when you need them.\n\nI chose Vue for [Dashy](https://github.com/Lissy93/dashy/), because it both has everything I needed, but also is incredbily easy, so contributors could add their own widgets and features, with out a steep learning curve."
+    },
+    {
+      "id": "vue-vapor",
+      "name": "Vue Vapor",
+      "implementation": "<!-- Framework-specific notes go here -->",
+      "about": null,
+      "thoughts": null
     },
     {
       "id": "jquery",
