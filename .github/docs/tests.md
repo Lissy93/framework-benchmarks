@@ -7,7 +7,7 @@ Cross-framework testing with E2E and unit tests.
 **Config:** `tests/config/`
 - Framework-specific Playwright configs
 - `playwright.config.base.js` - Shared settings
-- Individual configs for all 12 frameworks
+- Individual configs for all 16 frameworks
 
 **E2E Tests:** `tests/e2e/`  
 - `weather-app-advanced.test.js` - Comprehensive interaction testing

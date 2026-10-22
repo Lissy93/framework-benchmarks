@@ -201,7 +201,7 @@ def get_all_checks() -> List[Check]:
         Check("ESLint configuration", check_eslint_config, "Check eslint.config.js exists"),
         Check("Mock data present", check_mock_data, "npm run generate-mocks"),
         Check("Framework apps synced", check_framework_apps_synced, "npm run sync-assets"),
-        Check("Framework dependencies", check_framework_dependencies, "npm run setup:all"),
+        Check("Framework dependencies", check_framework_dependencies, "npm run setup"),
         Check("Playwright installed", lambda: check_playwright_installed(config), "npm run install:playwright"),
         Check("Test configurations", check_test_configurations, "Test configuration files missing"),
         Check("Assets directory structure", check_assets_structure, "npm run sync-assets"),

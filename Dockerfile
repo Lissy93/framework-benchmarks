@@ -1,5 +1,6 @@
 # Build stage - Install dependencies and build project
-FROM node:22-bullseye-slim AS builder
+FROM node:22-bookworm-slim AS builder
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 # Install build dependencies
 RUN apt-get update && apt-get install -y \
@@ -30,7 +31,15 @@ COPY . .
 RUN npm run setup && npm run build
 
 # Production stage - Final runtime image
-FROM node:22-bullseye-slim AS production
+FROM node:22-bookworm-slim AS production
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
+
+LABEL org.opencontainers.image.title="Framework Benchmarks"
+LABEL org.opencontainers.image.description="Cross-framework weather app comparison for automated web performance benchmarking"
+LABEL org.opencontainers.image.url="https://framework-benchmarks.as93.net"
+LABEL org.opencontainers.image.source="https://github.com/lissy93/framework-benchmarks"
+LABEL org.opencontainers.image.vendor="Alicia Sykes"
+LABEL org.opencontainers.image.licenses="MIT"
 
 # Install runtime dependencies including Chrome
 RUN apt-get update && apt-get install -y \
@@ -66,15 +75,15 @@ RUN set -e; \
         && echo "Google Chrome installed successfully") || \
         (echo "Google Chrome installation failed, trying Chromium..." \
         && apt-get update \
-        && apt-get install -y chromium-browser \
-        && ln -sf /usr/bin/chromium-browser /usr/bin/google-chrome \
+        && apt-get install -y chromium \
+        && ln -sf /usr/bin/chromium /usr/bin/google-chrome \
         && echo "Chromium installed as fallback") || \
         echo "Warning: No Chrome/Chromium could be installed - Lighthouse benchmarks will be skipped"; \
     else \
         echo "Installing Chromium for non-amd64 architecture..."; \
         (apt-get update \
-        && apt-get install -y chromium-browser \
-        && ln -sf /usr/bin/chromium-browser /usr/bin/google-chrome \
+        && apt-get install -y chromium \
+        && ln -sf /usr/bin/chromium /usr/bin/google-chrome \
         && echo "Chromium installed successfully") || \
         echo "Warning: Chromium installation failed - Lighthouse benchmarks will be skipped"; \
     fi \
@@ -115,11 +124,3 @@ USER root
 RUN npm install && npx playwright install --with-deps chromium
 
 USER benchmarkuser
-
-# Labels
-LABEL org.opencontainers.image.title="Framework Benchmarks"
-LABEL org.opencontainers.image.description="Cross-framework weather app comparison for automated web performance benchmarking"
-LABEL org.opencontainers.image.url="https://framework-benchmarks.as93.net"
-LABEL org.opencontainers.image.source="https://github.com/lissy93/framework-benchmarks"
-LABEL org.opencontainers.image.vendor="Alicia Sykes"
-LABEL org.opencontainers.image.licenses="MIT"

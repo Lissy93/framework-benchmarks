@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Dev server startup and HMR speed benchmarking for web application frameworks."""
 
-import json
 import os
 import re
 import signal
@@ -27,31 +26,10 @@ class DevServerRunner(BenchmarkRunner):
     def benchmark_name(self) -> str:
         return "Dev Server"
     
-    def __init__(self):
-        super().__init__()
-        self.frameworks_config = self._load_frameworks_config()
-    
     def check_server_health(self) -> bool:
         """Dev server measurement doesn't require the main benchmark server."""
         return True
-    
-    def _load_frameworks_config(self) -> Dict:
-        """Load frameworks configuration."""
-        config_path = Path(__file__).parent.parent.parent / "frameworks.json"
-        try:
-            with open(config_path, 'r') as f:
-                return json.load(f)
-        except Exception as e:
-            console.print(f"[red]Failed to load frameworks.json: {e}[/red]")
-            return {"frameworks": []}
-    
-    def _get_framework_config(self, framework_id: str) -> Optional[Dict]:
-        """Get configuration for a specific framework."""
-        for fw in self.frameworks_config.get("frameworks", []):
-            if fw["id"] == framework_id:
-                return fw
-        return None
-    
+
     def _find_framework_dir(self, framework_config: Dict) -> Optional[Path]:
         """Find the framework directory."""
         script_dir = Path(__file__).parent
@@ -272,7 +250,7 @@ class DevServerRunner(BenchmarkRunner):
     def run_single_benchmark(self, framework: str) -> BenchmarkResult:
         """Measure dev server startup and HMR speed for a single framework."""
         try:
-            framework_config = self._get_framework_config(framework)
+            framework_config = self.get_framework(framework)
             if not framework_config:
                 return self._create_error_result(framework, f"Framework {framework} not found in config")
             

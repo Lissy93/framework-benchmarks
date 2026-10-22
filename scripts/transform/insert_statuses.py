@@ -1,26 +1,19 @@
-import json
 import re
+import sys
 from pathlib import Path
 from typing import Dict, List
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
+sys.path.append(str(Path(__file__).parent.parent))
+from common import get_frameworks, get_project_root
+
 # Constants
 REPO_URL = "https://github.com/lissy93/framework-benchmarks"
 BADGES_BRANCH = "refs/heads/badges"
-README_PATH = Path(".github/README.md")
-FRAMEWORKS_JSON = "frameworks.json"
+README_PATH = get_project_root() / ".github" / "README.md"
 
 console = Console()
-
-def load_frameworks(file_path: str) -> List[Dict]:
-    """Load frameworks data from JSON file."""
-    try:
-        with open(file_path, 'r') as f:
-            return json.load(f).get('frameworks', [])
-    except Exception as e:
-        console.print(f"[red]Error loading {file_path}: {e}[/red]")
-        return []
 
 def generate_status_table(frameworks: List[Dict]) -> str:
     """Generate Markdown table with build, test, and lint statuses for all frameworks."""
@@ -70,7 +63,7 @@ def update_readme(content: str) -> None:
 
 def main() -> None:
     """Generate and insert status table into .github/README.md."""
-    frameworks = load_frameworks(FRAMEWORKS_JSON)
+    frameworks = get_frameworks()
     if not frameworks:
         console.print("[red]No frameworks found. Exiting.[/red]")
         return

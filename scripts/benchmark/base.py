@@ -57,7 +57,11 @@ class BenchmarkRunner(ABC):
         self.server_config = self.benchmark_config.get("server", {})
         self.output_config = self.benchmark_config.get("output", {})
         self.results: List[BenchmarkResult] = []
-    
+
+    def get_framework(self, framework_id: str) -> Optional[Dict[str, Any]]:
+        """Get the frameworks.json entry for a framework, or None if it isn't defined."""
+        return next((fw for fw in self.frameworks if fw["id"] == framework_id), None)
+
     @property
     @abstractmethod
     def benchmark_name(self) -> str:

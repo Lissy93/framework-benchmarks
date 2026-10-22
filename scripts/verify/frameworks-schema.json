@@ -43,7 +43,7 @@
           },
           "build": {
             "type": "object",
-            "required": ["buildCommand", "hasNodeModules", "devCommand", "testCommand", "lintFiles"],
+            "required": ["buildCommand", "hasNodeModules", "devCommand", "lintFiles"],
             "properties": {
               "buildCommand": {
                 "type": "string",
@@ -58,11 +58,6 @@
                 "type": "string",
                 "minLength": 1,
                 "description": "Command to start development server"
-              },
-              "testCommand": {
-                "type": "string",
-                "pattern": "playwright test.*",
-                "description": "Playwright test command"
               },
               "lintFiles": {
                 "type": "array",

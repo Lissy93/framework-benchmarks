@@ -33,7 +33,7 @@ Output in `dist-website/` ready for CDN deployment.
 ## Features
 
 ### Framework Grid
-Homepage displays all 12 frameworks with:
+Homepage displays all 16 frameworks with:
 - Performance scores
 - Bundle sizes
 - Build times

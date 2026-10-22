@@ -8,7 +8,7 @@ This guide covers common issues you might encounter and how to resolve them.
 Run with sudo if needed: `sudo npm install`. On Windows, run terminal as administrator.
 
 **Python command not found**
-Ensure Python 3.8+ is installed and available as `python` or `python3`. Install from python.org or use your system package manager.
+Ensure Python 3.10+ is installed and available as `python` or `python3`. Install from python.org or use your system package manager.
 
 **Git clone fails with permission errors**
 Use HTTPS instead of SSH: `git clone https://github.com/lissy93/framework-benchmarks.git`
@@ -72,6 +72,6 @@ Use the correct Chrome flags for containers: `CHROME_FLAGS='--no-sandbox --disab
 
 **Clean and retry** - Try `npm run clean` followed by a fresh setup if builds are behaving unexpectedly.
 
-**Check dependencies** - Ensure all system requirements (Node.js 18+, Python 3.8+, Chrome) are installed and up to date.
+**Check dependencies** - Ensure all system requirements (Node.js 22+, Python 3.10+, Chrome) are installed and up to date.
 
 **Disk space** - The full project with all frameworks built needs ~5GB of disk space.

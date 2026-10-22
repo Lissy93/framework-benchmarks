@@ -84,7 +84,13 @@
 │ ├── resource_monitor.py                   │ System resource monitoring    │
 │ ├── base.py                               │ Base benchmark runner class   │
 │ ╰── chrome_launcher.py                    │ Chrome browser management     │
-├── transform/ - CODE TRANSFORMATION        │                               │
+├── transform/ - RESULTS & DOCS GENERATION  │                               │
+│ ├── benchmark_results.py                  │ Convert results to TSV & JSON │
+│ ├── benchmark_results_json.py             │ Results to structured JSON    │
+│ ├── benchmark_results_tsv.py              │ Results to TSV for analysis   │
+│ ├── build_charts.py                       │ Generate website chart data   │
+│ ├── fetch_framework_stats.py              │ Fetch GitHub & npm stats      │
+│ ├── insert_framework_stats.py             │ Insert stats table in README  │
 │ ├── build_app_readme.py                   │ Generate app-specific READMEs │
 │ ╰── insert_statuses.py                    │ Insert build status badges    │
 ╰───────────────────────────────────────────┴───────────────────────────────╯

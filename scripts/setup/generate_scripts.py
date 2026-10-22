@@ -166,6 +166,19 @@ class ScriptOrganizer:
             show_error(f"Failed to update package.json: {e}")
             return False
 
+    def create_test_configs(self) -> List[str]:
+        """Create a Playwright config for any framework that doesn't have one yet."""
+        created = []
+        for fw_id in self.framework_ids:
+            config_path = get_project_root() / self.config_path_template.replace("{framework}", fw_id)
+            if not config_path.exists():
+                config_path.write_text(
+                    "const { createConfig } = require('./playwright.config.base.js');\n\n"
+                    f"module.exports = createConfig('{fw_id}');\n"
+                )
+                created.append(fw_id)
+        return created
+
 
 @click.command()
 @click.option("--dry-run", is_flag=True, help="Show what would be generated without writing")
@@ -210,7 +223,10 @@ def generate_scripts(dry_run: bool, verbose: bool):
         else:
             show_info("Updating package.json...")
             success = organizer.update_package_json(scripts)
-            
+            created = organizer.create_test_configs()
+            if created:
+                show_info(f"Created test configs for: {', '.join(created)}")
+
             if success:
                 duration = time.time() - start_time
                 show_success(f"Organized {script_count} scripts in package.json ({duration:.1f}s)")

@@ -1,185 +1,53 @@
+const path = require('path');
 const { defineConfig, devices } = require('@playwright/test');
+const { frameworks } = require('../../frameworks.json');
+
+// Every framework's dev server runs on port 3000 (see devCommand in frameworks.json)
+const BASE_URL = 'http://localhost:3000/';
 
 function createConfig(framework) {
-  const configs = {
-    vanilla: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:vanilla',
-        url: 'http://localhost:3000/',
-      }
-    },
-    octane: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:octane',
-        url: 'http://localhost:3000/',
-      }
-    },
-    react: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:react',
-        url: 'http://localhost:3000/',
-      }
-    },
-    angular: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:angular',
-        url: 'http://localhost:3000/',
-      }
-    },
-    svelte: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:svelte',
-        url: 'http://localhost:3000/',
-      }
-    },
-    preact: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:preact',
-        url: 'http://localhost:3000/',
-      }
-    },
-    solid: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:solid',
-        url: 'http://localhost:3000/',
-      }
-    },
-    qwik: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:qwik',
-        url: 'http://localhost:3000/',
-      }
-    },
-    vue: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:vue',
-        url: 'http://localhost:3000/',
-      }
-    },
-    'vue-vapor': {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:vue-vapor',
-        url: 'http://localhost:3000/',
-      }
-    },
-    jquery: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:jquery',
-        url: 'http://localhost:3000/',
-      }
-    },
-    alpine: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:alpine',
-        url: 'http://localhost:3000/',
-      }
-    },
-    lit: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:lit',
-        url: 'http://localhost:3000/',
-      }
-    },
-    vanjs: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:vanjs',
-        url: 'http://localhost:3000/',
-      }
-    },
-    'lume-js': {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:lume-js',
-        url: 'http://localhost:3000/',
-      }
-    },
-    astro: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:astro',
-        url: 'http://localhost:3000/',
-      }
-    },
-    geajs: {
-      baseURL: 'http://localhost:3000/?mock=true',
-      webServer: {
-        command: 'npm run dev:geajs',
-        url: 'http://localhost:3000/',
-      }
-    }
-  };
-
-  const config = configs[framework];
-  if (!config) {
+  if (!frameworks.some(fw => fw.id === framework)) {
     throw new Error(`Unknown framework: ${framework}`);
   }
 
   return defineConfig({
-    testDir: '../',
+    testDir: path.join(__dirname, '..'),
     testIgnore: ['**/unit/**', '**/test-helpers.js'],
     fullyParallel: true,
     forbidOnly: !!process.env.CI,
-    retries: process.env.CI ? 2 : 1, // Reasonable retries
-    workers: process.env.CI ? 2 : 4, // Better parallelization
-    reporter: [['html'], ['list']], // Cleaner terminal output
-    timeout: 30000, // Reasonable global timeout
-    expect: {
-      timeout: 5000, // Reasonable expect timeout
-    },
+    retries: process.env.CI ? 2 : 1,
+    workers: process.env.CI ? 2 : 4,
+    reporter: [['html'], ['list']],
+    timeout: 30000,
+    expect: { timeout: 5000 },
     use: {
-      baseURL: config.baseURL,
+      baseURL: `${BASE_URL}?mock=true`,
       trace: 'retain-on-failure',
-      screenshot: 'only-on-failure', 
-      video: 'retain-on-failure',
-      actionTimeout: 0, // Use default
-      navigationTimeout: 0, // Use default
+      screenshot: 'only-on-failure',
+      video: 'retain-on-failure'
     },
-
-    projects: [
-      {
-        name: 'chromium',
-        use: { 
-          ...devices['Desktop Chrome'],
-          // Additional browser options for stability
-          launchOptions: {
-            args: [
-              '--disable-dev-shm-usage',
-              '--disable-background-timer-throttling',
-              '--disable-backgrounding-occluded-windows',
-              '--disable-renderer-backgrounding',
-              '--no-sandbox',
-              '--disable-web-security'
-            ],
-          },
-        },
+    projects: [{
+      name: 'chromium',
+      use: {
+        ...devices['Desktop Chrome'],
+        launchOptions: {
+          args: [
+            '--disable-dev-shm-usage',
+            '--disable-background-timer-throttling',
+            '--disable-backgrounding-occluded-windows',
+            '--disable-renderer-backgrounding',
+            '--no-sandbox',
+            '--disable-web-security'
+          ]
+        }
       }
-    ],
-
+    }],
     webServer: {
-      ...config.webServer,
-      reuseExistingServer: !process.env.CI, 
-      timeout: 30 * 1000,
-      // In CI, skip starting web server if it's already running
-      ...(process.env.CI && process.env.SKIP_WEBSERVER ? {
-        command: undefined,
-        url: undefined,
-        reuseExistingServer: true
-      } : {})
-    },
+      command: `npm run dev:${framework}`,
+      url: BASE_URL,
+      reuseExistingServer: !process.env.CI,
+      timeout: 30 * 1000
+    }
   });
 }
 

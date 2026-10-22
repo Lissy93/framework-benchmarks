@@ -75,7 +75,7 @@ jobs:
       - name: 📂 Check PR for code changes and version bump
         id: check_pr
         if: env.IS_MANUAL != 'true'
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
             const { owner, repo } = context.repo;
@@ -128,7 +128,7 @@ jobs:
 
       - name: 🛎️ Checkout repository
         if: env.IS_MANUAL == 'true' || steps.check_pr.outputs.needs_tag == 'true'
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           ref: ${{ github.event.pull_request.base.ref || github.ref }}
           fetch-depth: 0
@@ -136,9 +136,9 @@ jobs:
 
       - name: 🔧 Setup Node.js
         if: env.IS_MANUAL == 'true' || steps.check_pr.outputs.needs_tag == 'true'
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6 # zizmor: ignore[cache-poisoning] no cache is configured here
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v6 # zizmor: ignore[cache-poisoning] no cache is configured here
         with:
-          node-version: '22'
+          node-version-file: .nvmrc
 
       - name: 👤 Configure git identity and remote
         if: env.IS_MANUAL == 'true' || steps.check_pr.outputs.needs_tag == 'true'
@@ -154,7 +154,7 @@ jobs:
       - name: 🔍 Extract referenced issues
         id: issues
         if: env.IS_MANUAL != 'true' && steps.check_pr.outputs.needs_tag == 'true'
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         with:
           script: |
             const body = context.payload.pull_request.body || '';
@@ -248,7 +248,7 @@ jobs:
           && steps.check_pr.outputs.needs_tag == 'true'
           && steps.issues.outputs.numbers != ''
         continue-on-error: true
-        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
         env:
           ISSUES: ${{ steps.issues.outputs.numbers }}
         with:

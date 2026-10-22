@@ -1,6 +1,6 @@
 <h1 align="center">🌈 Framework Benchmarks</h1>
 <p align="center">
-	<i>The same weather app built in 12 different frontend frameworks</i><br>
+	<i>The same weather app built in 16 different frontend frameworks</i><br>
     For automated cross-framework web performance benchmarking
   <br>
 	<a href="https://framework-benchmarks.as93.net"><img width="96" src="https://storage.googleapis.com/as93-screenshots/project-logos/framework-benchmarks.png" /></a><br>
@@ -9,7 +9,7 @@
 </p>
 
 ### Intro
-I've built the same weather app in 12 different frontend web frameworks.
+I've built the same weather app in 16 different frontend web frameworks.
 Along with automated scripts to benchmark each of their performance, quality and capabilities.
 To finally answer the age-old question: "Which is the _best_* frontend framework?"<br>
 So, without further ado, let's see how every framework weathers the storm! ⛈️
@@ -46,7 +46,6 @@ So, without further ado, let's see how every framework weathers the storm! ⛈�
 <!-- start_framework_list -->
 <p align="center">
         <a href="https://framework-benchmarks.as93.net/react/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/react.png" /></a>
-    <a href="https://framework-benchmarks.as93.net/octane/"><img width="48" src="https://raw.githubusercontent.com/octanejs/octane/main/icon.svg" /></a>
     <a href="https://framework-benchmarks.as93.net/angular/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/angular.png" /></a>
     <a href="https://framework-benchmarks.as93.net/svelte/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/svelte.png" /></a>
     <a href="https://framework-benchmarks.as93.net/preact/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/preact.png" /></a>
@@ -57,8 +56,9 @@ So, without further ado, let's see how every framework weathers the storm! ⛈�
     <a href="https://framework-benchmarks.as93.net/alpine/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/alpine.png" /></a>
     <a href="https://framework-benchmarks.as93.net/lit/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/lit.png" /></a>
     <a href="https://framework-benchmarks.as93.net/vanjs/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vanjs.png" /></a>
-    <a href="https://framework-benchmarks.as93.net/lume-js/"><img width="48" src="https://raw.githubusercontent.com/sathvikc/lume-js/refs/heads/main/lume-logo.png" /></a>
     <a href="https://framework-benchmarks.as93.net/astro/"><img width="48" src="https://astro.build/assets/press/astro-logo-light-gradient.svg" /></a>
+    <a href="https://framework-benchmarks.as93.net/lume-js/"><img width="48" src="https://raw.githubusercontent.com/sathvikc/lume-js/refs/heads/main/lume-logo.png" /></a>
+    <a href="https://framework-benchmarks.as93.net/octane/"><img width="48" src="https://raw.githubusercontent.com/octanejs/octane/main/icon.svg" /></a>
     <a href="https://framework-benchmarks.as93.net/geajs/"><img width="48" src="https://geajs.com/logo.png" /></a>
     <a href="https://framework-benchmarks.as93.net/vanilla/"><img width="48" src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/javascript.png" /></a>
 <br><sub>Click a framework to view info, test/lint/build/etc statuses, and to preview the demo app</sub></p>
@@ -101,12 +101,11 @@ Then upload the app's build output (`dist/`, `build/` or the app root, depending
 ### Adding a Framework
 1. Create app directory: `apps/[app-name]/` with `package.json`, a build config (e.g. `vite.config.js`), and a `src/` dir
 2. Register the framework in [`frameworks.json`](https://github.com/lissy93/framework-benchmarks/blob/main/frameworks.json)
-3. Add a test config at `tests/config/playwright-[app-name].config.js`
-4. Run `npm run setup` to generate scripts, sync shared assets and mocks, and install deps. Verify with `npm run check`
-5. Code your app!<br>
-  5.1. Preview locally with `npm run dev:[app-name]`<br>
-  5.2. then test with `npm run test:[app-name]` to ensure it meets the [requirements spec](#requirement-spec)
-6. Validate everything passes with the test, lint and build scripts
+3. Run `npm run setup` to generate the npm scripts and test config, sync shared assets and mocks, and install deps. Verify with `npm run check`
+4. Code your app!<br>
+  4.1. Preview locally with `npm run dev:[app-name]`<br>
+  4.2. then test with `npm run test:[app-name]` to ensure it meets the [requirements spec](#requirement-spec)
+5. Validate everything passes with the test, lint and build scripts
 
 ---
 
@@ -174,15 +173,15 @@ and also view a stats on a per-framework basis.
 <p align="center"><sub>The following charts show live data from the latest benchmark run. See the web version for interactive charts.</sub></p>
 <!-- start_summary_charts -->
 <p align="center">
-  <img src="https://quickchart.io/chart/render/zf-dd697139-6524-4df0-b4b9-d535e9eb3874" width="256" title="Performance Overview" alt="Performance Overview" />
-  <img src="https://quickchart.io/chart/render/zf-d0c91075-5e8f-4b7a-bfbb-119ef1e79966" width="256" title="Performance vs Bundle Size" alt="Performance vs Bundle Size" />
-  <img src="https://quickchart.io/chart/render/zf-f8144744-a6b7-483e-975f-f4b2012dbfc7" width="256" title="Source Code Analysis" alt="Source Code Analysis" />
-  <img src="https://quickchart.io/chart/render/zf-fc922d28-53e5-497b-9534-ede9111a8a56" width="256" title="Bundle Size and Comparison" alt="Bundle Size and Comparison" />
-  <img src="https://quickchart.io/chart/render/zf-ffbf1bce-e467-4970-99de-5811030e7f7e" width="256" title="Lighthouse Performance Scores" alt="Lighthouse Performance Scores" />
-  <img src="https://quickchart.io/chart/render/zf-c142401b-c710-48ec-8032-61ef9a10dcb2" width="256" title="Loading Performance" alt="Loading Performance" />
-  <img src="https://quickchart.io/chart/render/zf-fc56f236-d5df-4279-9acc-29892c20f7ab" width="256" title="Project Size Distribution" alt="Project Size Distribution" />
-  <img src="https://quickchart.io/chart/render/zf-467dd527-d1ad-4399-95cd-9a4331bab1a3" width="256" title="Development Server Performance" alt="Development Server Performance" />
-  <img src="https://quickchart.io/chart/render/zf-4b440bc4-f378-4a29-a2b6-7c73403d787f" width="256" title="Build Time Distribution" alt="Build Time Distribution" />
+  <img src="https://quickchart.io/chart/render/zf-9c9e58f4-8a97-47d6-8a98-d5a378062673" width="256" title="Performance Overview" alt="Performance Overview" />
+  <img src="https://quickchart.io/chart/render/zf-0be9f7fd-d20d-40ce-9b16-a7104be2c63b" width="256" title="Performance vs Bundle Size" alt="Performance vs Bundle Size" />
+  <img src="https://quickchart.io/chart/render/zf-141aa6c1-da21-4106-90a9-0aeb98523f1d" width="256" title="Source Code Analysis" alt="Source Code Analysis" />
+  <img src="https://quickchart.io/chart/render/zf-c773b2c3-64c1-47d4-b79a-544978a286a3" width="256" title="Bundle Size and Comparison" alt="Bundle Size and Comparison" />
+  <img src="https://quickchart.io/chart/render/zf-1cc797df-346a-4bea-9d2b-ab3b370d366b" width="256" title="Lighthouse Performance Scores" alt="Lighthouse Performance Scores" />
+  <img src="https://quickchart.io/chart/render/zf-f86c62be-f216-4f8a-a1f4-1492c3f7f2d8" width="256" title="Loading Performance" alt="Loading Performance" />
+  <img src="https://quickchart.io/chart/render/zf-32115145-40c9-40b2-854b-50d3120ff7a8" width="256" title="Project Size Distribution" alt="Project Size Distribution" />
+  <img src="https://quickchart.io/chart/render/zf-6ad3ba0a-36c0-42c6-9a6c-fd187408eb07" width="256" title="Development Server Performance" alt="Development Server Performance" />
+  <img src="https://quickchart.io/chart/render/zf-a9499aa5-2652-491e-be98-61cb327ec400" width="256" title="Build Time Distribution" alt="Build Time Distribution" />
 </p>
 <!-- end_summary_charts -->
 
@@ -191,21 +190,21 @@ and also view a stats on a per-framework basis.
 <!-- start_framework_stats -->
 | Framework | Stars | Downloads | Size | Contributors | Age | Last updated | License |
 |---|---|---|---|---|---|---|---|
-| <a href="https://github.com/facebook/react"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/react.png" alt="⚛️" width="16"></a> [**React**](https://github.com/facebook/react) | 248k | 672M | 1049.0 MB | 2k | 13.2y | 1 day ago | MIT |
-| <a href="https://github.com/octanejs/octane"><img src="https://raw.githubusercontent.com/octanejs/octane/main/icon.svg" alt="🏎️" width="16"></a> [**Octane**](https://github.com/octanejs/octane) | 1.3k | 45.5k | 106.7 MB | 24 | 0.2y | 13 hours ago | MIT |
-| <a href="https://github.com/angular/angular"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/angular.png" alt="🅰️" width="16"></a> [**Angular**](https://github.com/angular/angular) | 101k | 24.7M | 641.0 MB | 2.7k | 11.9y | 2 days ago | MIT |
-| <a href="https://github.com/sveltejs/svelte"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/svelte.png" alt="🔥" width="16"></a> [**Svelte**](https://github.com/sveltejs/svelte) | 88k | 23.1M | 119.4 MB | 975 | 9.8y | 29 minutes ago | MIT |
-| <a href="https://github.com/preactjs/preact"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/preact.png" alt="💜" width="16"></a> [**Preact**](https://github.com/preactjs/preact) | 38.8k | 124.4M | 19.5 MB | 379 | 11.0y | 2 days ago | MIT |
-| <a href="https://github.com/solidjs/solid"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/solid.png" alt="🚀" width="16"></a> [**Solid.js**](https://github.com/solidjs/solid) | 35.9k | 15.2M | 21.7 MB | 194 | 8.3y | 1 week ago | MIT |
-| <a href="https://github.com/QwikDev/qwik"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/qwik.png" alt="⚡" width="16"></a> [**Qwik**](https://github.com/QwikDev/qwik) | 22k | 241.8k | 91.0 MB | 667 | 5.5y | 2 hours ago | MIT |
-| <a href="https://github.com/vuejs/core"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vue.png" alt="💚" width="16"></a> [**Vue 3**](https://github.com/vuejs/core) | 54.3k | 59.4M | 43.3 MB | 643 | 7.9y | 1 day ago | MIT |
-| <a href="https://github.com/jquery/jquery"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/jquery.png" alt="💙" width="16"></a> [**jQuery**](https://github.com/jquery/jquery) | 59.8k | 72.8M | 35.1 MB | 349 | 20.4y | 1 week ago | MIT |
-| <a href="https://github.com/alpinejs/alpine"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/alpine.png" alt="🏔️" width="16"></a> [**Alpine.js**](https://github.com/alpinejs/alpine) | 31.9k | 2.7M | 8.9 MB | 322 | 6.8y | 2 days ago | MIT |
-| <a href="https://github.com/lit/lit"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/lit.png" alt="🔥" width="16"></a> [**Lit**](https://github.com/lit/lit) | 21.8k | 29.5M | 60.8 MB | 210 | 9.2y | 2 months ago | BSD-3-Clause |
-| <a href="https://github.com/vanjs-org/van"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vanjs.png" alt="🚐" width="16"></a> [**VanJS**](https://github.com/vanjs-org/van) | 4.4k | 9.3k | 3.9 MB | 24 | 3.3y | 1 month ago | MIT |
-| <a href="https://github.com/sathvikc/lume-js"><img src="https://raw.githubusercontent.com/sathvikc/lume-js/refs/heads/main/lume-logo.png" alt="💡" width="16"></a> [**Lume.js**](https://github.com/sathvikc/lume-js) | 44 | 204 | 1.7 MB | 1 | 0.9y | 1 month ago | MIT |
-| <a href="https://github.com/withastro/astro"><img src="https://astro.build/assets/press/astro-logo-light-gradient.svg" alt="🚀" width="16"></a> [**Astro**](https://github.com/withastro/astro) | 62.1k | 19.2M | 228.3 MB | 1.2k | 5.5y | 15 hours ago | Unknown |
-| <a href="https://github.com/dashersw/gea"><img src="https://geajs.com/logo.png" alt="🌍" width="16"></a> [**Gea.js**](https://github.com/dashersw/gea) | 1.2k | 1.7k | 15.0 MB | 8 | 0.5y | 1 week ago | MIT |
+| <a href="https://github.com/facebook/react"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/react.png" alt="⚛️" width="16"></a> [**React**](https://github.com/facebook/react) | 251.6k | 772.2M | 1098.3 MB | 2k | 13.4y | 13 hours ago | MIT |
+| <a href="https://github.com/angular/angular"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/angular.png" alt="🅰️" width="16"></a> [**Angular**](https://github.com/angular/angular) | 101.1k | 25.3M | 652.6 MB | 2.7k | 12.1y | 7 hours ago | MIT |
+| <a href="https://github.com/sveltejs/svelte"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/svelte.png" alt="🔥" width="16"></a> [**Svelte**](https://github.com/sveltejs/svelte) | 88.4k | 26.7M | 121.2 MB | 992 | 9.9y | 10 hours ago | MIT |
+| <a href="https://github.com/preactjs/preact"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/preact.png" alt="💜" width="16"></a> [**Preact**](https://github.com/preactjs/preact) | 38.9k | 151.8M | 19.7 MB | 381 | 11.1y | 22 hours ago | MIT |
+| <a href="https://github.com/solidjs/solid"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/solid.png" alt="🚀" width="16"></a> [**Solid.js**](https://github.com/solidjs/solid) | 36.1k | 27.1M | 34.5 MB | 197 | 8.5y | 1 week ago | MIT |
+| <a href="https://github.com/QwikDev/qwik"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/qwik.png" alt="⚡" width="16"></a> [**Qwik**](https://github.com/QwikDev/qwik) | 22.1k | 246.8k | 106.1 MB | 679 | 5.7y | 11 minutes ago | MIT |
+| <a href="https://github.com/vuejs/core"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vue.png" alt="💚" width="16"></a> [**Vue 3**](https://github.com/vuejs/core) | 54.7k | 69.6M | 46.0 MB | 662 | 8.1y | 3 hours ago | MIT |
+| <a href="https://github.com/jquery/jquery"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/jquery.png" alt="💙" width="16"></a> [**jQuery**](https://github.com/jquery/jquery) | 59.9k | 62.3M | 35.3 MB | 349 | 20.6y | 2 weeks ago | MIT |
+| <a href="https://github.com/alpinejs/alpine"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/alpine.png" alt="🏔️" width="16"></a> [**Alpine.js**](https://github.com/alpinejs/alpine) | 32k | 2.9M | 9.2 MB | 328 | 6.9y | 2 weeks ago | MIT |
+| <a href="https://github.com/lit/lit"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/lit.png" alt="🔥" width="16"></a> [**Lit**](https://github.com/lit/lit) | 21.9k | 29.4M | 61.6 MB | 211 | 9.3y | 1 month ago | BSD-3-Clause |
+| <a href="https://github.com/vanjs-org/van"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vanjs.png" alt="🚐" width="16"></a> [**VanJS**](https://github.com/vanjs-org/van) | 4.4k | 7.9k | 3.9 MB | 24 | 3.5y | 3 months ago | MIT |
+| <a href="https://github.com/withastro/astro"><img src="https://astro.build/assets/press/astro-logo-light-gradient.svg" alt="🚀" width="16"></a> [**Astro**](https://github.com/withastro/astro) | 63.4k | 28.1M | 234.4 MB | 1.3k | 5.6y | 4 hours ago | Unknown |
+| <a href="https://github.com/sathvikc/lume-js"><img src="https://raw.githubusercontent.com/sathvikc/lume-js/refs/heads/main/lume-logo.png" alt="💡" width="16"></a> [**Lume.js**](https://github.com/sathvikc/lume-js) | 45 | 138 | 1.7 MB | 1 | 1.0y | 3 months ago | MIT |
+| <a href="https://github.com/octanejs/octane"><img src="https://raw.githubusercontent.com/octanejs/octane/main/icon.svg" alt="🏎️" width="16"></a> [**Octane**](https://github.com/octanejs/octane) | 1.5k | 85.4k | 217.7 MB | 35 | 0.3y | 9 hours ago | MIT |
+| <a href="https://github.com/dashersw/gea"><img src="https://geajs.com/logo.png" alt="🌍" width="16"></a> [**Gea.js**](https://github.com/dashersw/gea) | 1.3k | 5.8k | 15.5 MB | 10 | 0.6y | 3 weeks ago | MIT |
 <!-- end_framework_stats -->
 
 ---
@@ -254,7 +253,6 @@ Each app gets built and tested to ensure that it is functional, compliant with t
 | App | Build | Test | Lint |
 |---|---|---|---|
 | <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/react"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/react.png" width="16" /> React</a> | ![React Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-react.svg) | ![React Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-react.svg) | ![React Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-react.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/octane"><img src="https://raw.githubusercontent.com/octanejs/octane/main/icon.svg" width="16" /> Octane</a> | ![Octane Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-octane.svg) | ![Octane Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-octane.svg) | ![Octane Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-octane.svg) |
 | <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/angular"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/angular.png" width="16" /> Angular</a> | ![Angular Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-angular.svg) | ![Angular Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-angular.svg) | ![Angular Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-angular.svg) |
 | <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/svelte"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/svelte.png" width="16" /> Svelte</a> | ![Svelte Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-svelte.svg) | ![Svelte Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-svelte.svg) | ![Svelte Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-svelte.svg) |
 | <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/preact"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/preact.png" width="16" /> Preact</a> | ![Preact Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-preact.svg) | ![Preact Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-preact.svg) | ![Preact Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-preact.svg) |
@@ -265,8 +263,9 @@ Each app gets built and tested to ensure that it is functional, compliant with t
 | <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/alpine"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/alpine.png" width="16" /> Alpine.js</a> | ![Alpine.js Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-alpine.svg) | ![Alpine.js Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-alpine.svg) | ![Alpine.js Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-alpine.svg) |
 | <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/lit"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/lit.png" width="16" /> Lit</a> | ![Lit Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-lit.svg) | ![Lit Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-lit.svg) | ![Lit Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-lit.svg) |
 | <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vanjs"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/vanjs.png" width="16" /> VanJS</a> | ![VanJS Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-vanjs.svg) | ![VanJS Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-vanjs.svg) | ![VanJS Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-vanjs.svg) |
-| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/lume-js"><img src="https://raw.githubusercontent.com/sathvikc/lume-js/refs/heads/main/lume-logo.png" width="16" /> Lume.js</a> | ![Lume.js Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-lume-js.svg) | ![Lume.js Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-lume-js.svg) | ![Lume.js Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-lume-js.svg) |
 | <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/astro"><img src="https://astro.build/assets/press/astro-logo-light-gradient.svg" width="16" /> Astro</a> | ![Astro Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-astro.svg) | ![Astro Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-astro.svg) | ![Astro Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-astro.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/lume-js"><img src="https://raw.githubusercontent.com/sathvikc/lume-js/refs/heads/main/lume-logo.png" width="16" /> Lume.js</a> | ![Lume.js Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-lume-js.svg) | ![Lume.js Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-lume-js.svg) | ![Lume.js Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-lume-js.svg) |
+| <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/octane"><img src="https://raw.githubusercontent.com/octanejs/octane/main/icon.svg" width="16" /> Octane</a> | ![Octane Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-octane.svg) | ![Octane Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-octane.svg) | ![Octane Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-octane.svg) |
 | <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/geajs"><img src="https://geajs.com/logo.png" width="16" /> Gea.js</a> | ![Gea.js Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-geajs.svg) | ![Gea.js Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-geajs.svg) | ![Gea.js Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-geajs.svg) |
 | <a href="https://github.com/lissy93/framework-benchmarks/tree/main/apps/vanilla"><img src="https://storage.googleapis.com/as93-screenshots/frontend-benchmarks/framework-logos/javascript.png" width="16" /> Vanilla JavaScript</a> | ![Vanilla JavaScript Build Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/build-vanilla.svg) | ![Vanilla JavaScript Test Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/test-vanilla.svg) | ![Vanilla JavaScript Lint Status](https://raw.githubusercontent.com/lissy93/framework-benchmarks/refs/heads/badges/lint-vanilla.svg) |
 <!-- end_all_status -->

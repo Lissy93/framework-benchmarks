@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 """Build time benchmarking for web application frameworks."""
 
-import json
 import os
 import shutil
 import subprocess
@@ -27,31 +26,13 @@ class BuildTimeRunner(BenchmarkRunner):
     
     def __init__(self, clean_build: bool = True):
         super().__init__()
-        self.frameworks_config = self._load_frameworks_config()
         # Always use clean builds for accurate results
         self.clean_build = True
-    
+
     def check_server_health(self) -> bool:
         """Build time measurement doesn't require a running server."""
         return True
-    
-    def _load_frameworks_config(self) -> Dict:
-        """Load frameworks configuration."""
-        config_path = Path(__file__).parent.parent.parent / "frameworks.json"
-        try:
-            with open(config_path, 'r') as f:
-                return json.load(f)
-        except Exception as e:
-            console.print(f"[red]Failed to load frameworks.json: {e}[/red]")
-            return {"frameworks": []}
-    
-    def _get_framework_config(self, framework_id: str) -> Optional[Dict]:
-        """Get configuration for a specific framework."""
-        for fw in self.frameworks_config.get("frameworks", []):
-            if fw["id"] == framework_id:
-                return fw
-        return None
-    
+
     def _backup_build_output(self, framework_dir: Path, build_dir: str) -> Optional[Path]:
         """Backup existing build output if it exists."""
         build_path = framework_dir / build_dir
@@ -125,7 +106,7 @@ class BuildTimeRunner(BenchmarkRunner):
     def run_single_benchmark(self, framework: str) -> BenchmarkResult:
         """Measure build time for a single framework."""
         try:
-            framework_config = self._get_framework_config(framework)
+            framework_config = self.get_framework(framework)
             if not framework_config:
                 return self._create_error_result(framework, f"Framework {framework} not found in config")
             

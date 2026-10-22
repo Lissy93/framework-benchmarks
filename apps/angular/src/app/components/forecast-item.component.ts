@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, ElementRef, Injector, afterNextRender, computed, inject, input, output } from '@angular/core';
 import type { DailyWeather } from '../types/weather.types';
 import { WeatherUtils } from '../utils/weather.utils';
 
@@ -73,6 +73,9 @@ import { WeatherUtils } from '../utils/weather.utils';
   `
 })
 export class ForecastItemComponent {
+  private readonly elementRef = inject<ElementRef<HTMLElement>>(ElementRef);
+  private readonly injector = inject(Injector);
+
   readonly daily = input.required<DailyWeather>();
   readonly index = input.required<number>();
   readonly isActive = input(false);
@@ -97,6 +100,12 @@ export class ForecastItemComponent {
 
   onToggle(): void {
     this.toggle.emit(this.index());
+    // Scroll from the item itself, a viewChildren query in the parent adds the query runtime to the bundle
+    afterNextRender(() => {
+      if (this.isActive()) {
+        this.elementRef.nativeElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }, { injector: this.injector });
   }
 
   onKeyDown(event: KeyboardEvent): void {

@@ -14,8 +14,8 @@ tests/
 │   └── run-unit-tests.js          # Unit test runner
 ├── e2e/                          # Advanced E2E tests
 │   └── weather-app-advanced.test.js
+├── config/                       # Playwright configs (one per framework)
 ├── weather-app.test.js           # Core E2E tests
-├── playwright.config.js          # Playwright configuration
 ├── test-helpers.js              # Shared test utilities
 └── .env.example                 # Test configuration template
 ```

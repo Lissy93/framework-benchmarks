@@ -1,7 +1,6 @@
-
 services:
   framework-benchmarks:
-    build: 
+    build:
       context: .
       target: production
     ports:
@@ -12,18 +11,12 @@ services:
       # Mount results directory for benchmarking (optional)
       - ./benchmark-results:/app/benchmark-results
     restart: unless-stopped
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
 
   # Development version with full benchmarking capabilities
   framework-benchmarks-dev:
     build:
       context: .
-      target: development  
+      target: development
     ports:
       - "3000:3000"
     environment:

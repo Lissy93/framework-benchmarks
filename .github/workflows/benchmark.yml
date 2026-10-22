@@ -31,10 +31,6 @@ on:
   schedule:
     - cron: '30 4 * * *'  # Daily at 04:30 UTC
 
-env:
-  NODE_VERSION: '22'
-  PYTHON_VERSION: '3.11'
-
 permissions:
   contents: read
 
@@ -46,21 +42,21 @@ jobs:
     
     steps:
       - name: 📥 Checkout Repository
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
           fetch-depth: 1
           persist-credentials: false
 
       - name: 🔧 Setup Node.js
-        uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e # v6
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: ${{ env.NODE_VERSION }}
+          node-version-file: .nvmrc
           cache: 'npm'
 
       - name: 🐍 Setup Python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          python-version-file: .python-version
           cache: 'pip'
 
       - name: 📦 Install System Dependencies
@@ -90,7 +86,7 @@ jobs:
           sudo apt-get install -y libasound2t64 || sudo apt-get install -y libasound2
 
       - name: 🌐 Install Google Chrome
-        uses: browser-actions/setup-chrome@c785b87e244131f27c9f19c1a33e2ead956ab7ce # v1
+        uses: browser-actions/setup-chrome@48ad923757ca74d66703209fe939badbdf80f2f4 # v2.2.0
         with:
           chrome-version: stable
         id: setup-chrome
@@ -310,7 +306,7 @@ jobs:
           cat workflow-context.json
 
       - name: 📤 Upload Benchmark Results
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: always()
         with:
           name: benchmark-results-${{ github.run_number }}
@@ -322,7 +318,7 @@ jobs:
           compression-level: 6
 
       - name: 📤 Upload Detailed Logs
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: failure()
         with:
           name: benchmark-logs-${{ github.run_number }}

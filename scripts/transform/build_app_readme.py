@@ -1,20 +1,14 @@
-import json
 import re
+import sys
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, Tuple
 from rich.console import Console
 from rich.progress import Progress, SpinnerColumn, TextColumn
 
-console = Console()
+sys.path.append(str(Path(__file__).parent.parent))
+from common import get_frameworks, get_project_root
 
-def load_frameworks(file_path: str) -> List[Dict]:
-    """Load frameworks data from JSON file."""
-    try:
-        with open(file_path, 'r') as f:
-            return json.load(f).get('frameworks', [])
-    except Exception as e:
-        console.print(f"[red]Error loading {file_path}: {e}[/red]")
-        return []
+console = Console()
 
 def format_url(url: str) -> Tuple[str, str]:
     """Format URL for display (no protocol or trailing slash) and return (display, href)."""
@@ -153,7 +147,7 @@ def generate_readme_content(framework: Dict) -> Dict[str, str]:
 def update_readme(framework: Dict, content_sections: Dict[str, str]) -> None:
     """Update or create README, preserving framework-specific content."""
     fw_dir = framework['dir']
-    readme_path = Path(f"apps/{fw_dir}/README.md")
+    readme_path = get_project_root() / "apps" / fw_dir / "README.md"
     
     if not readme_path.exists():
         real_world_app = (
@@ -203,7 +197,7 @@ def update_readme(framework: Dict, content_sections: Dict[str, str]) -> None:
 
 def main() -> None:
     """Generate or update READMEs for all frameworks."""
-    frameworks = load_frameworks("frameworks.json")
+    frameworks = get_frameworks()
     if not frameworks:
         console.print("[red]No frameworks found. Exiting.[/red]")
         return

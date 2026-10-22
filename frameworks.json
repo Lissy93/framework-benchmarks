@@ -9,7 +9,6 @@
         "buildCommand": "vite build",
         "hasNodeModules": true,
         "devCommand": "vite",
-        "testCommand": "playwright test --config=tests/config/playwright-react.config.js",
         "lintFiles": [
           "js",
           "jsx"
@@ -38,36 +37,6 @@
       }
     },
     {
-      "id": "octane",
-      "name": "Octane",
-      "dir": "octane",
-      "assetsDir": "public",
-      "build": {
-        "buildCommand": "vite build",
-        "hasNodeModules": true,
-        "devCommand": "vite --port 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-octane.config.js",
-        "lintFiles": [
-          "js",
-          "tsx"
-        ]
-      },
-      "meta": {
-        "emoji": "🏎️",
-        "iconName": "javascript",
-        "iconUrl": "https://raw.githubusercontent.com/octanejs/octane/main/icon.svg",
-        "website": "https://octanejs.dev/",
-        "docs": "https://octanejs.dev/docs/quick-start",
-        "github": "https://github.com/octanejs/octane",
-        "npmPackage": "octane",
-        "color": "#FF415A",
-        "accentColor": "#18181B",
-        "logo": "https://raw.githubusercontent.com/octanejs/octane/main/icon.svg",
-        "description": "Compiled React-style UI framework with direct DOM updates and no virtual DOM",
-        "longDescription": "Performance-first React-compatible framework that compiles components into direct DOM operations."
-      }
-    },
-    {
       "id": "angular",
       "name": "Angular",
       "dir": "angular",
@@ -76,7 +45,6 @@
         "buildCommand": "ng build",
         "hasNodeModules": true,
         "devCommand": "ng serve --port 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-angular.config.js",
         "lintFiles": [
           "ts",
           "html"
@@ -114,7 +82,6 @@
         "buildCommand": "vite build",
         "hasNodeModules": true,
         "devCommand": "vite dev --port 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-svelte.config.js",
         "lintFiles": [
           "js",
           "svelte"
@@ -151,7 +118,6 @@
         "buildCommand": "vite build",
         "hasNodeModules": true,
         "devCommand": "vite",
-        "testCommand": "playwright test --config=tests/config/playwright-preact.config.js",
         "lintFiles": [
           "js",
           "jsx"
@@ -189,7 +155,6 @@
         "buildCommand": "vite build",
         "hasNodeModules": true,
         "devCommand": "vite",
-        "testCommand": "playwright test --config=tests/config/playwright-solid.config.js",
         "lintFiles": [
           "js",
           "jsx"
@@ -226,7 +191,6 @@
         "buildCommand": "vite build",
         "hasNodeModules": true,
         "devCommand": "vite --port 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-qwik.config.js",
         "lintFiles": [
           "ts",
           "tsx"
@@ -264,7 +228,6 @@
         "buildCommand": "vite build",
         "hasNodeModules": true,
         "devCommand": "vite --port 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-vue.config.js",
         "lintFiles": [
           "js",
           "vue"
@@ -331,7 +294,6 @@
         "buildCommand": "vite build",
         "hasNodeModules": true,
         "devCommand": "vite --port 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-jquery.config.js",
         "lintFiles": [
           "js"
         ]
@@ -362,7 +324,6 @@
         "buildCommand": "echo 'No build step required'",
         "hasNodeModules": false,
         "devCommand": "python3 -m http.server 3000 || python -m http.server 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-alpine.config.js",
         "lintFiles": [
           "js"
         ]
@@ -398,7 +359,6 @@
         "buildCommand": "vite build",
         "hasNodeModules": true,
         "devCommand": "vite --port 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-lit.config.js",
         "lintFiles": [
           "js"
         ]
@@ -435,7 +395,6 @@
         "buildCommand": "vite build",
         "hasNodeModules": true,
         "devCommand": "vite --port 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-vanjs.config.js",
         "lintFiles": [
           "js"
         ]
@@ -463,36 +422,6 @@
       }
     },
     {
-      "id": "lume-js",
-      "name": "Lume.js",
-      "dir": "lume-js",
-      "assetsDir": "public",
-      "buildDir": ".",
-      "build": {
-        "buildCommand": "echo 'No build step required'",
-        "hasNodeModules": false,
-        "devCommand": "python3 -m http.server 3000 || python -m http.server 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-lume-js.config.js",
-        "lintFiles": [
-          "js"
-        ]
-      },
-      "meta": {
-        "emoji": "💡",
-        "iconName": "firewalla",
-        "iconUrl": "https://pixelflare.cc/alicia/icons/lume.png",
-        "website": "https://sathvikc.github.io/lume-js",
-        "docs": "https://sathvikc.github.io/lume-js",
-        "github": "https://github.com/sathvikc/lume-js",
-        "npmPackage": "lume-js",
-        "color": "#7C3AED",
-        "accentColor": "#7C3AED",
-        "logo": "https://raw.githubusercontent.com/sathvikc/lume-js/refs/heads/main/lume-logo.png",
-        "description": "Minimal reactive state library (~2.4KB core, ~5.5KB global), no build step",
-        "longDescription": "Standards-only reactive library with state, DOM binding, and keyed list rendering."
-      }
-    },
-    {
       "id": "astro",
       "name": "Astro",
       "dir": "astro",
@@ -502,7 +431,6 @@
         "buildCommand": "astro build",
         "hasNodeModules": true,
         "devCommand": "astro dev --port 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-astro.config.js",
         "lintFiles": [
           "js"
         ]
@@ -529,6 +457,64 @@
       }
     },
     {
+      "id": "lume-js",
+      "name": "Lume.js",
+      "dir": "lume-js",
+      "assetsDir": "public",
+      "buildDir": ".",
+      "build": {
+        "buildCommand": "echo 'No build step required'",
+        "hasNodeModules": false,
+        "devCommand": "python3 -m http.server 3000 || python -m http.server 3000",
+        "lintFiles": [
+          "js"
+        ]
+      },
+      "meta": {
+        "emoji": "💡",
+        "iconName": "firewalla",
+        "iconUrl": "https://pixelflare.cc/alicia/icons/lume.png",
+        "website": "https://sathvikc.github.io/lume-js",
+        "docs": "https://sathvikc.github.io/lume-js",
+        "github": "https://github.com/sathvikc/lume-js",
+        "npmPackage": "lume-js",
+        "color": "#7C3AED",
+        "accentColor": "#7C3AED",
+        "logo": "https://raw.githubusercontent.com/sathvikc/lume-js/refs/heads/main/lume-logo.png",
+        "description": "Minimal reactive state library (~2.4KB core, ~5.5KB global), no build step",
+        "longDescription": "Standards-only reactive library with state, DOM binding, and keyed list rendering."
+      }
+    },
+    {
+      "id": "octane",
+      "name": "Octane",
+      "dir": "octane",
+      "assetsDir": "public",
+      "build": {
+        "buildCommand": "vite build",
+        "hasNodeModules": true,
+        "devCommand": "vite --port 3000",
+        "lintFiles": [
+          "js",
+          "tsx"
+        ]
+      },
+      "meta": {
+        "emoji": "🏎️",
+        "iconName": "javascript",
+        "iconUrl": "https://octanejs.dev/icon-512.png",
+        "website": "https://octanejs.dev/",
+        "docs": "https://octanejs.dev/docs/quick-start",
+        "github": "https://github.com/octanejs/octane",
+        "npmPackage": "octane",
+        "color": "#FF415A",
+        "accentColor": "#18181B",
+        "logo": "https://raw.githubusercontent.com/octanejs/octane/main/icon.svg",
+        "description": "Compiled React-style UI framework with direct DOM updates and no virtual DOM",
+        "longDescription": "Performance-first React-compatible framework that compiles components into direct DOM operations."
+      }
+    },
+    {
       "id": "geajs",
       "name": "Gea",
       "displayName": "Gea.js",
@@ -538,7 +524,6 @@
         "buildCommand": "vite build",
         "hasNodeModules": true,
         "devCommand": "vite --port 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-geajs.config.js",
         "lintFiles": ["js", "jsx"]
       },
       "meta": {
@@ -567,7 +552,6 @@
         "buildCommand": "echo 'No build step required'",
         "hasNodeModules": false,
         "devCommand": "python3 -m http.server 3000 || python -m http.server 3000",
-        "testCommand": "playwright test --config=tests/config/playwright-vanilla.config.js",
         "lintFiles": [
           "js"
         ]

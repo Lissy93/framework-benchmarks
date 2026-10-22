@@ -47,8 +47,8 @@ python scripts/setup/generate_scripts.py
 ## Prerequisites
 
 Before running setup, ensure you have:
-- Node.js 18+ and npm
-- Python 3.8+ and pip
+- Node.js 22+ and npm
+- Python 3.10+ and pip
 - Git for cloning the repository
 
 ## Common Issues
