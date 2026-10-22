@@ -1,6 +1,6 @@
 # Framework Applications
 
-This project contains the same weather application built using 16 different JavaScript frameworks. Each implementation provides identical functionality but uses the specific patterns and approaches of its framework.
+This project contains the same weather application built using 17 different JavaScript frameworks. Each implementation provides identical functionality but uses the specific patterns and approaches of its framework.
 
 ## Available Frameworks
 
@@ -9,6 +9,7 @@ The project includes implementations for:
 **React** - Component-based with hooks and modern React patterns
 **Octane** - Compiled React-style components with direct DOM updates
 **Vue** - Built with Vue 3 and the Composition API
+**Vue Vapor** - Vue 3.6's opt-in compiler mode with direct DOM updates
 **Svelte** - Compiled framework with reactive statements
 **Angular** - Full TypeScript application with services and components
 **Qwik** - Resumable framework optimized for performance
